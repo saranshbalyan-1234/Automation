@@ -11,7 +11,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 const { Content } = Layout;
-export default function Dashboard({ children }) {
+export default function LayOut({ children }) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (

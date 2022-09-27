@@ -7,7 +7,7 @@ import {
   DownloadOutlined,
 } from "@ant-design/icons";
 import { Avatar, Dropdown, Menu } from "antd";
-import { logout } from "../../Redux/Actions/auth";
+import { logout } from "../../../Redux/Actions/auth";
 import { Link } from "react-router-dom";
 const ProfileMenu = ({ logout }) => {
   const menu = (

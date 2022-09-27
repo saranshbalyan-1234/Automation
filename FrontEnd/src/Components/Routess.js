@@ -1,5 +1,5 @@
 import React from "react";
-import Dashboard from "../Dashboard";
+import Layout from "./Layout";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Home from "./Home";
 import { connect } from "react-redux";
@@ -9,13 +9,13 @@ import Setting from "./Settings";
 function Routess({ user }) {
   const location = useLocation();
   return user ? (
-    <Dashboard>
+    <Layout>
       <Routes>
         <Route exact path="/" element={<Home />}></Route>
         <Route exact path="/settings" element={<Setting />}></Route>
         <Route exact path="*" element={<NotFound />} />
       </Routes>
-    </Dashboard>
+    </Layout>
   ) : (
     <Navigate
       to={{
