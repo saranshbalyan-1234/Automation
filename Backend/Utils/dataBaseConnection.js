@@ -1,13 +1,13 @@
 import { Sequelize, DataTypes } from "sequelize";
 import dotenv from "dotenv";
 
-import Tenant from "../Models/Tenant.js";
-import Customer from "../Models/Customer.js";
-import Unverified from "../Models/Unverified.js";
-import Role from "../Models/Role.js";
-import Permission from "../Models/Permission.js";
+import Tenant from "../Models/CustomerAdmin/Tenant.js";
+import Customer from "../Models/CustomerAdmin/Customer.js";
+import Unverified from "../Models/CustomerAdmin/Unverified.js";
+import Role from "../Models/RolePermission/Role.js";
+import Permission from "../Models/RolePermission/Permission.js";
 import User from "../Models/User.js";
-import UserRole from "../Models/UserRole.js";
+import UserRole from "../Models/RolePermission/UserRole.js";
 
 dotenv.config();
 
