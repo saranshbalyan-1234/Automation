@@ -10,6 +10,7 @@ import {
 import Header from "./Header";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
+import Container from "./Container";
 const { Content } = Layout;
 export default function LayOut({ children }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -37,7 +38,9 @@ export default function LayOut({ children }) {
         <Layout>
           <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
           <Content style={{ margin: "24px 16px 0" }}>
-            {children} <Footer />
+            <Container children />
+
+            <Footer />
           </Content>
         </Layout>
       </Layout>

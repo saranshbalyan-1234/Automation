@@ -11,7 +11,6 @@ function Routess({ user }) {
   return user ? (
     <Layout>
       <Routes>
-        <Route exact path="/" element={<Home />}></Route>
         <Route exact path="/settings" element={<Setting />}></Route>
         <Route exact path="*" element={<NotFound />} />
       </Routes>
