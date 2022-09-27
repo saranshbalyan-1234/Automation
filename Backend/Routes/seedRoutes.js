@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
+import { seedAll } from "../Controllers/seedController.js";
+
 const Router = express.Router();
-const seedController = require("../Controllers/seedController");
+Router.get("/all", seedAll);
 
-Router.get("/all", seedController.seedAll);
-
-module.exports = Router;
+export default Router;

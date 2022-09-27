@@ -1,7 +1,7 @@
-const db = require("../Utils/dataBaseConnection");
-const getError = require("../Utils/sequelizeError");
+import db from "../Utils/dataBaseConnection.js";
+import getError from "../Utils/sequelizeError.js";
 
-const { Op, QueryTypes } = require("sequelize");
+// const { Op, QueryTypes } = require("sequelize");
 const Role = db.roles;
 const Permission = db.permissions;
 const save = async (req, res) => {
@@ -88,23 +88,23 @@ const destroy = (req, res) => {
     });
 };
 
-const rawQuery = async (req, res) => {
-  const data = await db.sequelize.query(
-    "SELECT * from roles where name=:name",
-    {
-      type: QueryTypes.SELECT,
-      replacements: { name: "saransh" },
-    }
-  );
-  return res.status(200).json(data);
-};
+// const rawQuery = async (req, res) => {
+//   const data = await db.sequelize.query(
+//     "SELECT * from roles where name=:name",
+//     {
+//       type: QueryTypes.SELECT,
+//       replacements: { name: "saransh" },
+//     }
+//   );
+//   return res.status(200).json(data);
+// };
 
-module.exports = {
+export {
   save,
   update,
   findById,
   findByParam,
   findAll,
   destroy,
-  rawQuery,
+  // rawQuery,
 };

@@ -1,36 +1,27 @@
-const express = require("express");
+import express from "express";
+import {
+  findAll,
+  findById,
+  findByParam,
+  save,
+  update,
+  destroy,
+} from "../Controllers/permissionController.js";
+import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
-const permissionController = require("../Controllers/permissionController");
-const { validatePermission } = require("../Utils/Middlewares/permissions");
-Router.get(
-  "/get",
-  validatePermission("permission", "view"),
-  permissionController.findAll
-);
-Router.get(
-  "/get/:id",
-  validatePermission("permission", "view"),
-  permissionController.findById
-);
+Router.get("/get", validatePermission("permission", "view"), findAll);
+Router.get("/get/:id", validatePermission("permission", "view"), findById);
 Router.get(
   "/getByParam",
   validatePermission("permission", "view"),
-  permissionController.findByParam
+  findByParam
 );
-Router.post(
-  "/save",
-  validatePermission("permission", "add"),
-  permissionController.save
-);
-Router.put(
-  "/update/:id",
-  validatePermission("permission", "edit"),
-  permissionController.update
-);
+Router.post("/save", validatePermission("permission", "add"), save);
+Router.put("/update/:id", validatePermission("permission", "edit"), update);
 Router.delete(
   "/delete/:id",
   validatePermission("permission", "delete"),
-  permissionController.destroy
+  destroy
 );
 
-module.exports = Router;
+export default Router;

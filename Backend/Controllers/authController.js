@@ -1,13 +1,14 @@
-const db = require("../Utils/dataBaseConnection");
-const bcrypt = require("bcryptjs");
-const { createToken } = require("../Utils/jwt");
-const { sendMail } = require("../Utils/Mail/nodeMailer");
-const { verify } = require("jsonwebtoken");
-const {
+import db from "../Utils/dataBaseConnection.js";
+import bcrypt from "bcryptjs";
+import { createToken } from "../Utils/jwt.js";
+import { sendMail } from "../Utils/Mail/nodeMailer.js";
+import pkg from "jsonwebtoken";
+const { verify } = pkg;
+import {
   userRegisterValidation,
   userLoginValidation,
-} = require("../Utils/hapiValidation");
-const getError = require("../Utils/sequelizeError");
+} from "../Utils/hapiValidation.js";
+import getError from "../Utils/sequelizeError.js";
 
 const User = db.users;
 const UserRole = db.userRoles;
@@ -247,7 +248,7 @@ const sendResetPasswordMail = async (req, res) => {
     getError(error, res);
   }
 };
-module.exports = {
+export {
   login,
   register,
   verifyCustomer,

@@ -196,4 +196,4 @@ const registerHTML = (name, link) => {
 
 </html>`;
 };
-module.exports = registerHTML;
+export default registerHTML;

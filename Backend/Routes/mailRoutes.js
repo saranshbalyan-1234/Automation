@@ -1,6 +1,5 @@
-const express = require("express");
+import express from "express";
+import { sendMailApi } from "../Utils/Mail/nodeMailer.js";
 const Router = express.Router();
-const mailer = require("../Utils/Mail/nodeMailer");
-
-Router.post("/sendMail", mailer.sendMailApi);
-module.exports = Router;
+Router.post("/sendMail", sendMailApi);
+export default Router;

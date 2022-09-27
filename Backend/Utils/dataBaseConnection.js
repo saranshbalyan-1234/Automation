@@ -1,5 +1,14 @@
-const { Sequelize, DataTypes } = require("sequelize");
-const dotenv = require("dotenv");
+import { Sequelize, DataTypes } from "sequelize";
+import dotenv from "dotenv";
+
+import Tenant from "../Models/Tenant.js";
+import Customer from "../Models/Customer.js";
+import Unverified from "../Models/Unverified.js";
+import Role from "../Models/Role.js";
+import Permission from "../Models/Permission.js";
+import User from "../Models/User.js";
+import UserRole from "../Models/UserRole.js";
+
 dotenv.config();
 
 const sequelize = new Sequelize(
@@ -27,13 +36,13 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.tenants = require("../Models/Tenant")(sequelize, DataTypes);
-db.customers = require("../Models/Customer")(sequelize, DataTypes);
-db.unverifieds = require("../Models/Unverified")(sequelize, DataTypes);
-db.roles = require("../Models/Role")(sequelize, DataTypes);
-db.permissions = require("../Models/Permission")(sequelize, DataTypes);
-db.userRoles = require("../Models/UserRole")(sequelize, DataTypes);
-db.users = require("../Models/User")(sequelize, DataTypes);
+db.tenants = Tenant(sequelize, DataTypes);
+db.customers = Customer(sequelize, DataTypes);
+db.unverifieds = Unverified(sequelize, DataTypes);
+db.roles = Role(sequelize, DataTypes);
+db.permissions = Permission(sequelize, DataTypes);
+db.userRoles = UserRole(sequelize, DataTypes);
+db.users = User(sequelize, DataTypes);
 
 db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0").then(() => {
   db.tenants.sync({ force: false, alter: true }).then(() => {
@@ -47,4 +56,4 @@ db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0").then(() => {
   });
 });
 
-module.exports = db;
+export default db;

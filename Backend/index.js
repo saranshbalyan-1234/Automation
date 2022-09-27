@@ -1,15 +1,15 @@
-const express = require("express");
-const helmet = require("helmet");
-const parser = require("body-parser");
-const { validateToken } = require("./Utils/Middlewares/jwt");
-const userRoutes = require("./Routes/userRoutes");
-const authRoutes = require("./Routes/authRoutes");
-const jwtRoutes = require("./Routes/jwtRoutes");
-const mailRoutes = require("./Routes/mailRoutes");
-const roleRoutes = require("./Routes/roleRoutes");
-const seedRoutes = require("./Routes/seedRoutes");
-const permissionRoutes = require("./Routes/permissionRoutes");
-const { changeTenantDatabase } = require("./Utils/Middlewares/tenant");
+import express from "express";
+import helmet from "helmet";
+import parser from "body-parser";
+import { validateToken } from "./Utils/Middlewares/jwt.js";
+import { changeTenantDatabase } from "./Utils/Middlewares/tenant.js";
+import userRoutes from "./Routes/userRoutes.js";
+import authRoutes from "./Routes/authRoutes.js";
+import jwtRoutes from "./Routes/jwtRoutes.js";
+import mailRoutes from "./Routes/mailRoutes.js";
+import roleRoutes from "./Routes/roleRoutes.js";
+import seedRoutes from "./Routes/seedRoutes.js";
+import permissionRoutes from "./Routes/permissionRoutes.js";
 
 const app = express();
 app.use(parser.json());

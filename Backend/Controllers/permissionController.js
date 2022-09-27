@@ -1,7 +1,7 @@
-const db = require("../Utils/dataBaseConnection");
-const getError = require("../Utils/sequelizeError");
+import db from "../Utils/dataBaseConnection.js";
+import getError from "../Utils/sequelizeError.js";
 
-const { Op, QueryTypes } = require("sequelize");
+// import { Op, QueryTypes } from "sequelize"
 const Permission = db.permissions;
 const save = async (req, res) => {
   await Permission.create(req.body, {})
@@ -87,11 +87,4 @@ const destroy = (req, res) => {
     });
 };
 
-module.exports = {
-  save,
-  update,
-  findById,
-  findByParam,
-  findAll,
-  destroy,
-};
+export { save, update, findById, findByParam, findAll, destroy };

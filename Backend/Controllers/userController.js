@@ -1,8 +1,8 @@
-const db = require("../Utils/dataBaseConnection");
-const getError = require("../Utils/sequelizeError");
-const bcrypt = require("bcryptjs");
-const { sendMail } = require("../Utils/Mail/nodeMailer");
-const { userRegisterValidation } = require("../Utils/hapiValidation");
+import db from "../Utils/dataBaseConnection.js";
+import getError from "../Utils/sequelizeError.js";
+import bcrypt from "bcryptjs";
+import { sendMail } from "../Utils/Mail/nodeMailer.js";
+import { userRegisterValidation } from "../Utils/hapiValidation.js";
 
 const User = db.users;
 const Customer = db.customers;
@@ -62,7 +62,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = {
-  addUser,
-  deleteUser,
-};
+export { addUser, deleteUser };

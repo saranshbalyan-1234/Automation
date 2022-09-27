@@ -15,4 +15,4 @@ const validatePermission = (permissionName, method) => {
     }
   };
 };
-module.exports = { validatePermission };
+export { validatePermission };

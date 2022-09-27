@@ -1,4 +1,5 @@
-const { sign, verify } = require("jsonwebtoken");
+import pkg from "jsonwebtoken";
+const { sign, verify } = pkg;
 
 const createToken = async (data, secret, expiration) => {
   return sign(data, secret, {
@@ -48,9 +49,4 @@ const extractToken = (req) => {
   } else return null;
 };
 
-module.exports = {
-  createToken,
-  refreshToken,
-  getTokenError,
-  extractToken,
-};
+export { createToken, refreshToken, getTokenError, extractToken };

@@ -1,6 +1,6 @@
-const express = require("express");
-const Router = express.Router();
-const jwt = require("../Utils/jwt");
+import express from "express";
+import { refreshToken } from "../Utils/jwt.js";
 
-Router.post("/refreshToken", jwt.refreshToken);
-module.exports = Router;
+const Router = express.Router();
+Router.post("/refreshToken", refreshToken);
+export default Router;

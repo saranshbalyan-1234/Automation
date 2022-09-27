@@ -1,7 +1,7 @@
-const nodemailer = require("nodemailer");
-const { createToken } = require("../../Utils/jwt");
-const registerHTML = require("../../Utils/Mail/HTML/register");
-const resetPasswordHtml = require("../../Utils/Mail/HTML/resetPassword");
+import nodemailer from "nodemailer";
+import { createToken } from "../../Utils/jwt.js";
+import registerHTML from "../../Utils/Mail/HTML/register.js";
+import resetPasswordHtml from "../../Utils/Mail/HTML/resetPassword.js";
 var transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -80,4 +80,4 @@ const sendMail = async (data, type) => {
     }
   );
 };
-module.exports = { sendMailApi, sendMail };
+export { sendMailApi, sendMail };

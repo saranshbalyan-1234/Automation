@@ -196,4 +196,4 @@ const resetPasswordHtml = (name, link) => {
 
 </html>`;
 };
-module.exports = resetPasswordHtml;
+export default resetPasswordHtml;

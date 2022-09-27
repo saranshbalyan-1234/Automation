@@ -1,6 +1,6 @@
-const db = require("../dataBaseConnection");
-const getError = require("../sequelizeError");
-const changeTenantDatabase = () => {
+import db from "../dataBaseConnection.js";
+import getError from "../sequelizeError.js";
+export const changeTenantDatabase = () => {
   return async (req, res, next) => {
     try {
       if (!req.validate) {
@@ -20,4 +20,3 @@ const changeTenantDatabase = () => {
     }
   };
 };
-module.exports = { changeTenantDatabase };

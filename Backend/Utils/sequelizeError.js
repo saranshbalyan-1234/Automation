@@ -56,4 +56,4 @@ const getError = (e, res, tokenType) => {
   }
 };
 
-module.exports = getError;
+export default getError;

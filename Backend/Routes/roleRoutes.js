@@ -1,28 +1,20 @@
-const express = require("express");
+import express from "express";
+import {
+  findAll,
+  findById,
+  findByParam,
+  update,
+  save,
+  destroy,
+} from "../Controllers/roleController.js";
+import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
-const roleController = require("../Controllers/roleController");
-const { validatePermission } = require("../Utils/Middlewares/permissions");
-Router.get("/get", validatePermission("role", "view"), roleController.findAll);
-Router.get(
-  "/get/:id",
-  validatePermission("role", "view"),
-  roleController.findById
-);
-Router.get(
-  "/getByParam",
-  validatePermission("role", "view"),
-  roleController.findByParam
-);
-Router.post("/save", validatePermission("role", "add"), roleController.save);
-Router.put(
-  "/update/:id",
-  validatePermission("role", "edit"),
-  roleController.update
-);
-Router.delete(
-  "/delete/:id",
-  validatePermission("role", "delete"),
-  roleController.destroy
-);
 
-module.exports = Router;
+Router.get("/get", validatePermission("role", "view"), findAll);
+Router.get("/get/:id", validatePermission("role", "view"), findById);
+Router.get("/getByParam", validatePermission("role", "view"), findByParam);
+Router.post("/save", validatePermission("role", "add"), save);
+Router.put("/update/:id", validatePermission("role", "edit"), update);
+Router.delete("/delete/:id", validatePermission("role", "delete"), destroy);
+
+export default Router;

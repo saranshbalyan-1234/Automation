@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Role = sequelize.define("roles", {
     name: {
       type: DataTypes.STRING,

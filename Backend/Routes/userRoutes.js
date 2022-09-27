@@ -1,12 +1,8 @@
-const express = require("express");
+import express from "express";
+import { addUser, deleteUser } from "../Controllers/userController.js";
+import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
-const userController = require("../Controllers/userController");
-const { validatePermission } = require("../Utils/Middlewares/permissions");
-Router.post("/add", validatePermission("user", "add"), userController.addUser);
-Router.delete(
-  "/delete/:id",
-  validatePermission("user", "delete"),
-  userController.deleteUser
-);
+Router.post("/add", validatePermission("user", "add"), addUser);
+Router.delete("/delete/:id", validatePermission("user", "delete"), deleteUser);
 
-module.exports = Router;
+export default Router;

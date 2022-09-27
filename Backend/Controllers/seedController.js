@@ -1,6 +1,6 @@
-const db = require("../Utils/dataBaseConnection");
-const getError = require("../Utils/sequelizeError");
-const bcrypt = require("bcryptjs");
+import db from "../Utils/dataBaseConnection.js";
+import getError from "../Utils/sequelizeError.js";
+import bcrypt from "bcryptjs";
 
 const Role = db.roles;
 const userRole = db.userRoles;
@@ -65,6 +65,4 @@ const seedAll = async (req, res) => {
     });
 };
 
-module.exports = {
-  seedAll,
-};
+export { seedAll };
