@@ -1,7 +1,7 @@
 import React from "react";
 import {
   EditOutlined,
-  EllipsisOutlined,
+  // EllipsisOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
