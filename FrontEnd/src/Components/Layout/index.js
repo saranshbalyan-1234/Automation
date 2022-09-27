@@ -38,8 +38,7 @@ export default function LayOut({ children }) {
         <Layout>
           <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
           <Content style={{ margin: "24px 16px 0" }}>
-            <Container children />
-
+            <Container children={children} />
             <Footer />
           </Content>
         </Layout>

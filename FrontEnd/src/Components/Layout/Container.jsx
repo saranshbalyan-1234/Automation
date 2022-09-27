@@ -1,7 +1,7 @@
 import React from "react";
 import { HomeOutlined } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
-import { Breadcrumb, PageHeader, Tag } from "antd";
+import { Breadcrumb, PageHeader } from "antd";
 
 export default function Container({ children }) {
   const location = useLocation();
@@ -71,6 +71,7 @@ export default function Container({ children }) {
           marginTop: "15px",
         }}
       >
+        {console.log("saransh", children)}
         {children}
       </div>
     </>

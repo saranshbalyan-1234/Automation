@@ -1,10 +1,10 @@
 import React from "react";
 import Layout from "./Layout";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import Home from "./Home";
+// import Home from "./Home";
 import { connect } from "react-redux";
 import { logout } from "../Redux/Actions/auth";
-import NotFound from "./Errors/NotFound";
+import ErrorPage from "../Views/ErrorPage";
 import Setting from "./Settings";
 function Routess({ user }) {
   const location = useLocation();
@@ -12,7 +12,17 @@ function Routess({ user }) {
     <Layout>
       <Routes>
         <Route exact path="/settings" element={<Setting />}></Route>
-        <Route exact path="*" element={<NotFound />} />
+        <Route
+          exact
+          path="*"
+          element={
+            <ErrorPage
+              status="404"
+              title="404"
+              subTitle="Sorry, the page you visited does not exist."
+            />
+          }
+        />
       </Routes>
     </Layout>
   ) : (

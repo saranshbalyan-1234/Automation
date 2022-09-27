@@ -1,11 +1,7 @@
 import React from "react";
-import { Form, Input, Button, Checkbox, Card, Spin } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import { StyledWrapper } from "../Auth/style";
+import { Card, Avatar, List } from "antd";
 
-import { LikeOutlined, MessageOutlined, StarOutlined } from "@ant-design/icons";
-import { Avatar, List, Space } from "antd";
+import { StyledWrapper } from "../Auth/style";
 
 const data = [
   {
@@ -29,13 +25,6 @@ const data = [
     ),
   },
 ];
-
-const IconText = ({ icon, text }) => (
-  <Space>
-    {React.createElement(icon)}
-    {text}
-  </Space>
-);
 
 const Agreement = () => {
   return (
