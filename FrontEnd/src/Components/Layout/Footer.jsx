@@ -3,7 +3,7 @@ import { Layout } from "antd";
 const { Content } = Layout;
 export default function Footer() {
   return (
-    <Content style={{ margin: "24px 16px 24px" }}>
+    <Content style={{ margin: "24px 0px 24px" }}>
       <div
         className="site-layout-sub-header-background"
         style={{
