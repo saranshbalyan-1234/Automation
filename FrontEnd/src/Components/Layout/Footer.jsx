@@ -1,5 +1,13 @@
 import React from "react";
 import { Layout } from "antd";
+import {
+  GithubOutlined,
+  InstagramOutlined,
+  FacebookOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  WhatsAppOutlined,
+} from "@ant-design/icons";
 const { Content } = Layout;
 export default function Footer() {
   return (
@@ -8,12 +16,41 @@ export default function Footer() {
         className="site-layout-sub-header-background"
         style={{
           padding: 24,
-          minHeight: 50,
           color: "white",
-          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        Designed By SaranCe
+        <div style={{ display: "flex", justifyContent: "center", gap: "7px" }}>
+          <GithubOutlined
+            onClick={() => {
+              window.open("https://github.com/saranshbalyan-1234");
+            }}
+            className="handleIcon"
+          />
+          <PhoneOutlined
+            onClick={() => {
+              window.open("tel:+91-9999075909", "_blank");
+            }}
+            className="handleIcon"
+          />
+          <MailOutlined
+            onClick={() => {
+              window.open("mailto:saranshbalyan123@gmail.com", "_blank");
+            }}
+            className="handleIcon"
+          />
+          <WhatsAppOutlined
+            onClick={() => {
+              window.open("https://api.whatsapp.com/send?phone=919868598141");
+            }}
+            className="handleIcon"
+          />
+          <InstagramOutlined className="handleIcon" />
+          <FacebookOutlined className="handleIcon" />
+        </div>
+        <div style={{ marginTop: "10px" }}>Made with Love By SaranCe</div>
       </div>
     </Content>
   );

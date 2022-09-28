@@ -6,6 +6,7 @@ import {
   EditOutlined,
   DownloadOutlined,
 } from "@ant-design/icons";
+import { BiSupport } from "react-icons/bi";
 import { Avatar, Dropdown, Menu } from "antd";
 import { logout } from "../../../Redux/Actions/auth";
 import { Link } from "react-router-dom";
@@ -24,6 +25,15 @@ const ProfileMenu = ({ logout }) => {
         },
         {
           label: (
+            <Link to="/support">
+              <BiSupport style={{ marginRight: "5px" }} /> Support
+            </Link>
+          ),
+          key: "1",
+          // onClick: logout,
+        },
+        {
+          label: (
             <Link to="/settings">
               <EditOutlined style={{ marginRight: "5px" }} />
               Settings
@@ -32,6 +42,7 @@ const ProfileMenu = ({ logout }) => {
           key: "2",
           // onClick: logout,
         },
+
         {
           label: (
             <>
@@ -52,6 +63,7 @@ const ProfileMenu = ({ logout }) => {
           marginRight: "15px",
           backgroundColor: "white",
           color: "#001529",
+          cursor: "pointer",
         }}
         size={32}
         icon={<UserOutlined />}

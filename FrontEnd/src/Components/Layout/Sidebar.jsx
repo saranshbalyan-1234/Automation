@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
   UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
+  CopyOutlined,
+  DashboardOutlined,
+  AlertOutlined,
+  FileOutlined,
+  BankOutlined,
 } from "@ant-design/icons";
+import { VscDebugRestart } from "react-icons/vsc";
 import { Layout, Menu } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 const { Sider } = Layout;
@@ -49,28 +53,28 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         onClick={handleMenuClick}
         // onOpenChange={handleSubMenu}
       >
-        <Menu.Item key="Dashboard" icon={<UserOutlined />}>
+        <Menu.Item key="Dashboard" icon={<DashboardOutlined />}>
           Dashboard
         </Menu.Item>
         <Menu.SubMenu
           key="TestPlanning"
-          icon={<VideoCameraOutlined />}
+          icon={<AlertOutlined />}
           title="Test Planning"
         >
-          <Menu.Item key="TestCase" icon={<UserOutlined />}>
+          <Menu.Item key="TestCase" icon={<FileOutlined />}>
             Test Case
           </Menu.Item>
-          <Menu.Item key="ObjectBank" icon={<VideoCameraOutlined />}>
+          <Menu.Item key="ObjectBank" icon={<BankOutlined />}>
             Object Bank
           </Menu.Item>
-          <Menu.Item key="ReusableFlow" icon={<UploadOutlined />}>
+          <Menu.Item key="ReusableFlow" icon={<VscDebugRestart />}>
             Reusable Flow
           </Menu.Item>
         </Menu.SubMenu>
 
         <Menu.SubMenu
           key="TestExecution"
-          icon={<UploadOutlined />}
+          icon={<CopyOutlined />}
           title="Test Execution"
         >
           {/* <Menu.Item icon={<UserOutlined />}>Test Case</Menu.Item>

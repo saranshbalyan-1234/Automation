@@ -2,9 +2,11 @@ import React from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout } from "antd";
 import ProfileMenu from "./ProfileMenu";
+import { useNavigate } from "react-router-dom";
 const { Header } = Layout;
 
 export default function Headers({ setCollapsed, collapsed }) {
+  const navigate = useNavigate();
   return (
     <Header
       className="site-layout-sub-header-background"
@@ -28,6 +30,10 @@ export default function Headers({ setCollapsed, collapsed }) {
                 height: "20px",
                 width: "50px",
                 marginTop: collapsed && "26px",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                navigate("/");
               }}
             />
           ) : (
@@ -38,6 +44,10 @@ export default function Headers({ setCollapsed, collapsed }) {
               style={{
                 height: "35px",
                 width: "150px",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                navigate("/");
               }}
             />
           )}
