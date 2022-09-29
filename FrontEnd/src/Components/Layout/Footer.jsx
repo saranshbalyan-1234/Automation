@@ -7,6 +7,7 @@ import {
   PhoneOutlined,
   MailOutlined,
   WhatsAppOutlined,
+  LinkedinOutlined,
 } from "@ant-design/icons";
 const { Content } = Layout;
 export default function Footer() {
@@ -44,6 +45,15 @@ export default function Footer() {
           <WhatsAppOutlined
             onClick={() => {
               window.open("https://api.whatsapp.com/send?phone=919868598141");
+            }}
+            className="handleIcon"
+          />
+
+          <LinkedinOutlined
+            onClick={() => {
+              window.open(
+                "https://www.linkedin.com/in/saransh-balyan-49a14b11b/"
+              );
             }}
             className="handleIcon"
           />

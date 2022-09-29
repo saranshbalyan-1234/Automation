@@ -1,5 +1,6 @@
 import express from "express";
 import helmet from "helmet";
+import cors from "cors";
 import parser from "body-parser";
 import { validateToken } from "./Utils/Middlewares/jwt.js";
 import { changeTenantDatabase } from "./Utils/Middlewares/tenant.js";
@@ -15,7 +16,11 @@ const app = express();
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
 app.use(helmet());
-
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");

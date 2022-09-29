@@ -1,11 +1,7 @@
 import React from "react";
-import {
-  EditOutlined,
-  // EllipsisOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, SettingOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { Avatar, Card, Skeleton } from "antd";
+import { Avatar, Card, Skeleton, Tag } from "antd";
 function Profile({ user }) {
   const { Meta } = Card;
   return (
@@ -14,7 +10,12 @@ function Profile({ user }) {
         <Skeleton loading={false} avatar active>
           <Meta
             avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-            title={user.name}
+            title={
+              <div style={{ display: "flex", gap: "10px" }}>
+                {user.name}
+                {user.customerAdmin && <Tag color="blue">Customer Admin</Tag>}
+              </div>
+            }
             description={user.email}
           />
         </Skeleton>

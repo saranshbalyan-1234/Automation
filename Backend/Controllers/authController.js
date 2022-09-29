@@ -96,7 +96,7 @@ const login = async (req, res) => {
       return tempRole;
     });
 
-    let customerAdmin = email == customer.tenantName ? true : false;
+    let customerAdmin = email == customer.tenantName;
     let tokenData = { id, email, tenant: customer.tenantName };
     const accessToken = await createToken(
       { ...tokenData, customerAdmin, permissions: allPermissions },
@@ -113,7 +113,6 @@ const login = async (req, res) => {
       id,
       name,
       email,
-
       customerAdmin,
       roles: newRoles,
       accessToken,
