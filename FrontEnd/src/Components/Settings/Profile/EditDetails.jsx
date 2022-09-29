@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { connect } from "react-redux";
 import { Button, Form, Input, Modal, Spin } from "antd";
 import { editDetails } from "../../../Redux/Actions/user";

@@ -3,7 +3,6 @@ import {
   SIGNIN_REQUEST,
   SIGNIN_SUCCESS,
   SIGNIN_FAILURE,
-  LOGOUT,
   UPDATE_USER_DETAIL,
 } from "./action-types";
 

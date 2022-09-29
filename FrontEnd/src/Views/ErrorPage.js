@@ -5,9 +5,9 @@ export default function ErrorPage({ status, title, subTitle }) {
   const navigate = useNavigate();
   return (
     <Result
-      status="404"
-      title="404"
-      subTitle="Sorry, the page you visited does not exist."
+      status={status}
+      title={title}
+      subTitle={subTitle}
       extra={
         <Button
           onClick={() => {
