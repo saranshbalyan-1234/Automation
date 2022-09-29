@@ -7,12 +7,14 @@ import { logout } from "../Redux/Actions/auth";
 import ErrorPage from "../Views/ErrorPage";
 import Setting from "./Settings";
 import Dashboard from "./Dashboard";
+import Support from "../Views/Support";
 function Routess({ user }) {
   const location = useLocation();
   return user ? (
     <Layout>
       <Routes>
         <Route exact path="/" element={<Dashboard />}></Route>
+        <Route exact path="/support" element={<Support />}></Route>
         <Route exact path="/settings" element={<Setting />}></Route>
         <Route
           exact

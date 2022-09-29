@@ -2,6 +2,7 @@ import React from "react";
 import { Tabs } from "antd";
 import Profile from "./Profile";
 import ComingSoon from "../../Views/ComingSoon";
+import Team from "./Team";
 export default function Setting() {
   return (
     <>
@@ -13,7 +14,7 @@ export default function Setting() {
           <ComingSoon />
         </Tabs.TabPane>
         <Tabs.TabPane tab="Team" key="3">
-          <ComingSoon />
+          <Team />
         </Tabs.TabPane>
         <Tabs.TabPane tab="Notification" key="4">
           <ComingSoon />
