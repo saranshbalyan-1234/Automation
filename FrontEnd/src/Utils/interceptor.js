@@ -28,7 +28,7 @@ export default {
       },
       (err) => {
         let status = err.response.status;
-        if (status === 401) {
+        if (status === 403) {
           store.dispatch(logout());
         }
         let errorObj = err.response;

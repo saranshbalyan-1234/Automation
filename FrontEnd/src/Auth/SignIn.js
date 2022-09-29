@@ -27,7 +27,9 @@ const SignIn = ({ loading, signIn, logout }) => {
   };
 
   const handleSignIn = async () => {
-    (await signIn(details)) && navigate("/");
+    signIn(details).then(() => {
+      navigate("/");
+    });
   };
   const handleRememberMe = (e) => {
     setDetails({ ...details, rememberMe: e.target.checked });
@@ -45,7 +47,7 @@ const SignIn = ({ loading, signIn, logout }) => {
             <Form
               name="normal_login"
               className="login-form"
-              initialValues={{ remember: true }}
+              initialValues={{ remember: false }}
               onFinish={handleSignIn}
             >
               <Form.Item
@@ -70,7 +72,7 @@ const SignIn = ({ loading, signIn, logout }) => {
                   { required: true, message: "Please input your Password!" },
                 ]}
               >
-                <Input
+                <Input.Password
                   prefix={<LockOutlined className="site-form-item-icon" />}
                   type="password"
                   placeholder="Password"

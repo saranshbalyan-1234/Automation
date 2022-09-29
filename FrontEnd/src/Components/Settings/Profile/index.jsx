@@ -3,9 +3,11 @@ import { EditOutlined, SettingOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { Avatar, Card, Skeleton, Tag } from "antd";
 import ChangePassword from "./ChangePassword";
+import EditDetails from "./EditDetails";
 function Profile({ user }) {
   const { Meta } = Card;
   const [changePasswordModal, setChangePasswordModal] = useState(false);
+  const [editDetailsModal, setEditDetailsModal] = useState(false);
   return (
     <>
       <Card>
@@ -39,6 +41,9 @@ function Profile({ user }) {
               alignItems: "center",
               cursor: "pointer",
             }}
+            onClick={() => {
+              setEditDetailsModal(true);
+            }}
           >
             <EditOutlined key="edit" style={{ marginRight: "10px" }} /> Edit
             Details
@@ -60,6 +65,10 @@ function Profile({ user }) {
       <ChangePassword
         changePasswordModal={changePasswordModal}
         setChangePasswordModal={setChangePasswordModal}
+      />
+      <EditDetails
+        editDetailsModal={editDetailsModal}
+        setEditDetailsModal={setEditDetailsModal}
       />
     </>
   );

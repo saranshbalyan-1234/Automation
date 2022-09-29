@@ -5,8 +5,8 @@ import { sendMail } from "../Utils/Mail/nodeMailer.js";
 import pkg from "jsonwebtoken";
 const { verify } = pkg;
 import {
-  userRegisterValidation,
-  userLoginValidation,
+  registerValidation,
+  loginValidation,
 } from "../Utils/hapiValidation.js";
 import getError from "../Utils/sequelizeError.js";
 
@@ -20,7 +20,7 @@ const Unverified = db.unverifieds;
 
 const register = async (req, res) => {
   try {
-    const { error } = userRegisterValidation.validate(req.body);
+    const { error } = registerValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
 
     const { name, email, password } = req.body;
@@ -44,7 +44,7 @@ const register = async (req, res) => {
 };
 const login = async (req, res) => {
   try {
-    const { error } = userLoginValidation.validate(req.body);
+    const { error } = loginValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
 
     const { email, password, rememberMe } = req.body;

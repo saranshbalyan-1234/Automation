@@ -2,7 +2,11 @@ import db from "../Utils/dataBaseConnection.js";
 import getError from "../Utils/sequelizeError.js";
 import bcrypt from "bcryptjs";
 import { sendMail } from "../Utils/Mail/nodeMailer.js";
-import { userRegisterValidation } from "../Utils/hapiValidation.js";
+import {
+  registerValidation,
+  changePasswordValidation,
+  changeDetailsValidation,
+} from "../Utils/hapiValidation.js";
 
 const User = db.users;
 const Customer = db.customers;
@@ -18,7 +22,7 @@ const addUser = async (req, res) => {
 
     await db.sequelize.query(`use ${database}`);
 
-    const { error } = userRegisterValidation.validate(req.body);
+    const { error } = registerValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
 
     const hash = await bcrypt.hash(password, 8);
@@ -63,6 +67,8 @@ const deleteUser = async (req, res) => {
 };
 const changePassword = async (req, res) => {
   try {
+    const { error } = changePasswordValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
     const { oldPassword, newPassword } = req.body;
 
     const user = await User.findByPk(req.user.id);
@@ -86,4 +92,23 @@ const changePassword = async (req, res) => {
     getError(error, res);
   }
 };
-export { addUser, deleteUser, changePassword };
+
+const changeDetails = async (req, res) => {
+  try {
+    const { error } = changeDetailsValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
+
+    const updatedUser = await User.update(req.body, {
+      where: {
+        id: req.user.id,
+      },
+    });
+    if (updatedUser[0])
+      return res.status(200).json({ message: "Details Updated" });
+    else throw new Error("User Not Registered");
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
+export { addUser, deleteUser, changePassword, changeDetails };

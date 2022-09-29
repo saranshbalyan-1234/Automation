@@ -3,7 +3,7 @@ export default (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: "email",
       validate: {
         isEmail: true,
         notNull: true,

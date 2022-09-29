@@ -3,6 +3,7 @@ import {
   SIGNIN_SUCCESS,
   SIGNIN_FAILURE,
   LOGOUT,
+  UPDATE_USER_DETAIL,
 } from "../Actions/action-types";
 
 const initState = {
@@ -29,6 +30,12 @@ const authReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: false,
         user: null,
+      };
+    case UPDATE_USER_DETAIL:
+      return {
+        ...state,
+        loading: false,
+        user: { ...state.user, ...payload },
       };
     case LOGOUT:
       return {

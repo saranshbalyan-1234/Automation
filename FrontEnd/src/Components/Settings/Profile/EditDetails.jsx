@@ -1,18 +1,20 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { connect } from "react-redux";
 import { Button, Form, Input, Modal, Spin } from "antd";
-import { changePassword } from "../../../Redux/Actions/user";
-
-const ChangePassword = ({
-  setChangePasswordModal,
-  changePasswordModal,
-  changePassword,
+import { editDetails } from "../../../Redux/Actions/user";
+const EditDetails = ({
+  setEditDetailsModal,
+  editDetailsModal,
+  editDetails,
+  user,
 }) => {
+  console.log("saransh", user);
   const [loading, setLoading] = useState(false);
   const onFinish = async (data) => {
     setLoading(true);
-    await changePassword(data).then(() => {
-      setChangePasswordModal(false);
+    await editDetails(data).then(() => {
+      setEditDetailsModal(false);
     });
     setLoading(false);
   };
@@ -23,9 +25,9 @@ const ChangePassword = ({
 
   return (
     <Modal
-      title="Change Password"
-      visible={changePasswordModal}
-      onCancel={() => setChangePasswordModal(false)}
+      title="Edit Details"
+      visible={editDetailsModal}
+      onCancel={() => setEditDetailsModal(false)}
       footer={false}
     >
       <Spin spinning={loading}>
@@ -39,32 +41,14 @@ const ChangePassword = ({
           }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          autoComplete="off"
+          initialValues={{ name: user.name }}
         >
           <Form.Item
-            label="Old Password"
-            name="oldPassword"
-            rules={[
-              {
-                required: true,
-                message: "Please input your old password!",
-              },
-            ]}
+            label="Name"
+            name="name"
+            rules={[{ required: true, message: "Please input your name!" }]}
           >
-            <Input.Password />
-          </Form.Item>
-
-          <Form.Item
-            label="New Password"
-            name="newPassword"
-            rules={[
-              {
-                required: true,
-                message: "Please input your new password!",
-              },
-            ]}
-          >
-            <Input.Password />
+            <Input />
           </Form.Item>
 
           <Form.Item
@@ -72,14 +56,15 @@ const ChangePassword = ({
               offset: 8,
               span: 16,
             }}
+            name="submitBtn"
           >
             <Button type="primary" htmlType="submit">
-              Reset Password
+              Update
             </Button>
             <Button
               style={{ marginLeft: "10px" }}
               onClick={() => {
-                setChangePasswordModal(false);
+                setEditDetailsModal(false);
               }}
             >
               Cancel
@@ -91,8 +76,8 @@ const ChangePassword = ({
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({ user: state.auth.user });
 
-const mapDispatchToProps = { changePassword };
+const mapDispatchToProps = { editDetails };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);
+export default connect(mapStateToProps, mapDispatchToProps)(EditDetails);
