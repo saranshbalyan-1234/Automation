@@ -60,7 +60,9 @@ export default function Headers({ setCollapsed, collapsed }) {
             }
           )}
         </div>
-        <ProfileMenu />
+        <div style={{ marginRight: "20px" }}>
+          <ProfileMenu />
+        </div>
       </div>
     </Header>
   );
