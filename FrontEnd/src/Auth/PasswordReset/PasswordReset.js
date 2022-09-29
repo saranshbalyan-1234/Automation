@@ -20,7 +20,6 @@ const PasswordReset = ({ resetPassword }) => {
       .get("/auth/" + location.pathname)
       .then((res) => {
         setEmail(res.data.email);
-        console.log(res.data.email);
       })
       .catch((err) => {
         getError(err);

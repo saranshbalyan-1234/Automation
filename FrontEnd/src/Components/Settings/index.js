@@ -1,6 +1,7 @@
 import React from "react";
-import Profile from "./Profile";
 import { Tabs } from "antd";
+import Profile from "./Profile";
+import ComingSoon from "../../Views/ComingSoon";
 export default function Setting() {
   return (
     <>
@@ -9,16 +10,16 @@ export default function Setting() {
           <Profile />
         </Tabs.TabPane>
         <Tabs.TabPane tab="Roles" key="2">
-          Roles
+          <ComingSoon />
         </Tabs.TabPane>
         <Tabs.TabPane tab="Team" key="3">
-          Team
+          <ComingSoon />
         </Tabs.TabPane>
         <Tabs.TabPane tab="Notification" key="4">
-          Notification
+          <ComingSoon />
         </Tabs.TabPane>
         <Tabs.TabPane tab="Billing" key="5">
-          Billing
+          <ComingSoon />
         </Tabs.TabPane>
       </Tabs>
     </>

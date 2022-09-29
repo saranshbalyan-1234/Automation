@@ -17,10 +17,6 @@ const ChangePassword = ({
     setLoading(false);
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
   return (
     <Modal
       title="Change Password"
@@ -38,7 +34,6 @@ const ChangePassword = ({
             span: 16,
           }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item

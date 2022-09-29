@@ -40,11 +40,17 @@ export default function Container({ children }) {
   return (
     <>
       <div className="site-layout-background">
-        {" "}
         <PageHeader
+          style={{ padding: "5px 15px 5px 15px" }}
           onBack={() => window.history.back()}
           title={
-            <div style={{ textTransform: "capitalize", display: "flex" }}>
+            <div
+              style={{
+                textTransform: "capitalize",
+                display: "flex",
+                // marginTop: "-10px",
+              }}
+            >
               <ImLocation style={{ marginRight: "3px", marginTop: "5px" }} />
               <div>
                 {pathSnippets.length > 0
@@ -53,7 +59,6 @@ export default function Container({ children }) {
               </div>
             </div>
           }
-          className="site-page-header"
           subTitle={
             <Breadcrumb>
               {extraBreadcrumbItems.length && breadcrumbItems}
@@ -80,7 +85,6 @@ export default function Container({ children }) {
           marginTop: "15px",
         }}
       >
-        {console.log("saransh", children)}
         {children}
       </div>
     </>

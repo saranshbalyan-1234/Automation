@@ -17,18 +17,16 @@ export default function Sidebar({ collapsed, setCollapsed }) {
 
   useEffect(() => {
     let temp = location.pathname.split("/");
-    location.pathname.length > 1 && setSelectedMenu(temp[temp.length - 1]);
+    location.pathname.length > 1
+      ? setSelectedMenu(temp[temp.length - 1])
+      : setSelectedMenu("Dashboard");
   }, [location.pathname]);
 
   const handleMenuClick = (data) => {
     const path = data.keyPath.reverse().join("/");
-    navigate(`/${path}`);
+    path == "Dashboard" ? navigate(`/`) : navigate(`/${path}`);
   };
-  // const handleSubMenu = (data) => {
-  // console.log("saransh", data);
-  // const currentSubmenu = data[data.length - 1];
-  // navigate(`/${currentSubmenu}`);
-  // };
+
   return (
     <Sider
       trigger={null}

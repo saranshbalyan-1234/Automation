@@ -8,7 +8,6 @@ const EditDetails = ({
   editDetails,
   user,
 }) => {
-  console.log("saransh", user);
   const [loading, setLoading] = useState(false);
   const onFinish = async (data) => {
     setLoading(true);
@@ -16,10 +15,6 @@ const EditDetails = ({
       setEditDetailsModal(false);
     });
     setLoading(false);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
   };
 
   return (
@@ -39,7 +34,6 @@ const EditDetails = ({
             span: 16,
           }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           initialValues={{ name: user.name }}
         >
           <Form.Item

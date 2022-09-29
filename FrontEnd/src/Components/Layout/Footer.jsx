@@ -12,7 +12,7 @@ import {
 const { Content } = Layout;
 export default function Footer() {
   return (
-    <Content style={{ margin: "24px 0px 24px" }}>
+    <Content style={{ marginTop: "15px" }}>
       <div
         className="site-layout-sub-header-background"
         style={{
