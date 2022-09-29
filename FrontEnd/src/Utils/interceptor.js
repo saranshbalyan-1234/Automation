@@ -1,9 +1,9 @@
 import axios from "axios";
 import { store } from "../Redux/store";
-
+import { message } from "antd";
 import { logout } from "../Redux/Actions/auth";
 import { api_base_url } from "./constants";
-import { getError } from "./error";
+
 // eslint-disable-next-line
 export default {
   setup: () => {
@@ -23,6 +23,7 @@ export default {
 
     axios.interceptors.response.use(
       (res) => {
+        res.data.message && message.success(res.data.message);
         return res;
       },
       (err) => {
@@ -30,17 +31,16 @@ export default {
         if (status === 401) {
           store.dispatch(logout());
         }
-
-        // let errors = err.response.data.errors;
+        let errorObj = err.response;
         let errorFormat = {
-          url: err.response.config.url,
-          method: err.response.config.method,
-          status: err.response.status,
-          data: err.response.data.errors,
+          url: errorObj.config.url,
+          method: errorObj.config.method,
+          status: errorObj.status,
+          message: errorObj.data.error,
         };
-        getError(err);
 
         console.error("errorResponse", errorFormat);
+        message.error(errorObj.data.error);
         return Promise.reject(err.response.data);
       }
     );

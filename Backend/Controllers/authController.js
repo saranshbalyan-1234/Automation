@@ -47,7 +47,7 @@ const login = async (req, res) => {
     const { error } = userLoginValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
 
-    const { email, password } = req.body;
+    const { email, password, rememberMe } = req.body;
 
     const customer = await Customer.findOne({
       where: { email },
@@ -101,12 +101,16 @@ const login = async (req, res) => {
     const accessToken = await createToken(
       { ...tokenData, customerAdmin, permissions: allPermissions },
       process.env.JWT_ACCESS_SECRET,
-      process.env.JWT_ACCESS_EXPIRATION
+      rememberMe
+        ? process.env.JWT_ACCESS_REMEMBER_EXPIRATION
+        : process.env.JWT_ACCESS_EXPIRATION
     );
     const refreshToken = await createToken(
       tokenData,
       process.env.JWT_REFRESH_SECRET,
-      process.env.JWT_REFRESH_EXPIRATION
+      rememberMe
+        ? process.env.JWT_REFRESH_REMEMBER_EXPIRATION
+        : process.env.JWT_REFRESH_EXPIRATION
     );
 
     return res.status(200).json({
@@ -247,6 +251,7 @@ const sendResetPasswordMail = async (req, res) => {
     getError(error, res);
   }
 };
+
 export {
   login,
   register,

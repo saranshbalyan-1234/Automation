@@ -11,6 +11,7 @@ const SignIn = ({ loading, signIn, logout }) => {
   const [details, setDetails] = useState({
     email: "",
     password: "",
+    rememberMe: false,
   });
 
   useEffect(() => {
@@ -27,6 +28,9 @@ const SignIn = ({ loading, signIn, logout }) => {
 
   const handleSignIn = async () => {
     (await signIn(details)) && navigate("/");
+  };
+  const handleRememberMe = (e) => {
+    setDetails({ ...details, rememberMe: e.target.checked });
   };
   return (
     <StyledWrapper>
@@ -78,7 +82,7 @@ const SignIn = ({ loading, signIn, logout }) => {
               </Form.Item>
               <Form.Item>
                 <Form.Item name="remember" valuePropName="checked" noStyle>
-                  <Checkbox>Remember me</Checkbox>
+                  <Checkbox onChange={handleRememberMe}>Remember me</Checkbox>
                 </Form.Item>
 
                 <Link

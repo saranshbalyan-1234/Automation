@@ -61,5 +61,29 @@ const deleteUser = async (req, res) => {
     getError(error, res);
   }
 };
+const changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
 
-export { addUser, deleteUser };
+    const user = await User.findByPk(req.user.id);
+    const isAuthenticated = await bcrypt.compare(oldPassword, user.password);
+    if (!isAuthenticated)
+      return res.status(400).json({ error: "Incorrect Password" });
+    const hash = await bcrypt.hash(newPassword, 8);
+
+    const updatedUser = await User.update(
+      { password: hash },
+      {
+        where: {
+          id: req.user.id,
+        },
+      }
+    );
+    if (updatedUser[0])
+      return res.status(200).json({ message: "Password Updated" });
+    else throw new Error("User Not Registered");
+  } catch (error) {
+    getError(error, res);
+  }
+};
+export { addUser, deleteUser, changePassword };

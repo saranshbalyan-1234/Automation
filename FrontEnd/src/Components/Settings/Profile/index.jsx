@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { EditOutlined, SettingOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { Avatar, Card, Skeleton, Tag } from "antd";
+import ChangePassword from "./ChangePassword";
 function Profile({ user }) {
   const { Meta } = Card;
+  const [changePasswordModal, setChangePasswordModal] = useState(false);
   return (
     <>
       <Card>
@@ -13,7 +15,9 @@ function Profile({ user }) {
             title={
               <div style={{ display: "flex", gap: "10px" }}>
                 {user.name}
-                {user.customerAdmin && <Tag color="blue">Customer Admin</Tag>}
+                <Tag color="blue">
+                  {user.customerAdmin ? "Customer Admin" : "User"}
+                </Tag>
               </div>
             }
             description={user.email}
@@ -46,12 +50,17 @@ function Profile({ user }) {
               alignItems: "center",
               cursor: "pointer",
             }}
+            onClick={() => setChangePasswordModal(true)}
           >
             <SettingOutlined key="edit" style={{ marginRight: "10px" }} />
             Change Password
           </div>
         </div>
       </Card>
+      <ChangePassword
+        changePasswordModal={changePasswordModal}
+        setChangePasswordModal={setChangePasswordModal}
+      />
     </>
   );
 }

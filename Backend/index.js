@@ -38,7 +38,7 @@ app.use("/mail", mailRoutes);
 app.use("/seed", seedRoutes);
 
 app.use((req, res) => {
-  return res.status(404).json({ errors: "Endpoint Not Found" });
+  return res.status(404).json({ error: "Endpoint Not Found" });
 });
 
 app.listen(process.env.PORT, () => {
