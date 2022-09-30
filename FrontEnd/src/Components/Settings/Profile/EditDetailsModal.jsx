@@ -2,19 +2,17 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Button, Form, Input, Modal, Spin } from "antd";
 import { editDetails } from "../../../Redux/Actions/user";
-const EditDetails = ({
+const EditDetailsModal = ({
   setEditDetailsModal,
   editDetailsModal,
   editDetails,
   user,
+  loading,
 }) => {
-  const [loading, setLoading] = useState(false);
   const onFinish = async (data) => {
-    setLoading(true);
     await editDetails(data).then(() => {
       setEditDetailsModal(false);
     });
-    setLoading(false);
   };
 
   return (
@@ -69,8 +67,11 @@ const EditDetails = ({
   );
 };
 
-const mapStateToProps = (state) => ({ user: state.auth.user });
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+  loading: state.auth.loading,
+});
 
 const mapDispatchToProps = { editDetails };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(EditDetailsModal);

@@ -29,7 +29,12 @@ const addUser = async (req, res) => {
     const user = await User.create({ name, email, password: hash });
     sendMail({ email, name, tenant: database }, "addUser");
 
-    return res.status(200).json({ id: user.id, name, email });
+    return res.status(200).json({
+      id: user.id,
+      name,
+      email,
+      message: "User added, Verify user's email to login",
+    });
   } catch (error) {
     getError(error, res);
   }

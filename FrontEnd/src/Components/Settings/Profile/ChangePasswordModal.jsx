@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Button, Form, Input, Modal, Spin } from "antd";
 import { changePassword } from "../../../Redux/Actions/user";
 
-const ChangePassword = ({
+const ChangePasswordModal = ({
   setChangePasswordModal,
   changePasswordModal,
   changePassword,
@@ -90,4 +90,7 @@ const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = { changePassword };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChangePasswordModal);
