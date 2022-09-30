@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { EditOutlined, SettingOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { Avatar, Card, Skeleton, Tag } from "antd";
+import { Avatar, Card, Tag, Typography } from "antd";
 import ChangePassword from "./ChangePassword";
 import EditDetails from "./EditDetails";
+import Role from "../Role";
+const { Title } = Typography;
 function Profile({ user }) {
   const { Meta } = Card;
   const [changePasswordModal, setChangePasswordModal] = useState(false);
@@ -11,22 +13,25 @@ function Profile({ user }) {
   return (
     <>
       <Card>
-        <Skeleton loading={false} avatar active>
-          <Meta
-            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-            title={
-              <div style={{ display: "flex", gap: "10px" }}>
-                {user.name}
-                <Tag color="blue">
-                  {user.customerAdmin ? "Customer Admin" : "User"}
-                </Tag>
-              </div>
-            }
-            description={user.email}
-          />
-        </Skeleton>
+        <Meta
+          avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+          title={
+            <div style={{ display: "flex", gap: "10px" }}>
+              {user.name}
+              <Tag color="blue">
+                {user.customerAdmin ? "Customer Admin" : "User"}
+              </Tag>
+            </div>
+          }
+          description={user.email}
+        />
       </Card>
-      <Card style={{ height: "50px" }}>
+      <div style={{ paddingTop: "10px" }}>
+        {user.roles.length > 0 && (
+          <Role loading={false} data={user.roles} profile={true} />
+        )}
+      </div>
+      <Card style={{ height: "50px", marginTop: "10px" }}>
         {" "}
         <div
           style={{

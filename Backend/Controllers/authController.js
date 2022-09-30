@@ -36,7 +36,7 @@ const register = async (req, res) => {
     sendMail({ email, name }, "customerRegister");
 
     return res.status(200).json({
-      message: "User created, Please verify email",
+      message: "Registered successfuly, Please check email to verify account.",
     });
   } catch (error) {
     getError(error, res);
@@ -90,7 +90,7 @@ const login = async (req, res) => {
     let allPermissions = [];
     const newRoles = await user.userRoles.map((el) => {
       allPermissions = [...allPermissions, ...el.permissions];
-      tempRole = {};
+      let tempRole = {};
       tempRole.name = el.role.name;
       tempRole.permissions = el.permissions;
       return tempRole;
@@ -152,21 +152,21 @@ const verifyCustomer = async (req, res) => {
         await db.sequelize.query(`use ${database}`);
         await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
 
-        await User.sync({ force: true, alter: true });
+        await User.sync({ force: false, alter: true });
 
-        await Role.sync({ force: true, alter: true });
-        await Permission.sync({ force: true, alter: true });
-        await UserRole.sync({ force: true, alter: true });
+        await UserRole.sync({ force: false, alter: true });
+        await Permission.sync({ force: false, alter: true });
+        await Role.sync({ force: false, alter: true });
         await User.create({
           name,
           email,
           password: password,
           verifiedAt: new Date(),
         });
-
+        await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
         return res
           .status(200)
-          .json({ message: "Customer Email Verification Successfull" });
+          .json({ message: "Email Verification Successfull" });
       } else {
         throw new Error("Customer Email Already Verified");
       }

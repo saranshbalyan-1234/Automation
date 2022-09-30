@@ -23,7 +23,16 @@ render(
         <Routes>
           <Route exact path="signin" element={<SignIn />} />
           <Route exact path="register" element={<Register />} />
-          <Route exact path="verify-email/:token" element={<VerifyEmail />} />
+          <Route
+            exact
+            path="auth/verify-email/:token"
+            element={<VerifyEmail />}
+          />
+          <Route
+            exact
+            path="auth/verify-customer/:token"
+            element={<VerifyEmail />}
+          />
           <Route
             exact
             path="reset-password/send-mail"

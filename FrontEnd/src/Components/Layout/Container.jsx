@@ -79,10 +79,10 @@ export default function Container({ children }) {
       <div
         className="site-layout-background"
         style={{
-          padding: 24,
+          padding: "0px 20px 20px 20px",
 
           minHeight: "calc(100vh - 120px)",
-          marginTop: "15px",
+          marginTop: "10px",
         }}
       >
         {children}

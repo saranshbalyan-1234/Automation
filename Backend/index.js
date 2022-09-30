@@ -9,6 +9,7 @@ import authRoutes from "./Routes/authRoutes.js";
 import jwtRoutes from "./Routes/jwtRoutes.js";
 import mailRoutes from "./Routes/mailRoutes.js";
 import roleRoutes from "./Routes/roleRoutes.js";
+import userRoleRoutes from "./Routes/userRoleRoutes.js";
 import seedRoutes from "./Routes/seedRoutes.js";
 import permissionRoutes from "./Routes/permissionRoutes.js";
 
@@ -33,6 +34,7 @@ app.use("/auth", authRoutes);
 app.use("/jwt", jwtRoutes);
 app.use("/user", userRoutes);
 app.use("/role", roleRoutes);
+app.use("/userRole", userRoleRoutes);
 app.use("/permission", permissionRoutes);
 app.use("/mail", mailRoutes);
 app.use("/seed", seedRoutes);

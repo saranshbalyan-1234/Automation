@@ -8,9 +8,8 @@ export default function VerifyEmail() {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .post("/auth/" + location.pathname)
+      .get(location.pathname)
       .then(() => {
-        message.success("Email Verification Successfull");
         navigate("/signin");
       })
       .catch((err) => {

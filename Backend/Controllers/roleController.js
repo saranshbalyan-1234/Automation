@@ -1,10 +1,9 @@
 import db from "../Utils/dataBaseConnection.js";
 import getError from "../Utils/sequelizeError.js";
-
-// const { Op, QueryTypes } = require("sequelize");
 const Role = db.roles;
 const Permission = db.permissions;
 const save = async (req, res) => {
+  await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
   await Role.create(req.body, {})
     .then((resp) => {
       return res.status(200).json(resp);
@@ -48,7 +47,14 @@ const findById = async (req, res) => {
     });
 };
 const findAll = async (req, res) => {
-  await Role.findAll({})
+  await Role.findAll({
+    include: [
+      {
+        model: Permission,
+        attributes: ["name", "view", "add", "edit", "delete"],
+      },
+    ],
+  })
     .then((resp) => {
       return res.status(200).json(resp);
     })
@@ -88,23 +94,4 @@ const destroy = (req, res) => {
     });
 };
 
-// const rawQuery = async (req, res) => {
-//   const data = await db.sequelize.query(
-//     "SELECT * from roles where name=:name",
-//     {
-//       type: QueryTypes.SELECT,
-//       replacements: { name: "saransh" },
-//     }
-//   );
-//   return res.status(200).json(data);
-// };
-
-export {
-  save,
-  update,
-  findById,
-  findByParam,
-  findAll,
-  destroy,
-  // rawQuery,
-};
+export { save, update, findById, findByParam, findAll, destroy };

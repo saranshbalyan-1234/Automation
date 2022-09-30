@@ -27,9 +27,6 @@ export const register = (payload) => {
   return async (dispatch) => {
     try {
       await axios.post(`/auth/register`, payload);
-      message.success(
-        "Registered successfuly, Please check email to verify account."
-      );
       return true;
     } catch (err) {
       return false;

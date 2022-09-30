@@ -39,8 +39,8 @@ db.sequelize = sequelize;
 db.tenants = Tenant(sequelize, DataTypes);
 db.customers = Customer(sequelize, DataTypes);
 db.unverifieds = Unverified(sequelize, DataTypes);
-db.roles = Role(sequelize, DataTypes);
 db.permissions = Permission(sequelize, DataTypes);
+db.roles = Role(sequelize, DataTypes);
 db.userRoles = UserRole(sequelize, DataTypes);
 db.users = User(sequelize, DataTypes);
 

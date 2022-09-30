@@ -3,11 +3,15 @@ export default (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: "name",
       validate: {
         notNull: true,
       },
     },
+  });
+
+  Role.hasMany(sequelize.models.permissions, {
+    foreignKey: "roleId",
   });
 
   return Role;
