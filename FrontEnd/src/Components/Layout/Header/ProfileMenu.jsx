@@ -5,20 +5,14 @@ import {
   LogoutOutlined,
   EditOutlined,
   DownloadOutlined,
-  NotificationOutlined,
+  BellOutlined,
 } from "@ant-design/icons";
 import { BiSupport } from "react-icons/bi";
-import { Avatar, Dropdown, Menu, Badge } from "antd";
+import { Avatar, Dropdown, Menu, Badge, Card } from "antd";
 import { logout } from "../../../Redux/Actions/auth";
 import { Link } from "react-router-dom";
-import NotificationModal from "./NotificationModal";
 const ProfileMenu = ({ logout }) => {
-  const [notificationModal, setNotificationModal] = useState(false);
-
-  const toggleNotificationModal = () => {
-    setNotificationModal(!notificationModal);
-  };
-  const menu = (
+  const profileMenu = (
     <Menu
       items={[
         {
@@ -30,16 +24,7 @@ const ProfileMenu = ({ logout }) => {
           key: "1",
           // onClick: logout,
         },
-        {
-          label: (
-            <>
-              <NotificationOutlined style={{ marginRight: "5px" }} />
-              Notifications
-            </>
-          ),
-          key: "2",
-          onClick: toggleNotificationModal,
-        },
+
         {
           label: (
             <Link to="/support">
@@ -73,28 +58,69 @@ const ProfileMenu = ({ logout }) => {
     />
   );
 
+  const notificationMenu = (
+    <Menu
+      items={[
+        {
+          label: (
+            <div style={{ width: "400px" }}>
+              <Badge.Ribbon text="TestCase">
+                <div style={{ paddingRight: "70px" }}>
+                  saransh created a new test case, with name how are you, please
+                  have a look
+                </div>
+              </Badge.Ribbon>
+            </div>
+          ),
+          key: "1",
+          // onClick: logout,
+        },
+        {
+          label: (
+            <div style={{ width: "400px" }}>
+              <Badge.Ribbon text="TestCase" color="red">
+                <div style={{ paddingRight: "70px" }}>
+                  saransh created a new test case, with name how are you, please
+                  have a look
+                </div>
+              </Badge.Ribbon>
+            </div>
+          ),
+          key: "2",
+          // onClick: logout,
+        },
+      ]}
+    />
+  );
+
   return (
-    <>
-      <Dropdown overlay={menu} trigger={["hover"]}>
-        <Badge count={1} overflowCount={10}>
-          {" "}
-          <Avatar
-            style={{
-              // marginRight: "30px",
-              backgroundColor: "white",
-              color: "#001529",
-              cursor: "pointer",
-            }}
-            size={32}
-            icon={<UserOutlined />}
-          />
-        </Badge>
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <div
+        style={{
+          marginRight: "20px",
+          marginBottom: "-10px",
+          cursor: "pointer",
+        }}
+      >
+        <Dropdown overlay={notificationMenu} trigger={["hover"]}>
+          <Badge count={1} overflowCount={9}>
+            <BellOutlined style={{ color: "white", fontSize: "20px" }} />
+          </Badge>
+        </Dropdown>
+      </div>
+      <Dropdown overlay={profileMenu} trigger={["hover"]}>
+        <Avatar
+          style={{
+            // marginRight: "30px",
+            backgroundColor: "white",
+            color: "#001529",
+            cursor: "pointer",
+          }}
+          size={32}
+          icon={<UserOutlined />}
+        />
       </Dropdown>
-      <NotificationModal
-        notificationModal={notificationModal}
-        setNotificationModal={setNotificationModal}
-      />
-    </>
+    </div>
   );
 };
 
