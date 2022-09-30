@@ -35,17 +35,19 @@ export const Role = ({ data, loading, profile = false }) => {
                       }}
                     >
                       <Title level={5}>Role: {item.name}</Title>
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: "5px",
-                          alignItems: "center",
-                          marginTop: "-10px",
-                        }}
-                      >
-                        <EditOutlined />
-                        <DeleteOutlined />
-                      </div>
+                      {!profile && (
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "5px",
+                            alignItems: "center",
+                            marginTop: "-10px",
+                          }}
+                        >
+                          <EditOutlined />
+                          <DeleteOutlined />
+                        </div>
+                      )}
                     </div>
                   }
                   description={

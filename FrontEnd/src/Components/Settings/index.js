@@ -5,14 +5,20 @@ import ComingSoon from "../../Views/ComingSoon";
 import Team from "./Team";
 import Role from "./Role";
 import axios from "axios";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, SettingOutlined } from "@ant-design/icons";
 import AddUserModal from "./Team/AddUserModal";
+import EditDetailsModal from "./Profile/EditDetailsModal";
+import ChangePasswordModal from "./Profile/ChangePasswordModal";
+import AddRoleModal from "./Role/AddRoleModal";
 
 export default function Setting() {
   const [activeTab, setActiveTab] = useState("profile");
   const [rolesData, setRolesData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [addUserModal, setAddUserModal] = useState(false);
+  const [addRoleModal, setAddRoleModal] = useState(false);
+  const [changePasswordModal, setChangePasswordModal] = useState(false);
+  const [editDetailsModal, setEditDetailsModal] = useState(false);
   const handleActiveTab = (value) => {
     console.log("saransh", value);
     setActiveTab(value);
@@ -37,7 +43,9 @@ export default function Setting() {
           type="primary"
           ghost
           style={{ position: "absolute", right: 0, top: 10 }}
-          // onClick={}
+          onClick={() => {
+            setAddRoleModal(true);
+          }}
         >
           <PlusOutlined /> Add Role
         </Button>
@@ -54,6 +62,34 @@ export default function Setting() {
         >
           <PlusOutlined /> Add User
         </Button>
+      );
+    else if (activeTab == "profile")
+      return (
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          <Button
+            type="primary"
+            ghost
+            style={{ position: "absolute", right: 180, top: 10 }}
+            onClick={() => {
+              setEditDetailsModal(true);
+            }}
+          >
+            <EditOutlined key="edit" /> Edit Details
+          </Button>
+          <Button
+            type="primary"
+            ghost
+            style={{ position: "absolute", right: 0, top: 10 }}
+            onClick={() => setChangePasswordModal(true)}
+          >
+            <SettingOutlined key="edit" />
+            Change Password
+          </Button>
+        </div>
       );
   };
   return (
@@ -87,6 +123,18 @@ export default function Setting() {
       <AddUserModal
         addUserModal={addUserModal}
         setAddUserModal={setAddUserModal}
+      />
+      <ChangePasswordModal
+        changePasswordModal={changePasswordModal}
+        setChangePasswordModal={setChangePasswordModal}
+      />
+      <EditDetailsModal
+        editDetailsModal={editDetailsModal}
+        setEditDetailsModal={setEditDetailsModal}
+      />
+      <AddRoleModal
+        addRoleModal={addRoleModal}
+        setAddRoleModal={setAddRoleModal}
       />
     </>
   );

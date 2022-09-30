@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { Form, Input, Modal, Button, Card, Spin } from "antd";
-import { Link, useNavigate } from "react-router-dom";
 import { addUser } from "../../../Redux/Actions/user";
 import { connect } from "react-redux";
-// import { StyledWrapper } from "./style";
 
 const AddUserModal = ({ addUserModal, setAddUserModal, addUser }) => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState({
     name: "",
@@ -21,7 +18,7 @@ const AddUserModal = ({ addUserModal, setAddUserModal, addUser }) => {
 
     setDetails({ ...details, ...object });
   };
-  const onRegister = async (data) => {
+  const onSubmit = async () => {
     setLoading(true);
     const result = await addUser(details);
     result && setAddUserModal(false);
@@ -29,11 +26,17 @@ const AddUserModal = ({ addUserModal, setAddUserModal, addUser }) => {
   };
 
   return (
-    <Modal visible={addUserModal} footer={false}>
+    <Modal
+      visible={addUserModal}
+      footer={false}
+      onCancel={() => {
+        setAddUserModal(false);
+      }}
+    >
       <Spin spinning={loading}>
         <Form
           name="register"
-          onFinish={onRegister}
+          onFinish={onSubmit}
           labelCol={{ span: 10 }}
           wrapperCol={{ span: 16 }}
         >

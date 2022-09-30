@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { EditOutlined, SettingOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { Avatar, Card, Tag, Typography, Badge } from "antd";
-import ChangePasswordModal from "./ChangePasswordModal";
-import EditDetailsModal from "./EditDetailsModal";
+
 import Role from "../Role";
 const { Title } = Typography;
 function Profile({ user }) {
   const { Meta } = Card;
-  const [changePasswordModal, setChangePasswordModal] = useState(false);
-  const [editDetailsModal, setEditDetailsModal] = useState(false);
+
   return (
     <>
       <Badge.Ribbon text="Personal Details">
@@ -33,50 +31,6 @@ function Profile({ user }) {
           <Role loading={false} data={user.roles} profile={true} />
         )}
       </div>
-      <Card style={{ height: "50px", marginTop: "10px" }}>
-        {" "}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            marginTop: "-10px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              setEditDetailsModal(true);
-            }}
-          >
-            <EditOutlined key="edit" style={{ marginRight: "10px" }} /> Edit
-            Details
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              cursor: "pointer",
-            }}
-            onClick={() => setChangePasswordModal(true)}
-          >
-            <SettingOutlined key="edit" style={{ marginRight: "10px" }} />
-            Change Password
-          </div>
-        </div>
-      </Card>
-      <ChangePasswordModal
-        changePasswordModal={changePasswordModal}
-        setChangePasswordModal={setChangePasswordModal}
-      />
-      <EditDetailsModal
-        editDetailsModal={editDetailsModal}
-        setEditDetailsModal={setEditDetailsModal}
-      />
     </>
   );
 }
