@@ -19,7 +19,7 @@ const destroy = (req, res) => {
   })
     .then((resp) => {
       if (resp === 1) {
-        return res.status(200).json({ message: "Deleted successfully" });
+        return res.status(200).json({ message: "Removed role from user" });
       } else {
         return res.status(400).json({ error: "Record not found" });
       }

@@ -8,7 +8,7 @@ const PermissionList = db.permissionList;
 const getAllPermission = async (req, res) => {
   try {
     await db.sequelize.query(`use Main`);
-    const data = await PermissionList.findAll({});
+    const data = await PermissionList.findAll({ attributes: ["name"] });
     return res.status(200).json(data);
   } catch (error) {
     getError(error, res);
@@ -25,11 +25,13 @@ const save = async (req, res) => {
     );
 
     const check = data.some((el) => {
-      return el.name == req.body.name;
+      return req.body.some((el1) => {
+        return el.name == el1.name;
+      });
     });
 
     if (check) {
-      Permission.create(req.body, {}).then((resp) => {
+      Permission.bulkCreate(req.body).then((resp) => {
         return res.status(200).json(resp);
       });
     } else {
@@ -104,7 +106,9 @@ const destroy = (req, res) => {
   })
     .then((resp) => {
       if (resp === 1) {
-        return res.status(200).json({ message: "Deleted successfully" });
+        return res
+          .status(200)
+          .json({ message: "Removed permission from role" });
       } else {
         return res.status(400).json({ error: "Record not found" });
       }

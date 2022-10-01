@@ -51,7 +51,7 @@ const findAll = async (req, res) => {
     include: [
       {
         model: Permission,
-        attributes: ["name", "view", "add", "edit", "delete"],
+        attributes: ["id", "name", "view", "add", "edit", "delete"],
       },
     ],
   })
@@ -84,7 +84,7 @@ const destroy = (req, res) => {
   })
     .then((resp) => {
       if (resp === 1) {
-        return res.status(200).json({ message: "Deleted successfully" });
+        return res.status(200).json({ message: "Role deleted successfully" });
       } else {
         return res.status(400).json({ error: "Record not found" });
       }

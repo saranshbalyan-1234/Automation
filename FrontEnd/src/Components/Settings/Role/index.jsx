@@ -2,11 +2,20 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { List, Spin, Popconfirm, Checkbox, Collapse, Button } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { deleteRole } from "../../../Redux/Actions/role";
+import {
+  deleteRole,
+  removePermissionFromRole,
+} from "../../../Redux/Actions/role";
 import AddEditRoleModal from "./AddEditRoleModal";
 import AddPermissionModal from "./AddPermissionModal";
 const { Panel } = Collapse;
-export const Role = ({ data, loading, profile = false, deleteRole }) => {
+export const Role = ({
+  data,
+  loading,
+  profile = false,
+  deleteRole,
+  removePermissionFromRole,
+}) => {
   const [addEditRoleModal, setAddEditRoleModal] = useState(false);
   const [addPermissionModal, setAddPermissionModal] = useState(false);
   const [roleData, setRoleData] = useState({ id: null, name: "" });
@@ -28,7 +37,21 @@ export const Role = ({ data, loading, profile = false, deleteRole }) => {
           renderItem={(permission) => (
             <List.Item>
               <List.Item.Meta
-                title={<div>Permission: {permission.name}</div>}
+                title={
+                  <div>
+                    Permission: {permission.name}{" "}
+                    <Popconfirm
+                      title="Are you sure to remove this permission?"
+                      onConfirm={() => {
+                        removePermissionFromRole(role.id, permission.id);
+                      }}
+                      okText="Yes, Remove"
+                      cancelText="No"
+                    >
+                      <DeleteOutlined style={{ marginTop: "5px" }} />
+                    </Popconfirm>
+                  </div>
+                }
                 description={
                   <div
                     style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}
@@ -71,9 +94,9 @@ export const Role = ({ data, loading, profile = false, deleteRole }) => {
   return (
     <>
       <Spin spinning={loading}>
-        {data.map((item) => {
+        {data.map((item, index) => {
           return (
-            <Collapse style={{ marginTop: "10px" }}>
+            <Collapse style={{ marginTop: "10px" }} key={index}>
               <Panel
                 header={
                   <div
@@ -115,7 +138,6 @@ export const Role = ({ data, loading, profile = false, deleteRole }) => {
                     </div>
                   </div>
                 }
-                key={item.id}
               >
                 {renderPermission(item)}
               </Panel>
@@ -144,6 +166,6 @@ export const Role = ({ data, loading, profile = false, deleteRole }) => {
 
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = { deleteRole };
+const mapDispatchToProps = { deleteRole, removePermissionFromRole };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Role);

@@ -5,6 +5,8 @@ import {
   DELETE_ROLE_SUCCESS,
   ADD_ROLE_SUCCESS,
   EDIT_ROLE_SUCCESS,
+  ADD_PERMISSION_TO_ROLE_SUCCESS,
+  REMOVE_PERMISSION_FROM_ROLE_SUCCESS,
 } from "../Actions/action-types";
 
 const initState = {
@@ -52,6 +54,35 @@ const roleReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: false,
         data: editedRoles,
+      };
+    case REMOVE_PERMISSION_FROM_ROLE_SUCCESS:
+      let tempRole = [...state.data].map((el) => {
+        return el.id == payload.roleId
+          ? {
+              ...el,
+              permissions: el.permissions.filter((el1) => {
+                return el1.id != payload.permissionId;
+              }),
+            }
+          : el;
+      });
+
+      return {
+        ...state,
+        loading: false,
+        data: tempRole,
+      };
+    case ADD_PERMISSION_TO_ROLE_SUCCESS:
+      let tempAddedRole = [...state.data].map((el) => {
+        return el.id == payload.roleId
+          ? { ...el, permissions: [...el.permissions, ...payload.data] }
+          : el;
+      });
+
+      return {
+        ...state,
+        loading: false,
+        data: tempAddedRole,
       };
     default:
       return state;
