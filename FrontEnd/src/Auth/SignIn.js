@@ -27,7 +27,6 @@ const SignIn = ({ loading, signIn, logout }) => {
   };
 
   const handleSignIn = async () => {
-    console.log("saransh", process.env.api_base_url);
     signIn(details).then(() => {
       navigate("/");
     });
