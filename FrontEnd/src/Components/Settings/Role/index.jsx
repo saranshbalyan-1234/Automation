@@ -15,18 +15,20 @@ export const Role = ({
   profile = false,
   deleteRole,
   removePermissionFromRole,
+  setAddPermissionModal,
+  addPermissionModal,
+  singleRoleData,
+  setSingleRoleData,
 }) => {
   const [addEditRoleModal, setAddEditRoleModal] = useState(false);
-  const [addPermissionModal, setAddPermissionModal] = useState(false);
-  const [roleData, setRoleData] = useState({ id: null, name: "" });
 
   const handleRoleEdit = (item) => {
     setAddEditRoleModal(true);
-    setRoleData(item);
+    setSingleRoleData(item);
   };
   const handleAddPermission = (item) => {
     setAddPermissionModal(true);
-    setRoleData(item);
+    setSingleRoleData(item);
   };
   const renderPermission = (role) => {
     return (
@@ -125,6 +127,7 @@ export const Role = ({
                       <Popconfirm
                         title="Are you sure to delete this Role?"
                         onConfirm={(e) => {
+                          e.stopPropagation();
                           deleteRole(item.id);
                         }}
                         okText="Yes, Delete"
@@ -150,14 +153,14 @@ export const Role = ({
           visible={addEditRoleModal}
           setVisible={setAddEditRoleModal}
           edit={true}
-          roleData={roleData}
+          roleData={singleRoleData}
         />
       )}
       {addPermissionModal && (
         <AddPermissionModal
           visible={addPermissionModal}
           setVisible={setAddPermissionModal}
-          roleData={roleData}
+          roleData={singleRoleData}
         />
       )}
     </>

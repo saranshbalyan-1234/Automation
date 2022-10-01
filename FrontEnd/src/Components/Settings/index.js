@@ -16,6 +16,8 @@ function Setting({ getAllRole, roles }) {
   const [addUserModal, setAddUserModal] = useState(false);
   const [addRoleModal, setAddRoleModal] = useState(false);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
+  const [addPermissionModal, setAddPermissionModal] = useState(false);
+  const [singleRoleData, setSingleRoleData] = useState({ id: null, name: "" });
   const [editDetailsModal, setEditDetailsModal] = useState(false);
   const handleActiveTab = (value) => {
     setActiveTab(value);
@@ -96,7 +98,14 @@ function Setting({ getAllRole, roles }) {
           </Tabs.TabPane>
           <Tabs.TabPane tab="Roles" key="roles">
             {activeTab === "roles" && (
-              <Role data={roles.data} loading={roles.loading} />
+              <Role
+                data={roles.data}
+                loading={roles.loading}
+                setAddPermissionModal={setAddPermissionModal}
+                addPermissionModal={addPermissionModal}
+                singleRoleData={singleRoleData}
+                setSingleRoleData={setSingleRoleData}
+              />
             )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Team" key="team">
@@ -127,7 +136,9 @@ function Setting({ getAllRole, roles }) {
         <AddEditRoleModal
           visible={addRoleModal}
           setVisible={setAddRoleModal}
+          setAddPermissionModal={setAddPermissionModal}
           // roleData={roleData}
+          setSingleRoleData={setSingleRoleData}
         />
       )}
     </>

@@ -44,7 +44,7 @@ export const addRole = (payload) => {
       dispatch({ type: ROLE_REQUEST });
       const { data } = await axios.post(`/role`, payload);
       dispatch({ type: ADD_ROLE_SUCCESS, payload: data });
-      return true;
+      return data;
     } catch (err) {
       dispatch({ type: ROLE_FAILURE });
       return false;

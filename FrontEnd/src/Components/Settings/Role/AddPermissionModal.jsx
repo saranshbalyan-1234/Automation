@@ -12,6 +12,7 @@ const AddPermissionModal = ({
   roles,
   roleData,
 }) => {
+  console.log("saransh", roleData);
   const [loading, setLoading] = useState(false);
   const [availablePermission, setAvailablePermission] = useState([]);
   const [addedPermission, setAddedPermission] = useState([]);

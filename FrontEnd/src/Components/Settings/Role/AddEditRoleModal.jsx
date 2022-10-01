@@ -11,12 +11,23 @@ const AddEditRoleModal = ({
   edit = false,
   roles,
   roleData,
+  setAddPermissionModal,
+  setSingleRoleData,
 }) => {
   const onSubmit = async (data) => {
-    const result = edit
-      ? await editRole({ ...data, id: roleData.id })
-      : await addRole(data);
-    result && setVisible(false);
+    if (edit) {
+      let result = await editRole({ ...data, id: roleData.id });
+      result && setVisible(false);
+    } else {
+      let result = await addRole(data);
+      // if (result) {
+      console.log("saransh", result);
+
+      await setSingleRoleData({ ...result, permissions: [] });
+      setAddPermissionModal(true);
+      setVisible(false);
+      // }
+    }
   };
 
   return (

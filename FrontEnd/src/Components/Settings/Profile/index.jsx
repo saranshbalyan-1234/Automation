@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Avatar, Card, Tag, Badge } from "antd";
+import { Avatar, Card, Tag, Badge, Empty } from "antd";
 
 import Role from "../Role";
 function Profile({ user }) {
@@ -24,13 +24,20 @@ function Profile({ user }) {
           />
         </Card>
       </Badge.Ribbon>
-      <Badge.Ribbon text={"My Roles"}>
-        <div style={{ paddingTop: "10px" }}>
-          {user.roles.length > 0 && (
-            <Role loading={false} data={user.roles} profile={true} />
-          )}
-        </div>
-      </Badge.Ribbon>
+      {
+        // !user.customerAdmin &&
+        true && (
+          <Badge.Ribbon text={"My Roles"}>
+            <div style={{ paddingTop: "10px" }}>
+              {user.roles.length > 0 ? (
+                <Role loading={false} data={user.roles} profile={true} />
+              ) : (
+                <Empty description="No Role Assigned." />
+              )}
+            </div>
+          </Badge.Ribbon>
+        )
+      }
     </>
   );
 }
