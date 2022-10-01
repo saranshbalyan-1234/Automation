@@ -1,0 +1,35 @@
+import axios from "axios";
+import {
+  ROLE_REQUEST,
+  ROLE_SUCCESS,
+  ROLE_FAILURE,
+  DELETE_ROLE_SUCCESS,
+} from "./action-types";
+
+export const getAllRole = (payload) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: ROLE_REQUEST });
+      const { data } = await axios.get(`/role`, payload);
+      dispatch({ type: ROLE_SUCCESS, payload: data });
+      return true;
+    } catch (err) {
+      dispatch({ type: ROLE_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const deleteRole = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: ROLE_REQUEST });
+      await axios.delete(`role/${id}`);
+      dispatch({ type: DELETE_ROLE_SUCCESS, payload: id });
+      return true;
+    } catch (err) {
+      dispatch({ type: ROLE_FAILURE });
+      return false;
+    }
+  };
+};

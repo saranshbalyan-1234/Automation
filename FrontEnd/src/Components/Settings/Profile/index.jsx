@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { EditOutlined, SettingOutlined } from "@ant-design/icons";
+import React from "react";
 import { connect } from "react-redux";
-import { Avatar, Card, Tag, Typography, Badge } from "antd";
+import { Avatar, Card, Tag, Badge } from "antd";
 
 import Role from "../Role";
-const { Title } = Typography;
 function Profile({ user }) {
   const { Meta } = Card;
 

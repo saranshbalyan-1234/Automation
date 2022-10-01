@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import {
   UserOutlined,
@@ -8,7 +8,7 @@ import {
   BellOutlined,
 } from "@ant-design/icons";
 import { BiSupport } from "react-icons/bi";
-import { Avatar, Dropdown, Menu, Badge, Card } from "antd";
+import { Avatar, Dropdown, Menu, Badge } from "antd";
 import { logout } from "../../../Redux/Actions/auth";
 import { Link } from "react-router-dom";
 const ProfileMenu = ({ logout }) => {

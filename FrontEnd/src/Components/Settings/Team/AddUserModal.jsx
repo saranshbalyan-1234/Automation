@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Modal, Button, Card, Spin } from "antd";
+import { Form, Input, Modal, Button, Spin } from "antd";
 import { addUser } from "../../../Redux/Actions/user";
 import { connect } from "react-redux";
 

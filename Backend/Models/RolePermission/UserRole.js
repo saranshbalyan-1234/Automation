@@ -3,6 +3,7 @@ export default (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      onDelete: "CASCADE",
       references: {
         model: "users",
         key: "id",
@@ -11,6 +12,7 @@ export default (sequelize, DataTypes) => {
     roleId: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      onDelete: "CASCADE",
       references: {
         model: "roles",
         key: "id",
@@ -20,9 +22,11 @@ export default (sequelize, DataTypes) => {
 
   UserRole.hasMany(sequelize.models.permissions, {
     foreignKey: "roleId",
+    onDelete: "CASCADE",
   });
   UserRole.hasOne(sequelize.models.roles, {
     foreignKey: "id",
+    onDelete: "CASCADE",
   });
 
   return UserRole;

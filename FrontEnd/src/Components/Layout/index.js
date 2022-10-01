@@ -1,12 +1,8 @@
 import { StyledLayout } from "./style";
 
-import { Layout, Menu } from "antd";
+import { Layout } from "antd";
 import React, { useState } from "react";
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
+
 import Header from "./Header";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";

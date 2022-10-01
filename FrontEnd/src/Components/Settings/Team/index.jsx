@@ -61,7 +61,7 @@ export const Team = (props) => {
             <List.Item key={item.email}>
               <List.Item.Meta
                 avatar={<Avatar src={item.picture.large} />}
-                title={<a href="https://ant.design">{item.name.last}</a>}
+                title={<div>{item.name.last}</div>}
                 description={item.email}
               />
               <div>Content</div>

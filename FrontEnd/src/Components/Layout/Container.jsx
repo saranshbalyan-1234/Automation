@@ -17,12 +17,7 @@ export default function Container({ children }) {
     const url = `/${pathSnippets.slice(0, index + 1).join("/")}`;
     return (
       <Breadcrumb.Item key={url}>
-        <a
-          style={{ textTransform: "capitalize" }}
-          href={() => {
-            return false;
-          }}
-        >
+        <a style={{ textTransform: "capitalize" }} href={void 0}>
           {breadcrumbNameMap[url] || value}
         </a>
       </Breadcrumb.Item>

@@ -24,7 +24,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
 
   const handleMenuClick = (data) => {
     const path = data.keyPath.reverse().join("/");
-    path == "Dashboard" ? navigate(`/`) : navigate(`/${path}`);
+    path === "Dashboard" ? navigate(`/`) : navigate(`/${path}`);
   };
 
   return (
@@ -35,7 +35,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
       breakpoint="lg"
       collapsedWidth={window.innerWidth < 720 ? 0 : 80}
       onBreakpoint={(broken) => {
-        console.log(broken);
+        // console.log(broken);
       }}
       onCollapse={(collapsed, type) => {
         setCollapsed(collapsed);

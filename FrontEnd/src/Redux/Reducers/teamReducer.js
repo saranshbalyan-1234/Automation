@@ -9,7 +9,7 @@ const initState = {
   user: null,
 };
 
-const userReducer = (state = initState, { type, payload }) => {
+const teamReducer = (state = initState, { type, payload }) => {
   switch (type) {
     case ADD_USER_REQUEST:
       return {
@@ -36,4 +36,4 @@ const userReducer = (state = initState, { type, payload }) => {
   }
 };
 
-export default userReducer;
+export default teamReducer;

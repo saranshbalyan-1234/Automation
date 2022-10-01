@@ -1,8 +1,10 @@
 import authReducer from "./authReducer";
 import { combineReducers } from "redux";
-import userReducer from "./userReducer";
+import teamReducer from "./teamReducer";
+import roleReducer from "./roleReducer";
 
 export default combineReducers({
   auth: authReducer,
-  user: userReducer,
+  team: teamReducer,
+  roles: roleReducer,
 });

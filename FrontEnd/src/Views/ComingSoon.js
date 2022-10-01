@@ -17,6 +17,7 @@ export default function ComingSoon() {
       <img
         style={{ width: "20%", height: "auto", paddingTop: "5%" }}
         src="/coming-soon.svg"
+        alt=""
       />
       <Button
         onClick={() => {

@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Typography, Switch, List, Spin, Badge, Card } from "antd";
-
+import { Typography, Switch, List, Spin, Badge, Card, Popconfirm } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { deleteRole } from "../../../Redux/Actions/role";
 const { Title } = Typography;
 const { Meta } = Card;
-export const Role = ({ data, loading, profile = false }) => {
+export const Role = ({ data, loading, profile = false, deleteRole }) => {
   return (
     <Badge.Ribbon text={profile ? "My Roles" : "All Roles"}>
       <div
@@ -44,8 +44,17 @@ export const Role = ({ data, loading, profile = false }) => {
                             marginTop: "-10px",
                           }}
                         >
-                          <EditOutlined />
-                          <DeleteOutlined />
+                          <EditOutlined style={{ cursor: "pointer" }} />
+                          <Popconfirm
+                            title="Are you sure to delete this Role?"
+                            onConfirm={() => {
+                              deleteRole(item.id);
+                            }}
+                            cancelText="Cancel"
+                            okText="Yes, Delete"
+                          >
+                            <DeleteOutlined style={{ cursor: "pointer" }} />
+                          </Popconfirm>{" "}
                         </div>
                       )}
                     </div>
@@ -128,6 +137,6 @@ export const Role = ({ data, loading, profile = false }) => {
 
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { deleteRole };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Role);

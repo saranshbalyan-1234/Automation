@@ -4,40 +4,31 @@ import Profile from "./Profile";
 import ComingSoon from "../../Views/ComingSoon";
 import Team from "./Team";
 import Role from "./Role";
-import axios from "axios";
 import { PlusOutlined, EditOutlined, SettingOutlined } from "@ant-design/icons";
 import AddUserModal from "./Team/AddUserModal";
 import EditDetailsModal from "./Profile/EditDetailsModal";
 import ChangePasswordModal from "./Profile/ChangePasswordModal";
 import AddRoleModal from "./Role/AddRoleModal";
-
-export default function Setting() {
+import { getAllRole } from "../../Redux/Actions/role";
+import { connect } from "react-redux";
+function Setting({ getAllRole, roles }) {
   const [activeTab, setActiveTab] = useState("profile");
-  const [rolesData, setRolesData] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [addUserModal, setAddUserModal] = useState(false);
   const [addRoleModal, setAddRoleModal] = useState(false);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
   const [editDetailsModal, setEditDetailsModal] = useState(false);
   const handleActiveTab = (value) => {
-    console.log("saransh", value);
     setActiveTab(value);
   };
-  const getRoleData = async () => {
-    setLoading(true);
-    await axios.get("/role/get").then((res) => {
-      setRolesData(res.data);
-    });
-    setLoading(false);
-  };
+
   useEffect(() => {
-    if (activeTab == "roles") {
-      getRoleData();
+    if (activeTab === "roles") {
+      getAllRole();
     }
   }, [activeTab]);
 
   const renderButton = () => {
-    if (activeTab == "roles")
+    if (activeTab === "roles")
       return (
         <Button
           type="primary"
@@ -50,7 +41,7 @@ export default function Setting() {
           <PlusOutlined /> Add Role
         </Button>
       );
-    else if (activeTab == "team")
+    else if (activeTab === "team")
       return (
         <Button
           type="primary"
@@ -63,7 +54,7 @@ export default function Setting() {
           <PlusOutlined /> Add User
         </Button>
       );
-    else if (activeTab == "profile")
+    else if (activeTab === "profile")
       return (
         <div
           style={{
@@ -104,8 +95,8 @@ export default function Setting() {
             <Profile />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Roles" key="roles">
-            {activeTab == "roles" && (
-              <Role data={rolesData} loading={loading} />
+            {activeTab === "roles" && (
+              <Role data={roles.data} loading={roles.loading} />
             )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Team" key="team">
@@ -139,3 +130,8 @@ export default function Setting() {
     </>
   );
 }
+const mapStateToProps = (state) => ({ roles: state.roles });
+
+const mapDispatchToProps = { getAllRole };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Setting);

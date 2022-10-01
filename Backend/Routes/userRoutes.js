@@ -10,6 +10,6 @@ const Router = express.Router();
 Router.post("/add", validatePermission("user", "add"), addUser);
 Router.put("/details", changeDetails);
 Router.put("/change-password", changePassword);
-Router.delete("/delete/:id", validatePermission("user", "delete"), deleteUser);
+Router.delete("/:id", validatePermission("user", "delete"), deleteUser);
 
 export default Router;

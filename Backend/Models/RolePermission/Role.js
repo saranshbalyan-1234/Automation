@@ -12,6 +12,7 @@ export default (sequelize, DataTypes) => {
 
   Role.hasMany(sequelize.models.permissions, {
     foreignKey: "roleId",
+    onDelete: "CASCADE",
   });
 
   return Role;
