@@ -7,7 +7,7 @@ import { api_base_url } from "./constants";
 // eslint-disable-next-line
 export default {
   setup: () => {
-    axios.defaults.baseURL = api_base_url;
+    axios.defaults.baseURL = process.env.api_base_url || api_base_url;
     function getJWT() {
       let token = store.getState().auth.user?.accessToken;
       return token;
