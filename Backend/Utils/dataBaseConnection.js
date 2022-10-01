@@ -1,4 +1,4 @@
-import { Sequelize, DataTypes } from "sequelize/types/index.js";
+import { Sequelize, DataTypes } from "sequelize";
 import dotenv from "dotenv";
 
 import Tenant from "../Models/CustomerAdmin/Tenant.js";
