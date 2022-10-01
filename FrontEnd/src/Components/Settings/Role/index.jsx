@@ -1,137 +1,144 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Typography, Switch, List, Spin, Badge, Card, Popconfirm } from "antd";
+import { List, Spin, Popconfirm, Checkbox, Collapse, Button } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { deleteRole } from "../../../Redux/Actions/role";
-const { Title } = Typography;
-const { Meta } = Card;
+import AddEditRoleModal from "./AddEditRoleModal";
+import AddPermissionModal from "./AddPermissionModal";
+const { Panel } = Collapse;
 export const Role = ({ data, loading, profile = false, deleteRole }) => {
-  return (
-    <Badge.Ribbon text={profile ? "My Roles" : "All Roles"}>
-      <div
-        style={{
-          height: !profile && "calc(100vh - 220px)",
-          overflow: "auto",
-          padding: "0 16px",
-          border: profile
-            ? "1px solid #f0f0f0"
-            : "1px solid rgba(140, 140, 140, 0.35)",
-        }}
-      >
-        <Spin spinning={loading}>
-          <List
-            dataSource={data}
-            renderItem={(item) => (
-              <List.Item key={item.name}>
-                <List.Item.Meta
-                  // avatar={<Avatar src={item.picture.large} />}
-                  title={
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "20px",
-                        alignItems: "center",
-                        // justifyContent: "space-between",
-                      }}
-                    >
-                      <Title level={5}>Role: {item.name}</Title>
-                      {!profile && (
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "5px",
-                            alignItems: "center",
-                            marginTop: "-10px",
-                          }}
-                        >
-                          <EditOutlined style={{ cursor: "pointer" }} />
-                          <Popconfirm
-                            title="Are you sure to delete this Role?"
-                            onConfirm={() => {
-                              deleteRole(item.id);
-                            }}
-                            cancelText="Cancel"
-                            okText="Yes, Delete"
-                          >
-                            <DeleteOutlined style={{ cursor: "pointer" }} />
-                          </Popconfirm>{" "}
-                        </div>
-                      )}
+  const [addEditRoleModal, setAddEditRoleModal] = useState(false);
+  const [addPermissionModal, setAddPermissionModal] = useState(false);
+  const [roleData, setRoleData] = useState({ id: null, name: "" });
+
+  const handleRoleEdit = (item) => {
+    setAddEditRoleModal(true);
+    setRoleData(item);
+  };
+  const handleAddPermission = (item) => {
+    setAddPermissionModal(true);
+    setRoleData(item);
+  };
+  const renderPermission = (role) => {
+    return (
+      <div style={{ paddingLeft: "30px" }}>
+        <List
+          className="demo-loadmore-list"
+          dataSource={role.permissions}
+          renderItem={(permission) => (
+            <List.Item>
+              <List.Item.Meta
+                title={<div>Permission: {permission.name}</div>}
+                description={
+                  <div
+                    style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}
+                  >
+                    <div style={{ display: "flex", gap: "5px" }}>
+                      View: <Checkbox checked={permission.view} />
                     </div>
-                  }
-                  description={
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "20px",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      {item.permissions.map((el) => {
-                        return (
-                          <Card>
-                            <Meta
-                              title={
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    flexWrap: "wrap",
-                                  }}
-                                >
-                                  <div>Permission: {el.name}</div>
-                                  {!profile && <DeleteOutlined />}
-                                </div>
-                              }
-                              description={
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    gap: "20px",
-                                    flexWrap: "wrap",
-                                  }}
-                                >
-                                  Add:
-                                  <Switch
-                                    disabled={profile}
-                                    size="small"
-                                    checked={el.add}
-                                  />
-                                  Edit:
-                                  <Switch
-                                    disabled={profile}
-                                    size="small"
-                                    checked={el.edit}
-                                  />
-                                  Update:
-                                  <Switch
-                                    disabled={profile}
-                                    size="small"
-                                    checked={el.edit}
-                                  />
-                                  Delete:
-                                  <Switch
-                                    disabled={profile}
-                                    size="small"
-                                    checked={el.delete}
-                                  />
-                                </div>
-                              }
-                            />
-                          </Card>
-                        );
-                      })}
+
+                    <div style={{ display: "flex", gap: "5px" }}>
+                      Add: <Checkbox checked={permission.add} />
                     </div>
-                  }
-                />
-              </List.Item>
-            )}
-          />
-        </Spin>
+
+                    <div style={{ display: "flex", gap: "5px" }}>
+                      Edit: <Checkbox checked={permission.edit} />
+                    </div>
+
+                    <div style={{ display: "flex", gap: "5px" }}>
+                      Delete: <Checkbox checked={permission.delete} />
+                    </div>
+                  </div>
+                }
+              />
+            </List.Item>
+          )}
+        />
+        <Button
+          type="primary"
+          ghost
+          size="small"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAddPermission(role);
+          }}
+        >
+          Add Permmissions
+        </Button>
       </div>
-    </Badge.Ribbon>
+    );
+  };
+  return (
+    <>
+      <Spin spinning={loading}>
+        {data.map((item) => {
+          return (
+            <Collapse style={{ marginTop: "10px" }}>
+              <Panel
+                header={
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "10px",
+                      alignItems: "center",
+                    }}
+                  >
+                    Role: {item.name}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: "5px",
+                      }}
+                    >
+                      <EditOutlined
+                        style={{ cursor: "pointer", marginTop: "5px" }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRoleEdit(item);
+                        }}
+                      />
+                      <Popconfirm
+                        title="Are you sure to delete this Role?"
+                        onConfirm={(e) => {
+                          deleteRole(item.id);
+                        }}
+                        okText="Yes, Delete"
+                        cancelText="No"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        <DeleteOutlined style={{ marginTop: "5px" }} />
+                      </Popconfirm>
+                    </div>
+                  </div>
+                }
+                key={item.id}
+              >
+                {renderPermission(item)}
+              </Panel>
+            </Collapse>
+          );
+        })}
+      </Spin>
+      {addEditRoleModal && (
+        <AddEditRoleModal
+          visible={addEditRoleModal}
+          setVisible={setAddEditRoleModal}
+          edit={true}
+          roleData={roleData}
+        />
+      )}
+      {addPermissionModal && (
+        <AddPermissionModal
+          visible={addPermissionModal}
+          setVisible={setAddPermissionModal}
+          roleData={roleData}
+        />
+      )}
+    </>
   );
 };
 

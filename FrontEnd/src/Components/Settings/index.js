@@ -8,7 +8,7 @@ import { PlusOutlined, EditOutlined, SettingOutlined } from "@ant-design/icons";
 import AddUserModal from "./Team/AddUserModal";
 import EditDetailsModal from "./Profile/EditDetailsModal";
 import ChangePasswordModal from "./Profile/ChangePasswordModal";
-import AddRoleModal from "./Role/AddRoleModal";
+import AddEditRoleModal from "./Role/AddEditRoleModal";
 import { getAllRole } from "../../Redux/Actions/role";
 import { connect } from "react-redux";
 function Setting({ getAllRole, roles }) {
@@ -123,10 +123,13 @@ function Setting({ getAllRole, roles }) {
         editDetailsModal={editDetailsModal}
         setEditDetailsModal={setEditDetailsModal}
       />
-      <AddRoleModal
-        addRoleModal={addRoleModal}
-        setAddRoleModal={setAddRoleModal}
-      />
+      {addRoleModal && (
+        <AddEditRoleModal
+          visible={addRoleModal}
+          setVisible={setAddRoleModal}
+          // roleData={roleData}
+        />
+      )}
     </>
   );
 }

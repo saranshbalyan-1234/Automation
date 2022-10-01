@@ -32,6 +32,7 @@ const AddUserModal = ({ addUserModal, setAddUserModal, addUser }) => {
       onCancel={() => {
         setAddUserModal(false);
       }}
+      closable={false}
     >
       <Spin spinning={loading}>
         <Form

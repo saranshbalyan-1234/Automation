@@ -8,6 +8,7 @@ import Role from "../Models/RolePermission/Role.js";
 import Permission from "../Models/RolePermission/Permission.js";
 import User from "../Models/User.js";
 import UserRole from "../Models/RolePermission/UserRole.js";
+import PermissionList from "../Models/RolePermission/PermissionList.js";
 
 dotenv.config();
 
@@ -43,6 +44,7 @@ db.permissions = Permission(sequelize, DataTypes);
 db.roles = Role(sequelize, DataTypes);
 db.userRoles = UserRole(sequelize, DataTypes);
 db.users = User(sequelize, DataTypes);
+db.permissionList = PermissionList(sequelize, DataTypes);
 
 db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0").then(() => {
   db.tenants.sync({ force: false, alter: true }).then(() => {
@@ -53,6 +55,9 @@ db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0").then(() => {
   });
   db.unverifieds.sync({ force: false, alter: true }).then(() => {
     console.log("Synced Unverified table");
+  });
+  db.permissionList.sync({ force: false, alter: true }).then(() => {
+    console.log("Synced PermissionList table");
   });
 });
 

@@ -24,11 +24,13 @@ function Profile({ user }) {
           />
         </Card>
       </Badge.Ribbon>
-      <div style={{ paddingTop: "10px" }}>
-        {user.roles.length > 0 && (
-          <Role loading={false} data={user.roles} profile={true} />
-        )}
-      </div>
+      <Badge.Ribbon text={"My Roles"}>
+        <div style={{ paddingTop: "10px" }}>
+          {user.roles.length > 0 && (
+            <Role loading={false} data={user.roles} profile={true} />
+          )}
+        </div>
+      </Badge.Ribbon>
     </>
   );
 }

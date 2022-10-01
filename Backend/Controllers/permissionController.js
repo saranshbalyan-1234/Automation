@@ -3,14 +3,41 @@ import getError from "../Utils/sequelizeError.js";
 
 // import { Op, QueryTypes } from "sequelize"
 const Permission = db.permissions;
+const PermissionList = db.permissionList;
+
+const getAllPermission = async (req, res) => {
+  try {
+    await db.sequelize.query(`use Main`);
+    const data = await PermissionList.findAll({});
+    return res.status(200).json(data);
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
 const save = async (req, res) => {
-  await Permission.create(req.body, {})
-    .then((resp) => {
-      return res.status(200).json(resp);
-    })
-    .catch((e) => {
-      getError(e, res);
+  try {
+    await db.sequelize.query(`use Main`);
+    const data = await PermissionList.findAll({});
+
+    await db.sequelize.query(
+      `use ${req.user.tenant.replace(/[^a-zA-Z0-9 ]/g, "")}`
+    );
+
+    const check = data.some((el) => {
+      return el.name == req.body.name;
     });
+
+    if (check) {
+      Permission.create(req.body, {}).then((resp) => {
+        return res.status(200).json(resp);
+      });
+    } else {
+      return res.status(400).json({ error: "Inavlid Permission" });
+    }
+  } catch (error) {
+    getError(error, res);
+  }
 };
 
 const update = async (req, res) => {
@@ -87,4 +114,12 @@ const destroy = (req, res) => {
     });
 };
 
-export { save, update, findById, findByParam, findAll, destroy };
+export {
+  save,
+  update,
+  findById,
+  findByParam,
+  findAll,
+  destroy,
+  getAllPermission,
+};

@@ -1,32 +1,40 @@
 import React, { useState } from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
-import { addUser } from "../../../Redux/Actions/user";
+import { addRole, editRole } from "../../../Redux/Actions/role";
 import { connect } from "react-redux";
 
-const AddRoleModal = ({ addRoleModal, setAddRoleModal, addUser }) => {
-  const [loading, setLoading] = useState(false);
-
+const AddEditRoleModal = ({
+  visible,
+  setVisible,
+  editRole,
+  addRole,
+  edit = false,
+  roles,
+  roleData,
+}) => {
   const onSubmit = async (data) => {
-    setLoading(true);
-    const result = await addUser(data);
-    result && setAddRoleModal(false);
-    setLoading(false);
+    const result = edit
+      ? await editRole({ ...data, id: roleData.id })
+      : await addRole(data);
+    result && setVisible(false);
   };
 
   return (
     <Modal
-      visible={addRoleModal}
+      visible={visible}
       footer={false}
       onCancel={() => {
-        setAddRoleModal(false);
+        setVisible(false);
       }}
+      closable={false}
     >
-      <Spin spinning={loading}>
+      <Spin spinning={roles.loading}>
         <Form
-          name="register"
+          name="role"
           onFinish={onSubmit}
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 16 }}
+          initialValues={{ name: edit ? roleData.name : "" }}
         >
           <Form.Item
             name="name"
@@ -34,7 +42,7 @@ const AddRoleModal = ({ addRoleModal, setAddRoleModal, addUser }) => {
             rules={[
               {
                 required: true,
-                message: "Please input Name!",
+                message: "Please input role name!",
               },
             ]}
           >
@@ -48,13 +56,13 @@ const AddRoleModal = ({ addRoleModal, setAddRoleModal, addUser }) => {
               style={{ marginRight: "20px" }}
               htmlType="submit"
             >
-              Add Role
+              {edit ? "Edit" : "Add"} Role
             </Button>
             <Button
               className="login-form-button"
               style={{ marginRight: "20px" }}
               onClick={() => {
-                setAddRoleModal(false);
+                setVisible(false);
               }}
             >
               Cancel
@@ -65,7 +73,7 @@ const AddRoleModal = ({ addRoleModal, setAddRoleModal, addUser }) => {
     </Modal>
   );
 };
+const mapStateToProps = (state) => ({ roles: state.roles });
+const mapDispatchToProps = { addRole, editRole };
 
-const mapDispatchToProps = { addUser };
-
-export default connect(null, mapDispatchToProps)(AddRoleModal);
+export default connect(mapStateToProps, mapDispatchToProps)(AddEditRoleModal);

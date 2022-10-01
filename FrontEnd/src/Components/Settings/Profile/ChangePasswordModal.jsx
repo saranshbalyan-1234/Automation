@@ -23,16 +23,13 @@ const ChangePasswordModal = ({
       visible={changePasswordModal}
       onCancel={() => setChangePasswordModal(false)}
       footer={false}
+      closable={false}
     >
       <Spin spinning={loading}>
         <Form
           name="basic"
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 16 }}
           onFinish={onFinish}
           autoComplete="off"
         >
