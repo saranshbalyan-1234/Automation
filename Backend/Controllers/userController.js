@@ -10,6 +10,7 @@ import {
 
 const User = db.users;
 const Customer = db.customers;
+const UserRole = db.userRoles;
 
 const getTeam = async (req, res) => {
   try {

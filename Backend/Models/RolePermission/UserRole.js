@@ -26,6 +26,7 @@ export default (sequelize, DataTypes) => {
   });
   UserRole.hasOne(sequelize.models.roles, {
     foreignKey: "id",
+    sourceKey: "roleId",
     onDelete: "CASCADE",
   });
 

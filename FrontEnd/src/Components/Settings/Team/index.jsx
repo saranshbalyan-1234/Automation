@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Avatar, Popconfirm, List, Tag, Spin } from "antd";
+import { Avatar, Popconfirm, List, Tag, Spin, Button } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getTeam, removeTeamMember } from "../../../Redux/Actions/team";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-
+import ManageUserRoleModal from "./ManageUserRoleModal";
 export const Team = ({ team, loading, getTeam, removeTeamMember, user }) => {
+  const [manageUserRoleModal, setManageUserRoleModal] = useState(false);
+  const [editUserId, setEditUserId] = useState(0);
   useEffect(() => {
     getTeam();
   }, []);
@@ -47,18 +49,26 @@ export const Team = ({ team, loading, getTeam, removeTeamMember, user }) => {
                       ) : (
                         <Tag color="red">Verification Pending</Tag>
                       )}
+                      <Tag color={item.active ? "blue" : "red"}>
+                        {item.active ? "Active" : "Inactive"}
+                      </Tag>
                     </div>
                   }
                   description={item.email}
                 />
                 <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                   {" "}
-                  <Tag color={item.active ? "blue" : "red"}>
-                    {item.active ? "Active" : "Inactive"}
-                  </Tag>
-                  <EditOutlined
-                    style={{ cursor: "pointer", marginTop: "5px" }}
-                  />
+                  <Button
+                    type="primary"
+                    ghost
+                    size="small"
+                    onClick={async () => {
+                      await setEditUserId(item.id);
+                      setManageUserRoleModal(true);
+                    }}
+                  >
+                    <EditOutlined /> Manage Role
+                  </Button>
                   <Popconfirm
                     title="Are you sure to remove this user?"
                     onConfirm={() => {
@@ -67,7 +77,9 @@ export const Team = ({ team, loading, getTeam, removeTeamMember, user }) => {
                     okText="Yes, Remove"
                     cancelText="No"
                   >
-                    <DeleteOutlined style={{ marginTop: "5px" }} />
+                    <Button type="danger" ghost size="small">
+                      <DeleteOutlined /> Remove User
+                    </Button>
                   </Popconfirm>
                 </div>
               </List.Item>
@@ -75,6 +87,13 @@ export const Team = ({ team, loading, getTeam, removeTeamMember, user }) => {
           />
         </Spin>
       </InfiniteScroll>
+      {manageUserRoleModal && (
+        <ManageUserRoleModal
+          visible={manageUserRoleModal}
+          setVisible={setManageUserRoleModal}
+          userId={editUserId}
+        />
+      )}
     </div>
   );
 };

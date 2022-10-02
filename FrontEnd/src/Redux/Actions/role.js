@@ -23,6 +23,16 @@ export const getAllRole = (payload) => {
     }
   };
 };
+export const addRolesToUser = (payload, userId) => {
+  return async (dispatch) => {
+    try {
+      await axios.put(`/userRole/user/${userId}`, payload);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
+};
 
 export const deleteRole = (id) => {
   return async (dispatch) => {
@@ -89,7 +99,7 @@ export const removePermissionFromRole = (roleId, permissionId) => {
   return async (dispatch) => {
     try {
       dispatch({ type: ROLE_REQUEST });
-      const { data } = await axios.delete(`/permission/${permissionId}`);
+      await axios.delete(`/permission/${permissionId}`);
       dispatch({
         type: REMOVE_PERMISSION_FROM_ROLE_SUCCESS,
         payload: { roleId, permissionId },
