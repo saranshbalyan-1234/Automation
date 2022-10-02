@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Modal, Button, Spin, Checkbox, Select } from "antd";
-import { updateUserRole } from "../../../Redux/Actions/role";
+import { updateUserRole } from "../../../../Redux/Actions/role";
 import { connect } from "react-redux";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 const { Option } = Select;
-const ManageUserRoleModal = ({
-  visible,
-  setVisible,
-  userId,
-  updateUserRole,
-}) => {
+const ManageUserRole = ({ setVisible, userId, updateUserRole }) => {
   const [loading, setLoading] = useState(false);
   const [availableRole, setAvailableRole] = useState([]);
   const [addedRole, setAddedRole] = useState([]);
@@ -81,16 +76,14 @@ const ManageUserRoleModal = ({
   };
 
   return (
-    <Modal
-      visible={visible}
-      footer={false}
-      onCancel={() => {
-        setVisible(false);
-      }}
-      closable={false}
-      width={550}
-    >
-      <Spin spinning={loading}>
+    <Spin spinning={loading}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+        }}
+      >
         {addedRole.map((role, index) => {
           return (
             <div
@@ -126,49 +119,46 @@ const ManageUserRoleModal = ({
             </div>
           );
         })}
+      </div>
+      <Button
+        type="dashed"
+        onClick={addEmptyRole}
+        block
+        icon={<PlusOutlined />}
+        style={{ marginTop: "20px" }}
+        disabled={availableRole.length === 0}
+      >
+        Add Role
+      </Button>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "20px",
+        }}
+      >
         <Button
-          type="dashed"
-          onClick={addEmptyRole}
-          block
-          icon={<PlusOutlined />}
-          style={{ marginTop: "20px" }}
-          disabled={availableRole.length === 0}
+          type="primary"
+          className="login-form-button"
+          style={{ marginRight: "20px" }}
+          disabled={addedRole.length === 0}
+          onClick={handleSubmit}
         >
-          Add Role
+          Submit
         </Button>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "20px",
+        <Button
+          className="login-form-button"
+          onClick={() => {
+            setVisible(false);
           }}
         >
-          <Button
-            type="primary"
-            className="login-form-button"
-            style={{ marginRight: "20px" }}
-            disabled={addedRole.length === 0}
-            onClick={handleSubmit}
-          >
-            Submit
-          </Button>
-          <Button
-            className="login-form-button"
-            onClick={() => {
-              setVisible(false);
-            }}
-          >
-            Cancel
-          </Button>
-        </div>
-      </Spin>
-    </Modal>
+          Cancel
+        </Button>
+      </div>
+    </Spin>
   );
 };
 const mapStateToProps = (state) => ({});
 const mapDispatchToProps = { updateUserRole };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ManageUserRoleModal);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageUserRole);

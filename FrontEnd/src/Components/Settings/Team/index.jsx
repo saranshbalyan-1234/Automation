@@ -8,7 +8,7 @@ import {
   toggleUserActiveInactive,
 } from "../../../Redux/Actions/team";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import ManageUserRoleModal from "./ManageUserRoleModal";
+import ManageUserModal from "./ManagerUserModal";
 
 export const Team = ({
   team,
@@ -18,7 +18,7 @@ export const Team = ({
   user,
   toggleUserActiveInactive,
 }) => {
-  const [manageUserRoleModal, setManageUserRoleModal] = useState(false);
+  const [manageUserModal, setManageUserModal] = useState(false);
   const [editUserId, setEditUserId] = useState(0);
   useEffect(() => {
     getTeam();
@@ -90,7 +90,7 @@ export const Team = ({
                     size="small"
                     onClick={async () => {
                       await setEditUserId(item.id);
-                      setManageUserRoleModal(true);
+                      setManageUserModal(true);
                     }}
                   >
                     <EditOutlined /> Manage Role
@@ -113,10 +113,10 @@ export const Team = ({
           />
         </Spin>
       </InfiniteScroll>
-      {manageUserRoleModal && (
-        <ManageUserRoleModal
-          visible={manageUserRoleModal}
-          setVisible={setManageUserRoleModal}
+      {manageUserModal && (
+        <ManageUserModal
+          visible={manageUserModal}
+          setVisible={setManageUserModal}
           userId={editUserId}
         />
       )}
