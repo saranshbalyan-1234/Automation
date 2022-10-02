@@ -18,9 +18,14 @@ const changePasswordValidation = joi.object({
 const changeDetailsValidation = joi.object({
   name: joi.string(),
 });
+const activeInactiveValidation = joi.object({
+  userId: joi.number().integer().required(),
+  active: joi.boolean().required(),
+});
 export {
   registerValidation,
   loginValidation,
   changePasswordValidation,
   changeDetailsValidation,
+  activeInactiveValidation,
 };

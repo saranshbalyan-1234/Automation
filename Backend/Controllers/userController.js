@@ -6,11 +6,11 @@ import {
   registerValidation,
   changePasswordValidation,
   changeDetailsValidation,
+  activeInactiveValidation,
 } from "../Utils/hapiValidation.js";
 
 const User = db.users;
 const Customer = db.customers;
-const UserRole = db.userRoles;
 
 const getTeam = async (req, res) => {
   try {
@@ -72,8 +72,6 @@ const deleteUser = async (req, res) => {
       });
 
       if (deletedCustomerUser == 1) {
-        // const database = req.user.tenant.replace(/[^a-zA-Z0-9 ]/g, "");
-        // await db.sequelize.query(`DROP DATABASE ${database}`);
         return res.status(200).json({ message: "User Deleted Successfully" });
       }
     } else {
@@ -129,4 +127,36 @@ const changeDetails = async (req, res) => {
   }
 };
 
-export { addUser, deleteUser, changePassword, changeDetails, getTeam };
+const toggleUserActiveInactive = async (req, res) => {
+  try {
+    let userId = req.params.userId;
+    let active = req.body.active;
+    const { error } = activeInactiveValidation.validate({
+      userId,
+      active,
+    });
+    if (error) throw new Error(error.details[0].message);
+
+    const updatedUser = await User.update(req.body, {
+      where: {
+        id: userId,
+      },
+    });
+    if (updatedUser[0])
+      return res
+        .status(200)
+        .json({ message: `Marked User as ${active ? "Active" : "Inactive"}` });
+    else throw new Error("User Not Registered");
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
+export {
+  addUser,
+  deleteUser,
+  changePassword,
+  changeDetails,
+  getTeam,
+  toggleUserActiveInactive,
+};

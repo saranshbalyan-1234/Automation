@@ -10,7 +10,6 @@ import jwtRoutes from "./Routes/jwtRoutes.js";
 import mailRoutes from "./Routes/mailRoutes.js";
 import roleRoutes from "./Routes/roleRoutes.js";
 import userRoleRoutes from "./Routes/userRoleRoutes.js";
-import seedRoutes from "./Routes/seedRoutes.js";
 import permissionRoutes from "./Routes/permissionRoutes.js";
 
 const app = express();
@@ -37,7 +36,6 @@ app.use("/role", roleRoutes);
 app.use("/userRole", userRoleRoutes);
 app.use("/permission", permissionRoutes);
 app.use("/mail", mailRoutes);
-app.use("/seed", seedRoutes);
 
 app.use((req, res) => {
   return res.status(404).json({ error: "Endpoint Not Found" });

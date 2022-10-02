@@ -2,7 +2,7 @@ import db from "../Utils/dataBaseConnection.js";
 import getError from "../Utils/sequelizeError.js";
 const UserRole = db.userRoles;
 const Role = db.roles;
-const getRole = async (req, res) => {
+const getUserRole = async (req, res) => {
   try {
     const roles = await UserRole.findAll({
       where: { userId: req.params.userId },
@@ -37,23 +37,4 @@ const updateUserRole = async (req, res) => {
   }
 };
 
-const destroy = (req, res) => {
-  UserRole.destroy({
-    where: {
-      id: req.body.id,
-    },
-  })
-    .then((resp) => {
-      console.log(resp);
-      if (resp > 0) {
-        return res.status(200).json({ message: "Removed role from user" });
-      } else {
-        return res.status(400).json({ error: "Record not found" });
-      }
-    })
-    .catch((e) => {
-      getError(e, res);
-    });
-};
-
-export { getRole, updateUserRole, destroy };
+export { getUserRole, updateUserRole };

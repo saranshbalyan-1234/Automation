@@ -3,7 +3,25 @@ import getError from "../Utils/sequelizeError.js";
 const Role = db.roles;
 const Permission = db.permissions;
 const PermissionList = db.permissionList;
-const save = async (req, res) => {
+
+const getAllRole = async (req, res) => {
+  await Role.findAll({
+    include: [
+      {
+        model: Permission,
+        attributes: ["id", "name", "view", "add", "edit", "delete"],
+      },
+    ],
+  })
+    .then((resp) => {
+      return res.status(200).json(resp);
+    })
+    .catch((e) => {
+      getError(e, res);
+    });
+};
+
+const saveRole = async (req, res) => {
   await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
   await Role.create(req.body, {})
     .then((resp) => {
@@ -14,7 +32,7 @@ const save = async (req, res) => {
     });
 };
 
-const update = async (req, res) => {
+const updateRole = async (req, res) => {
   await Role.update(req.body, {
     where: {
       id: req.params.id,
@@ -37,47 +55,8 @@ const update = async (req, res) => {
       getError(e, res);
     });
 };
-const findById = async (req, res) => {
-  await Role.findByPk(req.params.id)
-    .then((resp) => {
-      if (resp) return res.status(200).json(resp);
-      else return res.status(400).json({ erros: ["Role not found"] });
-    })
-    .catch((e) => {
-      getError(e, res);
-    });
-};
-const findAll = async (req, res) => {
-  await Role.findAll({
-    include: [
-      {
-        model: Permission,
-        attributes: ["id", "name", "view", "add", "edit", "delete"],
-      },
-    ],
-  })
-    .then((resp) => {
-      return res.status(200).json(resp);
-    })
-    .catch((e) => {
-      getError(e, res);
-    });
-};
 
-const findByParam = async (req, res) => {
-  await Role.findOne({
-    where: req.body,
-  })
-    .then((resp) => {
-      if (resp) return res.status(200).json(resp);
-      else return res.status(400).json({ erros: ["Role not found"] });
-    })
-    .catch((e) => {
-      getError(e, res);
-    });
-};
-
-const destroy = (req, res) => {
+const deleteRole = (req, res) => {
   Role.destroy({
     where: {
       id: req.params.id,
@@ -122,12 +101,4 @@ const updateRolePermission = async (req, res) => {
     getError(error, res);
   }
 };
-export {
-  save,
-  update,
-  findById,
-  findByParam,
-  findAll,
-  destroy,
-  updateRolePermission,
-};
+export { saveRole, updateRole, getAllRole, deleteRole, updateRolePermission };

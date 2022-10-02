@@ -2,15 +2,31 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Avatar, Popconfirm, List, Tag, Spin, Button, Switch } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { getTeam, removeTeamMember } from "../../../Redux/Actions/team";
+import {
+  getTeam,
+  removeTeamMember,
+  toggleUserActiveInactive,
+} from "../../../Redux/Actions/team";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ManageUserRoleModal from "./ManageUserRoleModal";
-export const Team = ({ team, loading, getTeam, removeTeamMember, user }) => {
+
+export const Team = ({
+  team,
+  loading,
+  getTeam,
+  removeTeamMember,
+  user,
+  toggleUserActiveInactive,
+}) => {
   const [manageUserRoleModal, setManageUserRoleModal] = useState(false);
   const [editUserId, setEditUserId] = useState(0);
   useEffect(() => {
     getTeam();
   }, []);
+  const toggleActiveInactive = (status, userId) => {
+    console.log("saransh", status);
+    toggleUserActiveInactive(status, userId);
+  };
   return (
     <div
       id="scrollableDiv"
@@ -63,7 +79,8 @@ export const Team = ({ team, loading, getTeam, removeTeamMember, user }) => {
                 />
                 <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                   <Switch
-                    defaultChecked={item.active}
+                    onChange={(e) => toggleActiveInactive(e, item.id)}
+                    checked={item.active}
                     checkedChildren="Active"
                     unCheckedChildren="Inactive"
                   />
@@ -113,6 +130,10 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-const mapDispatchToProps = { getTeam, removeTeamMember };
+const mapDispatchToProps = {
+  getTeam,
+  removeTeamMember,
+  toggleUserActiveInactive,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Team);

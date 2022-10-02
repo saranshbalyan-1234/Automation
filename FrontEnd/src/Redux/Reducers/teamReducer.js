@@ -4,6 +4,7 @@ import {
   GET_TEAM_SUCCESS,
   ADD_TEAM_MEMBER_SUCCESS,
   REMOVE_TEAM_MEMBER_SUCCESS,
+  TOGGLE_TEAM_USER_STATUS,
 } from "../Actions/action-types";
 
 const initState = {
@@ -47,7 +48,15 @@ const teamReducer = (state = initState, { type, payload }) => {
         loading: false,
         data: temp,
       };
-
+    case TOGGLE_TEAM_USER_STATUS:
+      let updatedStatus = [...state.data].map((el) => {
+        return el.id == payload.userId ? { ...el, active: payload.status } : el;
+      });
+      return {
+        ...state,
+        loading: false,
+        data: updatedStatus,
+      };
     default:
       return state;
   }
