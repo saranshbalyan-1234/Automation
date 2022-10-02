@@ -1,34 +1,51 @@
 import {
-  ADD_USER_REQUEST,
-  ADD_USER_SUCCESS,
-  ADD_USER_FAILURE,
+  TEAM_REQUEST,
+  TEAM_FAILURE,
+  GET_TEAM_SUCCESS,
+  ADD_TEAM_MEMBER_SUCCESS,
+  REMOVE_TEAM_MEMBER_SUCCESS,
 } from "../Actions/action-types";
 
 const initState = {
   loading: false,
-  user: null,
+  data: [],
 };
 
 const teamReducer = (state = initState, { type, payload }) => {
   switch (type) {
-    case ADD_USER_REQUEST:
+    case TEAM_REQUEST:
       return {
         ...state,
         loading: true,
-        user: null,
       };
-    case ADD_USER_SUCCESS:
+    case TEAM_FAILURE:
       return {
         ...state,
-        loading: true,
-        user: null,
+        loading: false,
       };
 
-    case ADD_USER_FAILURE:
+    case GET_TEAM_SUCCESS:
       return {
         ...state,
-        loading: true,
-        user: null,
+        loading: false,
+        data: payload,
+      };
+    case ADD_TEAM_MEMBER_SUCCESS:
+      const { id, name, email } = payload;
+      return {
+        ...state,
+        loading: false,
+        data: [
+          ...state.data,
+          { id, name, email, verifiedAt: null, active: true },
+        ],
+      };
+    case REMOVE_TEAM_MEMBER_SUCCESS:
+      let temp = [...state.data].filter((el) => el.id !== payload);
+      return {
+        ...state,
+        loading: false,
+        data: temp,
       };
 
     default:

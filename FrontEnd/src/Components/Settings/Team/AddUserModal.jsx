@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
-import { addUser } from "../../../Redux/Actions/user";
+import { addTeamMember } from "../../../Redux/Actions/team";
 import { connect } from "react-redux";
 
-const AddUserModal = ({ addUserModal, setAddUserModal, addUser }) => {
+const AddUserModal = ({ addUserModal, setAddUserModal, addTeamMember }) => {
   const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState({
     name: "",
@@ -20,7 +20,7 @@ const AddUserModal = ({ addUserModal, setAddUserModal, addUser }) => {
   };
   const onSubmit = async () => {
     setLoading(true);
-    const result = await addUser(details);
+    const result = await addTeamMember(details);
     result && setAddUserModal(false);
     setLoading(false);
   };
@@ -145,6 +145,6 @@ const AddUserModal = ({ addUserModal, setAddUserModal, addUser }) => {
   );
 };
 
-const mapDispatchToProps = { addUser };
+const mapDispatchToProps = { addTeamMember };
 
 export default connect(null, mapDispatchToProps)(AddUserModal);

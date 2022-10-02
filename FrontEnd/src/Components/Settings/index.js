@@ -109,7 +109,7 @@ function Setting({ getAllRole, roles }) {
             )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Team" key="team">
-            <Team />
+            {activeTab === "team" && <Team />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Notification" key="notification">
             <ComingSoon />

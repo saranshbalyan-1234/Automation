@@ -1,33 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Avatar, Divider, List, Skeleton } from "antd";
+import { Avatar, Popconfirm, List, Tag, Spin } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { getTeam, removeTeamMember } from "../../../Redux/Actions/team";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
-export const Team = (props) => {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
-
-  const loadMoreData = () => {
-    if (loading) {
-      return;
-    }
-
-    setLoading(true);
-    fetch(
-      "https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo"
-    )
-      .then((res) => res.json())
-      .then((body) => {
-        setData([...data, ...body.results]);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  };
-
+export const Team = ({ team, loading, getTeam, removeTeamMember, user }) => {
   useEffect(() => {
-    loadMoreData();
+    getTeam();
   }, []);
   return (
     <div
@@ -40,41 +20,71 @@ export const Team = (props) => {
       }}
     >
       <InfiniteScroll
-        dataLength={data.length}
-        next={loadMoreData}
-        hasMore={data.length < 50}
-        loader={
-          <Skeleton
-            avatar
-            paragraph={{
-              rows: 1,
-            }}
-            active
-          />
-        }
-        endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+        dataLength={team.length}
+        // next={loadMoreData}
+        // hasMore={data.length < 50}
+
         scrollableTarget="scrollableDiv"
       >
-        <List
-          dataSource={data}
-          renderItem={(item) => (
-            <List.Item key={item.email}>
-              <List.Item.Meta
-                avatar={<Avatar src={item.picture.large} />}
-                title={<div>{item.name.last}</div>}
-                description={item.email}
-              />
-              <div>Content</div>
-            </List.Item>
-          )}
-        />
+        <Spin spinning={loading}>
+          <List
+            dataSource={team}
+            renderItem={(item) => (
+              <List.Item key={item.email}>
+                <List.Item.Meta
+                  avatar={<Avatar src={""} />}
+                  title={
+                    <div
+                      style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
+                    >
+                      <div> {item.name}</div>
+                      {item.verifiedAt ? (
+                        <Tag color="blue">
+                          {item.email == user.email && user.customerAdmin
+                            ? "Customer Admin"
+                            : "User"}
+                        </Tag>
+                      ) : (
+                        <Tag color="red">Verification Pending</Tag>
+                      )}
+                    </div>
+                  }
+                  description={item.email}
+                />
+                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                  {" "}
+                  <Tag color={item.active ? "blue" : "red"}>
+                    {item.active ? "Active" : "Inactive"}
+                  </Tag>
+                  <EditOutlined
+                    style={{ cursor: "pointer", marginTop: "5px" }}
+                  />
+                  <Popconfirm
+                    title="Are you sure to remove this user?"
+                    onConfirm={() => {
+                      removeTeamMember(item.id);
+                    }}
+                    okText="Yes, Remove"
+                    cancelText="No"
+                  >
+                    <DeleteOutlined style={{ marginTop: "5px" }} />
+                  </Popconfirm>
+                </div>
+              </List.Item>
+            )}
+          />
+        </Spin>
       </InfiniteScroll>
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  team: state.team.data,
+  loading: state.team.loading,
+  user: state.auth.user,
+});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { getTeam, removeTeamMember };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Team);

@@ -11,6 +11,18 @@ import {
 const User = db.users;
 const Customer = db.customers;
 
+const getTeam = async (req, res) => {
+  try {
+    const team = await User.findAll({});
+    const filteredTeam = team.filter((el) => {
+      return el.id != req.user.id;
+    });
+    return res.status(200).json(filteredTeam);
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
 const addUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -116,4 +128,4 @@ const changeDetails = async (req, res) => {
   }
 };
 
-export { addUser, deleteUser, changePassword, changeDetails };
+export { addUser, deleteUser, changePassword, changeDetails, getTeam };
