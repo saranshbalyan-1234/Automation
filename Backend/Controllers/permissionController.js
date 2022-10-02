@@ -15,33 +15,6 @@ const getAllPermission = async (req, res) => {
   }
 };
 
-const save = async (req, res) => {
-  try {
-    await db.sequelize.query(`use Main`);
-    const data = await PermissionList.findAll({});
-
-    await db.sequelize.query(
-      `use ${req.user.tenant.replace(/[^a-zA-Z0-9 ]/g, "")}`
-    );
-
-    const check = data.some((el) => {
-      return req.body.some((el1) => {
-        return el.name == el1.name;
-      });
-    });
-
-    if (check) {
-      Permission.bulkCreate(req.body).then((resp) => {
-        return res.status(200).json(resp);
-      });
-    } else {
-      return res.status(400).json({ error: "Inavlid Permission" });
-    }
-  } catch (error) {
-    getError(error, res);
-  }
-};
-
 const update = async (req, res) => {
   await Permission.update(req.body, {
     where: {
@@ -118,12 +91,4 @@ const destroy = (req, res) => {
     });
 };
 
-export {
-  save,
-  update,
-  findById,
-  findByParam,
-  findAll,
-  destroy,
-  getAllPermission,
-};
+export { update, findById, findByParam, findAll, destroy, getAllPermission };

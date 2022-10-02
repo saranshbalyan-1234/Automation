@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Modal, Button, Spin, Checkbox, Select } from "antd";
-import { addPermissionToRole } from "../../../Redux/Actions/role";
+import { updateRolePermission } from "../../../Redux/Actions/role";
 import { connect } from "react-redux";
-import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 const { Option } = Select;
-const AddPermissionModal = ({
+const ManagePermissionModal = ({
   visible,
   setVisible,
-  addPermissionToRole,
+  updateRolePermission,
   roles,
   roleData,
 }) => {
-  console.log("saransh", roleData);
   const [loading, setLoading] = useState(false);
   const [availablePermission, setAvailablePermission] = useState([]);
-  const [addedPermission, setAddedPermission] = useState([]);
+  const [addedPermission, setAddedPermission] = useState([
+    ...roleData.permissions,
+  ]);
   const [allPermission, setAllPermission] = useState([]);
   useEffect(() => {
     getAvailablePermission();
@@ -75,7 +76,7 @@ const AddPermissionModal = ({
     setAddedPermission(temp);
   };
   const handleSubmit = async () => {
-    const result = await addPermissionToRole(addedPermission, roleData.id);
+    const result = await updateRolePermission(addedPermission, roleData.id);
     result && setVisible(false);
   };
 
@@ -154,8 +155,8 @@ const AddPermissionModal = ({
                   checked={permission.delete}
                 />
               </div>
-              <MinusCircleOutlined
-                style={{ cursor: "pointer" }}
+              <DeleteOutlined
+                style={{ cursor: "pointer", marginTop: "5px" }}
                 onClick={() => {
                   handlePermissionRemove(index);
                 }}
@@ -203,6 +204,9 @@ const AddPermissionModal = ({
   );
 };
 const mapStateToProps = (state) => ({ roles: state.roles });
-const mapDispatchToProps = { addPermissionToRole };
+const mapDispatchToProps = { updateRolePermission };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddPermissionModal);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ManagePermissionModal);

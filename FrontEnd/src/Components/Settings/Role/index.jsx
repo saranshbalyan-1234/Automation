@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { List, Spin, Popconfirm, Checkbox, Collapse, Button } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import {
-  deleteRole,
-  removePermissionFromRole,
-} from "../../../Redux/Actions/role";
+  DeleteOutlined,
+  EditOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+import { deleteRole } from "../../../Redux/Actions/role";
 import AddEditRoleModal from "./AddEditRoleModal";
-import AddPermissionModal from "./AddPermissionModal";
+import ManagePermissionModal from "./ManagePermissionModal";
 const { Panel } = Collapse;
 export const Role = ({
   data,
   loading,
   profile = false,
   deleteRole,
-  removePermissionFromRole,
   setAddPermissionModal,
   addPermissionModal,
   singleRoleData,
@@ -39,21 +39,7 @@ export const Role = ({
           renderItem={(permission) => (
             <List.Item>
               <List.Item.Meta
-                title={
-                  <div>
-                    Permission: {permission.name}{" "}
-                    <Popconfirm
-                      title="Are you sure to remove this permission?"
-                      onConfirm={() => {
-                        removePermissionFromRole(role.id, permission.id);
-                      }}
-                      okText="Yes, Remove"
-                      cancelText="No"
-                    >
-                      <DeleteOutlined style={{ marginTop: "5px" }} />
-                    </Popconfirm>
-                  </div>
-                }
+                title={<div>Permission: {permission.name}</div>}
                 description={
                   <div
                     style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}
@@ -79,17 +65,6 @@ export const Role = ({
             </List.Item>
           )}
         />
-        <Button
-          type="primary"
-          ghost
-          size="small"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAddPermission(role);
-          }}
-        >
-          Add Permmissions
-        </Button>
       </div>
     );
   };
@@ -106,24 +81,54 @@ export const Role = ({
                       display: "flex",
                       flexWrap: "wrap",
                       gap: "10px",
-                      alignItems: "center",
+                      justifyContent: "space-between",
                     }}
                   >
-                    Role: {item.name}
                     <div
                       style={{
                         display: "flex",
                         flexWrap: "wrap",
-                        gap: "5px",
+                        gap: "10px",
+                        alignItems: "center",
                       }}
                     >
-                      <EditOutlined
-                        style={{ cursor: "pointer", marginTop: "5px" }}
+                      Role: {item.name}
+                      <div
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: "5px",
+                        }}
+                      ></div>
+                    </div>
+                    <div
+                      style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+                    >
+                      <Button
+                        type="primary"
+                        ghost
+                        size="small"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleRoleEdit(item);
                         }}
-                      />
+                      >
+                        <EditOutlined
+                          style={{ cursor: "pointer", marginTop: "5px" }}
+                        />{" "}
+                        Edit Role
+                      </Button>
+                      <Button
+                        type="primary"
+                        ghost
+                        size="small"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAddPermission(item);
+                        }}
+                      >
+                        <SettingOutlined /> Manage Permmission
+                      </Button>
                       <Popconfirm
                         title="Are you sure to delete this Role?"
                         onConfirm={(e) => {
@@ -136,7 +141,9 @@ export const Role = ({
                           e.stopPropagation();
                         }}
                       >
-                        <DeleteOutlined style={{ marginTop: "5px" }} />
+                        <Button type="danger" ghost size="small">
+                          <DeleteOutlined /> Delete Role
+                        </Button>
                       </Popconfirm>
                     </div>
                   </div>
@@ -157,7 +164,7 @@ export const Role = ({
         />
       )}
       {addPermissionModal && (
-        <AddPermissionModal
+        <ManagePermissionModal
           visible={addPermissionModal}
           setVisible={setAddPermissionModal}
           roleData={singleRoleData}
@@ -169,6 +176,6 @@ export const Role = ({
 
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = { deleteRole, removePermissionFromRole };
+const mapDispatchToProps = { deleteRole };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Role);

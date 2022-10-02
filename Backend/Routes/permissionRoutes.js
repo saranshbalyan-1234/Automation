@@ -3,7 +3,6 @@ import {
   findAll,
   findById,
   findByParam,
-  save,
   update,
   destroy,
   getAllPermission,
@@ -18,7 +17,7 @@ Router.get(
   validatePermission("permission", "view"),
   findByParam
 );
-Router.post("/", validatePermission("permission", "add"), save);
+
 Router.put("/:id", validatePermission("permission", "edit"), update);
 Router.delete("/:id", validatePermission("permission", "delete"), destroy);
 

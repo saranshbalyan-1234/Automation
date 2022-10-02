@@ -26,7 +26,7 @@ const getRole = async (req, res) => {
   }
 };
 
-const save = async (req, res) => {
+const updateUserRole = async (req, res) => {
   try {
     await UserRole.destroy({ where: { userId: req.params.userId } });
     await UserRole.bulkCreate(req.body).then((resp) => {
@@ -56,4 +56,4 @@ const destroy = (req, res) => {
     });
 };
 
-export { getRole, save, destroy };
+export { getRole, updateUserRole, destroy };

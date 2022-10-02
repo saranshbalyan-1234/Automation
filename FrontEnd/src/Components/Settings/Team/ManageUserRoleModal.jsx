@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Modal, Button, Spin, Checkbox, Select } from "antd";
-import { addRolesToUser } from "../../../Redux/Actions/role";
+import { updateUserRole } from "../../../Redux/Actions/role";
 import { connect } from "react-redux";
-import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 const { Option } = Select;
 const ManageUserRoleModal = ({
   visible,
   setVisible,
   userId,
-  addRolesToUser,
+  updateUserRole,
 }) => {
   const [loading, setLoading] = useState(false);
   const [availableRole, setAvailableRole] = useState([]);
@@ -73,7 +73,7 @@ const ManageUserRoleModal = ({
   };
   const handleSubmit = async () => {
     setLoading(true);
-    const result = await addRolesToUser(addedRole, userId);
+    const result = await updateUserRole(addedRole, userId);
     if (result) {
       setVisible(false);
       setLoading(false);
@@ -117,7 +117,7 @@ const ManageUserRoleModal = ({
                 })}
               </Select>
 
-              <MinusCircleOutlined
+              <DeleteOutlined
                 style={{ cursor: "pointer" }}
                 onClick={() => {
                   handleRoleRemove(index, role);
@@ -166,7 +166,7 @@ const ManageUserRoleModal = ({
   );
 };
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = { addRolesToUser };
+const mapDispatchToProps = { updateUserRole };
 
 export default connect(
   mapStateToProps,

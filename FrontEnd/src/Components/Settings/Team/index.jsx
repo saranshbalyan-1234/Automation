@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Avatar, Popconfirm, List, Tag, Spin, Button } from "antd";
+import { Avatar, Popconfirm, List, Tag, Spin, Button, Switch } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getTeam, removeTeamMember } from "../../../Redux/Actions/team";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
@@ -40,24 +40,33 @@ export const Team = ({ team, loading, getTeam, removeTeamMember, user }) => {
                       style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
                     >
                       <div> {item.name}</div>
-                      {item.verifiedAt ? (
-                        <Tag color="blue">
+                      {!item.verifiedAt && (
+                        <Tag color="red">Verification Pending</Tag>
+                      )}
+                    </div>
+                  }
+                  description={
+                    <div
+                    // style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+                    >
+                      <div>{item.email}</div>
+                      <div style={{ marginTop: "5px" }}>
+                        Type:
+                        <Tag color="blue" style={{ marginLeft: "5px" }}>
                           {item.email == user.email && user.customerAdmin
                             ? "Customer Admin"
                             : "User"}
                         </Tag>
-                      ) : (
-                        <Tag color="red">Verification Pending</Tag>
-                      )}
-                      <Tag color={item.active ? "blue" : "red"}>
-                        {item.active ? "Active" : "Inactive"}
-                      </Tag>
+                      </div>
                     </div>
                   }
-                  description={item.email}
                 />
                 <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                  {" "}
+                  <Switch
+                    defaultChecked={item.active}
+                    checkedChildren="Active"
+                    unCheckedChildren="Inactive"
+                  />
                   <Button
                     type="primary"
                     ghost

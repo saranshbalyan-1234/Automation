@@ -6,7 +6,7 @@ import {
   DELETE_ROLE_SUCCESS,
   ADD_ROLE_SUCCESS,
   EDIT_ROLE_SUCCESS,
-  ADD_PERMISSION_TO_ROLE_SUCCESS,
+  UPDATE_ROLE_PERMISSION_SUCCESS,
   REMOVE_PERMISSION_FROM_ROLE_SUCCESS,
 } from "./action-types";
 
@@ -23,7 +23,7 @@ export const getAllRole = (payload) => {
     }
   };
 };
-export const addRolesToUser = (payload, userId) => {
+export const updateUserRole = (payload, userId) => {
   return async (dispatch) => {
     try {
       await axios.put(`/userRole/user/${userId}`, payload);
@@ -78,35 +78,20 @@ export const editRole = (payload) => {
   };
 };
 
-export const addPermissionToRole = (permissions, roleId) => {
+export const updateRolePermission = (permissions, roleId) => {
   return async (dispatch) => {
     try {
       dispatch({ type: ROLE_REQUEST });
-      const { data } = await axios.post("/permission", permissions);
+      const { data } = await axios.put(
+        `role/${roleId}/permission`,
+        permissions
+      );
       dispatch({
-        type: ADD_PERMISSION_TO_ROLE_SUCCESS,
+        type: UPDATE_ROLE_PERMISSION_SUCCESS,
         payload: { data, roleId },
       });
       return true;
     } catch (err) {
-      console.log("saransh", err);
-      dispatch({ type: ROLE_FAILURE });
-      return false;
-    }
-  };
-};
-export const removePermissionFromRole = (roleId, permissionId) => {
-  return async (dispatch) => {
-    try {
-      dispatch({ type: ROLE_REQUEST });
-      await axios.delete(`/permission/${permissionId}`);
-      dispatch({
-        type: REMOVE_PERMISSION_FROM_ROLE_SUCCESS,
-        payload: { roleId, permissionId },
-      });
-      return true;
-    } catch (err) {
-      console.log("saransh", err);
       dispatch({ type: ROLE_FAILURE });
       return false;
     }
