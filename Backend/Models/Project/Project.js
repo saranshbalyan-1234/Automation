@@ -39,5 +39,7 @@ export default (sequelize, DataTypes) => {
     onDelete: "CASCADE",
   });
 
+  Project.belongsToMany(sequelize.models.users, { through: "userProjects" });
+
   return Project;
 };

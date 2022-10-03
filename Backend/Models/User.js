@@ -40,5 +40,7 @@ export default (sequelize, DataTypes) => {
     foreignKey: "userId",
   });
 
+  User.belongsToMany(sequelize.models.projects, { through: "userProjects" });
+
   return User;
 };

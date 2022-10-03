@@ -15,5 +15,7 @@ export default (sequelize, DataTypes) => {
     onDelete: "CASCADE",
   });
 
+  // Role.belongsToMany(sequelize.models.projects, { through: "userRoles" });
+
   return Role;
 };

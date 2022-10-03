@@ -10,6 +10,9 @@ import User from "../Models/User.js";
 import UserRole from "../Models/RolePermission/UserRole.js";
 import PermissionList from "../Models/RolePermission/PermissionList.js";
 
+// import Project from '../Models/Project/Project.js'
+// import UserProject from "../Models/Project/UserProject.js";
+
 dotenv.config();
 
 const sequelize = new Sequelize(
