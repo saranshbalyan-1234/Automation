@@ -27,6 +27,7 @@ const AddUserModal = ({ addUserModal, setAddUserModal, addTeamMember }) => {
 
   return (
     <Modal
+      title="Add User"
       visible={addUserModal}
       footer={false}
       onCancel={() => {

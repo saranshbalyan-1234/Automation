@@ -76,7 +76,7 @@ export const toggleUserActiveInactive = (status, userId) => {
 export const deleteCustomer = () => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.delete(`/user/saransh`);
+      const { data } = await axios.delete(`/user/customer`);
       if (data) dispatch({ type: LOGOUT });
       return true;
     } catch (err) {

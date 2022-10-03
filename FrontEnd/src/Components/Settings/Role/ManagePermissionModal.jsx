@@ -64,7 +64,6 @@ const ManagePermissionModal = ({
   };
 
   const handlePermissionRemove = (index) => {
-    console.log("saransh", index);
     let temp = [...addedPermission];
     const tempAddedPermission = [
       ...availablePermission,
@@ -82,6 +81,7 @@ const ManagePermissionModal = ({
 
   return (
     <Modal
+      title="Manage Permissions"
       visible={visible}
       footer={false}
       onCancel={() => {

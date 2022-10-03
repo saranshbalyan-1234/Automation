@@ -28,7 +28,7 @@ const ChangePasswordModal = ({
       <Spin spinning={loading}>
         <Form
           name="basic"
-          labelCol={{ span: 5 }}
+          labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           onFinish={onFinish}
           autoComplete="off"

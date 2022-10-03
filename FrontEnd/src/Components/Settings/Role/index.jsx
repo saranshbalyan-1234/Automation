@@ -113,10 +113,7 @@ export const Role = ({
                           handleRoleEdit(item);
                         }}
                       >
-                        <EditOutlined
-                          style={{ cursor: "pointer", marginTop: "5px" }}
-                        />{" "}
-                        Edit Role
+                        <EditOutlined style={{ cursor: "pointer" }} /> Edit Role
                       </Button>
                       <Button
                         type="primary"

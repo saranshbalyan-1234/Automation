@@ -10,6 +10,7 @@ export default function ManageUser({ visible, setVisible, userId }) {
 
   return (
     <Modal
+      title="Manager User"
       visible={visible}
       footer={false}
       onCancel={() => {

@@ -20,18 +20,17 @@ const AddEditRoleModal = ({
       result && setVisible(false);
     } else {
       let result = await addRole(data);
-      // if (result) {
-      console.log("saransh", result);
-
-      await setSingleRoleData({ ...result, permissions: [] });
-      setAddPermissionModal(true);
-      setVisible(false);
-      // }
+      if (result) {
+        await setSingleRoleData({ ...result, permissions: [] });
+        setAddPermissionModal(true);
+        setVisible(false);
+      }
     }
   };
 
   return (
     <Modal
+      title={edit ? "Edit Role" : "Add Role"}
       visible={visible}
       footer={false}
       onCancel={() => {

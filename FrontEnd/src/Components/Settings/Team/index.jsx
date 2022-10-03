@@ -26,7 +26,6 @@ export const Team = ({
     getTeam();
   }, []);
   const toggleActiveInactive = (status, userId) => {
-    console.log("saransh", status);
     toggleUserActiveInactive(status, userId);
   };
   return (

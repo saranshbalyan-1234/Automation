@@ -12,7 +12,7 @@ import {
 import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
-Router.delete("/saransh", deleteCustomerUser);
+Router.delete("/customer", deleteCustomerUser);
 Router.get("/team", getTeam);
 Router.post("/resend-verification-email", resentVerificationEmail);
 Router.post("/add", validatePermission("user", "add"), addUser);
