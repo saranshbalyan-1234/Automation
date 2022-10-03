@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Checkbox, Card, Spin } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,10 +13,6 @@ const SignIn = ({ loading, signIn, logout }) => {
     password: "",
     rememberMe: false,
   });
-
-  useEffect(() => {
-    // logout();
-  }, []);
 
   const handleDetails = (e) => {
     let name = e.target.name;
