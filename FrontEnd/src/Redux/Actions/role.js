@@ -7,7 +7,6 @@ import {
   ADD_ROLE_SUCCESS,
   EDIT_ROLE_SUCCESS,
   UPDATE_ROLE_PERMISSION_SUCCESS,
-  REMOVE_PERMISSION_FROM_ROLE_SUCCESS,
 } from "./action-types";
 
 export const getAllRole = (payload) => {

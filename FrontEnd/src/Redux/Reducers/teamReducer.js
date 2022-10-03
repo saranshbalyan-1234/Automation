@@ -50,7 +50,9 @@ const teamReducer = (state = initState, { type, payload }) => {
       };
     case TOGGLE_TEAM_USER_STATUS:
       let updatedStatus = [...state.data].map((el) => {
-        return el.id == payload.userId ? { ...el, active: payload.status } : el;
+        return el.id === payload.userId
+          ? { ...el, active: payload.status }
+          : el;
       });
       return {
         ...state,

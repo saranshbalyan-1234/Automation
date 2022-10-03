@@ -18,6 +18,21 @@ export const Team = ({
   user,
   toggleUserActiveInactive,
 }) => {
+  useEffect(() => {
+    let array = [5, 9, 2, 7, 1, 11];
+    let lowest = array[0];
+    let secondLowest = array[0];
+    for (let i = 0; i < array.length; i++) {
+      if (array[i] < lowest) lowest = array[i];
+      if (array[i] > lowest && array[i] < secondLowest) secondLowest = array[i];
+      console.log("saransh", lowest, secondLowest);
+    }
+    // for (let i = 0; i < array.length; i++) {
+    //   if (array[i] > lowest && array[i] < secondLowest) secondLowest = array[i];
+    // }
+    // console.log("saransh", lowest, secondLowest);
+  }, []);
+
   const [manageUserModal, setManageUserModal] = useState(false);
   const [editUserId, setEditUserId] = useState(0);
   useEffect(() => {
@@ -69,7 +84,7 @@ export const Team = ({
                       <div style={{ marginTop: "5px" }}>
                         Type:
                         <Tag color="blue" style={{ marginLeft: "5px" }}>
-                          {item.email == user.email && user.customerAdmin
+                          {item.email === user.email && user.customerAdmin
                             ? "Customer Admin"
                             : "User"}
                         </Tag>
@@ -93,7 +108,7 @@ export const Team = ({
                       setManageUserModal(true);
                     }}
                   >
-                    <EditOutlined /> Manage Role
+                    <EditOutlined /> Manage User
                   </Button>
                   <Popconfirm
                     title="Are you sure to remove this user?"

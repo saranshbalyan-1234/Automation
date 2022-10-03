@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
 import { addRole, editRole } from "../../../Redux/Actions/role";
 import { connect } from "react-redux";

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Modal, Button, Spin, Checkbox, Select } from "antd";
+import { Modal, Button, Spin, Checkbox, Select } from "antd";
 import { updateRolePermission } from "../../../Redux/Actions/role";
 import { connect } from "react-redux";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";

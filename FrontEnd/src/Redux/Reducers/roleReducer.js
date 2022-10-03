@@ -47,7 +47,7 @@ const roleReducer = (state = initState, { type, payload }) => {
     case EDIT_ROLE_SUCCESS:
       let editedRoles = [...state.data].map((el) => ({
         ...el,
-        name: el.id == payload.id ? payload.name : el.name,
+        name: el.id === payload.id ? payload.name : el.name,
       }));
       return {
         ...state,
@@ -56,7 +56,7 @@ const roleReducer = (state = initState, { type, payload }) => {
       };
     case UPDATE_ROLE_PERMISSION_SUCCESS:
       let tempUpdatedRole = [...state.data].map((el) => {
-        return el.id == payload.roleId
+        return el.id === payload.roleId
           ? { ...el, permissions: payload.data }
           : el;
       });

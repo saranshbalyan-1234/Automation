@@ -23,12 +23,12 @@ export default function ManageUser({ visible, setVisible, userId }) {
         style={{ minWidth: "100%", marginTop: "-20px" }}
       >
         <Tabs.TabPane tab="Project" key="project">
-          {activeTab == "project" && (
+          {activeTab === "project" && (
             <ManagerUserProject setVisible={setVisible} userId={userId} />
           )}
         </Tabs.TabPane>
         <Tabs.TabPane tab="Role" key="role">
-          {activeTab == "role" && (
+          {activeTab === "role" && (
             <ManageUserRole setVisible={setVisible} userId={userId} />
           )}
         </Tabs.TabPane>

@@ -21,7 +21,7 @@ const SendResetMail = ({ sendResetPasswordMail }) => {
     <StyledWrapper>
       <div className="outsideApp">
         <Spin spinning={loading}>
-          <Card title="Reset Your Password" bordered class="shadow">
+          <Card title="Reset Your Password" bordered>
             <img
               alt="logo"
               src="/Logo/logo2.svg"

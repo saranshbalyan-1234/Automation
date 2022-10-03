@@ -27,6 +27,33 @@ export default function Sidebar({ collapsed, setCollapsed }) {
     path === "Dashboard" ? navigate(`/`) : navigate(`/${path}`);
   };
 
+  const items = [
+    { label: "Dashboard", key: "Dashboard", icon: <DashboardOutlined /> }, // remember to pass the key prop
+
+    {
+      label: "Test Planning",
+      key: "TestPlanning",
+      icon: <AlertOutlined />,
+
+      children: [
+        { label: "Test Case", key: "TestCase", icon: <FileOutlined /> },
+        { label: " Object Bank", key: "ObjectBank", icon: <BankOutlined /> },
+        {
+          label: "Reusable Flow",
+          key: "ReusableFlow",
+          icon: <VscDebugRestart />,
+        },
+      ],
+    },
+    {
+      label: "Test Execution",
+      key: "TestExecution",
+      icon: <CopyOutlined />,
+
+      children: [],
+    },
+  ];
+
   return (
     <Sider
       trigger={null}
@@ -48,37 +75,9 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         // defaultSelectedKeys={["dashboard"]}
         style={{ marginTop: "-4px" }}
         onClick={handleMenuClick}
+        items={items}
         // onOpenChange={handleSubMenu}
-      >
-        <Menu.Item key="Dashboard" icon={<DashboardOutlined />}>
-          Dashboard
-        </Menu.Item>
-        <Menu.SubMenu
-          key="TestPlanning"
-          icon={<AlertOutlined />}
-          title="Test Planning"
-        >
-          <Menu.Item key="TestCase" icon={<FileOutlined />}>
-            Test Case
-          </Menu.Item>
-          <Menu.Item key="ObjectBank" icon={<BankOutlined />}>
-            Object Bank
-          </Menu.Item>
-          <Menu.Item key="ReusableFlow" icon={<VscDebugRestart />}>
-            Reusable Flow
-          </Menu.Item>
-        </Menu.SubMenu>
-
-        <Menu.SubMenu
-          key="TestExecution"
-          icon={<CopyOutlined />}
-          title="Test Execution"
-        >
-          {/* <Menu.Item icon={<UserOutlined />}>Test Case</Menu.Item>
-          <Menu.Item icon={<VideoCameraOutlined />}>Object Bank</Menu.Item>
-          <Menu.Item icon={<UploadOutlined />}>Reusable Flow</Menu.Item> */}
-        </Menu.SubMenu>
-      </Menu>
+      />
       ;
     </Sider>
   );

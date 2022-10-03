@@ -33,7 +33,6 @@ const Agreement = () => {
         <Card
           title={false}
           bordered
-          class="shadow"
           style={{ marginLeft: "50px", marginRight: "50px" }}
         >
           <img alt="logo" src="/Logo/logo2.svg" style={{ height: "50px" }} />

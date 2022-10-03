@@ -38,7 +38,7 @@ const SignIn = ({ loading, signIn, logout }) => {
     <StyledWrapper>
       <div className="outsideApp">
         <Spin spinning={loading}>
-          <Card title="Login" bordered class="shadow">
+          <Card title="Login" bordered>
             <img
               alt="logo"
               src="/Logo/logo2.svg"
@@ -73,13 +73,14 @@ const SignIn = ({ loading, signIn, logout }) => {
                 ]}
               >
                 <Input.Password
-                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  prefix={<LockOutlined />}
                   type="password"
                   placeholder="Password"
                   name="password"
                   onChange={(e) => {
                     handleDetails(e);
                   }}
+                  autoComplete="on"
                 />
               </Form.Item>
               <Form.Item>
