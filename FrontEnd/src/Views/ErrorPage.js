@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Result } from "antd";
 import { useNavigate } from "react-router-dom";
-export default function ErrorPage({ status, title, subTitle }) {
+export default function ErrorPage({ status, title, subTitle, showBtn = true }) {
   const navigate = useNavigate();
   return (
     <Result
@@ -10,14 +10,16 @@ export default function ErrorPage({ status, title, subTitle }) {
       title={title}
       subTitle={subTitle}
       extra={
-        <Button
-          onClick={() => {
-            navigate("/");
-          }}
-          type="primary"
-        >
-          Back Home
-        </Button>
+        showBtn && (
+          <Button
+            onClick={() => {
+              navigate("/");
+            }}
+            type="primary"
+          >
+            Back Home
+          </Button>
+        )
       }
     />
   );
