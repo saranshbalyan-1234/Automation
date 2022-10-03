@@ -23,7 +23,7 @@ export default function App() {
             <Route exact path="register" element={<Register />} />
             <Route
               exact
-              path="auth/verify-email/:token"
+              path="auth/verify-user/:token"
               element={<VerifyEmail />}
             />
             <Route

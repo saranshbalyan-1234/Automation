@@ -6,6 +6,7 @@ import {
   getTeam,
   removeTeamMember,
   toggleUserActiveInactive,
+  resendVerificationMail,
 } from "../../../Redux/Actions/team";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ManageUserModal from "./ManagerUserModal";
@@ -17,6 +18,7 @@ export const Team = ({
   removeTeamMember,
   user,
   toggleUserActiveInactive,
+  resendVerificationMail,
 }) => {
   const [manageUserModal, setManageUserModal] = useState(false);
   const [editUserId, setEditUserId] = useState(0);
@@ -57,14 +59,25 @@ export const Team = ({
                     >
                       <div> {item.name}</div>
                       {!item.verifiedAt && (
-                        <Tag color="red">Verification Pending</Tag>
+                        <Popconfirm
+                          title="Resend Verification Email?"
+                          onConfirm={async () => {
+                            await resendVerificationMail({
+                              name: item.name,
+                              email: item.email,
+                            });
+                          }}
+                          okText="Yes, Resend"
+                          cancelText="No"
+                          trigger={"hover"}
+                        >
+                          <Tag color="red">Verification Pending</Tag>
+                        </Popconfirm>
                       )}
                     </div>
                   }
                   description={
-                    <div
-                    // style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
-                    >
+                    <div>
                       <div>{item.email}</div>
                       <div style={{ marginTop: "5px" }}>
                         Type:
@@ -95,6 +108,7 @@ export const Team = ({
                   >
                     <EditOutlined /> Manage User
                   </Button>
+
                   <Popconfirm
                     title="Are you sure to remove this user?"
                     onConfirm={() => {
@@ -134,6 +148,7 @@ const mapDispatchToProps = {
   getTeam,
   removeTeamMember,
   toggleUserActiveInactive,
+  resendVerificationMail,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Team);

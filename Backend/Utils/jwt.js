@@ -2,9 +2,9 @@ import pkg from "jsonwebtoken";
 const { sign, verify } = pkg;
 
 const createToken = async (data, secret, expiration) => {
-  return sign(data, secret, {
-    expiresIn: expiration,
-  });
+  let options = {};
+  if (expiration) options.expiresIn = expiration;
+  return sign(data, secret, options);
 };
 
 const refreshToken = async (req, res) => {

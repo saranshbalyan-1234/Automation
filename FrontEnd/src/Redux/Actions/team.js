@@ -6,6 +6,7 @@ import {
   ADD_TEAM_MEMBER_SUCCESS,
   REMOVE_TEAM_MEMBER_SUCCESS,
   TOGGLE_TEAM_USER_STATUS,
+  LOGOUT,
 } from "./action-types";
 
 export const getTeam = (payload) => {
@@ -47,6 +48,17 @@ export const removeTeamMember = (payload) => {
     }
   };
 };
+export const resendVerificationMail = (payload) => {
+  return async (dispatch) => {
+    try {
+      await axios.post(`/user/resend-verification-email`, payload);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
+};
+
 export const toggleUserActiveInactive = (status, userId) => {
   return async (dispatch) => {
     try {
@@ -56,6 +68,18 @@ export const toggleUserActiveInactive = (status, userId) => {
       return true;
     } catch (err) {
       dispatch({ type: TEAM_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const deleteCustomer = () => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.delete(`/user/saransh`);
+      if (data) dispatch({ type: LOGOUT });
+      return true;
+    } catch (err) {
       return false;
     }
   };

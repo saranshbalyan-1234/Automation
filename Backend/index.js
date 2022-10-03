@@ -26,6 +26,11 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
   next();
 });
+
+app.get("/", (req, res) => {
+  return res.json("Server is working");
+});
+
 app.use(validateToken());
 app.use(changeTenantDatabase());
 

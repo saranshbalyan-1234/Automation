@@ -1,11 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Avatar, Card, Tag, Badge, Empty } from "antd";
-
+import { Avatar, Card, Tag, Badge, Empty, Button, Popconfirm } from "antd";
+import { deleteCustomer } from "../../../Redux/Actions/team";
 import Role from "../Role";
-function Profile({ user }) {
+function Profile({ user, deleteCustomer }) {
   const { Meta } = Card;
-
+  const handleDeleteCustomer = async () => {
+    await deleteCustomer();
+  };
   return (
     <>
       <Badge.Ribbon text="Personal Details">
@@ -22,6 +24,23 @@ function Profile({ user }) {
             }
             description={user.email}
           />
+          {user.customerAdmin && (
+            <Popconfirm
+              title="This will delete all users created from this account! Are you Sure"
+              onConfirm={handleDeleteCustomer}
+              okText="Yes, Delete"
+              cancelText="No"
+            >
+              {" "}
+              <Button
+                type="danger"
+                ghost
+                style={{ marginTop: "20px", marginLeft: "45px" }}
+              >
+                Delete Customer
+              </Button>
+            </Popconfirm>
+          )}
         </Card>
       </Badge.Ribbon>
       {
@@ -43,6 +62,6 @@ function Profile({ user }) {
 }
 const mapStateToProps = (state) => ({ user: state.auth?.user });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { deleteCustomer };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

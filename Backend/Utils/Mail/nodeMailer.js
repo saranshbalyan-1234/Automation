@@ -33,7 +33,6 @@ const sendMail = async (data, type) => {
       token = await createToken(
         { email: data.email },
         process.env.JWT_VERIFICATION_SECRET
-        // process.env.JWT_VERIFICATION_EXPIRATION
       );
       link = `${process.env.WEBSITE_HOME}/auth/verify-customer/${token}`;
       mailOption = {
@@ -46,7 +45,6 @@ const sendMail = async (data, type) => {
       token = await createToken(
         { email: data.email, tenant: data.tenant },
         process.env.JWT_VERIFICATION_SECRET
-        // process.env.JWT_VERIFICATION_EXPIRATION
       );
       link = `${process.env.WEBSITE_HOME}/auth/verify-user/${token}`;
       mailOption = {

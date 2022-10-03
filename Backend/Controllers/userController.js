@@ -7,11 +7,12 @@ import {
   changePasswordValidation,
   changeDetailsValidation,
   activeInactiveValidation,
+  resendVerificationMailValidation,
 } from "../Utils/hapiValidation.js";
 
 const User = db.users;
 const Customer = db.customers;
-
+const Tenant = db.tenants;
 const getTeam = async (req, res) => {
   try {
     const team = await User.findAll({});
@@ -27,6 +28,8 @@ const getTeam = async (req, res) => {
 const addUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    const { error } = registerValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
     const database = req.user.tenant.replace(/[^a-zA-Z0-9 ]/g, "");
     await db.sequelize.query(`use Main`);
     await Customer.create({ email, tenantName: req.user.tenant }).catch((e) => {
@@ -34,9 +37,6 @@ const addUser = async (req, res) => {
     });
 
     await db.sequelize.query(`use ${database}`);
-
-    const { error } = registerValidation.validate(req.body);
-    if (error) throw new Error(error.details[0].message);
 
     const hash = await bcrypt.hash(password, 8);
     const user = await User.create({ name, email, password: hash });
@@ -52,35 +52,78 @@ const addUser = async (req, res) => {
     getError(error, res);
   }
 };
+
+const resentVerificationEmail = async (req, res) => {
+  try {
+    const { error } = resendVerificationMailValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
+
+    const { name, email } = req.body;
+    const database = req.user.tenant.replace(/[^a-zA-Z0-9 ]/g, "");
+    await sendMail({ email, name, tenant: database }, "addUser");
+
+    return res.status(200).json({
+      message: "Verification Email Resent!",
+    });
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.id);
-    if (req.user.tenant == user.email)
-      throw new Error("Cannot Delete Customer Admin");
-    const deletedUser = await User.destroy({
+    return res.status(400).json({ message: "User Deleted Successfully" });
+    // const user = await User.findByPk(req.params.id);
+    // if (req.user.tenant == user.email)
+    //   throw new Error("Cannot Delete Customer Admin");
+    // const deletedUser = await User.destroy({
+    //   where: {
+    //     id: req.params.id,
+    //   },
+    // });
+    // if (deletedUser == 1) {
+    //   await db.sequelize.query(`use Main`);
+    //   const deletedCustomerUser = await Customer.destroy({
+    //     where: {
+    //       email: user.email,
+    //     },
+    //   });
+    //   if (deletedCustomerUser == 1) {
+    //     return res.status(200).json({ message: "User Deleted Successfully" });
+    //   }
+    // } else {
+    //   throw new Error("User Not Found");
+    // }
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
+const deleteCustomerUser = async (req, res) => {
+  try {
+    if (!req.user.customerAdmin)
+      return res
+        .status(401)
+        .json({ message: "Only customer admin can perform this operation!" });
+    await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
+    const database = req.user.tenant.replace(/[^a-zA-Z0-9 ]/g, "");
+
+    await db.sequelize.query(`drop database ${database}`);
+    await db.sequelize.query(`use Main`);
+
+    const deletedCustomer = await Tenant.destroy({
       where: {
-        id: req.params.id,
+        name: req.user.tenant,
       },
     });
-
-    if (deletedUser == 1) {
-      await db.sequelize.query(`use Main`);
-      const deletedCustomerUser = await Customer.destroy({
-        where: {
-          email: user.email,
-        },
-      });
-
-      if (deletedCustomerUser == 1) {
-        return res.status(200).json({ message: "User Deleted Successfully" });
-      }
-    } else {
-      throw new Error("User Not Found");
+    if (deletedCustomer == 1) {
+      return res.status(200).json({ message: "Deleted all data!" });
     }
   } catch (error) {
     getError(error, res);
   }
 };
+
 const changePassword = async (req, res) => {
   try {
     const { error } = changePasswordValidation.validate(req.body);
@@ -159,4 +202,6 @@ export {
   changeDetails,
   getTeam,
   toggleUserActiveInactive,
+  resentVerificationEmail,
+  deleteCustomerUser,
 };
