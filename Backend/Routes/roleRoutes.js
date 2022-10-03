@@ -9,14 +9,14 @@ import {
 import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
-Router.get("/", validatePermission("User & Role", "view"), getAllRole);
-Router.post("/", validatePermission("User & Role", "add"), saveRole);
-Router.put("/:id", validatePermission("User & Role", "edit"), updateRole);
+Router.get("/", validatePermission("Team & Role", "view"), getAllRole);
+Router.post("/", validatePermission("Team & Role", "add"), saveRole);
+Router.put("/:id", validatePermission("Team & Role", "edit"), updateRole);
 Router.put(
   "/:roleId/permission",
-  validatePermission("User & Role", "edit"),
+  validatePermission("Team & Role", "edit"),
   updateRolePermission
 );
-Router.delete("/:id", validatePermission("User & Role", "delete"), deleteRole);
+Router.delete("/:id", validatePermission("Team & Role", "delete"), deleteRole);
 
 export default Router;

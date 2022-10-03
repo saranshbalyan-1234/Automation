@@ -13,19 +13,19 @@ import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
 Router.delete("/customer", deleteCustomerUser);
-Router.get("/team", validatePermission("User & Role", "view"), getTeam);
+Router.get("/team", validatePermission("Team & Role", "view"), getTeam);
 Router.post(
   "/resend-verification-email",
-  validatePermission("User & Role", "view"),
+  validatePermission("Team & Role", "view"),
   resentVerificationEmail
 );
-Router.post("/add", validatePermission("User & Role", "add"), addUser);
+Router.post("/add", validatePermission("Team & Role", "add"), addUser);
 Router.put("/details", changeDetails);
 Router.put("/change-password", changePassword);
-Router.delete("/:id", validatePermission("User & Role", "delete"), deleteUser);
+Router.delete("/:id", validatePermission("Team & Role", "delete"), deleteUser);
 Router.put(
   "/:userId/status",
-  validatePermission("User & Role", "edit"),
+  validatePermission("Team & Role", "edit"),
   toggleUserActiveInactive
 );
 

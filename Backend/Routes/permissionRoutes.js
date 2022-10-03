@@ -2,7 +2,7 @@ import express from "express";
 import { getAllPermission } from "../Controllers/permissionController.js";
 import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
-Router.get("/", validatePermission("User & Role", "view"), getAllPermission);
+Router.get("/", validatePermission("Team & Role", "view"), getAllPermission);
 
 getAllPermission;
 

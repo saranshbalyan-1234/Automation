@@ -6,10 +6,10 @@ import {
 import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
-Router.get("/:userId", validatePermission("User & Role", "view"), getUserRole);
+Router.get("/:userId", validatePermission("Team & Role", "view"), getUserRole);
 Router.put(
   "/user/:userId",
-  validatePermission("User & Role", "edit"),
+  validatePermission("Team & Role", "edit"),
   updateUserRole
 );
 
