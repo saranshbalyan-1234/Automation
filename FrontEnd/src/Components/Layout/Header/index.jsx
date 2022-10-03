@@ -1,12 +1,56 @@
 import React from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Layout } from "antd";
+import { Layout, Dropdown, Menu } from "antd";
 import ProfileMenu from "./ProfileMenu";
 import { useNavigate } from "react-router-dom";
 const { Header } = Layout;
 
 export default function Headers({ setCollapsed, collapsed }) {
   const navigate = useNavigate();
+
+  const ProjectMenu = (
+    <Menu
+      items={[
+        {
+          key: "1",
+          label: (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.antgroup.com"
+            >
+              1st menu item
+            </a>
+          ),
+        },
+        {
+          key: "2",
+          label: (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.aliyun.com"
+            >
+              2nd menu item
+            </a>
+          ),
+        },
+        {
+          key: "3",
+          label: (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.luohanacademy.com"
+            >
+              3rd menu item
+            </a>
+          ),
+        },
+      ]}
+    />
+  );
+
   return (
     <Header
       className="site-layout-sub-header-background"
@@ -51,15 +95,14 @@ export default function Headers({ setCollapsed, collapsed }) {
               }}
             />
           )}
-          {React.createElement(
-            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-            {
-              className: "trigger iconWhite",
-              onClick: () => setCollapsed(!collapsed),
-              // style: { marginLeft: !collapsed && "30px" },
-            }
-          )}
+
+          <div onClick={() => setCollapsed(!collapsed)}>
+            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          </div>
         </div>
+        <Dropdown overlay={ProjectMenu} arrow>
+          <div style={{ color: "white", cursor: "pointer" }}>Project: Lucy</div>
+        </Dropdown>
         <div style={{ marginRight: "20px" }}>
           <ProfileMenu />
         </div>
