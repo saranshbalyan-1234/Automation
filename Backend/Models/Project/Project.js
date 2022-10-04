@@ -13,11 +13,11 @@ export default (sequelize, DataTypes) => {
     },
     startDate: {
       type: DataTypes.DATEONLY,
-      allowNull: false,
+      allowNull: true,
     },
     endDate: {
       type: DataTypes.DATEONLY,
-      allowNull: false,
+      allowNull: true,
     },
     createdByUser: {
       type: DataTypes.INTEGER,
@@ -33,13 +33,10 @@ export default (sequelize, DataTypes) => {
   Project.hasOne(sequelize.models.users, {
     foreignKey: {
       name: "id",
-      allowNull: false,
     },
     sourceKey: "createdByUser",
     onDelete: "CASCADE",
   });
-
-  Project.belongsToMany(sequelize.models.users, { through: "userProjects" });
 
   return Project;
 };

@@ -101,9 +101,13 @@ export default function Headers({ setCollapsed, collapsed }) {
           </div>
         </div>
         <Dropdown overlay={ProjectMenu} arrow>
-          <div style={{ color: "white", cursor: "pointer" }}>Project: Lucy</div>
+          <div
+            style={{ color: "white", cursor: "pointer", marginTop: "-60px" }}
+          >
+            Project: Lucy
+          </div>
         </Dropdown>
-        <div style={{ marginRight: "20px" }}>
+        <div style={{ marginRight: "20px", marginTop: "-60px" }}>
           <ProfileMenu />
         </div>
       </div>

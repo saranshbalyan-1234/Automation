@@ -28,7 +28,7 @@ const ManagePermissionModal = ({
 
   const getAvailablePermission = async () => {
     setLoading(true);
-    const { data } = await axios.get("/permission");
+    const { data } = await axios.get("/global/permission");
     setLoading(false);
     setAllPermission(data);
     checkAvailablePermission(data);

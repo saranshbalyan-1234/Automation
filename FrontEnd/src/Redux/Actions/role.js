@@ -25,7 +25,7 @@ export const getAllRole = (payload) => {
 export const updateUserRole = (payload, userId) => {
   return async (dispatch) => {
     try {
-      await axios.put(`/userRole/user/${userId}`, payload);
+      await axios.put(`/role/user/${userId}`, payload);
       return true;
     } catch (err) {
       return false;

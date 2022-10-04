@@ -25,7 +25,7 @@ const ManageUserRole = ({ setVisible, userId, updateUserRole }) => {
       setAllRole(res.data);
       checkAvailableRole(res.data);
     });
-    await axios.get(`/userRole/${userId}`).then((res) => {
+    await axios.get(`/role/user/${userId}`).then((res) => {
       setAddedRole(res.data);
     });
 

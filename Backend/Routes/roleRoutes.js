@@ -5,6 +5,8 @@ import {
   saveRole,
   deleteRole,
   updateRolePermission,
+  getUserRole,
+  updateUserRole,
 } from "../Controllers/roleController.js";
 import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
@@ -18,5 +20,16 @@ Router.put(
   updateRolePermission
 );
 Router.delete("/:id", validatePermission("Team & Role", "delete"), deleteRole);
+
+Router.get(
+  "/user/:userId",
+  validatePermission("Team & Role", "view"),
+  getUserRole
+);
+Router.put(
+  "/user/:userId",
+  validatePermission("Team & Role", "edit"),
+  updateUserRole
+);
 
 export default Router;

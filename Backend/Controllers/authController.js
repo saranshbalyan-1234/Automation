@@ -17,6 +17,8 @@ const Role = db.roles;
 const Customer = db.customers;
 const Tenant = db.tenants;
 const Unverified = db.unverifieds;
+const Project = db.projects;
+const UserProject = db.userProjects;
 
 const register = async (req, res) => {
   try {
@@ -153,10 +155,11 @@ const verifyCustomer = async (req, res) => {
         await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
 
         await User.sync({ force: false, alter: true });
-
         await UserRole.sync({ force: false, alter: true });
         await Permission.sync({ force: false, alter: true });
         await Role.sync({ force: false, alter: true });
+        await Project.sync({ force: true, alter: true });
+        await UserProject.sync({ force: true, alter: true });
         await User.create({
           name,
           email,

@@ -34,6 +34,10 @@ export default (sequelize, DataTypes) => {
       defaultValue: 1,
       values: [0, 1],
     },
+    defaultProjectId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   });
 
   User.hasMany(sequelize.models.userRoles, {
