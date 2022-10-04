@@ -22,6 +22,7 @@ const changePasswordValidation = joi.object({
 
 const changeDetailsValidation = joi.object({
   name: joi.string(),
+  defaultProjectId: joi.number().integer(),
 });
 const activeInactiveValidation = joi.object({
   userId: joi.number().integer().required(),

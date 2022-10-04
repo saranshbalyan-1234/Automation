@@ -1,54 +1,49 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Layout, Dropdown, Menu } from "antd";
+import { Layout, Dropdown, Menu, Spin } from "antd";
 import ProfileMenu from "./ProfileMenu";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { CaretDownOutlined } from "@ant-design/icons";
+import { connect } from "react-redux";
+import { getAllProject, getProjectById } from "../../../Redux/Actions/project";
 const { Header } = Layout;
 
-export default function Headers({ setCollapsed, collapsed }) {
+const Headers = ({
+  setCollapsed,
+  collapsed,
+  getAllProject,
+  projects,
+  defaultProjectId,
+  getProjectById,
+}) => {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!projects.loading) {
+      if (projects.currentProject.id) getProjectById(projects.data[0].id);
+      else if (defaultProjectId) getProjectById(defaultProjectId);
+    }
+  }, [projects.currentProject.id]);
+
+  const handleProject = () => {
+    getAllProject();
+  };
+
   const ProjectMenu = (
-    <Menu
-      items={[
-        {
-          key: "1",
-          label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.antgroup.com"
-            >
-              1st menu item
-            </a>
-          ),
-        },
-        {
-          key: "2",
-          label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.aliyun.com"
-            >
-              2nd menu item
-            </a>
-          ),
-        },
-        {
-          key: "3",
-          label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.luohanacademy.com"
-            >
-              3rd menu item
-            </a>
-          ),
-        },
-      ]}
-    />
+    <Spin spinning={projects.loading}>
+      <Menu
+        style={{ marginTop: "-10px" }}
+        items={[
+          ...projects.data.map((el, index) => {
+            return { key: index, label: el.name };
+          }),
+          {
+            key: "all",
+            label: <Link to="/project">View All</Link>,
+          },
+        ]}
+      />
+    </Spin>
   );
 
   return (
@@ -96,21 +91,50 @@ export default function Headers({ setCollapsed, collapsed }) {
             />
           )}
 
-          <div onClick={() => setCollapsed(!collapsed)}>
-            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          </div>
+          {/* <div onClick={() => setCollapsed(!collapsed)}> */}
+          {collapsed ? (
+            <MenuUnfoldOutlined
+              style={{
+                color: "white",
+                cursor: "pointer",
+              }}
+              onClick={() => setCollapsed(!collapsed)}
+            />
+          ) : (
+            <MenuFoldOutlined
+              style={{
+                color: "white",
+                cursor: "pointer",
+                marginLeft: "20px",
+              }}
+              onClick={() => setCollapsed(!collapsed)}
+            />
+          )}
         </div>
-        <Dropdown overlay={ProjectMenu} arrow>
-          <div
-            style={{ color: "white", cursor: "pointer", marginTop: "-60px" }}
-          >
-            Project: Lucy
+
+        <Dropdown
+          overlay={ProjectMenu}
+          arrow
+          trigger={"click"}
+          onClick={handleProject}
+        >
+          <div style={{ color: "white", cursor: "pointer" }}>
+            Current Project: Lucy <CaretDownOutlined />
           </div>
         </Dropdown>
-        <div style={{ marginRight: "20px", marginTop: "-60px" }}>
+        <div style={{ marginRight: "20px" }}>
           <ProfileMenu />
         </div>
       </div>
     </Header>
   );
-}
+};
+
+const mapStateToProps = (state) => ({
+  projects: state.projects,
+  defaultProjectId: state.auth.user.defaultProjectId,
+});
+
+const mapDispatchToProps = { getAllProject, getProjectById };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Headers);

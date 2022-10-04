@@ -89,11 +89,13 @@ const getProjectById = async (req, res) => {
   }
 };
 
-const createProject = async (req, res) => {
+const addProject = async (req, res) => {
   /*  #swagger.tags = ["Project"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
+    await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
+
     const { name, startDate, endDate } = req.body;
     const project = await Project.create({
       name,
@@ -113,5 +115,5 @@ export {
   allProject,
   getProjectUsers,
   getProjectById,
-  createProject,
+  addProject,
 };

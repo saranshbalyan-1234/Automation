@@ -8,6 +8,7 @@ import ErrorPage from "../Views/ErrorPage";
 import Setting from "./Settings";
 import Dashboard from "./Dashboard";
 import Support from "../Views/Support";
+import Project from "./Project";
 function Routess({ user }) {
   const location = useLocation();
   return user ? (
@@ -16,6 +17,7 @@ function Routess({ user }) {
         <Route exact path="/" element={<Dashboard />}></Route>
         <Route exact path="/support" element={<Support />}></Route>
         <Route exact path="/settings" element={<Setting />}></Route>
+        <Route exact path="/project/*" element={<Project />}></Route>
         <Route
           exact
           path="*"
