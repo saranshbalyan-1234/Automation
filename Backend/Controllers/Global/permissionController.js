@@ -1,5 +1,5 @@
-import db from "../Utils/dataBaseConnection.js";
-import getError from "../Utils/sequelizeError.js";
+import db from "../../Utils/dataBaseConnection.js";
+import getError from "../../Utils/sequelizeError.js";
 const PermissionList = db.permissionList;
 
 const getAllPermission = async (req, res) => {
