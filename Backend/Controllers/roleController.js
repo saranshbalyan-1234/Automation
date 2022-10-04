@@ -6,6 +6,9 @@ const Permission = db.permissions;
 const PermissionList = db.permissionList;
 
 const getAllRole = async (req, res) => {
+  /*  #swagger.tags = ["Role"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   await Role.findAll({
     include: [
       {
@@ -23,6 +26,9 @@ const getAllRole = async (req, res) => {
 };
 
 const saveRole = async (req, res) => {
+  /*  #swagger.tags = ["Role"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
   await Role.create(req.body, {})
     .then((resp) => {
@@ -34,6 +40,9 @@ const saveRole = async (req, res) => {
 };
 
 const updateRole = async (req, res) => {
+  /*  #swagger.tags = ["Role"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   await Role.update(req.body, {
     where: {
       id: req.params.id,
@@ -58,6 +67,9 @@ const updateRole = async (req, res) => {
 };
 
 const deleteRole = (req, res) => {
+  /*  #swagger.tags = ["Role"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   Role.destroy({
     where: {
       id: req.params.id,
@@ -75,6 +87,9 @@ const deleteRole = (req, res) => {
     });
 };
 const updateRolePermission = async (req, res) => {
+  /*  #swagger.tags = ["Role"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
     await db.sequelize.query(`use Main`);
@@ -103,6 +118,9 @@ const updateRolePermission = async (req, res) => {
   }
 };
 const getUserRole = async (req, res) => {
+  /*  #swagger.tags = ["Role"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     const roles = await UserRole.findAll({
       where: { userId: req.params.userId },
@@ -127,6 +145,9 @@ const getUserRole = async (req, res) => {
 };
 
 const updateUserRole = async (req, res) => {
+  /*  #swagger.tags = ["Role"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     await UserRole.destroy({ where: { userId: req.params.userId } });
     await UserRole.bulkCreate(req.body).then((resp) => {

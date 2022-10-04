@@ -3,6 +3,9 @@ import getError from "../../Utils/sequelizeError.js";
 const PermissionList = db.permissionList;
 
 const getAllPermission = async (req, res) => {
+  /*  #swagger.tags = ["Global"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     await db.sequelize.query(`use Main`);
     const data = await PermissionList.findAll({ attributes: ["name"] });

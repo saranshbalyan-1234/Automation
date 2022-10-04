@@ -14,6 +14,9 @@ const User = db.users;
 const Customer = db.customers;
 const Tenant = db.tenants;
 const getTeam = async (req, res) => {
+  /*  #swagger.tags = ["User"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     const team = await User.findAll({});
     const filteredTeam = team.filter((el) => {
@@ -26,6 +29,9 @@ const getTeam = async (req, res) => {
 };
 
 const addUser = async (req, res) => {
+  /*  #swagger.tags = ["User"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     const { name, email, password } = req.body;
     const { error } = registerValidation.validate(req.body);
@@ -54,6 +60,9 @@ const addUser = async (req, res) => {
 };
 
 const resentVerificationEmail = async (req, res) => {
+  /*  #swagger.tags = ["User"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     const { error } = resendVerificationMailValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
@@ -71,35 +80,40 @@ const resentVerificationEmail = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
+  /*  #swagger.tags = ["User"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
-    return res.status(400).json({ message: "User Deleted Successfully" });
-    // const user = await User.findByPk(req.params.id);
-    // if (req.user.tenant == user.email)
-    //   throw new Error("Cannot Delete Customer Admin");
-    // const deletedUser = await User.destroy({
-    //   where: {
-    //     id: req.params.id,
-    //   },
-    // });
-    // if (deletedUser == 1) {
-    //   await db.sequelize.query(`use Main`);
-    //   const deletedCustomerUser = await Customer.destroy({
-    //     where: {
-    //       email: user.email,
-    //     },
-    //   });
-    //   if (deletedCustomerUser == 1) {
-    //     return res.status(200).json({ message: "User Deleted Successfully" });
-    //   }
-    // } else {
-    //   throw new Error("User Not Found");
-    // }
+    const user = await User.findByPk(req.params.id);
+    if (req.user.tenant == user.email)
+      throw new Error("Cannot Delete Customer Admin");
+    const deletedUser = await User.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (deletedUser == 1) {
+      await db.sequelize.query(`use Main`);
+      const deletedCustomerUser = await Customer.destroy({
+        where: {
+          email: user.email,
+        },
+      });
+      if (deletedCustomerUser == 1) {
+        return res.status(200).json({ message: "User Deleted Successfully" });
+      }
+    } else {
+      throw new Error("User Not Found");
+    }
   } catch (error) {
     getError(error, res);
   }
 };
 
 const deleteCustomerUser = async (req, res) => {
+  /*  #swagger.tags = ["User"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     if (!req.user.customerAdmin)
       return res
@@ -125,6 +139,9 @@ const deleteCustomerUser = async (req, res) => {
 };
 
 const changePassword = async (req, res) => {
+  /*  #swagger.tags = ["User"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     const { error } = changePasswordValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
@@ -153,6 +170,9 @@ const changePassword = async (req, res) => {
 };
 
 const changeDetails = async (req, res) => {
+  /*  #swagger.tags = ["User"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     const { error } = changeDetailsValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
@@ -171,6 +191,9 @@ const changeDetails = async (req, res) => {
 };
 
 const toggleUserActiveInactive = async (req, res) => {
+  /*  #swagger.tags = ["User"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     let userId = req.params.userId;
     let active = req.body.active;

@@ -8,6 +8,7 @@ const createToken = async (data, secret, expiration) => {
 };
 
 const refreshToken = async (req, res) => {
+  /*  #swagger.tags = ["Auth"] */
   const token = req.body.refreshToken;
   if (!token) return res.status(401).json({ error: "Refresh token not found" });
 

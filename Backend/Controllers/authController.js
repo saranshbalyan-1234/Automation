@@ -21,6 +21,7 @@ const Project = db.projects;
 const UserProject = db.userProjects;
 
 const register = async (req, res) => {
+  /*  #swagger.tags = ["Auth"] */
   try {
     const { error } = registerValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
@@ -45,6 +46,7 @@ const register = async (req, res) => {
   }
 };
 const login = async (req, res) => {
+  /*  #swagger.tags = ["Auth"] */
   try {
     const { error } = loginValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
@@ -130,6 +132,7 @@ const login = async (req, res) => {
 };
 
 const verifyCustomer = async (req, res) => {
+  /*  #swagger.tags = ["Auth"] */
   try {
     const data = verify(req.params.token, process.env.JWT_VERIFICATION_SECRET);
     if (data) {
@@ -180,6 +183,7 @@ const verifyCustomer = async (req, res) => {
 };
 
 const verifyUser = async (req, res) => {
+  /*  #swagger.tags = ["Auth"] */
   try {
     const data = verify(req.params.token, process.env.JWT_VERIFICATION_SECRET);
     if (data) {
@@ -213,6 +217,7 @@ const verifyUser = async (req, res) => {
 };
 
 const resetPassword = async (req, res) => {
+  /*  #swagger.tags = ["Auth"] */
   try {
     const data = verify(req.params.token, process.env.JWT_RESET_SECRET);
     if (data) {
@@ -237,6 +242,7 @@ const resetPassword = async (req, res) => {
   }
 };
 const sendResetPasswordMail = async (req, res) => {
+  /*  #swagger.tags = ["Auth"] */
   try {
     const { email } = req.body;
     const customer = await Customer.findOne({

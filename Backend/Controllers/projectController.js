@@ -4,6 +4,8 @@ const UserProject = db.userProjects;
 const Project = db.projects;
 const User = db.users;
 const getMyProject = async (req, res) => {
+  /*  #swagger.tags = ["Project"] 
+      #swagger.security = [{"apiKeyAuth": []}] */
   try {
     const projects = await UserProject.findAll({
       where: { userId: req.user.id },
@@ -29,6 +31,9 @@ const getMyProject = async (req, res) => {
 };
 
 const getProjectUsers = async (req, res) => {
+  /*  #swagger.tags = ["Project"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     const projects = await UserProject.findAll({
       where: { projectId: req.params.id },
@@ -56,6 +61,9 @@ const getProjectUsers = async (req, res) => {
 };
 
 const allProject = async (req, res) => {
+  /*  #swagger.tags = ["Project"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     const projects = await Project.findAll({
       attributes: ["id", "name"],
@@ -67,6 +75,9 @@ const allProject = async (req, res) => {
   }
 };
 const getProjectById = async (req, res) => {
+  /*  #swagger.tags = ["Project"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     const project = await Project.findOne({
       attributes: ["id", "name"],
@@ -79,6 +90,9 @@ const getProjectById = async (req, res) => {
 };
 
 const createProject = async (req, res) => {
+  /*  #swagger.tags = ["Project"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   try {
     const { name, startDate, endDate } = req.body;
     const project = await Project.create({
