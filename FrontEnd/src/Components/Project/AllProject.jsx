@@ -166,9 +166,10 @@ export const AllProject = ({ getAllProject, projects, user }) => {
                               display: "flex",
                               gap: "10px",
                               marginTop: "10px",
+                              flexWrap: "wrap",
                             }}
                           >
-                            Members:
+                            <div> Members:</div>
                             <div>
                               <Avatar.Group
                                 size="small"

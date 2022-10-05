@@ -31,14 +31,26 @@ export default (sequelize, DataTypes) => {
   });
 
   Project.hasOne(sequelize.models.users, {
-    foreignKey: {
-      name: "id",
-    },
+    as: "createdBy",
     sourceKey: "createdByUser",
+    foreignKey: "id",
     onDelete: "CASCADE",
+    // as: "createdBy",
   });
   Project.hasMany(sequelize.models.userProjects, {
     foreignKey: "projectId",
+    as: "members",
+  });
+  sequelize.models.userProjects.hasOne(Project, {
+    foreignKey: "id",
+    sourceKey: "projectId",
+    onDelete: "CASCADE",
+  });
+  sequelize.models.userProjects.hasOne(sequelize.models.users, {
+    foreignKey: "id",
+
+    sourceKey: "userId",
+    onDelete: "CASCADE",
   });
   return Project;
 };

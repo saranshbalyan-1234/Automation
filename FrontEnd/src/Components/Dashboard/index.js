@@ -4,7 +4,7 @@ import { Typography } from "antd";
 import axios from "axios";
 export const Dashboard = ({ user }) => {
   useEffect(() => {
-    // axios.get("/project/1/user");
+    // axios.get("/project/myProject");
   }, []);
 
   return <Typography.Title>Hi, {user.name}</Typography.Title>;
