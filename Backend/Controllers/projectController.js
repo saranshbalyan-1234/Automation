@@ -9,76 +9,44 @@ const getMyProject = async (req, res) => {
   try {
     const projects = await UserProject.findAll({
       where: { userId: req.user.id },
-      attributes: ["id"],
-      // include: [
-      //   {
-      //     model: Project,
-      //     attributes: ["id", "name"],
-      //   },
-      // ],
-    });
-
-    // const updatedArray = projects.map((el) => {
-    //   let temp = {};
-    //   temp.id = el.project.id;
-    //   temp.name = el.project.name;
-    //   return temp;
-    // });
-    return res.status(200).json(projects);
-  } catch (error) {
-    getError(error, res);
-  }
-};
-
-const allProject = async (req, res) => {
-  /*  #swagger.tags = ["Project"] 
-     #swagger.security = [{"apiKeyAuth": []}]
-  */
-  try {
-    const projects = await Project.findAll({
-      attributes: [
-        "id",
-        "name",
-        "description",
-        "startDate",
-        "endDate",
-        "createdAt",
-      ],
       include: [
         {
-          model: UserProject,
+          model: Project,
           include: [
             {
+              model: UserProject,
+              as: "members",
+              include: [
+                {
+                  model: User,
+                  attributes: ["id", "name", "email", "active"],
+                },
+              ],
+            },
+            {
               model: User,
+              as: "createdBy",
               attributes: ["id", "name", "email", "active"],
             },
           ],
         },
-        {
-          model: User,
-          attributes: ["id", "name", "email", "active"],
-        },
       ],
     });
 
-    const tempProject = projects.map((el) => {
-      let temp = { ...el.dataValues };
-
-      temp.members = temp.userProjects.map((user) => {
-        user = user.user;
-        delete user.user;
-        return user;
+    const updatedArray = projects.map((el) => {
+      let temp = { ...el.project.dataValues };
+      temp.members = temp.members.map((el) => {
+        return el.user;
       });
-      temp.createdBy = temp.user;
-      delete temp.user;
-      delete temp.userProjects;
       return temp;
     });
-    return res.status(200).json(tempProject);
+
+    return res.status(200).json(updatedArray);
   } catch (error) {
     getError(error, res);
   }
 };
+
 const getProjectById = async (req, res) => {
   /*  #swagger.tags = ["Project"] 
      #swagger.security = [{"apiKeyAuth": []}]
@@ -96,29 +64,27 @@ const getProjectById = async (req, res) => {
       include: [
         {
           model: UserProject,
+          as: "members",
           include: [
             {
               model: User,
+
               attributes: ["id", "name", "email", "active"],
             },
           ],
         },
         {
           model: User,
+          as: "createdBy",
           attributes: ["id", "name", "email", "active"],
         },
       ],
     });
 
     let temp = { ...project.dataValues };
-    temp.members = temp.userProjects.map((user) => {
-      user = user.user;
-      delete user.user;
-      return user;
+    temp.members = temp.members.map((user) => {
+      return user.user;
     });
-    temp.createdBy = temp.user;
-    delete temp.user;
-    delete temp.userProjects;
 
     return res.status(200).json(temp);
   } catch (error) {
@@ -152,4 +118,4 @@ const addProject = async (req, res) => {
   }
 };
 
-export { getMyProject, allProject, getProjectById, addProject };
+export { getMyProject, getProjectById, addProject };
