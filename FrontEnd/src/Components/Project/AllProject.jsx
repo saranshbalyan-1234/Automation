@@ -1,14 +1,60 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { getAllProject } from "../../Redux/Actions/project";
-import { Button } from "antd";
 import AddEditProjectModal from "./AddEditProjectModal";
-export const AllProject = ({ getAllProject }) => {
+import { useNavigate } from "react-router-dom";
+import {
+  Avatar,
+  Popconfirm,
+  List,
+  Tooltip,
+  Spin,
+  Button,
+  Typography,
+  Progress,
+} from "antd";
+import UserAvatar from "../Common/Avatar";
+import moment from "moment";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  SelectOutlined,
+  HeartOutlined,
+} from "@ant-design/icons";
+import InfiniteScroll from "react-infinite-scroll-component";
+const { Title } = Typography;
+export const AllProject = ({ getAllProject, projects, user }) => {
+  const navigate = useNavigate();
   const [addEditProjectModal, setAddEditProjectModal] = useState(false);
   useEffect(() => {
     getAllProject();
   }, []);
 
+  const formatDates = (startDate, endDate) => {
+    let currentDate = moment(new Date()).format("YYYY/MM/DD");
+    let totalDays = moment(endDate).diff(moment(startDate), "days");
+    let daysPassed = moment(currentDate).diff(moment(startDate), "days");
+    let percentagePassed = parseInt((daysPassed / totalDays) * 100);
+
+    return (
+      <div>
+        Start: {startDate}
+        <br />
+        End : {endDate} <br />
+        <Tooltip
+          title={
+            <div>
+              Total Days: {totalDays}
+              <br />
+              Days Passed: {daysPassed}
+            </div>
+          }
+        >
+          <Progress percent={percentagePassed} size="small" />
+        </Tooltip>
+      </div>
+    );
+  };
   return (
     <div>
       <div
@@ -19,7 +65,7 @@ export const AllProject = ({ getAllProject }) => {
           paddingTop: "10px",
         }}
       >
-        <div></div>
+        <Title level={3}>All Projects</Title>
         <Button
           type="primary"
           ghost
@@ -29,6 +75,184 @@ export const AllProject = ({ getAllProject }) => {
         >
           New Project
         </Button>
+      </div>
+      <div
+        id="scrollableDiv"
+        style={{
+          height: "calc(100vh - 210px)",
+          overflow: "auto",
+          padding: "0 16px",
+          border: "1px solid rgba(140, 140, 140, 0.35)",
+        }}
+      >
+        <InfiniteScroll
+          dataLength={projects.data.length}
+          // next={loadMoreData}
+          // hasMore={data.length < 50}
+
+          scrollableTarget="scrollableDiv"
+        >
+          <Spin spinning={projects.loading}>
+            <List
+              dataSource={projects.data}
+              renderItem={(item) => (
+                <List.Item key={item.id}>
+                  <List.Item.Meta
+                    title={
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "10px",
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        <div>Name: {item.name}</div>
+                      </div>
+                    }
+                    description={
+                      <div
+                        style={{ display: "flex ", flexDirection: "column" }}
+                      >
+                        <div>
+                          {" "}
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "10px",
+                              marginTop: "10px",
+                            }}
+                          >
+                            {" "}
+                            Members:
+                            <div>
+                              <Avatar.Group
+                                size="small"
+                                maxCount={2}
+                                maxStyle={{
+                                  color: "#f56a00",
+                                  backgroundColor: "#fde3cf",
+                                }}
+                              >
+                                {item.members.map((el) => {
+                                  console.log(el.name);
+                                  return <UserAvatar name={"saransh"} />;
+                                })}
+                              </Avatar.Group>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  />
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                      marginRight: "50px",
+                    }}
+                  >
+                    <div
+                      style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
+                    >
+                      {formatDates(item.startDate, item.endDate)}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                    }}
+                  >
+                    <div
+                      style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          width: "100%",
+                        }}
+                      >
+                        <div style={{ display: "flex", gap: "5px" }}>
+                          <div>Author</div>
+                          <UserAvatar name={item.createdBy.name} />
+                        </div>
+
+                        <div style={{ display: "flex", gap: "10px" }}>
+                          <Button
+                            type="primary"
+                            ghost
+                            size="small"
+                            onClick={async () => {
+                              // await setEditUserId(item.id);
+                              // setManageUserModal(true);
+                            }}
+                          >
+                            <EditOutlined />
+                          </Button>
+                          <Popconfirm
+                            title="Are you sure to remove this user?"
+                            onConfirm={() => {
+                              // removeTeamMember(item.id);
+                            }}
+                            okText="Yes, Remove"
+                            cancelText="No"
+                          >
+                            <Button type="danger" ghost size="small">
+                              <DeleteOutlined />
+                            </Button>
+                          </Popconfirm>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        gap: "10px",
+                        marginTop: "10px",
+                        color: "grey",
+                      }}
+                    >
+                      <Button
+                        type="primary"
+                        ghost
+                        size="small"
+                        style={{ width: "135px" }}
+                        disabled={item.id == projects.currentProject.id}
+                        onClick={async () => {
+                          // await setEditUserId(item.id);
+                          // setManageUserModal(true);
+                        }}
+                      >
+                        <SelectOutlined />
+                        {item.id == projects.currentProject.id
+                          ? "Selected"
+                          : "Select Project"}
+                      </Button>
+                      <Button
+                        type="primary"
+                        size="small"
+                        style={{ width: "130px" }}
+                        ghost
+                        onClick={() => {
+                          // setAddEditProjectModal(true);
+                        }}
+                      >
+                        <HeartOutlined />
+                        {item.id == user.defaultProjectId
+                          ? "Default"
+                          : "Make Default"}
+                      </Button>
+                    </div>
+                  </div>
+                </List.Item>
+              )}
+            />
+          </Spin>
+        </InfiniteScroll>
       </div>
       {addEditProjectModal && (
         <AddEditProjectModal
@@ -40,7 +264,10 @@ export const AllProject = ({ getAllProject }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  projects: state.projects,
+  user: state.auth.user,
+});
 
 const mapDispatchToProps = { getAllProject };
 

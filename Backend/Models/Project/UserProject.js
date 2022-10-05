@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const UserProject = sequelize.define("userProject", {
+  const UserProject = sequelize.define("userProjects", {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -20,11 +20,11 @@ export default (sequelize, DataTypes) => {
     },
   });
 
-  UserProject.hasOne(sequelize.models.projects, {
-    foreignKey: "id",
-    sourceKey: "projectId",
-    onDelete: "CASCADE",
-  });
+  // UserProject.hasOne(sequelize.models.projects, {
+  //   foreignKey: "id",
+  //   sourceKey: "projectId",
+  //   onDelete: "CASCADE",
+  // });
   UserProject.hasOne(sequelize.models.users, {
     foreignKey: "id",
     sourceKey: "userId",

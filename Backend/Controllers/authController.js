@@ -88,7 +88,7 @@ const login = async (req, res) => {
     const isAuthenticated = await bcrypt.compare(password, user.password);
     if (!isAuthenticated) throw new Error("Incorrect Password");
 
-    const { id, name, verifiedAt } = user;
+    const { id, name, verifiedAt, defaultProjectId } = user;
     if (!verifiedAt) throw new Error("Email Not Verified");
 
     let allPermissions = [];
@@ -122,6 +122,7 @@ const login = async (req, res) => {
       name,
       email,
       customerAdmin,
+      defaultProjectId,
       roles: newRoles,
       accessToken,
       refreshToken,
@@ -161,8 +162,9 @@ const verifyCustomer = async (req, res) => {
         await UserRole.sync({ force: false, alter: true });
         await Permission.sync({ force: false, alter: true });
         await Role.sync({ force: false, alter: true });
-        await Project.sync({ force: true, alter: true });
         await UserProject.sync({ force: true, alter: true });
+        await Project.sync({ force: true, alter: true });
+
         await User.create({
           name,
           email,

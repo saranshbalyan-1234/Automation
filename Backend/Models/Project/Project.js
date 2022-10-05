@@ -37,6 +37,8 @@ export default (sequelize, DataTypes) => {
     sourceKey: "createdByUser",
     onDelete: "CASCADE",
   });
-
+  Project.hasMany(sequelize.models.userProjects, {
+    foreignKey: "projectId",
+  });
   return Project;
 };

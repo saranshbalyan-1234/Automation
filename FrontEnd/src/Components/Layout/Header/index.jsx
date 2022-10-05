@@ -134,7 +134,8 @@ const Headers = ({
           onClick={handleProject}
         >
           <div style={{ color: "white", cursor: "pointer" }}>
-            Current Project: Lucy <CaretDownOutlined />
+            Current Project: {projects.currentProject.name}{" "}
+            <CaretDownOutlined />
           </div>
         </Dropdown>
         <div style={{ marginRight: "20px" }}>
