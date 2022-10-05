@@ -30,10 +30,12 @@ export const AllProject = ({ getAllProject }) => {
           New Project
         </Button>
       </div>
-      <AddEditProjectModal
-        visible={addEditProjectModal}
-        setVisible={setAddEditProjectModal}
-      />
+      {addEditProjectModal && (
+        <AddEditProjectModal
+          visible={addEditProjectModal}
+          setVisible={setAddEditProjectModal}
+        />
+      )}
     </div>
   );
 };

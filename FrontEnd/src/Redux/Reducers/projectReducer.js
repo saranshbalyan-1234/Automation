@@ -2,6 +2,8 @@ import {
   PROJECT_REQUEST,
   PROJECT_FAILURE,
   GET_ALL_PROJECT_SUCCESS,
+  ADD_PROJECT_SUCCESS,
+  GET_SELECTED_PROJECT,
 } from "../Actions/action-types";
 
 const initState = {
@@ -27,6 +29,18 @@ const projectReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: false,
         data: payload,
+      };
+    case ADD_PROJECT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: [...state.data, payload],
+      };
+    case GET_SELECTED_PROJECT:
+      return {
+        ...state,
+        currentProject: payload,
+        loading: false,
       };
     default:
       return state;

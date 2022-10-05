@@ -4,6 +4,7 @@ import {
   PROJECT_FAILURE,
   GET_ALL_PROJECT_SUCCESS,
   ADD_PROJECT_SUCCESS,
+  GET_SELECTED_PROJECT,
 } from "./action-types";
 
 export const getAllProject = (payload) => {
@@ -12,7 +13,7 @@ export const getAllProject = (payload) => {
       dispatch({ type: PROJECT_REQUEST });
       const { data } = await axios.get(`/project/all`, payload);
       dispatch({ type: GET_ALL_PROJECT_SUCCESS, payload: data });
-      return true;
+      return data;
     } catch (err) {
       dispatch({ type: PROJECT_FAILURE });
       return false;
@@ -37,8 +38,8 @@ export const getProjectById = (id) => {
   return async (dispatch) => {
     try {
       dispatch({ type: PROJECT_REQUEST });
-      const { data } = await axios.post(`/project/${id}`);
-      dispatch({ type: ADD_PROJECT_SUCCESS, data });
+      const { data } = await axios.get(`/project/${id}`);
+      dispatch({ type: GET_SELECTED_PROJECT, payload: data });
       return true;
     } catch (err) {
       dispatch({ type: PROJECT_REQUEST });

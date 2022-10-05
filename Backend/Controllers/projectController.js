@@ -80,7 +80,20 @@ const getProjectById = async (req, res) => {
   */
   try {
     const project = await Project.findOne({
-      attributes: ["id", "name"],
+      attributes: [
+        "id",
+        "name",
+        "description",
+        "startDate",
+        "endDate",
+        "createdAt",
+      ],
+      include: [
+        {
+          model: User,
+          attributes: ["id", "name", "email", "active"],
+        },
+      ],
     });
 
     return res.status(200).json(project);
@@ -96,9 +109,10 @@ const addProject = async (req, res) => {
   try {
     await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
 
-    const { name, startDate, endDate } = req.body;
+    const { name, description, startDate, endDate } = req.body;
     const project = await Project.create({
       name,
+      description,
       startDate,
       endDate,
       createdByUser: req.user.id,

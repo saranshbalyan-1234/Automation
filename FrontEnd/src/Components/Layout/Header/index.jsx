@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Layout, Dropdown, Menu, Spin } from "antd";
+import { Layout, Dropdown, Menu, Spin, message } from "antd";
 import ProfileMenu from "./ProfileMenu";
 import { useNavigate, Link } from "react-router-dom";
 import { CaretDownOutlined } from "@ant-design/icons";
@@ -17,13 +17,29 @@ const Headers = ({
   getProjectById,
 }) => {
   const navigate = useNavigate();
-
+  const [canFetch, setCanFetch] = useState(false);
   useEffect(() => {
-    if (!projects.loading) {
-      if (projects.currentProject.id) getProjectById(projects.data[0].id);
-      else if (defaultProjectId) getProjectById(defaultProjectId);
-    }
+    getProject();
+  }, []);
+  useEffect(() => {
+    if (projects.currentProject.id && canFetch)
+      getProjectById(projects.currentProject.id);
   }, [projects.currentProject.id]);
+
+  const getProject = async () => {
+    if (projects.currentProject.id)
+      await getProjectById(projects.currentProject.id);
+    else if (defaultProjectId) await getProjectById(defaultProjectId);
+    else {
+      const data = await getAllProject();
+      if (data.length > 0) {
+        await getProjectById(data[0].id);
+      } else {
+        message.error("No project found!");
+      }
+    }
+    setCanFetch(true);
+  };
 
   const handleProject = () => {
     getAllProject();
@@ -56,7 +72,6 @@ const Headers = ({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          // paddingTop: "15px",
         }}
       >
         <div>
