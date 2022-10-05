@@ -6,7 +6,6 @@ export const UserAvatar = ({ name, size = "small" }) => {
     if (temp.length > 1) return temp[0][0] + temp[1][0];
     else return temp[0][0];
   };
-  console.log("saransh", name);
   return (
     <Tooltip title={name} placement="top">
       <Avatar

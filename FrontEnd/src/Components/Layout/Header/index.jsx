@@ -41,18 +41,11 @@ const Headers = ({
     setCanFetch(true);
   };
 
-  const handleProject = () => {
-    getAllProject();
-  };
-
   const ProjectMenu = (
     <Spin spinning={projects.loading}>
       <Menu
         style={{ marginTop: "-10px" }}
         items={[
-          ...projects.data.map((el, index) => {
-            return { key: index, label: el.name };
-          }),
           {
             key: "all",
             label: <Link to="/project">View All</Link>,
@@ -127,12 +120,7 @@ const Headers = ({
           )}
         </div>
 
-        <Dropdown
-          overlay={ProjectMenu}
-          arrow
-          trigger={"click"}
-          onClick={handleProject}
-        >
+        <Dropdown overlay={ProjectMenu} arrow trigger={"click"}>
           <div style={{ color: "white", cursor: "pointer" }}>
             Current Project: {projects.currentProject.name}{" "}
             <CaretDownOutlined />

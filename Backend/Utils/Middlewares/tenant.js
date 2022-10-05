@@ -5,16 +5,16 @@ export const changeTenantDatabase = () => {
     try {
       if (!req.validate) {
         await db.sequelize.query(`use Main`);
+        next();
       } else {
         if (req.user.tenant) {
           let database = req.user.tenant.replace(/[^a-zA-Z0-9 ]/g, "");
           await db.sequelize.query(`use ${database}`);
+          next();
         } else {
           return res.status(401).json({ error: "Invalid Tenant" });
         }
       }
-
-      next();
     } catch (e) {
       return getError(e, res);
     }

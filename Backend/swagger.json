@@ -783,7 +783,7 @@
         ]
       }
     },
-    "/project/{id}/user": {
+    "/project/{id}": {
       "get": {
         "tags": [
           "Project"
@@ -812,18 +812,33 @@
         ]
       }
     },
-    "/project/{id}": {
-      "get": {
+    "/project/": {
+      "post": {
         "tags": [
           "Project"
         ],
         "description": "",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "startDate": {
+                  "example": "any"
+                },
+                "endDate": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {

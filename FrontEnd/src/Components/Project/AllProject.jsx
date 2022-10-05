@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { getAllProject } from "../../Redux/Actions/project";
 import AddEditProjectModal from "./AddEditProjectModal";
-import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Popconfirm,
@@ -13,18 +12,19 @@ import {
   Typography,
   Progress,
 } from "antd";
+import { AiFillCheckCircle, AiTwotoneCheckCircle } from "react-icons/ai";
 import UserAvatar from "../Common/Avatar";
 import moment from "moment";
 import {
   DeleteOutlined,
   EditOutlined,
-  SelectOutlined,
   HeartOutlined,
+  HeartFilled,
+  EyeOutlined,
 } from "@ant-design/icons";
 import InfiniteScroll from "react-infinite-scroll-component";
 const { Title } = Typography;
 export const AllProject = ({ getAllProject, projects, user }) => {
-  const navigate = useNavigate();
   const [addEditProjectModal, setAddEditProjectModal] = useState(false);
   useEffect(() => {
     getAllProject();
@@ -34,7 +34,7 @@ export const AllProject = ({ getAllProject, projects, user }) => {
     let currentDate = moment(new Date()).format("YYYY/MM/DD");
     let totalDays = moment(endDate).diff(moment(startDate), "days");
     let daysPassed = moment(currentDate).diff(moment(startDate), "days");
-    let percentagePassed = parseInt((daysPassed / totalDays) * 100);
+    let percentagePassed = Math.floor((daysPassed / totalDays) * 100);
 
     return (
       <div>
@@ -55,6 +55,8 @@ export const AllProject = ({ getAllProject, projects, user }) => {
       </div>
     );
   };
+
+  const handleSelectProject = (id) => {};
   return (
     <div>
       <div
@@ -98,6 +100,50 @@ export const AllProject = ({ getAllProject, projects, user }) => {
               renderItem={(item) => (
                 <List.Item key={item.id}>
                   <List.Item.Meta
+                    avatar={
+                      <div>
+                        {" "}
+                        <div
+                          style={{
+                            fontSize: "20px",
+                            cursor: "pointer",
+                            display: "flex",
+                            flexDirection: "column",
+                            // gap: "16px",
+                          }}
+                        >
+                          {item.id == user.defaultProjectId ? (
+                            <Tooltip title="Selected">
+                              <AiFillCheckCircle />
+                            </Tooltip>
+                          ) : (
+                            <Tooltip title="Select Project">
+                              {" "}
+                              <AiTwotoneCheckCircle
+                                onClick={(item) => {
+                                  handleSelectProject(item.id);
+                                }}
+                              />
+                            </Tooltip>
+                          )}
+                          {item.id == user.defaultProjectId ? (
+                            <Tooltip title="Default Project">
+                              {" "}
+                              <HeartFilled />
+                            </Tooltip>
+                          ) : (
+                            <Tooltip title="Make Default">
+                              {" "}
+                              <HeartOutlined
+                                onClick={(item) => {
+                                  handleSelectProject(item.id);
+                                }}
+                              />
+                            </Tooltip>
+                          )}
+                        </div>
+                      </div>
+                    }
                     title={
                       <div
                         style={{
@@ -122,20 +168,18 @@ export const AllProject = ({ getAllProject, projects, user }) => {
                               marginTop: "10px",
                             }}
                           >
-                            {" "}
                             Members:
                             <div>
                               <Avatar.Group
                                 size="small"
-                                maxCount={2}
+                                maxCount={5}
                                 maxStyle={{
                                   color: "#f56a00",
                                   backgroundColor: "#fde3cf",
                                 }}
                               >
                                 {item.members.map((el) => {
-                                  console.log(el.name);
-                                  return <UserAvatar name={"saransh"} />;
+                                  return <UserAvatar name={el.name} />;
                                 })}
                               </Avatar.Group>
                             </div>
@@ -165,88 +209,63 @@ export const AllProject = ({ getAllProject, projects, user }) => {
                       gap: "10px",
                     }}
                   >
-                    <div
-                      style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          width: "100%",
-                        }}
-                      >
-                        <div style={{ display: "flex", gap: "5px" }}>
-                          <div>Author</div>
-                          <UserAvatar name={item.createdBy.name} />
-                        </div>
-
-                        <div style={{ display: "flex", gap: "10px" }}>
-                          <Button
-                            type="primary"
-                            ghost
-                            size="small"
-                            onClick={async () => {
-                              // await setEditUserId(item.id);
-                              // setManageUserModal(true);
-                            }}
-                          >
-                            <EditOutlined />
-                          </Button>
-                          <Popconfirm
-                            title="Are you sure to remove this user?"
-                            onConfirm={() => {
-                              // removeTeamMember(item.id);
-                            }}
-                            okText="Yes, Remove"
-                            cancelText="No"
-                          >
-                            <Button type="danger" ghost size="small">
-                              <DeleteOutlined />
-                            </Button>
-                          </Popconfirm>
-                        </div>
-                      </div>
+                    <div style={{ display: "flex", gap: "5px" }}>
+                      <div>Author</div>
+                      <UserAvatar name={item.createdBy.name} />
                     </div>
+
                     <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
+                        width: "100%",
                         gap: "10px",
-                        marginTop: "10px",
-                        color: "grey",
                       }}
                     >
                       <Button
                         type="primary"
-                        ghost
                         size="small"
-                        style={{ width: "135px" }}
-                        disabled={item.id == projects.currentProject.id}
-                        onClick={async () => {
-                          // await setEditUserId(item.id);
-                          // setManageUserModal(true);
-                        }}
-                      >
-                        <SelectOutlined />
-                        {item.id == projects.currentProject.id
-                          ? "Selected"
-                          : "Select Project"}
-                      </Button>
-                      <Button
-                        type="primary"
-                        size="small"
-                        style={{ width: "130px" }}
                         ghost
                         onClick={() => {
                           // setAddEditProjectModal(true);
                         }}
                       >
-                        <HeartOutlined />
-                        {item.id == user.defaultProjectId
-                          ? "Default"
-                          : "Make Default"}
+                        <EyeOutlined />
                       </Button>
+                      <Button
+                        type="primary"
+                        ghost
+                        size="small"
+                        onClick={async () => {
+                          // await setEditUserId(item.id);
+                          // setManageUserModal(true);
+                        }}
+                      >
+                        <EditOutlined />
+                      </Button>
+                      <Popconfirm
+                        title="Are you sure to remove this user?"
+                        onConfirm={() => {
+                          // removeTeamMember(item.id);
+                        }}
+                        okText="Yes, Remove"
+                        cancelText="No"
+                      >
+                        <Button type="danger" ghost size="small">
+                          <DeleteOutlined />
+                        </Button>
+                      </Popconfirm>
                     </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        gap: "10px",
+
+                        color: "grey",
+                      }}
+                    ></div>
                   </div>
                 </List.Item>
               )}

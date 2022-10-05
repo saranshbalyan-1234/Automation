@@ -42,6 +42,7 @@ const getError = (e, res, tokenType) => {
       case "TokenExpiredError":
         message = `${tokenType || "Access"} Token Expired`;
         code = 403;
+
         break;
       case "JsonWebTokenError":
         message = `Invalid ${tokenType || "Access"} Token`;

@@ -21,11 +21,13 @@ export const getAllProject = (payload) => {
   };
 };
 export const addProject = (payload) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       dispatch({ type: PROJECT_REQUEST });
-      await axios.post(`/project`, payload);
-      dispatch({ type: ADD_PROJECT_SUCCESS, payload });
+      const { data } = await axios.post(`/project`, payload);
+      let user = getState().auth.user;
+      let newProject = { ...data, createdBy: user, members: [user] };
+      dispatch({ type: ADD_PROJECT_SUCCESS, payload: newProject });
       return true;
     } catch (err) {
       dispatch({ type: PROJECT_REQUEST });
