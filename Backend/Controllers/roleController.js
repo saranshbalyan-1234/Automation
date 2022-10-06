@@ -1,5 +1,6 @@
 import db from "../Utils/dataBaseConnection.js";
 import getError from "../Utils/sequelizeError.js";
+import { paginate, pageInfo } from "../Utils/pagination.js";
 const Role = db.roles;
 const UserRole = db.userRoles;
 const Permission = db.permissions;
@@ -9,20 +10,13 @@ const getAllRole = async (req, res) => {
   /*  #swagger.tags = ["Role"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
-  await Role.findAll({
-    include: [
-      {
-        model: Permission,
-        attributes: ["id", "name", "view", "add", "edit", "delete"],
-      },
-    ],
-  })
-    .then((resp) => {
-      return res.status(200).json(resp);
-    })
-    .catch((e) => {
-      getError(e, res);
-    });
+  try {
+    const roles = await Role.findAndCountAll(paginate({}, req.query));
+    const temp = pageInfo(roles, req.query);
+    return res.status(200).json(temp);
+  } catch (err) {
+    getError(err, res);
+  }
 };
 
 const saveRole = async (req, res) => {

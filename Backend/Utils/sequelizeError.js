@@ -1,5 +1,4 @@
 const getError = (e, res, tokenType) => {
-  console.log(e);
   let message = "";
   if (
     e.errors &&
