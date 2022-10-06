@@ -38,7 +38,7 @@ const ProfileMenu = ({ logout }) => {
         },
         {
           label: (
-            <Link to="/settings">
+            <Link to="/settings/profile">
               <EditOutlined style={{ marginRight: "5px" }} />
               Settings
             </Link>

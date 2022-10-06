@@ -39,7 +39,7 @@ app.use(changeTenantDatabase());
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/role", roleRoutes);
-app.use("/permission", globalRoutes);
+app.use("/global", globalRoutes);
 app.use("/mail", mailRoutes);
 app.use("/project", projectRoutes);
 

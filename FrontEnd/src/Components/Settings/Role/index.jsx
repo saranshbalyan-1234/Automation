@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { List, Spin, Popconfirm, Checkbox, Collapse, Button } from "antd";
 import {
@@ -6,7 +6,7 @@ import {
   EditOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { deleteRole } from "../../../Redux/Actions/role";
+import { deleteRole, getAllRole } from "../../../Redux/Actions/role";
 import AddEditRoleModal from "./AddEditRoleModal";
 import ManagePermissionModal from "./ManagePermissionModal";
 const { Panel } = Collapse;
@@ -14,6 +14,7 @@ export const Role = ({
   data,
   loading,
   profile = false,
+  getAllRole,
   deleteRole,
   setAddPermissionModal,
   addPermissionModal,
@@ -21,6 +22,10 @@ export const Role = ({
   setSingleRoleData,
 }) => {
   const [addEditRoleModal, setAddEditRoleModal] = useState(false);
+
+  useEffect(() => {
+    getAllRole();
+  }, []);
 
   const handleRoleEdit = (item) => {
     setAddEditRoleModal(true);
@@ -173,6 +178,6 @@ export const Role = ({
 
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = { deleteRole };
+const mapDispatchToProps = { deleteRole, getAllRole };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Role);

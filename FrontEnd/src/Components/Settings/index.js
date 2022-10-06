@@ -9,9 +9,11 @@ import AddUserModal from "./Team/AddUserModal";
 import EditDetailsModal from "./Profile/EditDetailsModal";
 import ChangePasswordModal from "./Profile/ChangePasswordModal";
 import AddEditRoleModal from "./Role/AddEditRoleModal";
-import { getAllRole } from "../../Redux/Actions/role";
 import { connect } from "react-redux";
-function Setting({ getAllRole, roles }) {
+import { Link, useParams, useNavigate } from "react-router-dom";
+function Setting({ roles }) {
+  const { tab } = useParams();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("profile");
   const [addUserModal, setAddUserModal] = useState(false);
   const [addRoleModal, setAddRoleModal] = useState(false);
@@ -19,15 +21,14 @@ function Setting({ getAllRole, roles }) {
   const [addPermissionModal, setAddPermissionModal] = useState(false);
   const [singleRoleData, setSingleRoleData] = useState({ id: null, name: "" });
   const [editDetailsModal, setEditDetailsModal] = useState(false);
+
   const handleActiveTab = (value) => {
-    setActiveTab(value);
+    navigate(`/settings/${value}`);
   };
 
   useEffect(() => {
-    if (activeTab === "roles") {
-      getAllRole();
-    }
-  }, [activeTab]);
+    setActiveTab(tab);
+  }, [tab]);
 
   const renderButton = () => {
     if (activeTab === "roles")
@@ -89,9 +90,9 @@ function Setting({ getAllRole, roles }) {
     <>
       <div style={{ display: "flex", position: "relative" }}>
         <Tabs
-          onChange={handleActiveTab}
           activeKey={activeTab}
           style={{ minWidth: "100%" }}
+          onChange={handleActiveTab}
         >
           <Tabs.TabPane tab="Profile" key="profile">
             <Profile />
@@ -146,6 +147,6 @@ function Setting({ getAllRole, roles }) {
 }
 const mapStateToProps = (state) => ({ roles: state.roles });
 
-const mapDispatchToProps = { getAllRole };
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Setting);

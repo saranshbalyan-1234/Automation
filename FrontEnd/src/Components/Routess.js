@@ -16,7 +16,7 @@ function Routess({ user }) {
       <Routes>
         <Route exact path="/" element={<Dashboard />}></Route>
         <Route exact path="/support" element={<Support />}></Route>
-        <Route exact path="/settings" element={<Setting />}></Route>
+        <Route exact path="/settings/:tab" element={<Setting />}></Route>
         <Route exact path="/project/*" element={<Project />}></Route>
         <Route
           exact
