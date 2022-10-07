@@ -18,7 +18,6 @@ export default (sequelize, DataTypes) => {
     tenantName: {
       type: DataTypes.STRING,
       allowNull: false,
-      onDelete: "CASCADE",
       references: {
         model: "tenants",
         key: "name",

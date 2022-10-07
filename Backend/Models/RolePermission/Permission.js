@@ -12,7 +12,6 @@ export default (sequelize, DataTypes) => {
     roleId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      onDelete: "CASCADE",
       references: {
         model: "roles",
         key: "id",

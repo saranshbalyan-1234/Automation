@@ -38,7 +38,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: true,
       default: null,
-      onDelete: "SET NULL",
       references: {
         model: "projects",
         key: "id",

@@ -22,7 +22,6 @@ export default (sequelize, DataTypes) => {
     createdByUser: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      onDelete: "RESTRICT",
       references: {
         model: "users",
         key: "id",

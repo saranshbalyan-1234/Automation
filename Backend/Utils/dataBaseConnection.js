@@ -56,19 +56,10 @@ db.users = User(sequelize, DataTypes);
 
 db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0").then(() => {
   db.tenants.sync({ force: false, alter: true }).then(() => {
-    console.log("Synced tenants table");
-    db.customers.sync({ force: false, alter: true }).then(() => {
-      console.log("Synced customers table");
-    });
+    db.customers.sync({ force: false, alter: true }).then(() => {});
   });
-  db.unverifieds.sync({ force: false, alter: true }).then(() => {
-    console.log("Synced Unverified table");
-  });
-  db.permissionList.sync({ force: false, alter: true }).then(() => {
-    console.log("Synced PermissionList table");
-  });
+  db.unverifieds.sync({ force: false, alter: true }).then(() => {});
+  db.permissionList.sync({ force: false, alter: true }).then(() => {});
 });
-
-// await db.sequelize.sync();
 
 export default db;

@@ -42,23 +42,14 @@ const CustomTree = () => {
     },
   ]);
   const [filteredData, setFilteredData] = useState(treeData);
-  const onSelect = (keys, info) => {
-    // console.log("Trigger Select", keys, info);
-  };
+  const onSelect = (keys, info) => {};
 
-  const onExpand = (keys, info) => {
-    // console.log("Trigger Expand", keys, info);
-  };
+  const onExpand = (keys, info) => {};
 
   const searchTree = (e) => {
     let value = e.target.value;
     console.log(value);
     const temp = treeData.filter((parent) => {
-      // return parent.children
-      //   ? parent.children.map((child) => {
-      //       return child.title.includes(value);
-      //     })
-      //   :
       return (
         parent.title.includes(value) ||
         parent.children?.some((child) => {

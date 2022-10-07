@@ -73,7 +73,6 @@ export const removeMember = (payload) => {
       dispatch({ type: REMOVE_CURRENT_PROJECT_MEMBER, payload });
       return true;
     } catch (err) {
-      console.log(err);
       dispatch({ type: PROJECT_FAILURE });
       return false;
     }
