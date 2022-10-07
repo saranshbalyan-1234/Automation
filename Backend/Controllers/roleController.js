@@ -77,7 +77,7 @@ const deleteRole = async (req, res) => {
   try {
     const roleId = req.params.roleId;
     const assignedRole = await UserRole.schema(req.database).findOne({
-      where: roleId,
+      where: { roleId },
     });
     if (assignedRole) throw new Error("Role is assigned to users!");
     await Permission.schema(req.database).destroy({
