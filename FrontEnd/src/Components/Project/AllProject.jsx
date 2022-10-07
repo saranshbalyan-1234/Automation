@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { getAllProject } from "../../Redux/Actions/project";
+import { getAllProject, getProjectById } from "../../Redux/Actions/project";
+import { editDetails } from "../../Redux/Actions/user";
 import AddEditProjectModal from "./AddEditProjectModal";
 import {
   Avatar,
@@ -22,9 +23,17 @@ import {
   HeartFilled,
   EyeOutlined,
 } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 const { Title } = Typography;
-export const AllProject = ({ getAllProject, projects, user }) => {
+export const AllProject = ({
+  getAllProject,
+  getProjectById,
+  editDetails,
+  projects,
+  user,
+}) => {
+  const navigate = useNavigate();
   const [addEditProjectModal, setAddEditProjectModal] = useState(false);
   useEffect(() => {
     getAllProject();
@@ -56,7 +65,13 @@ export const AllProject = ({ getAllProject, projects, user }) => {
     );
   };
 
-  const handleSelectProject = (id) => {};
+  const handleSelectProject = (id) => {
+    console.log(id);
+    getProjectById(id);
+  };
+  const handleDefaultProject = (id) => {
+    editDetails({ defaultProjectId: id });
+  };
   return (
     <div>
       <div
@@ -109,18 +124,18 @@ export const AllProject = ({ getAllProject, projects, user }) => {
                             cursor: "pointer",
                             display: "flex",
                             flexDirection: "column",
-                            // gap: "16px",
+                            gap: "15px",
+                            marginTop: "2px",
                           }}
                         >
-                          {item.id == user.defaultProjectId ? (
+                          {item.id == projects.currentProject.id ? (
                             <Tooltip title="Selected">
                               <AiFillCheckCircle />
                             </Tooltip>
                           ) : (
                             <Tooltip title="Select Project">
-                              {" "}
                               <AiTwotoneCheckCircle
-                                onClick={(item) => {
+                                onClick={() => {
                                   handleSelectProject(item.id);
                                 }}
                               />
@@ -128,15 +143,13 @@ export const AllProject = ({ getAllProject, projects, user }) => {
                           )}
                           {item.id == user.defaultProjectId ? (
                             <Tooltip title="Default Project">
-                              {" "}
                               <HeartFilled />
                             </Tooltip>
                           ) : (
                             <Tooltip title="Make Default">
-                              {" "}
                               <HeartOutlined
-                                onClick={(item) => {
-                                  handleSelectProject(item.id);
+                                onClick={() => {
+                                  handleDefaultProject(item.id);
                                 }}
                               />
                             </Tooltip>
@@ -231,7 +244,11 @@ export const AllProject = ({ getAllProject, projects, user }) => {
                           // setAddEditProjectModal(true);
                         }}
                       >
-                        <EyeOutlined />
+                        <EyeOutlined
+                          onClick={() => {
+                            navigate(`/project/${item.id}/details`);
+                          }}
+                        />
                       </Button>
                       <Button
                         type="primary"
@@ -289,6 +306,6 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-const mapDispatchToProps = { getAllProject };
+const mapDispatchToProps = { getAllProject, getProjectById, editDetails };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllProject);

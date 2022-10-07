@@ -33,9 +33,9 @@ app.get("/", (req, res) => {
 });
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use("/auth", authRoutes);
-app.use("/global", globalRoutes);
-app.use(validateToken());
 
+app.use(validateToken());
+app.use("/global", globalRoutes);
 app.use("/user", userRoutes);
 app.use("/role", roleRoutes);
 app.use("/mail", mailRoutes);

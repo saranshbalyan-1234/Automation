@@ -80,10 +80,9 @@ const getProjectById = async (req, res) => {
         },
       ],
     });
-
     let temp = { ...project.dataValues };
     temp.members = temp.members.map((user) => {
-      return user.user;
+      return user.dataValues.user;
     });
 
     return res.status(200).json(temp);

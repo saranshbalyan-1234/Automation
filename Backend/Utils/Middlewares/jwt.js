@@ -6,28 +6,20 @@ const { verify } = pkg;
 export const validateToken = () => {
   return async (req, res, next) => {
     try {
-      const check = req.url.includes("auth");
-
-      if (!check) {
-        const token = extractToken(req);
-        if (token) {
-          const data = verify(token, process.env.JWT_ACCESS_SECRET);
-          if (data) {
-            let temp = { ...data };
-            delete temp.iat;
-            delete temp.exp;
-            req.user = temp;
-            let database = temp.tenant.replace(/[^a-zA-Z0-9 ]/g, "");
-            req.database = database;
-            // await db.sequelize.query(`use ${database}`);
-            next();
-          }
-        } else {
-          return res.status(401).json({ error: "Access token not found" });
+      const token = extractToken(req);
+      if (token) {
+        const data = verify(token, process.env.JWT_ACCESS_SECRET);
+        if (data) {
+          let temp = { ...data };
+          delete temp.iat;
+          delete temp.exp;
+          req.user = temp;
+          let database = temp.tenant.replace(/[^a-zA-Z0-9 ]/g, "");
+          req.database = database;
+          next();
         }
       } else {
-        // await db.sequelize.query(`use Main`);
-        next();
+        return res.status(401).json({ error: "Access token not found" });
       }
     } catch (e) {
       getError(e, res, "Access");

@@ -17,14 +17,14 @@ const Headers = ({
   getProjectById,
 }) => {
   const navigate = useNavigate();
-  const [canFetch, setCanFetch] = useState(false);
+  // const [canFetch, setCanFetch] = useState(false);
   useEffect(() => {
     getProject();
   }, []);
-  useEffect(() => {
-    if (projects.currentProject.id && canFetch)
-      getProjectById(projects.currentProject.id);
-  }, [projects.currentProject.id]);
+  // useEffect(() => {
+  //   if (projects.currentProject.id && canFetch)
+  //     getProjectById(projects.currentProject.id);
+  // }, [projects.currentProject.id]);
 
   const getProject = async () => {
     if (projects.currentProject.id)
@@ -38,7 +38,7 @@ const Headers = ({
         message.error("No project found!");
       }
     }
-    setCanFetch(true);
+    // setCanFetch(true);
   };
 
   const ProjectMenu = (
@@ -99,8 +99,7 @@ const Headers = ({
             />
           )}
 
-          {/* <div onClick={() => setCollapsed(!collapsed)}> */}
-          {collapsed ? (
+          {/* {collapsed ? (
             <MenuUnfoldOutlined
               style={{
                 color: "white",
@@ -117,7 +116,7 @@ const Headers = ({
               }}
               onClick={() => setCollapsed(!collapsed)}
             />
-          )}
+          )} */}
         </div>
 
         <Dropdown overlay={ProjectMenu} arrow trigger={"click"}>

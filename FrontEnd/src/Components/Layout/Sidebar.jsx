@@ -67,6 +67,12 @@ export default function Sidebar({ collapsed, setCollapsed }) {
       onCollapse={(collapsed, type) => {
         setCollapsed(collapsed);
       }}
+      onMouseEnter={() => {
+        setCollapsed(false);
+      }}
+      onMouseLeave={() => {
+        setCollapsed(true);
+      }}
     >
       <Menu
         theme="dark"
