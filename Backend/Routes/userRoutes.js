@@ -22,7 +22,11 @@ Router.post(
 Router.post("/add", validatePermission("Team & Role", "add"), addUser);
 Router.put("/details", changeDetails);
 Router.put("/change-password", changePassword);
-Router.delete("/:id", validatePermission("Team & Role", "delete"), deleteUser);
+Router.delete(
+  "/:userId",
+  validatePermission("Team & Role", "delete"),
+  deleteUser
+);
 Router.put(
   "/:userId/status",
   validatePermission("Team & Role", "edit"),

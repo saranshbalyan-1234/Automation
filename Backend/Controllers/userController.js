@@ -13,6 +13,8 @@ import {
 const User = db.users;
 const Customer = db.customers;
 const Tenant = db.tenants;
+const UserRole = db.userRoles;
+const userProject = db.userProjects;
 const getTeam = async (req, res) => {
   /*  #swagger.tags = ["User"] 
      #swagger.security = [{"apiKeyAuth": []}]
@@ -37,12 +39,12 @@ const addUser = async (req, res) => {
     const { error } = registerValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
     const database = req.database;
-    await db.sequelize.query(`use Main`);
-    await Customer.create({ email, tenantName: req.user.tenant }).catch((e) => {
-      throw new Error("User already exist");
-    });
 
-    await db.sequelize.query(`use ${database}`);
+    await Customer.schema("Main")
+      .create({ email, tenantName: req.user.tenant })
+      .catch((e) => {
+        throw new Error("User already exist");
+      });
 
     const hash = await bcrypt.hash(password, 8);
     const user = await User.schema(req.database).create({
@@ -88,26 +90,28 @@ const deleteUser = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const user = await User.schema(req.database).findByPk(req.params.id);
+    const userId = req.params.userId;
+    const user = await User.schema(req.database).findByPk(userId);
     if (req.user.tenant == user.email)
       throw new Error("Cannot Delete Customer Admin");
     if (user.verifiedAt)
       throw new Error(
         "Cannot delete Active User, You can only mark them inactive!"
       );
+    await userProject.schema(req.database).destroy({ where: userId });
+    await UserRole.schema(req.database).destroy({ where: userId });
     const deletedUser = await User.schema(req.database).destroy({
       where: {
-        id: req.params.id,
+        id: userId,
       },
     });
-    if (deletedUser == 1) {
-      await db.sequelize.query(`use Main`);
-      const deletedCustomerUser = await Customer.destroy({
+    if (deletedUser > 0) {
+      const deletedCustomerUser = await Customer.schema("Main").destroy({
         where: {
           email: user.email,
         },
       });
-      if (deletedCustomerUser == 1) {
+      if (deletedCustomerUser > 0) {
         return res.status(200).json({ message: "User Deleted Successfully" });
       }
     } else {
@@ -127,18 +131,17 @@ const deleteCustomerUser = async (req, res) => {
       return res
         .status(401)
         .json({ message: "Only customer admin can perform this operation!" });
-    await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
+
     const database = req.database;
-
     await db.sequelize.query(`drop database ${database}`);
-    await db.sequelize.query(`use Main`);
 
-    const deletedCustomer = await Tenant.destroy({
+    await Customer.schema("Main").destroy({ tenant: req.user.tenant });
+    const deletedTenant = await Tenant.schema("Main").destroy({
       where: {
         name: req.user.tenant,
       },
     });
-    if (deletedCustomer == 1) {
+    if (deletedTenant > 0) {
       return res.status(200).json({ message: "Deleted all data!" });
     }
   } catch (error) {

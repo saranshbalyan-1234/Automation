@@ -13,13 +13,17 @@ const Router = express.Router();
 
 Router.get("/", validatePermission("Team & Role", "view"), getAllRole);
 Router.post("/", validatePermission("Team & Role", "add"), saveRole);
-Router.put("/:id", validatePermission("Team & Role", "edit"), updateRole);
+Router.put("/:roleId", validatePermission("Team & Role", "edit"), updateRole);
 Router.put(
   "/:roleId/permission",
   validatePermission("Team & Role", "edit"),
   updateRolePermission
 );
-Router.delete("/:id", validatePermission("Team & Role", "delete"), deleteRole);
+Router.delete(
+  "/:roleId",
+  validatePermission("Team & Role", "delete"),
+  deleteRole
+);
 
 Router.get(
   "/user/:userId",

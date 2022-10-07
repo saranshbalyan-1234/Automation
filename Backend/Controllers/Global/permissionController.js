@@ -7,8 +7,9 @@ const getAllPermission = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    await db.sequelize.query(`use Main`);
-    const data = await PermissionList.findAll({ attributes: ["name"] });
+    const data = await PermissionList.schema("Main").findAll({
+      attributes: ["name"],
+    });
     return res.status(200).json(data);
   } catch (error) {
     getError(error, res);

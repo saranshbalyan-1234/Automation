@@ -134,7 +134,15 @@ const deleteProject = async (req, res) => {
       where: { userId: req.user.id, projectId },
     });
     if (!userProject) return res.status(401).json({ error: "Unauthorized" });
-
+    await User.schema(req.database).update(
+      { defaultProjectId: null },
+      {
+        where: {
+          defaultProjectId: projectId,
+        },
+      }
+    );
+    await UserProject.schema(req.database).destroy({ where: { projectId } });
     const deletedProject = await Project.schema(req.database).destroy({
       where: { id: projectId },
     });
@@ -178,6 +186,15 @@ const deleteMember = async (req, res) => {
     });
     if (!userProject) return res.status(401).json({ error: "Unauthorized" });
 
+    await User.schema(req.database).update(
+      { defaultProjectId: null },
+      {
+        where: {
+          defaultProjectId: projectId,
+          id: userId,
+        },
+      }
+    );
     await UserProject.schema(req.database).destroy({
       where: { userId: userId, projectId: projectId },
     });

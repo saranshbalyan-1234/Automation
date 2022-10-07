@@ -48,13 +48,13 @@ const updateRole = async (req, res) => {
   await Role.schema(req.database)
     .update(req.body, {
       where: {
-        id: req.params.id,
+        id: req.params.roleId,
       },
     })
     .then(async (resp) => {
       if (resp[0]) {
         await Role.schema(req.database)
-          .findByPk(req.params.id)
+          .findByPk(req.params.roleId)
           .then((resp) => {
             return res.status(200).json(resp);
           })
@@ -70,38 +70,39 @@ const updateRole = async (req, res) => {
     });
 };
 
-const deleteRole = (req, res) => {
+const deleteRole = async (req, res) => {
   /*  #swagger.tags = ["Role"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
-  Role.schema(req.database)
-    .destroy({
-      where: {
-        id: req.params.id,
-      },
-    })
-    .then((resp) => {
-      if (resp === 1) {
-        return res.status(200).json({ message: "Role deleted successfully" });
-      } else {
-        return res.status(400).json({ error: "Record not found" });
-      }
-    })
-    .catch((e) => {
-      getError(e, res);
+  try {
+    const roleId = req.params.roleId;
+    const assignedRole = await UserRole.schema(req.database).findOne({
+      where: roleId,
     });
+    if (assignedRole) throw new Error("Role is assigned to users!");
+    await Permission.schema(req.database).destroy({
+      where: { roleId },
+    });
+    const deletedRole = await Role.schema(req.database).destroy({
+      where: {
+        id: roleId,
+      },
+    });
+    if (deletedRole > 0) {
+      return res.status(200).json({ message: "Role deleted successfully" });
+    } else {
+      return res.status(400).json({ error: "Record not found" });
+    }
+  } catch (err) {
+    getError(err, res);
+  }
 };
 const updateRolePermission = async (req, res) => {
   /*  #swagger.tags = ["Role"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
-    await db.sequelize.query(`use Main`);
-    const data = await PermissionList.findAll({});
-
-    await db.sequelize.query(`use ${req.database}`);
-
+    const data = await PermissionList.schema("Main").findAll({});
     const check = data.some((el) => {
       return req.body.some((el1) => {
         return el.name == el1.name;

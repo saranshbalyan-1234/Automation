@@ -64,9 +64,6 @@ const login = async (req, res) => {
     if (!customer) throw new Error("User Not Registered");
     if (customer.blocked) throw new Error(`Customer Blocked`);
     const tenant = customer.tenantName.replace(/[^a-zA-Z0-9 ]/g, "");
-    // await db.sequelize.query(`use ${tenant}`).catch(() => {
-    //   throw new Error("Email Not Verified");
-    // });
 
     const user = await User.schema(tenant).findOne({
       where: { email },
@@ -192,7 +189,6 @@ const verifyUser = async (req, res) => {
     if (data) {
       const { email, tenant } = data;
 
-      await db.sequelize.query(`use ${tenant}`);
       const user = await User.schema(tenant).findOne({
         where: { email },
       });
