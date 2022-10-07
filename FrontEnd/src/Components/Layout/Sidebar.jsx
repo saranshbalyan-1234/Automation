@@ -58,15 +58,16 @@ export default function Sidebar({ collapsed, setCollapsed }) {
     <Sider
       trigger={null}
       collapsible
+      defaultCollapsed={true}
       collapsed={collapsed}
       breakpoint="lg"
       collapsedWidth={window.innerWidth < 720 ? 0 : 80}
       onBreakpoint={(broken) => {
         // console.log(broken);
       }}
-      onCollapse={(collapsed, type) => {
-        setCollapsed(collapsed);
-      }}
+      // onCollapse={(collapsed, type) => {
+      //   setCollapsed(collapsed);
+      // }}
       onMouseEnter={() => {
         setCollapsed(false);
       }}

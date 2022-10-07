@@ -5,6 +5,7 @@ import {
   GET_ALL_PROJECT_SUCCESS,
   ADD_PROJECT_SUCCESS,
   GET_SELECTED_PROJECT,
+  REMOVE_CURRENT_PROJECT_MEMBER,
 } from "./action-types";
 
 export const getAllProject = (payload) => {
@@ -30,7 +31,7 @@ export const addProject = (payload) => {
       dispatch({ type: ADD_PROJECT_SUCCESS, payload: newProject });
       return true;
     } catch (err) {
-      dispatch({ type: PROJECT_REQUEST });
+      dispatch({ type: PROJECT_FAILURE });
       return false;
     }
   };
@@ -44,7 +45,36 @@ export const getProjectById = (id) => {
       dispatch({ type: GET_SELECTED_PROJECT, payload: data });
       return true;
     } catch (err) {
+      dispatch({ type: PROJECT_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const addMember = (id) => {
+  return async (dispatch) => {
+    try {
       dispatch({ type: PROJECT_REQUEST });
+      const { data } = await axios.post(`/project/addMember`);
+      dispatch({ type: GET_SELECTED_PROJECT, payload: data });
+      return true;
+    } catch (err) {
+      dispatch({ type: PROJECT_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const removeMember = (payload) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: PROJECT_REQUEST });
+      await axios.post(`/project/removeMember`, payload);
+      dispatch({ type: REMOVE_CURRENT_PROJECT_MEMBER, payload });
+      return true;
+    } catch (err) {
+      console.log(err);
+      dispatch({ type: PROJECT_FAILURE });
       return false;
     }
   };

@@ -22,7 +22,7 @@ export default (sequelize, DataTypes) => {
     createdByUser: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      onDelete: "CASCADE",
+      onDelete: "RESTRICT",
       references: {
         model: "users",
         key: "id",
@@ -30,27 +30,5 @@ export default (sequelize, DataTypes) => {
     },
   });
 
-  Project.hasOne(sequelize.models.users, {
-    as: "createdBy",
-    sourceKey: "createdByUser",
-    foreignKey: "id",
-    onDelete: "CASCADE",
-    // as: "createdBy",
-  });
-  Project.hasMany(sequelize.models.userProjects, {
-    foreignKey: "projectId",
-    as: "members",
-  });
-  sequelize.models.userProjects.hasOne(Project, {
-    foreignKey: "id",
-    sourceKey: "projectId",
-    onDelete: "CASCADE",
-  });
-  sequelize.models.userProjects.hasOne(sequelize.models.users, {
-    foreignKey: "id",
-
-    sourceKey: "userId",
-    onDelete: "CASCADE",
-  });
   return Project;
 };

@@ -28,14 +28,18 @@ const register = async (req, res) => {
 
     const { name, email, password } = req.body;
 
-    await Tenant.create({ name: email }).catch((e) => {
-      throw new Error("Tenant already exist");
-    });
-    await Customer.create({ email, tenantName: email }).catch(() => {
-      throw new Error("Customer already exist");
-    });
+    await Tenant.schema("Main")
+      .create({ name: email })
+      .catch((e) => {
+        throw new Error("Tenant already exist");
+      });
+    await Customer.schema("Main")
+      .create({ email, tenantName: email })
+      .catch(() => {
+        throw new Error("Customer already exist");
+      });
     const hash = await bcrypt.hash(password, 8);
-    await Unverified.create({ name, email, password: hash });
+    await Unverified.schema("Main").create({ name, email, password: hash });
     sendMail({ email, name }, "customerRegister");
 
     return res.status(200).json({
@@ -53,30 +57,30 @@ const login = async (req, res) => {
 
     const { email, password, rememberMe } = req.body;
 
-    const customer = await Customer.findOne({
+    const customer = await Customer.schema("Main").findOne({
       where: { email },
     });
 
     if (!customer) throw new Error("User Not Registered");
     if (customer.blocked) throw new Error(`Customer Blocked`);
     const tenant = customer.tenantName.replace(/[^a-zA-Z0-9 ]/g, "");
-    await db.sequelize.query(`use ${tenant}`).catch(() => {
-      throw new Error("Email Not Verified");
-    });
+    // await db.sequelize.query(`use ${tenant}`).catch(() => {
+    //   throw new Error("Email Not Verified");
+    // });
 
-    const user = await User.findOne({
+    const user = await User.schema(tenant).findOne({
       where: { email },
       include: [
         {
-          model: UserRole,
+          model: UserRole.schema(tenant),
           attributes: ["roleId"],
           include: [
             {
-              model: Role,
+              model: Role.schema(tenant),
               attributes: ["name"],
             },
             {
-              model: Permission,
+              model: Permission.schema(tenant),
               attributes: ["name", "view", "add", "edit", "delete"],
             },
           ],
@@ -138,12 +142,12 @@ const verifyCustomer = async (req, res) => {
     const data = verify(req.params.token, process.env.JWT_VERIFICATION_SECRET);
     if (data) {
       const { email } = data;
-      const unverifiedUser = await Unverified.findOne({
+      const unverifiedUser = await Unverified.schema("Main").findOne({
         where: { email },
       });
 
       if (unverifiedUser) {
-        Unverified.destroy({
+        Unverified.schema("Main").destroy({
           where: {
             email,
           },
@@ -155,23 +159,20 @@ const verifyCustomer = async (req, res) => {
           throw new Error("CustomerDatabase already exist");
         });
 
-        await db.sequelize.query(`use ${database}`);
         await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
+        await UserRole.schema(database).sync({ force: true, alter: true });
+        await Permission.schema(database).sync({ force: true, alter: true });
+        await Role.schema(database).sync({ force: true, alter: true });
+        await UserProject.schema(database).sync({ force: true, alter: true });
+        await Project.schema(database).sync({ force: true, alter: true });
+        await User.schema(database).sync({ force: true, alter: true });
 
-        await User.sync({ force: false, alter: true });
-        await UserRole.sync({ force: false, alter: true });
-        await Permission.sync({ force: false, alter: true });
-        await Role.sync({ force: false, alter: true });
-        await UserProject.sync({ force: true, alter: true });
-        await Project.sync({ force: true, alter: true });
-
-        await User.create({
+        await User.schema(database).create({
           name,
           email,
           password: password,
           verifiedAt: new Date(),
         });
-        await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
         return res
           .status(200)
           .json({ message: "Email Verification Successfull" });
@@ -192,13 +193,13 @@ const verifyUser = async (req, res) => {
       const { email, tenant } = data;
 
       await db.sequelize.query(`use ${tenant}`);
-      const user = await User.findOne({
+      const user = await User.schema(tenant).findOne({
         where: { email },
       });
 
       if (user) {
         if (user.verifiedAt) throw new Error("Email Already Verified");
-        await User.update(
+        await User.schema(tenant).update(
           { verifiedAt: new Date() },
           {
             where: {
@@ -224,10 +225,10 @@ const resetPassword = async (req, res) => {
     const data = verify(req.params.token, process.env.JWT_RESET_SECRET);
     if (data) {
       const { email, tenant } = data;
-      await db.sequelize.query(`use ${tenant}`);
+
       const hash = await bcrypt.hash(req.body.password, 8);
 
-      const updatedUser = await User.update(
+      const updatedUser = await User.schema(tenant).update(
         { password: hash },
         {
           where: {
@@ -252,8 +253,8 @@ const sendResetPasswordMail = async (req, res) => {
     });
     if (!customer) throw new Error("User Not Registered");
     let database = customer.tenantName.replace(/[^a-zA-Z0-9 ]/g, "");
-    await db.sequelize.query(`use ${database}`);
-    const user = await User.findOne({
+
+    const user = await User.schema(database).findOne({
       where: { email },
     });
     sendMail({ email, name: user.name, tenant: database }, "reset-password");

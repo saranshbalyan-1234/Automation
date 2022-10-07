@@ -4,6 +4,7 @@ import {
   GET_ALL_PROJECT_SUCCESS,
   ADD_PROJECT_SUCCESS,
   GET_SELECTED_PROJECT,
+  REMOVE_CURRENT_PROJECT_MEMBER,
 } from "../Actions/action-types";
 
 const initState = {
@@ -40,6 +41,15 @@ const projectReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         currentProject: payload,
+        loading: false,
+      };
+    case REMOVE_CURRENT_PROJECT_MEMBER:
+      let removed = [...state.currentProject.members].filter((el) => {
+        return el.id != payload.userId;
+      });
+      return {
+        ...state,
+        currentProject: { ...state.currentProject, members: removed },
         loading: false,
       };
     default:

@@ -52,6 +52,12 @@ const getProjectById = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
+    const userProject = await UserProject.schema(req.database).findOne({
+      where: { userId: req.user.id, projectId: req.params.id },
+    });
+
+    if (!userProject) return res.status(401).json({ error: "Unauthorized" });
+
     const project = await Project.schema(req.database).findByPk(req.params.id, {
       attributes: [
         "id",
@@ -68,7 +74,6 @@ const getProjectById = async (req, res) => {
           include: [
             {
               model: User.schema(req.database),
-
               attributes: ["id", "name", "email", "active"],
             },
           ],
@@ -81,6 +86,7 @@ const getProjectById = async (req, res) => {
       ],
     });
     let temp = { ...project.dataValues };
+
     temp.members = temp.members.map((user) => {
       return user.dataValues.user;
     });
@@ -117,4 +123,58 @@ const addProject = async (req, res) => {
   }
 };
 
-export { getMyProject, getProjectById, addProject };
+const addMember = async (req, res) => {
+  /*  #swagger.tags = ["Project"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+  try {
+    const { projectId } = req.body;
+
+    const userProject = await UserProject.findOne({
+      where: { userId: req.user.id, projectId },
+    });
+    if (!userProject) return res.status(401).json({ error: "Unauthorized" });
+
+    if (projectId) {
+      await UserProject.schema(req.database).create({
+        userId: req.user.id,
+        projectId: projectId,
+      });
+      return res.status(200).json({ message: "Project member added!" });
+    } else {
+      return res.status(400).json({ error: "Invalid Project" });
+    }
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
+const removeMember = async (req, res) => {
+  /*  #swagger.tags = ["Project"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+  try {
+    const { projectId, userId } = req.body;
+
+    const userProject = await UserProject.schema(req.database).findOne({
+      where: { userId: req.user.id, projectId },
+    });
+    if (!userProject) return res.status(401).json({ error: "Unauthorized" });
+
+    if (projectId && userId) {
+      await UserProject.schema(req.database).destroy({
+        where: { userId: req.user.id, projectId: projectId },
+      });
+
+      return res.status(200).json({ message: "Project member removed!" });
+    } else {
+      return res
+        .status(400)
+        .json({ error: `Inavlid ${projectId ? "User" : "Project"}` });
+    }
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
+export { getMyProject, getProjectById, addProject, addMember, removeMember };

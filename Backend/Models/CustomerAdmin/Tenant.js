@@ -4,7 +4,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: "name",
-      onDelete: "CASCADE",
       validate: {
         notNull: true,
       },

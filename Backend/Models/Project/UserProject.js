@@ -3,10 +3,20 @@ export default (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      onDelete: "RESTRICT",
+      references: {
+        model: "user",
+        key: "id",
+      },
     },
     projectId: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      onDelete: "CASCADE",
+      references: {
+        model: "projects",
+        key: "id",
+      },
     },
   });
 

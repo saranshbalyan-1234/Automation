@@ -91,6 +91,10 @@ const deleteUser = async (req, res) => {
     const user = await User.schema(req.database).findByPk(req.params.id);
     if (req.user.tenant == user.email)
       throw new Error("Cannot Delete Customer Admin");
+    if (user.verifiedAt)
+      throw new Error(
+        "Cannot delete Active User, You can only mark them inactive!"
+      );
     const deletedUser = await User.schema(req.database).destroy({
       where: {
         id: req.params.id,

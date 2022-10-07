@@ -66,7 +66,6 @@ export const AllProject = ({
   };
 
   const handleSelectProject = (id) => {
-    console.log(id);
     getProjectById(id);
   };
   const handleDefaultProject = (id) => {

@@ -10,12 +10,5 @@ export default (sequelize, DataTypes) => {
     },
   });
 
-  Role.hasMany(sequelize.models.permissions, {
-    foreignKey: "roleId",
-    onDelete: "CASCADE",
-  });
-
-  // Role.belongsToMany(sequelize.models.projects, { through: "userRoles" });
-
   return Role;
 };

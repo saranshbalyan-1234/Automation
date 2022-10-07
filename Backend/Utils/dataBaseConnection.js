@@ -39,16 +39,20 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.sequelize.dialect.supports.schemas = true;
+
+//Main
 db.tenants = Tenant(sequelize, DataTypes);
 db.customers = Customer(sequelize, DataTypes);
 db.unverifieds = Unverified(sequelize, DataTypes);
+db.permissionList = PermissionList(sequelize, DataTypes);
+
+//Tenant
 db.permissions = Permission(sequelize, DataTypes);
-db.roles = Role(sequelize, DataTypes);
 db.userRoles = UserRole(sequelize, DataTypes);
-db.users = User(sequelize, DataTypes);
 db.userProjects = UserProject(sequelize, DataTypes);
 db.projects = Project(sequelize, DataTypes);
-db.permissionList = PermissionList(sequelize, DataTypes);
+db.roles = Role(sequelize, DataTypes);
+db.users = User(sequelize, DataTypes);
 
 db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0").then(() => {
   db.tenants.sync({ force: false, alter: true }).then(() => {

@@ -9,7 +9,7 @@ import Sidebar from "./Sidebar";
 import Container from "./Container";
 const { Content } = Layout;
 export default function LayOut({ children }) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   return (
     <StyledLayout>
