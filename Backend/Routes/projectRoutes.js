@@ -3,20 +3,29 @@ import {
   getMyProject,
   getProjectById,
   addProject,
+  deleteProject,
   addMember,
-  removeMember,
+  deleteMember,
 } from "../Controllers/projectController.js";
 import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
 Router.get("/", validatePermission("project", "view"), getMyProject);
-Router.get("/:id", validatePermission("project", "view"), getProjectById);
+Router.get(
+  "/:projectId",
+  validatePermission("project", "view"),
+  getProjectById
+);
 Router.post("/", validatePermission("project", "add"), addProject);
 Router.post("/addMember", validatePermission("project", "edit"), addMember);
 Router.post(
   "/removeMember",
   validatePermission("project", "edit"),
-  removeMember
+  deleteMember
 );
-
+Router.delete(
+  "/:projectId",
+  validatePermission("project", "delete"),
+  deleteProject
+);
 export default Router;

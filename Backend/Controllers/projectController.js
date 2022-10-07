@@ -52,13 +52,14 @@ const getProjectById = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
+    const projectId = req.params.id;
     const userProject = await UserProject.schema(req.database).findOne({
-      where: { userId: req.user.id, projectId: req.params.id },
+      where: { userId: req.user.id, projectId },
     });
 
     if (!userProject) return res.status(401).json({ error: "Unauthorized" });
 
-    const project = await Project.schema(req.database).findByPk(req.params.id, {
+    const project = await Project.schema(req.database).findByPk(projectId, {
       attributes: [
         "id",
         "name",
@@ -123,58 +124,75 @@ const addProject = async (req, res) => {
   }
 };
 
+const deleteProject = async (req, res) => {
+  /*  #swagger.tags = ["Project"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+  try {
+    const projectId = req.params.projectId;
+    const userProject = await UserProject.schema(req.database).findOne({
+      where: { userId: req.user.id, projectId },
+    });
+    if (!userProject) return res.status(401).json({ error: "Unauthorized" });
+
+    const deletedProject = await Project.schema(req.database).destroy({
+      where: { id: projectId },
+    });
+    if (deletedProject > 0)
+      return res.status(200).json({ message: "Project deleted successfully!" });
+    else return res.status(400).json({ error: "Project not found!" });
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
 const addMember = async (req, res) => {
   /*  #swagger.tags = ["Project"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
     const { projectId } = req.body;
-
     const userProject = await UserProject.findOne({
       where: { userId: req.user.id, projectId },
     });
     if (!userProject) return res.status(401).json({ error: "Unauthorized" });
 
-    if (projectId) {
-      await UserProject.schema(req.database).create({
-        userId: req.user.id,
-        projectId: projectId,
-      });
-      return res.status(200).json({ message: "Project member added!" });
-    } else {
-      return res.status(400).json({ error: "Invalid Project" });
-    }
+    await UserProject.schema(req.database).create({
+      userId: req.user.id,
+      projectId: projectId,
+    });
+    return res.status(200).json({ message: "Project member added!" });
   } catch (error) {
     getError(error, res);
   }
 };
 
-const removeMember = async (req, res) => {
+const deleteMember = async (req, res) => {
   /*  #swagger.tags = ["Project"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
     const { projectId, userId } = req.body;
-
     const userProject = await UserProject.schema(req.database).findOne({
       where: { userId: req.user.id, projectId },
     });
     if (!userProject) return res.status(401).json({ error: "Unauthorized" });
 
-    if (projectId && userId) {
-      await UserProject.schema(req.database).destroy({
-        where: { userId: req.user.id, projectId: projectId },
-      });
+    await UserProject.schema(req.database).destroy({
+      where: { userId: userId, projectId: projectId },
+    });
 
-      return res.status(200).json({ message: "Project member removed!" });
-    } else {
-      return res
-        .status(400)
-        .json({ error: `Inavlid ${projectId ? "User" : "Project"}` });
-    }
+    return res.status(200).json({ message: "Project member removed!" });
   } catch (error) {
     getError(error, res);
   }
 };
 
-export { getMyProject, getProjectById, addProject, addMember, removeMember };
+export {
+  getMyProject,
+  getProjectById,
+  addProject,
+  deleteProject,
+  addMember,
+  deleteMember,
+};

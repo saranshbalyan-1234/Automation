@@ -13,6 +13,7 @@ import {
   Typography,
   Progress,
 } from "antd";
+import axios from "axios";
 import { AiFillCheckCircle, AiTwotoneCheckCircle } from "react-icons/ai";
 import UserAvatar from "../Common/Avatar";
 import moment from "moment";
@@ -261,9 +262,9 @@ export const AllProject = ({
                         <EditOutlined />
                       </Button>
                       <Popconfirm
-                        title="Are you sure to remove this user?"
+                        title="Are you sure to delete this project?"
                         onConfirm={() => {
-                          // removeTeamMember(item.id);
+                          axios.delete(`/project/${item.id}`);
                         }}
                         okText="Yes, Remove"
                         cancelText="No"
