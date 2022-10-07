@@ -38,7 +38,7 @@ sequelize
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-
+db.sequelize.dialect.supports.schemas = true;
 db.tenants = Tenant(sequelize, DataTypes);
 db.customers = Customer(sequelize, DataTypes);
 db.unverifieds = Unverified(sequelize, DataTypes);

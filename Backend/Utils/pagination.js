@@ -24,30 +24,41 @@ const paginate = (conditions, query, searchable = []) => {
   }
   return data;
 };
-const pageInfo = (info, query) => {
+const pageInfo = (info, query, searched = false) => {
   const data = info.rows;
   const currentPage = parseInt(query.page);
   const size = parseInt(query.size);
   const totalElements = parseInt(info.count);
+  const sort = query.sort;
+  const search = query.search;
   let pageDetails = {
     data: data,
-    totalElements,
-    currentPage: 1,
-    size: totalElements,
-    totalPages: 1,
-    pagination: false,
-    sort: {
-      sorted: false,
+    page: {
+      pagination: false,
+      totalElements,
+      currentPage: 1,
+      size: totalElements,
+      totalPages: 1,
     },
+    sort: { sorted: false, sortBy: null, sortedBy: null },
+    search: { searched: false, searchedBy: null },
   };
 
   if (currentPage && size) {
-    pageDetails.currentPage = currentPage;
-    pageDetails.totalPages = Math.ceil(info.count / size);
-    pageDetails.size = size;
-    pageDetails.pagination = true;
+    pageDetails.page.currentPage = currentPage;
+    pageDetails.page.totalPages = Math.ceil(info.count / size);
+    pageDetails.page.size = size;
+    pageDetails.page.pagination = true;
   }
-
+  if (sort) {
+    pageDetails.sort.sorted = true;
+    pageDetails.sort.sortedBy = sort.split(",")[0];
+    pageDetails.sort.sortBy = sort.split(",")[1];
+  }
+  if (searched && search) {
+    pageDetails.search.searched = true;
+    pageDetails.search.searchedBy = search;
+  }
   return pageDetails;
 };
 export { paginate, pageInfo };

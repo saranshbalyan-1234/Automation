@@ -7,24 +7,24 @@ const getMyProject = async (req, res) => {
   /*  #swagger.tags = ["Project"] 
       #swagger.security = [{"apiKeyAuth": []}] */
   try {
-    const projects = await UserProject.findAll({
+    const projects = await UserProject.schema(req.database).findAll({
       where: { userId: req.user.id },
       include: [
         {
-          model: Project,
+          model: Project.schema(req.database),
           include: [
             {
-              model: UserProject,
+              model: UserProject.schema(req.database),
               as: "members",
               include: [
                 {
-                  model: User,
+                  model: User.schema(req.database),
                   attributes: ["id", "name", "email", "active"],
                 },
               ],
             },
             {
-              model: User,
+              model: User.schema(req.database),
               as: "createdBy",
               attributes: ["id", "name", "email", "active"],
             },
@@ -52,7 +52,7 @@ const getProjectById = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const project = await Project.findByPk(req.params.id, {
+    const project = await Project.schema(req.database).findByPk(req.params.id, {
       attributes: [
         "id",
         "name",
@@ -63,18 +63,18 @@ const getProjectById = async (req, res) => {
       ],
       include: [
         {
-          model: UserProject,
+          model: UserProject.schema(req.database),
           as: "members",
           include: [
             {
-              model: User,
+              model: User.schema(req.database),
 
               attributes: ["id", "name", "email", "active"],
             },
           ],
         },
         {
-          model: User,
+          model: User.schema(req.database),
           as: "createdBy",
           attributes: ["id", "name", "email", "active"],
         },
@@ -100,14 +100,14 @@ const addProject = async (req, res) => {
     await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
 
     const { name, description, startDate, endDate } = req.body;
-    const project = await Project.create({
+    const project = await Project.schema(req.database).create({
       name,
       description,
       startDate,
       endDate,
       createdByUser: req.user.id,
     });
-    await UserProject.create({
+    await UserProject.schema(req.database).create({
       userId: req.user.id,
       projectId: project.id,
     });

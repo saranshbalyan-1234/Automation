@@ -6,8 +6,9 @@ import {
   verifyUser,
   sendResetPasswordMail,
   resetPassword,
+  refreshToken,
 } from "../Controllers/authController.js";
-import { refreshToken } from "../Utils/jwt.js";
+
 const Router = express.Router();
 
 Router.post("/register", register);

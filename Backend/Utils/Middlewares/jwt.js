@@ -1,14 +1,13 @@
 import { extractToken } from "../jwt.js";
 import getError from "../sequelizeError.js";
 import pkg from "jsonwebtoken";
+
 const { verify } = pkg;
 export const validateToken = () => {
   return async (req, res, next) => {
     try {
-      let notInclude = ["auth", "jwt"];
-      const check = await notInclude.some((el) => {
-        return req.url.includes(el);
-      });
+      const check = req.url.includes("auth");
+
       if (!check) {
         const token = extractToken(req);
         if (token) {
@@ -18,13 +17,18 @@ export const validateToken = () => {
             delete temp.iat;
             delete temp.exp;
             req.user = temp;
-            req.validate = true;
+            let database = temp.tenant.replace(/[^a-zA-Z0-9 ]/g, "");
+            req.database = database;
+            // await db.sequelize.query(`use ${database}`);
+            next();
           }
         } else {
           return res.status(401).json({ error: "Access token not found" });
         }
+      } else {
+        // await db.sequelize.query(`use Main`);
+        next();
       }
-      next();
     } catch (e) {
       getError(e, res, "Access");
     }

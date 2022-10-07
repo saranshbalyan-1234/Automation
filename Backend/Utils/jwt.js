@@ -7,32 +7,6 @@ const createToken = async (data, secret, expiration) => {
   return sign(data, secret, options);
 };
 
-const refreshToken = async (req, res) => {
-  /*  #swagger.tags = ["Auth"] */
-  const token = req.body.refreshToken;
-  if (!token) return res.status(401).json({ error: "Refresh token not found" });
-
-  try {
-    const data = verify(token, process.env.JWT_REFRESH_SECRET);
-    if (data) {
-      let tokenData = { id: data.id, email: data.email };
-      const accessToken = await createToken(
-        tokenData,
-        process.env.JWT_ACCESS_SECRET,
-        process.env.JWT_ACCESS_EXPIRATION
-      );
-      const refreshToken = await createToken(
-        tokenData,
-        process.env.JWT_REFRESH_SECRET,
-        process.env.JWT_REFRESH_EXPIRATION
-      );
-      return res.status(200).json({ accessToken, refreshToken });
-    }
-  } catch (e) {
-    return res.status(401).json({ error: getTokenError(e, "Refresh") });
-  }
-};
-
 const getTokenError = (e, type) => {
   switch (e.name) {
     case "TokenExpiredError":
@@ -50,4 +24,4 @@ const extractToken = (req) => {
   } else return null;
 };
 
-export { createToken, refreshToken, getTokenError, extractToken };
+export { createToken, getTokenError, extractToken };

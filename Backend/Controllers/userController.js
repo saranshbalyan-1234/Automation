@@ -18,7 +18,7 @@ const getTeam = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const team = await User.findAll({});
+    const team = await User.schema(req.database).findAll({});
     const filteredTeam = team.filter((el) => {
       return el.id != req.user.id;
     });
@@ -36,7 +36,7 @@ const addUser = async (req, res) => {
     const { name, email, password } = req.body;
     const { error } = registerValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
-    const database = req.user.tenant.replace(/[^a-zA-Z0-9 ]/g, "");
+    const database = req.database;
     await db.sequelize.query(`use Main`);
     await Customer.create({ email, tenantName: req.user.tenant }).catch((e) => {
       throw new Error("User already exist");
@@ -45,7 +45,11 @@ const addUser = async (req, res) => {
     await db.sequelize.query(`use ${database}`);
 
     const hash = await bcrypt.hash(password, 8);
-    const user = await User.create({ name, email, password: hash });
+    const user = await User.schema(req.database).create({
+      name,
+      email,
+      password: hash,
+    });
     sendMail({ email, name, tenant: database }, "addUser");
 
     return res.status(200).json({
@@ -68,7 +72,7 @@ const resentVerificationEmail = async (req, res) => {
     if (error) throw new Error(error.details[0].message);
 
     const { name, email } = req.body;
-    const database = req.user.tenant.replace(/[^a-zA-Z0-9 ]/g, "");
+    const database = req.database;
     await sendMail({ email, name, tenant: database }, "addUser");
 
     return res.status(200).json({
@@ -84,10 +88,10 @@ const deleteUser = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const user = await User.findByPk(req.params.id);
+    const user = await User.schema(req.database).findByPk(req.params.id);
     if (req.user.tenant == user.email)
       throw new Error("Cannot Delete Customer Admin");
-    const deletedUser = await User.destroy({
+    const deletedUser = await User.schema(req.database).destroy({
       where: {
         id: req.params.id,
       },
@@ -120,7 +124,7 @@ const deleteCustomerUser = async (req, res) => {
         .status(401)
         .json({ message: "Only customer admin can perform this operation!" });
     await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
-    const database = req.user.tenant.replace(/[^a-zA-Z0-9 ]/g, "");
+    const database = req.database;
 
     await db.sequelize.query(`drop database ${database}`);
     await db.sequelize.query(`use Main`);
@@ -147,13 +151,13 @@ const changePassword = async (req, res) => {
     if (error) throw new Error(error.details[0].message);
     const { oldPassword, newPassword } = req.body;
 
-    const user = await User.findByPk(req.user.id);
+    const user = await User.schema(req.database).findByPk(req.user.id);
     const isAuthenticated = await bcrypt.compare(oldPassword, user.password);
     if (!isAuthenticated)
       return res.status(400).json({ error: "Incorrect Password" });
     const hash = await bcrypt.hash(newPassword, 8);
 
-    const updatedUser = await User.update(
+    const updatedUser = await User.schema(req.database).update(
       { password: hash },
       {
         where: {
@@ -177,7 +181,7 @@ const changeDetails = async (req, res) => {
     const { error } = changeDetailsValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
 
-    const updatedUser = await User.update(req.body, {
+    const updatedUser = await User.schema(req.database).update(req.body, {
       where: {
         id: req.user.id,
       },
@@ -203,7 +207,7 @@ const toggleUserActiveInactive = async (req, res) => {
     });
     if (error) throw new Error(error.details[0].message);
 
-    const updatedUser = await User.update(req.body, {
+    const updatedUser = await User.schema(req.database).update(req.body, {
       where: {
         id: userId,
       },

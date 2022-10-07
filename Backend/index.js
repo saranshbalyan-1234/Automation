@@ -4,7 +4,6 @@ import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import parser from "body-parser";
 import { validateToken } from "./Utils/Middlewares/jwt.js";
-import { changeTenantDatabase } from "./Utils/Middlewares/tenant.js";
 import userRoutes from "./Routes/userRoutes.js";
 import authRoutes from "./Routes/authRoutes.js";
 import mailRoutes from "./Routes/mailRoutes.js";
@@ -33,13 +32,12 @@ app.get("/", (req, res) => {
   return res.json("Server is working");
 });
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
-app.use(validateToken());
-app.use(changeTenantDatabase());
-
 app.use("/auth", authRoutes);
+app.use("/global", globalRoutes);
+app.use(validateToken());
+
 app.use("/user", userRoutes);
 app.use("/role", roleRoutes);
-app.use("/global", globalRoutes);
 app.use("/mail", mailRoutes);
 app.use("/project", projectRoutes);
 
