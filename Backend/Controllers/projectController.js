@@ -52,7 +52,7 @@ const getProjectById = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const projectId = req.params.id;
+    const projectId = req.params.projectId;
     const userProject = await UserProject.schema(req.database).findOne({
       where: { userId: req.user.id, projectId },
     });

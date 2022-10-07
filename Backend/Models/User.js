@@ -38,45 +38,49 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: true,
       default: null,
-      references: {
-        model: "projects",
-        key: "id",
-      },
     },
   });
 
-  User.hasMany(sequelize.models.userRoles, {
+  sequelize.models.users.hasMany(sequelize.models.userRoles, {
     foreignKey: "userId",
+    constraints: false,
   });
   sequelize.models.roles.hasMany(sequelize.models.permissions, {
     foreignKey: "roleId",
+    constraints: false,
   });
 
   sequelize.models.userRoles.hasMany(sequelize.models.permissions, {
     foreignKey: "roleId",
+    constraints: false,
   });
 
   sequelize.models.userRoles.hasOne(sequelize.models.roles, {
     foreignKey: "id",
     sourceKey: "roleId",
+    constraints: false,
   });
 
   sequelize.models.projects.hasOne(sequelize.models.users, {
     as: "createdBy",
     sourceKey: "createdByUser",
     foreignKey: "id",
+    constraints: false,
   });
   sequelize.models.projects.hasMany(sequelize.models.userProjects, {
     foreignKey: "projectId",
     as: "members",
+    constraints: false,
   });
   sequelize.models.userProjects.hasOne(sequelize.models.projects, {
     foreignKey: "id",
     sourceKey: "projectId",
+    constraints: false,
   });
   sequelize.models.userProjects.hasOne(sequelize.models.users, {
     foreignKey: "id",
     sourceKey: "userId",
+    constraints: false,
   });
 
   return User;
