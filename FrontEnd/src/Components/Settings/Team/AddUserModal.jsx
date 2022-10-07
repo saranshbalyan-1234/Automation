@@ -39,7 +39,7 @@ const AddUserModal = ({ addUserModal, setAddUserModal, addTeamMember }) => {
         <Form
           name="register"
           onFinish={onSubmit}
-          labelCol={{ span: 6 }}
+          labelCol={{ span: 7 }}
           wrapperCol={{ span: 16 }}
         >
           <Form.Item

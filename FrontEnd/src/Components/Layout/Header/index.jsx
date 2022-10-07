@@ -121,7 +121,10 @@ const Headers = ({
 
         <Dropdown overlay={ProjectMenu} arrow trigger={"click"}>
           <div style={{ color: "white", cursor: "pointer" }}>
-            Current Project: {projects.currentProject.name}{" "}
+            Current Project:{" "}
+            {projects.currentProject.name
+              ? projects.currentProject.name
+              : "No Project Selected"}
             <CaretDownOutlined />
           </div>
         </Dropdown>

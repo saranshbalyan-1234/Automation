@@ -98,8 +98,8 @@ const deleteUser = async (req, res) => {
       throw new Error(
         "Cannot delete Active User, You can only mark them inactive!"
       );
-    await userProject.schema(req.database).destroy({ where: userId });
-    await UserRole.schema(req.database).destroy({ where: userId });
+    await userProject.schema(req.database).destroy({ where: { userId } });
+    await UserRole.schema(req.database).destroy({ where: { userId } });
     const deletedUser = await User.schema(req.database).destroy({
       where: {
         id: userId,
