@@ -51,6 +51,7 @@ const addUser = async (req, res) => {
       name,
       email,
       password: hash,
+      active: false,
     });
     sendMail({ email, name, tenant: database }, "addUser");
 

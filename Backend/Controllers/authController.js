@@ -9,7 +9,7 @@ import {
   loginValidation,
 } from "../Utils/hapiValidation.js";
 import getError from "../Utils/sequelizeError.js";
-
+import moment from "moment";
 const User = db.users;
 const UserRole = db.userRoles;
 const Permission = db.permissions;
@@ -168,7 +168,7 @@ const verifyCustomer = async (req, res) => {
           name,
           email,
           password: password,
-          verifiedAt: new Date(),
+          verifiedAt: moment(),
         });
         return res
           .status(200)
@@ -196,7 +196,7 @@ const verifyUser = async (req, res) => {
       if (user) {
         if (user.verifiedAt) throw new Error("Email Already Verified");
         await User.schema(tenant).update(
-          { verifiedAt: new Date() },
+          { verifiedAt: new Date(), active: true },
           {
             where: {
               email: data.email,

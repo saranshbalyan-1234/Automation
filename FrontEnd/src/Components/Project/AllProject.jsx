@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { getAllProject, getProjectById } from "../../Redux/Actions/project";
+import {
+  getAllProject,
+  getProjectById,
+  deleteProject,
+} from "../../Redux/Actions/project";
 import { editDetails } from "../../Redux/Actions/user";
 import AddEditProjectModal from "./AddEditProjectModal";
 import {
@@ -13,7 +17,6 @@ import {
   Typography,
   Progress,
 } from "antd";
-import axios from "axios";
 import { AiFillCheckCircle, AiTwotoneCheckCircle } from "react-icons/ai";
 import UserAvatar from "../Common/Avatar";
 import moment from "moment";
@@ -30,6 +33,7 @@ const { Title } = Typography;
 export const AllProject = ({
   getAllProject,
   getProjectById,
+  deleteProject,
   editDetails,
   projects,
   user,
@@ -210,11 +214,7 @@ export const AllProject = ({
                       marginRight: "50px",
                     }}
                   >
-                    <div
-                      style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
-                    >
-                      {formatDates(item.startDate, item.endDate)}
-                    </div>
+                    {formatDates(item.startDate, item.endDate)}
                   </div>
                   <div
                     style={{
@@ -250,7 +250,7 @@ export const AllProject = ({
                           }}
                         />
                       </Button>
-                      <Button
+                      {/* <Button
                         type="primary"
                         ghost
                         size="small"
@@ -260,11 +260,11 @@ export const AllProject = ({
                         }}
                       >
                         <EditOutlined />
-                      </Button>
+                      </Button> */}
                       <Popconfirm
                         title="Are you sure to delete this project?"
-                        onConfirm={() => {
-                          axios.delete(`/project/${item.id}`);
+                        onConfirm={async () => {
+                          await deleteProject(item.id);
                         }}
                         okText="Yes, Remove"
                         cancelText="No"
@@ -306,6 +306,11 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-const mapDispatchToProps = { getAllProject, getProjectById, editDetails };
+const mapDispatchToProps = {
+  getAllProject,
+  getProjectById,
+  deleteProject,
+  editDetails,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllProject);

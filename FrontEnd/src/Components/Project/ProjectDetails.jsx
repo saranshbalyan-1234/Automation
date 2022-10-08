@@ -2,12 +2,15 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import {
   Typography,
+  Tooltip,
   Progress,
   Card,
   Table,
   Button,
   Spin,
   Popconfirm,
+  Tag,
+  Badge,
 } from "antd";
 import Avatar from "../Common/Avatar";
 import moment from "moment";
@@ -28,6 +31,53 @@ export const ProjectDetails = ({
     getProjectById(id);
   }, [id]);
 
+  const statusBadge = () => {
+    const activeMembers = currentProject.members.filter((el) => {
+      return el.active == true;
+    }).length;
+    const inactiveMembers = currentProject.members.length - activeMembers;
+    const unverifiedMembers = currentProject.members.filter((el) => {
+      return el.verifiedAt == null;
+    }).length;
+    return (
+      <>
+        <Badge
+          count={`Active: ${activeMembers}`}
+          overflowCount={999}
+          style={{ backgroundColor: "#52c41a" }}
+        />
+        <Badge overflowCount={999} count={`Inactive: ${inactiveMembers}`} />
+        <Badge
+          count={`Verification Pending: ${unverifiedMembers}`}
+          overflowCount={999}
+          style={{ backgroundColor: "grey" }}
+        />
+      </>
+    );
+  };
+  const formatDates = (startDate, endDate) => {
+    let currentDate = moment(new Date()).format("YYYY/MM/DD");
+    let totalDays = moment(endDate).diff(moment(startDate), "days");
+    let daysPassed = moment(currentDate).diff(moment(startDate), "days");
+    let percentagePassed = Math.floor((daysPassed / totalDays) * 100);
+
+    return (
+      <div style={{ marginTop: 10 }}>
+        <Tooltip
+          title={
+            <div>
+              Total Days: {totalDays}
+              <br />
+              Days Passed: {daysPassed}
+            </div>
+          }
+        >
+          <Progress percent={percentagePassed} size="small" />
+        </Tooltip>
+      </div>
+    );
+  };
+
   const columns = [
     {
       title: "Name",
@@ -37,20 +87,21 @@ export const ProjectDetails = ({
       title: "Email",
       dataIndex: "email",
     },
+
     {
       title: "Status",
-      dataIndex: "active",
-      render: (value, record) => {
-        <div>
-          saransh
+      key: "action",
+      render: (_, record) => (
+        <Tag color={record.verifiedAt ? (record.active ? "green" : "red") : ""}>
           {record.verifiedAt
             ? record.active
               ? "Active"
               : "Inactive"
             : "Verification Pending"}
-        </div>;
-      },
+        </Tag>
+      ),
     },
+
     {
       title: "Delete",
       key: "delete",
@@ -91,7 +142,7 @@ export const ProjectDetails = ({
               }
               description={
                 <div style={{ color: "black" }}>
-                  Created On{" "}
+                  Created On
                   {moment(currentProject.createdAt).format("YYYY/MM/DD")} By
                   &nbsp;
                   {currentProject.createdBy && (
@@ -108,7 +159,7 @@ export const ProjectDetails = ({
               }}
             >
               <Button type="primary" ghost>
-                Edit Project
+                Edit Project Details
               </Button>
             </div>
           </div>
@@ -130,39 +181,51 @@ export const ProjectDetails = ({
                 ></div>
               }
             />
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 25,
-                alignSelf: "end",
-              }}
-            >
-              <Card>
-                <Meta
-                  title="Start Date"
-                  description={currentProject.startDate}
-                />
-              </Card>
-              <Card>
-                <Meta title="End Date" description={currentProject.endDate} />
-              </Card>
+
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 25,
+                  alignSelf: "end",
+                }}
+              >
+                <Card>
+                  <Meta
+                    title="Start Date"
+                    description={currentProject.startDate}
+                  />
+                </Card>
+                <Card>
+                  <Meta title="End Date" description={currentProject.endDate} />
+                </Card>
+              </div>
+              {formatDates(currentProject.startDate, currentProject.endDate)}
             </div>
           </div>
         </Card>
         <Card style={{ marginTop: 20 }}>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-            }}
-          >
-            <Title level={5}>Members ({currentProject.members?.length})</Title>
-            <Button type="primary" ghost>
-              Add Member
-            </Button>
-          </div>
+          {currentProject.members && (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-between",
+              }}
+            >
+              <Title
+                level={5}
+                style={{ display: "flex", flexWrap: "wrap", gap: 10 }}
+              >
+                <div>Members</div> <div>({currentProject.members.length})</div>
+                {statusBadge()}
+              </Title>
+              <Button type="primary" ghost>
+                Add Member
+              </Button>
+            </div>
+          )}
           <Table
             columns={columns}
             dataSource={currentProject.members}

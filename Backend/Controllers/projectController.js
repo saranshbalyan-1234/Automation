@@ -75,7 +75,7 @@ const getProjectById = async (req, res) => {
           include: [
             {
               model: User.schema(req.database),
-              attributes: ["id", "name", "email", "active"],
+              attributes: ["id", "name", "email", "active", "verifiedAt"],
             },
           ],
         },

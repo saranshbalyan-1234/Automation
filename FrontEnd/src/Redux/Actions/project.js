@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 import {
   PROJECT_REQUEST,
@@ -6,6 +7,7 @@ import {
   ADD_PROJECT_SUCCESS,
   GET_SELECTED_PROJECT,
   REMOVE_CURRENT_PROJECT_MEMBER,
+  DELETE_PROJECT,
 } from "./action-types";
 
 export const getAllProject = (payload) => {
@@ -71,6 +73,22 @@ export const removeMember = (payload) => {
       dispatch({ type: PROJECT_REQUEST });
       await axios.post(`/project/removeMember`, payload);
       dispatch({ type: REMOVE_CURRENT_PROJECT_MEMBER, payload });
+      return true;
+    } catch (err) {
+      dispatch({ type: PROJECT_FAILURE });
+      return false;
+    }
+  };
+};
+export const deleteProject = (projectId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: PROJECT_REQUEST });
+      let currentProjectId = getState().projects.currentProject?.id;
+      if (currentProjectId == projectId)
+        throw message.error("Cannot delete selected project!");
+      await axios.delete(`/project/${projectId}`);
+      dispatch({ type: DELETE_PROJECT, payload: projectId });
       return true;
     } catch (err) {
       dispatch({ type: PROJECT_FAILURE });

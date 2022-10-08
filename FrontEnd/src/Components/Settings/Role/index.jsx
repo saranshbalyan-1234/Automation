@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { List, Spin, Popconfirm, Checkbox, Collapse, Button } from "antd";
+import {
+  List,
+  Spin,
+  Popconfirm,
+  Checkbox,
+  Collapse,
+  Button,
+  Empty,
+} from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -156,6 +164,7 @@ export const Role = ({
             </Collapse>
           );
         })}
+        {data.length == 0 && <Empty description="No Data Found." />}
       </Spin>
       {addEditRoleModal && (
         <AddEditRoleModal

@@ -5,6 +5,7 @@ import {
   ADD_PROJECT_SUCCESS,
   GET_SELECTED_PROJECT,
   REMOVE_CURRENT_PROJECT_MEMBER,
+  DELETE_PROJECT,
 } from "../Actions/action-types";
 
 const initState = {
@@ -50,6 +51,15 @@ const projectReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         currentProject: { ...state.currentProject, members: removed },
+        loading: false,
+      };
+    case DELETE_PROJECT:
+      let removedProject = [...state.data].filter((el) => {
+        return el.id != payload;
+      });
+      return {
+        ...state,
+        data: removedProject,
         loading: false,
       };
     default:

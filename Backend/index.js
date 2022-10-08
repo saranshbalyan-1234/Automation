@@ -10,7 +10,10 @@ import mailRoutes from "./Routes/mailRoutes.js";
 import roleRoutes from "./Routes/roleRoutes.js";
 import globalRoutes from "./Routes/globalRoutes.js";
 import projectRoutes from "./Routes/projectRoutes.js";
-import swaggerFile from "./swagger.json";
+
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const swaggerFile = require("./swagger.json");
 
 const app = express();
 app.use(parser.json());
