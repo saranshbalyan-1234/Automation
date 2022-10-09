@@ -9,7 +9,7 @@ import {
   resendVerificationMail,
 } from "../../../Redux/Actions/team";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import ManageUserModal from "./ManagerUserModal";
+import ManageUserModal from "./ManageUserModal";
 
 export const Team = ({
   team,
@@ -19,9 +19,11 @@ export const Team = ({
   user,
   toggleUserActiveInactive,
   resendVerificationMail,
+  setManageUserModal,
+  manageUserModal,
+  editUserId,
+  setEditUserId,
 }) => {
-  const [manageUserModal, setManageUserModal] = useState(false);
-  const [editUserId, setEditUserId] = useState(0);
   useEffect(() => {
     getTeam();
   }, []);

@@ -14,6 +14,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 function Setting({ roles }) {
   const { tab } = useParams();
   const navigate = useNavigate();
+  const [editUserId, setEditUserId] = useState(0);
   const [activeTab, setActiveTab] = useState("profile");
   const [addUserModal, setAddUserModal] = useState(false);
   const [addRoleModal, setAddRoleModal] = useState(false);
@@ -21,6 +22,7 @@ function Setting({ roles }) {
   const [addPermissionModal, setAddPermissionModal] = useState(false);
   const [singleRoleData, setSingleRoleData] = useState({ id: null, name: "" });
   const [editDetailsModal, setEditDetailsModal] = useState(false);
+  const [manageUserModal, setManageUserModal] = useState(false);
 
   const handleActiveTab = (value) => {
     navigate(`/settings/${value}`);
@@ -110,7 +112,14 @@ function Setting({ roles }) {
             )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Team" key="team">
-            {activeTab === "team" && <Team />}
+            {activeTab === "team" && (
+              <Team
+                manageUserModal={manageUserModal}
+                setManageUserModal={setManageUserModal}
+                setEditUserId={setEditUserId}
+                editUserId={editUserId}
+              />
+            )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Notification" key="notification">
             <ComingSoon />
@@ -124,6 +133,8 @@ function Setting({ roles }) {
       <AddUserModal
         addUserModal={addUserModal}
         setAddUserModal={setAddUserModal}
+        setManageUserModal={setManageUserModal}
+        setEditUserId={setEditUserId}
       />
       <ChangePasswordModal
         changePasswordModal={changePasswordModal}

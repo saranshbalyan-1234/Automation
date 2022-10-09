@@ -3,7 +3,13 @@ import { Form, Input, Modal, Button, Spin } from "antd";
 import { addTeamMember } from "../../../Redux/Actions/team";
 import { connect } from "react-redux";
 
-const AddUserModal = ({ addUserModal, setAddUserModal, addTeamMember }) => {
+const AddUserModal = ({
+  addUserModal,
+  setAddUserModal,
+  addTeamMember,
+  setManageUserModal,
+  setEditUserId,
+}) => {
   const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState({
     name: "",
@@ -20,8 +26,12 @@ const AddUserModal = ({ addUserModal, setAddUserModal, addTeamMember }) => {
   };
   const onSubmit = async () => {
     setLoading(true);
-    const result = await addTeamMember(details);
-    result && setAddUserModal(false);
+    const data = await addTeamMember(details);
+    if (data) {
+      setAddUserModal(false);
+      setEditUserId(data.id);
+      setManageUserModal(true);
+    }
     setLoading(false);
   };
 

@@ -32,14 +32,10 @@ const teamReducer = (state = initState, { type, payload }) => {
         data: payload,
       };
     case ADD_TEAM_MEMBER_SUCCESS:
-      const { id, name, email } = payload;
       return {
         ...state,
         loading: false,
-        data: [
-          ...state.data,
-          { id, name, email, verifiedAt: null, active: true },
-        ],
+        data: [...state.data, payload],
       };
     case REMOVE_TEAM_MEMBER_SUCCESS:
       let temp = [...state.data].filter((el) => el.id !== payload);

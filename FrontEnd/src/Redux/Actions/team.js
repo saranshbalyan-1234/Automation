@@ -26,9 +26,18 @@ export const addTeamMember = (payload) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEAM_REQUEST });
-      await axios.post(`/user/add`, payload);
-      dispatch({ type: ADD_TEAM_MEMBER_SUCCESS, payload });
-      return true;
+      const { data } = await axios.post(`/user/add`, payload);
+      dispatch({
+        type: ADD_TEAM_MEMBER_SUCCESS,
+        payload: {
+          id: data.id,
+          email: data.email,
+          name: data.name,
+          active: false,
+          verfiedAt: null,
+        },
+      });
+      return data;
     } catch (err) {
       dispatch({ type: TEAM_FAILURE });
       return false;
