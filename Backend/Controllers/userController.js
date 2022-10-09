@@ -7,6 +7,7 @@ import {
   changeDetailsValidation,
   activeInactiveValidation,
   resendVerificationMailValidation,
+  userIdValidation,
 } from "../Utils/Validations/user.js";
 
 import { registerValidation } from "../Utils/Validations/auth.js";
@@ -93,6 +94,10 @@ const deleteUser = async (req, res) => {
   */
   try {
     const userId = req.params.userId;
+
+    const { error } = userIdValidation.validate({ userId });
+    if (error) throw new Error(error.details[0].message);
+
     const user = await User.schema(req.database).findByPk(userId);
     if (req.user.tenant == user.email)
       throw new Error("Cannot Delete Customer Admin");
@@ -237,7 +242,6 @@ const getAllUser = async (req, res) => {
   */
   try {
     const allUsers = await User.schema(req.database).findAll();
-
     return res.status(200).json(allUsers);
   } catch (error) {
     getError(error, res);

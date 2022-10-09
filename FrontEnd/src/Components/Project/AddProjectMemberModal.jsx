@@ -20,7 +20,6 @@ const AddProjectMemberModal = ({
         return el.id === user.id;
       });
     });
-    console.log("saransh", difference);
     setAvailableMembers(difference);
   };
 

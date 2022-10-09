@@ -1,5 +1,12 @@
 import db from "../Utils/dataBaseConnection.js";
 import getError from "../Utils/sequelizeError.js";
+import { userIdValidation } from "../Utils/Validations/user.js";
+import {
+  nameValidation,
+  updateNameValidation,
+  roleIdValidation,
+  updatePermissionValidation,
+} from "../Utils/Validations/role.js";
 import { paginate, pageInfo } from "../Utils/pagination.js";
 const Role = db.roles;
 const UserRole = db.userRoles;
@@ -30,44 +37,48 @@ const saveRole = async (req, res) => {
   /*  #swagger.tags = ["Role"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
-  await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
-  await Role.schema(req.database)
-    .create(req.body, {})
-    .then((resp) => {
-      return res.status(200).json(resp);
-    })
-    .catch((e) => {
-      getError(e, res);
-    });
+
+  try {
+    const { error } = nameValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
+
+    await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
+    const data = await Role.schema(req.database).create(req.body);
+    return res.status(200).json(data);
+  } catch (err) {
+    getError(err, res);
+  }
 };
 
 const updateRole = async (req, res) => {
   /*  #swagger.tags = ["Role"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
-  await Role.schema(req.database)
-    .update(req.body, {
-      where: {
-        id: req.params.roleId,
-      },
-    })
-    .then(async (resp) => {
-      if (resp[0]) {
-        await Role.schema(req.database)
-          .findByPk(req.params.roleId)
-          .then((resp) => {
-            return res.status(200).json(resp);
-          })
-          .catch((e) => {
-            return res.status(500).json(e);
-          });
-      } else {
-        return res.status(400).json({ error: "Record not found" });
+
+  try {
+    const roleId = req.params.roleId;
+    const name = req.body.name;
+    const { error } = updateNameValidation.validate({ roleId, name });
+    if (error) throw new Error(error.details[0].message);
+
+    const updatedRole = await Role.schema(req.database).update(
+      { name },
+      {
+        where: {
+          id: roleId,
+        },
       }
-    })
-    .catch((e) => {
-      getError(e, res);
-    });
+    );
+
+    if (updatedRole[0]) {
+      const role = await Role.schema(req.database).findByPk(roleId);
+      return res.status(200).json(role);
+    } else {
+      return res.status(400).json({ error: "Record not found" });
+    }
+  } catch (err) {
+    getError(err, res);
+  }
 };
 
 const deleteRole = async (req, res) => {
@@ -76,6 +87,10 @@ const deleteRole = async (req, res) => {
   */
   try {
     const roleId = req.params.roleId;
+
+    const { error } = roleIdValidation.validate({ roleId });
+    if (error) throw new Error(error.details[0].message);
+
     const assignedRole = await UserRole.schema(req.database).findOne({
       where: { roleId },
     });
@@ -102,6 +117,13 @@ const updateRolePermission = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
+    const roleId = req.params.roleId;
+
+    const { error } = roleIdValidation.validate({
+      roleId,
+    });
+    if (error) throw new Error(error.details[0].message);
+
     const data = await PermissionList.schema("Main").findAll({});
     const check = data.some((el) => {
       return req.body.some((el1) => {
@@ -110,14 +132,33 @@ const updateRolePermission = async (req, res) => {
     });
 
     if (check) {
-      await Permission.schema(req.database).destroy({
-        where: { roleId: req.params.roleId },
-      });
-      await Permission.schema(req.database)
-        .bulkCreate(req.body)
-        .then((resp) => {
-          return res.status(200).json(resp);
+      const payload = [...req.body].map((el) => {
+        const { error } = updatePermissionValidation.validate({
+          add: el.add,
+          edit: el.edit,
+          view: el.view,
+          delete: el.delete,
+          name: el.name,
         });
+        if (error) throw new Error(error.details[0].message);
+
+        return {
+          add: el.add,
+          edit: el.edit,
+          view: el.view,
+          delete: el.delete,
+          name: el.name,
+          roleId,
+        };
+      });
+
+      await Permission.schema(req.database).destroy({
+        where: { roleId },
+      });
+      const permissions = await Permission.schema(req.database).bulkCreate(
+        payload
+      );
+      return res.status(200).json(permissions);
     } else {
       return res.status(400).json({ error: "Inavlid Permission" });
     }
@@ -130,8 +171,12 @@ const getUserRole = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
+    const userId = req.params.userId;
+    const { error } = userIdValidation.validate({ userId });
+    if (error) throw new Error(error.details[0].message);
+
     const roles = await UserRole.schema(req.database).findAll({
-      where: { userId: req.params.userId },
+      where: { userId },
       include: [
         {
           model: Role.schema(req.database),
@@ -156,14 +201,15 @@ const updateUserRole = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
+    const userId = req.params.userId;
+    const { error } = userIdValidation.validate({ userId });
+    if (error) throw new Error(error.details[0].message);
+
     await UserRole.schema(req.database).destroy({
-      where: { userId: req.params.userId },
+      where: { userId },
     });
-    await UserRole.schema(req.database)
-      .bulkCreate(req.body)
-      .then(() => {
-        return res.status(200).json({ message: "User role updated." });
-      });
+    await UserRole.schema(req.database).bulkCreate(req.body);
+    return res.status(200).json({ message: "User role updated." });
   } catch (err) {
     getError(err, res);
   }

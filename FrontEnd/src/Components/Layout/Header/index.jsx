@@ -8,7 +8,6 @@ import { getAllProject, getProjectById } from "../../../Redux/Actions/project";
 const { Header } = Layout;
 
 const Headers = ({
-  setCollapsed,
   collapsed,
   getAllProject,
   projects,
@@ -16,14 +15,9 @@ const Headers = ({
   getProjectById,
 }) => {
   const navigate = useNavigate();
-  // const [canFetch, setCanFetch] = useState(false);
   useEffect(() => {
     getProject();
   }, []);
-  // useEffect(() => {
-  //   if (projects.currentProject.id && canFetch)
-  //     getProjectById(projects.currentProject.id);
-  // }, [projects.currentProject.id]);
 
   const getProject = async () => {
     if (projects.currentProject.id)
