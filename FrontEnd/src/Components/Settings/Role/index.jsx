@@ -164,7 +164,7 @@ export const Role = ({
             </Collapse>
           );
         })}
-        {data.length == 0 && <Empty description="No Data Found." />}
+        {data.length === 0 && <Empty description="No Data Found." />}
       </Spin>
       {addEditRoleModal && (
         <AddEditRoleModal

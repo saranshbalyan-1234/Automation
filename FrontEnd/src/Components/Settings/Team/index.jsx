@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Avatar, Popconfirm, List, Tag, Spin, Button, Switch } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";

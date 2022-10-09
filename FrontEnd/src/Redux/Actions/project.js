@@ -8,6 +8,7 @@ import {
   GET_SELECTED_PROJECT,
   REMOVE_CURRENT_PROJECT_MEMBER,
   DELETE_PROJECT,
+  ADD_CURRENT_PROJECT_MEMBER,
 } from "./action-types";
 
 export const getAllProject = (payload) => {
@@ -53,12 +54,15 @@ export const getProjectById = (id) => {
   };
 };
 
-export const addMember = (id) => {
+export const addMember = (payload) => {
   return async (dispatch) => {
     try {
       dispatch({ type: PROJECT_REQUEST });
-      const { data } = await axios.post(`/project/addMember`);
-      dispatch({ type: GET_SELECTED_PROJECT, payload: data });
+      await axios.post(`/project/addMember`, {
+        userId: payload.id,
+        projectId: payload.projectId,
+      });
+      dispatch({ type: ADD_CURRENT_PROJECT_MEMBER, payload });
       return true;
     } catch (err) {
       dispatch({ type: PROJECT_FAILURE });
@@ -85,7 +89,7 @@ export const deleteProject = (projectId) => {
     try {
       dispatch({ type: PROJECT_REQUEST });
       let currentProjectId = getState().projects.currentProject?.id;
-      if (currentProjectId == projectId)
+      if (currentProjectId === projectId)
         throw message.error("Cannot delete selected project!");
       await axios.delete(`/project/${projectId}`);
       dispatch({ type: DELETE_PROJECT, payload: projectId });

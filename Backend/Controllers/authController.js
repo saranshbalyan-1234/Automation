@@ -7,7 +7,7 @@ const { verify } = pkg;
 import {
   registerValidation,
   loginValidation,
-} from "../Utils/hapiValidation.js";
+} from "../Utils/Validations/auth.js";
 import getError from "../Utils/sequelizeError.js";
 import moment from "moment";
 const User = db.users;

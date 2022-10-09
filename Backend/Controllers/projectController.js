@@ -1,5 +1,11 @@
 import db from "../Utils/dataBaseConnection.js";
 import getError from "../Utils/sequelizeError.js";
+import {
+  projectByIdValidation,
+  addProjectValidation,
+  memberProjectValidation,
+} from "../Utils/Validations/project.js";
+
 const UserProject = db.userProjects;
 const Project = db.projects;
 const User = db.users;
@@ -53,6 +59,9 @@ const getProjectById = async (req, res) => {
   */
   try {
     const projectId = req.params.projectId;
+    const { error } = projectByIdValidation.validate({ projectId });
+    if (error) throw new Error(error.details[0].message);
+
     const userProject = await UserProject.schema(req.database).findOne({
       where: { userId: req.user.id, projectId },
     });
@@ -103,9 +112,13 @@ const addProject = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
+    const { name, description, startDate, endDate } = req.body;
+
+    const { error } = addProjectValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
+
     await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
 
-    const { name, description, startDate, endDate } = req.body;
     const project = await Project.schema(req.database).create({
       name,
       description,
@@ -130,6 +143,10 @@ const deleteProject = async (req, res) => {
   */
   try {
     const projectId = req.params.projectId;
+
+    const { error } = projectByIdValidation.validate({ projectId });
+    if (error) throw new Error(error.details[0].message);
+
     const userProject = await UserProject.schema(req.database).findOne({
       where: { userId: req.user.id, projectId },
     });
@@ -159,14 +176,17 @@ const addMember = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const { projectId } = req.body;
-    const userProject = await UserProject.findOne({
+    const { projectId, userId } = req.body;
+    const { error } = memberProjectValidation.validate({ projectId, userId });
+    if (error) throw new Error(error.details[0].message);
+
+    const userProject = await UserProject.schema(req.database).findOne({
       where: { userId: req.user.id, projectId },
     });
     if (!userProject) return res.status(401).json({ error: "Unauthorized" });
-
+    await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
     await UserProject.schema(req.database).create({
-      userId: req.user.id,
+      userId: userId,
       projectId: projectId,
     });
     return res.status(200).json({ message: "Project member added!" });
@@ -181,6 +201,12 @@ const deleteMember = async (req, res) => {
   */
   try {
     const { projectId, userId } = req.body;
+
+    const { error } = memberProjectValidation.validate({
+      projectId,
+      userId,
+    });
+    if (error) throw new Error(error.details[0].message);
     const userProject = await UserProject.schema(req.database).findOne({
       where: { userId: req.user.id, projectId },
     });

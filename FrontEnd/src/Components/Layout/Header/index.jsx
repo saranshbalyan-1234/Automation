@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import React, { useEffect } from "react";
 import { Layout, Dropdown, Menu, Spin, message } from "antd";
 import ProfileMenu from "./ProfileMenu";
 import { useNavigate, Link } from "react-router-dom";
@@ -38,7 +37,6 @@ const Headers = ({
         message.error("No project found!");
       }
     }
-    // setCanFetch(true);
   };
 
   const ProjectMenu = (

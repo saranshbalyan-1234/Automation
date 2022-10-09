@@ -10,7 +10,7 @@ import EditDetailsModal from "./Profile/EditDetailsModal";
 import ChangePasswordModal from "./Profile/ChangePasswordModal";
 import AddEditRoleModal from "./Role/AddEditRoleModal";
 import { connect } from "react-redux";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 function Setting({ roles }) {
   const { tab } = useParams();
   const navigate = useNavigate();

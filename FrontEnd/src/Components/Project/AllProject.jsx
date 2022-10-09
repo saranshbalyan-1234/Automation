@@ -22,7 +22,6 @@ import UserAvatar from "../Common/Avatar";
 import moment from "moment";
 import {
   DeleteOutlined,
-  EditOutlined,
   HeartOutlined,
   HeartFilled,
   EyeOutlined,
@@ -132,7 +131,7 @@ export const AllProject = ({
                             marginTop: "2px",
                           }}
                         >
-                          {item.id == projects.currentProject.id ? (
+                          {item.id === projects.currentProject.id ? (
                             <Tooltip title="Selected">
                               <AiFillCheckCircle />
                             </Tooltip>
@@ -145,7 +144,7 @@ export const AllProject = ({
                               />
                             </Tooltip>
                           )}
-                          {item.id == user.defaultProjectId ? (
+                          {item.id === user.defaultProjectId ? (
                             <Tooltip title="Default Project">
                               <HeartFilled />
                             </Tooltip>

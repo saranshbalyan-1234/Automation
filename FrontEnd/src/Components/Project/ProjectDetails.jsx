@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
   Typography,
@@ -17,6 +17,8 @@ import moment from "moment";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { getProjectById, removeMember } from "../../Redux/Actions/project";
+// import AddEditProjectModal from "./AddEditProjectModal";
+import AddProjectMemberModal from "./AddProjectMemberModal";
 const { Title } = Typography;
 const { Meta } = Card;
 export const ProjectDetails = ({
@@ -27,17 +29,18 @@ export const ProjectDetails = ({
 }) => {
   const { id } = useParams();
 
+  const [addProjectMemberModal, setAddProjectMemberModal] = useState(false);
   useEffect(() => {
     getProjectById(id);
   }, [id]);
 
   const statusBadge = () => {
     const activeMembers = currentProject.members.filter((el) => {
-      return el.active == true;
+      return el.active === true;
     }).length;
     const inactiveMembers = currentProject.members.length - activeMembers;
     const unverifiedMembers = currentProject.members.filter((el) => {
-      return el.verifiedAt == null;
+      return el.verifiedAt === null;
     }).length;
     return (
       <>
@@ -221,7 +224,13 @@ export const ProjectDetails = ({
                 <div>Members</div> <div>({currentProject.members.length})</div>
                 {statusBadge()}
               </Title>
-              <Button type="primary" ghost>
+              <Button
+                type="primary"
+                ghost
+                onClick={() => {
+                  setAddProjectMemberModal(true);
+                }}
+              >
                 Add Member
               </Button>
             </div>
@@ -233,6 +242,12 @@ export const ProjectDetails = ({
           />
         </Card>
       </Spin>
+      {addProjectMemberModal && (
+        <AddProjectMemberModal
+          visible={addProjectMemberModal}
+          setVisible={setAddProjectMemberModal}
+        />
+      )}
     </div>
   );
 };

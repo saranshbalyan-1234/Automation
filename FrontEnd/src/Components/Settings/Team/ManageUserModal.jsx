@@ -10,7 +10,6 @@ function ManageUser({ visible, setVisible, userId, updateUserRole }) {
   const [availableRole, setAvailableRole] = useState([]);
   const [addedRole, setAddedRole] = useState([]);
   const [allRole, setAllRole] = useState([]);
-  console.log("saransh", userId);
   useEffect(() => {
     getAvailableRole();
   }, []);

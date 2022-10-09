@@ -6,6 +6,7 @@ import {
   GET_SELECTED_PROJECT,
   REMOVE_CURRENT_PROJECT_MEMBER,
   DELETE_PROJECT,
+  ADD_CURRENT_PROJECT_MEMBER,
 } from "../Actions/action-types";
 
 const initState = {
@@ -44,9 +45,19 @@ const projectReducer = (state = initState, { type, payload }) => {
         currentProject: payload,
         loading: false,
       };
+    case ADD_CURRENT_PROJECT_MEMBER:
+      return {
+        ...state,
+        loading: false,
+        currentProject: {
+          ...state.currentProject,
+          members: [...state.currentProject.members, payload],
+        },
+      };
+
     case REMOVE_CURRENT_PROJECT_MEMBER:
       let removed = [...state.currentProject.members].filter((el) => {
-        return el.id != payload.userId;
+        return el.id !== payload.userId;
       });
       return {
         ...state,
@@ -55,7 +66,7 @@ const projectReducer = (state = initState, { type, payload }) => {
       };
     case DELETE_PROJECT:
       let removedProject = [...state.data].filter((el) => {
-        return el.id != payload;
+        return el.id !== payload;
       });
       return {
         ...state,

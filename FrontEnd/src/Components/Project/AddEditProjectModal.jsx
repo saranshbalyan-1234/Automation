@@ -13,8 +13,6 @@ const AddEditProjectModal = ({
   edit = false,
   projects,
   roleData,
-  setAddPermissionModal,
-  setSingleRoleData,
 }) => {
   const format = "YYYY/MM/DD";
   const onSubmit = async (data) => {

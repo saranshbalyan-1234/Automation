@@ -48,7 +48,6 @@ const CustomTree = () => {
 
   const searchTree = (e) => {
     let value = e.target.value;
-    console.log(value);
     const temp = treeData.filter((parent) => {
       return (
         parent.title.includes(value) ||

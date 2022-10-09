@@ -3,12 +3,13 @@ import getError from "../Utils/sequelizeError.js";
 import bcrypt from "bcryptjs";
 import { sendMail } from "../Utils/Mail/nodeMailer.js";
 import {
-  registerValidation,
   changePasswordValidation,
   changeDetailsValidation,
   activeInactiveValidation,
   resendVerificationMailValidation,
-} from "../Utils/hapiValidation.js";
+} from "../Utils/Validations/user.js";
+
+import { registerValidation } from "../Utils/Validations/auth.js";
 
 const User = db.users;
 const Customer = db.customers;
@@ -22,7 +23,7 @@ const getTeam = async (req, res) => {
   try {
     const team = await User.schema(req.database).findAll({});
     const filteredTeam = team.filter((el) => {
-      return el.id != req.user.id;
+      return el.id !== req.user.id;
     });
     return res.status(200).json(filteredTeam);
   } catch (error) {
@@ -230,6 +231,19 @@ const toggleUserActiveInactive = async (req, res) => {
   }
 };
 
+const getAllUser = async (req, res) => {
+  /*  #swagger.tags = ["User"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+  try {
+    const allUsers = await User.schema(req.database).findAll();
+
+    return res.status(200).json(allUsers);
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
 export {
   addUser,
   deleteUser,
@@ -239,4 +253,5 @@ export {
   toggleUserActiveInactive,
   resentVerificationEmail,
   deleteCustomerUser,
+  getAllUser,
 };

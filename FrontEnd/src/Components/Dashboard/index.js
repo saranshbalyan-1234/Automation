@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Typography } from "antd";
-import axios from "axios";
+// import axios from "axios";
 
 import Tree from "../Common/Tree";
 export const Dashboard = ({ user }) => {

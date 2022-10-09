@@ -8,6 +8,7 @@ import {
   toggleUserActiveInactive,
   resentVerificationEmail,
   deleteCustomerUser,
+  getAllUser,
 } from "../Controllers/userController.js";
 import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
@@ -32,5 +33,5 @@ Router.put(
   validatePermission("Team & Role", "edit"),
   toggleUserActiveInactive
 );
-
+Router.get("/", getAllUser);
 export default Router;
