@@ -11,6 +11,7 @@ import UserRole from "../Models/RolePermission/UserRole.js";
 import PermissionList from "../Models/RolePermission/PermissionList.js";
 import Project from "../Models/Project/Project.js";
 import UserProject from "../Models/Project/UserProject.js";
+import Tracking from "../Models/Tracking/Tracking.js";
 
 dotenv.config();
 
@@ -53,6 +54,9 @@ db.userProjects = UserProject(sequelize, DataTypes);
 db.projects = Project(sequelize, DataTypes);
 db.roles = Role(sequelize, DataTypes);
 db.users = User(sequelize, DataTypes);
+
+//Tracking
+db.trackings = Tracking(sequelize, DataTypes);
 
 db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0").then(() => {
   db.tenants.sync({ force: false, alter: true }).then(() => {
