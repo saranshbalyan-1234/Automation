@@ -9,7 +9,7 @@ const trackingByDate = async (req, res) => {
     })
     .then((resp) => {
       if (!resp)
-        return res.status(400).json({ errors: ["No Tracking Data Found"] });
+        return res.status(400).json({ error: ["No Tracking Data Found"] });
       if (resp) return res.status(200).json(JSON.parse(resp.data));
     })
     .catch((e) => {
