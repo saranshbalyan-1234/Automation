@@ -1,14 +1,15 @@
 import React from "react";
-import Layout from "./Layout";
+import Layout from "./Components/Layout";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 // import Home from "./Home";
 import { connect } from "react-redux";
-import { logout } from "../Redux/Actions/auth";
-import ErrorPage from "../Views/ErrorPage";
-import Setting from "./Settings";
-import Dashboard from "./Dashboard";
-import Support from "../Views/Support";
-import Project from "./Project";
+import { logout } from "./Redux/Actions/auth";
+import ErrorPage from "./Views/ErrorPage";
+import Setting from "./Components/Settings";
+import Dashboard from "./Components/Dashboard";
+import Support from "./Views/Support";
+import Project from "./Components/Project";
+import Tracking from "./Components/Tracking";
 function Routess({ user }) {
   const location = useLocation();
   return user ? (
@@ -18,6 +19,7 @@ function Routess({ user }) {
         <Route exact path="/support" element={<Support />}></Route>
         <Route exact path="/settings/:tab" element={<Setting />}></Route>
         <Route exact path="/project/*" element={<Project />}></Route>
+        <Route exact path="/tracking" element={<Tracking />}></Route>
         <Route
           exact
           path="*"

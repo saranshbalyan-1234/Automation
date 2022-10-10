@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "antd/dist/antd.min.css";
 import "./index.css";
 import Register from "./Auth/Register";
-import Routess from "./Components/Routess";
+import Routess from "./Routess";
 import { Provider } from "react-redux";
 import { store, persister } from "./Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
