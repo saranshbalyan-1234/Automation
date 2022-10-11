@@ -10,7 +10,6 @@ import mailRoutes from "./Routes/mailRoutes.js";
 import roleRoutes from "./Routes/roleRoutes.js";
 import globalRoutes from "./Routes/globalRoutes.js";
 import projectRoutes from "./Routes/projectRoutes.js";
-import trackingRoutes from "./Routes/Tracking/trackingRoutes.js";
 
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
@@ -44,7 +43,6 @@ app.use("/user", userRoutes);
 app.use("/role", roleRoutes);
 app.use("/mail", mailRoutes);
 app.use("/project", projectRoutes);
-app.use("/tracking", trackingRoutes);
 
 app.use((req, res) => {
   return res.status(404).json({ error: "Endpoint Not Found" });

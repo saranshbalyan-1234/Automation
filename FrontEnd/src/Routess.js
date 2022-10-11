@@ -9,7 +9,7 @@ import Setting from "./Components/Settings";
 import Dashboard from "./Components/Dashboard";
 import Support from "./Views/Support";
 import Project from "./Components/Project";
-import Tracking from "./Components/Tracking";
+
 function Routess({ user }) {
   const location = useLocation();
   return user ? (
@@ -19,7 +19,6 @@ function Routess({ user }) {
         <Route exact path="/support" element={<Support />}></Route>
         <Route exact path="/settings/:tab" element={<Setting />}></Route>
         <Route exact path="/project/*" element={<Project />}></Route>
-        <Route exact path="/tracking" element={<Tracking />}></Route>
         <Route
           exact
           path="*"

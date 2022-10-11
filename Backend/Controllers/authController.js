@@ -19,7 +19,6 @@ const Tenant = db.tenants;
 const Unverified = db.unverifieds;
 const Project = db.projects;
 const UserProject = db.userProjects;
-const Tracking = db.trackings;
 
 const register = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
@@ -164,7 +163,6 @@ const verifyCustomer = async (req, res) => {
         await UserProject.schema(database).sync({ force: true, alter: true });
         await Project.schema(database).sync({ force: true, alter: true });
         await User.schema(database).sync({ force: true, alter: true });
-        await Tracking.schema(database).sync({ force: true, alter: true });
 
         await User.schema(database).create({
           name,
