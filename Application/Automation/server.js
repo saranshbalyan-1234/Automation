@@ -1,5 +1,5 @@
-import express from "express";
-import webdriver from "selenium-webdriver";
+const express = require("express");
+const webdriver = require("selenium-webdriver");
 
 const app = express();
 
@@ -15,13 +15,11 @@ app.get("/", async (req, res) => {
         .build()
         .catch(async (e) => {
           const check = JSON.stringify(e).includes("chromedriver");
-          res
-            .status(400)
-            .json({
-              error: check
-                ? "Invalid ChromeDriver version"
-                : "System permission issue",
-            });
+          res.status(400).json({
+            error: check
+              ? "Invalid ChromeDriver version"
+              : "System permission issue",
+          });
         });
     } catch (e) {
       return res.status(400).json({ error: "ChromeDriver not found!" });
