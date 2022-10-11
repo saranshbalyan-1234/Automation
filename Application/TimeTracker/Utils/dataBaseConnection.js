@@ -1,13 +1,20 @@
-const { Sequelize, DataTypes } = require("sequelize");
-const mysql2 = require("mysql2");
+const { Sequelize } = require("sequelize");
+
+require("mysql2");
 
 const Tracking = require("../Models/Tracking.js");
 
-const sequelize = new Sequelize("Main", "admin", "ysoserious454", {
-  host: "first.cqjcsrxo1aks.us-east-1.rds.amazonaws.com",
-  dialect: "mysql",
-  logging: false,
-});
+const sequelize = new Sequelize(
+  "Main",
+  "root",
+  "ysoserious",
+
+  {
+    host: "localhost",
+    dialect: "mysql",
+    logging: false,
+  }
+);
 
 sequelize
   .authenticate()

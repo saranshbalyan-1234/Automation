@@ -8,7 +8,7 @@ const validateToken = () => {
     try {
       const token = extractToken(req);
       if (token) {
-        const data = verify(token, process.env.JWT_ACCESS_SECRET);
+        const data = verify(token, "sarance");
         if (data) {
           let temp = { ...data };
           delete temp.iat;

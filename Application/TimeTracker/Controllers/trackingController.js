@@ -35,9 +35,10 @@ const saveOrUpdate = async (req, res) => {
     //   return res.status(400).json({ errors: ["Tracking details not given"] });
 
     if (chartData) {
-      await Tracking.findOne({
-        where: { user_id: req.user.id, date: data.date },
-      })
+      await Tracking.schema(req.database)
+        .findOne({
+          where: { user_id: req.user.id, date: data.date },
+        })
         .then(async (resp) => {
           if (resp) {
             await Tracking.update(

@@ -35,6 +35,6 @@ app.use((req, res) => {
   return res.status(404).json({ error: "Endpoint Not Found" });
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(3005, () => {
   console.log("Server started");
 });

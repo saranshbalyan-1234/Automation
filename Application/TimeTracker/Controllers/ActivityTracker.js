@@ -7,7 +7,6 @@
 // const schedule = require("node-schedule");
 
 const activeWin = require("active-win");
-
 const { saveOrUpdate } = require("./trackingController.js");
 const fs = require("fs-extra");
 const _ = require("lodash");
@@ -54,29 +53,31 @@ class ActivityTracker {
   }
 
   track() {
-    console.log("started tracking");
-    intervalId = setInterval(async () => {
-      const window = await activeWin();
+    try {
+      console.log("started tracking");
+      const window = activeWin();
+      intervalId = setInterval(async () => {
+        // if (!this.app) {
+        //   this.start = new Date();
+        //   this.app = window;
+        // }
+        // if (window.title !== this.app.title) {
+        //   await this.storeData();
+        //   this.app = null;
+        // }
+      }, this.interval);
 
-      if (!this.app) {
-        this.start = new Date();
-        this.app = window;
-      }
+      // intervalId2 = setInterval(async () => {
+      //   saveOrUpdate();
+      // }, 1000 * 60 * 60);
 
-      if (window.title !== this.app.title) {
-        await this.storeData();
-        this.app = null;
-      }
-    }, this.interval);
-
-    intervalId2 = setInterval(async () => {
-      saveOrUpdate();
-    }, 1000 * 60 * 60);
-
-    // schedule.scheduleJob("59 23 * * *", async () => {
-    //   trackingController.saveOrUpdate();
-    //   await fs.writeJson(this.filePath, "", { spaces: 2 });
-    // });
+      // schedule.scheduleJob("59 23 * * *", async () => {
+      //   trackingController.saveOrUpdate();
+      //   await fs.writeJson(this.filePath, "", { spaces: 2 });
+      // });
+    } catch (err) {
+      console.log("saransh", err);
+    }
   }
 
   async getChartData(date) {
