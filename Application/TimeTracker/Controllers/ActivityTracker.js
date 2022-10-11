@@ -6,11 +6,11 @@
 // });
 // const schedule = require("node-schedule");
 
-import activeWin from "active-win";
+const activeWin = require("active-win");
 
-import { saveOrUpdate } from "./trackingController.js";
-import fs from "fs-extra";
-import _ from "lodash";
+const { saveOrUpdate } = require("./trackingController.js");
+const fs = require("fs-extra");
+const _ = require("lodash");
 
 let intervalId;
 let intervalId2;
@@ -142,4 +142,4 @@ class ActivityTracker {
   }
 }
 
-export default ActivityTracker;
+module.exports = ActivityTracker;

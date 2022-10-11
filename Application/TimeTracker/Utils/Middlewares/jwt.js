@@ -1,9 +1,9 @@
-import { extractToken } from "../jwt.js";
-import getError from "../sequelizeError.js";
-import pkg from "jsonwebtoken";
+const { extractToken } = require("../jwt.js");
+const getError = require("../sequelizeError.js");
+const pkg = require("jsonwebtoken");
 
 const { verify } = pkg;
-export const validateToken = () => {
+const validateToken = () => {
   return async (req, res, next) => {
     try {
       const token = extractToken(req);
@@ -26,3 +26,4 @@ export const validateToken = () => {
     }
   };
 };
+module.exports = { validateToken };

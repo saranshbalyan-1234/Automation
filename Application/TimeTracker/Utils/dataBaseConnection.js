@@ -1,21 +1,13 @@
-import { Sequelize, DataTypes } from "sequelize";
-import dotenv from "dotenv";
+const { Sequelize, DataTypes } = require("sequelize");
+const mysql2 = require("mysql2");
 
-import Tracking from "../Models/Tracking.js";
+const Tracking = require("../Models/Tracking.js");
 
-dotenv.config();
-
-const sequelize = new Sequelize(
-  process.env.DATABASE_NAME,
-  process.env.DATABASE_USER,
-  process.env.DATABASE_PASS,
-
-  {
-    host: process.env.DATABASE_HOST,
-    dialect: "mysql",
-    logging: false,
-  }
-);
+const sequelize = new Sequelize("Main", "admin", "ysoserious454", {
+  host: "first.cqjcsrxo1aks.us-east-1.rds.amazonaws.com",
+  dialect: "mysql",
+  logging: false,
+});
 
 sequelize
   .authenticate()
@@ -37,4 +29,4 @@ db.trackings = Tracking;
 
 // db.trackings.sync({ force: false, alter: true });
 
-export default db;
+module.exports = db;

@@ -1,5 +1,5 @@
-import db from "../Utils/dataBaseConnection.js";
-import ActivityTracker from "./ActivityTracker.js";
+const db = require("../Utils/dataBaseConnection.js");
+const ActivityTracker = require("./ActivityTracker.js");
 
 const activityTracker = new ActivityTracker("tracking.json", 2000);
 const Tracking = db.trackings;
@@ -66,4 +66,4 @@ const saveOrUpdate = async (req, res) => {
   return res.status(200).json({ message: "Synced Tracking Data" });
 };
 
-export { saveOrUpdate, start, stop };
+module.exports = { saveOrUpdate, start, stop };

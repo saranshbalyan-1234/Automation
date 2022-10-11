@@ -1,13 +1,10 @@
-import express from "express";
-import helmet from "helmet";
-import cors from "cors";
-import swaggerUi from "swagger-ui-express";
-import parser from "body-parser";
-import { validateToken } from "./Utils/Middlewares/jwt.js";
-import trackingRoutes from "./Routes/trackingRoutes.js";
-
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
+const express = require("express");
+const helmet = require("helmet");
+const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const parser = require("body-parser");
+const { validateToken } = require("./Utils/Middlewares/jwt.js");
+const trackingRoutes = require("./Routes/trackingRoutes.js");
 const swaggerFile = require("./swagger.json");
 
 const app = express();

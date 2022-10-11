@@ -1,12 +1,12 @@
-import express from "express";
-import {
+const express = require("express");
+const {
   saveOrUpdate,
   start,
   stop,
-} from "../Controllers/trackingController.js";
+} = require("../Controllers/trackingController.js");
 const Router = express.Router();
 
 Router.post("/save", saveOrUpdate);
 Router.post("/start", start);
 Router.post("/stop", stop);
-export default Router;
+module.exports = Router;
