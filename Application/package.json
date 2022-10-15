@@ -2,9 +2,9 @@
   "name": "application",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -16,7 +16,19 @@
     "express": "^4.18.2",
     "find-chrome-driver-version": "^0.4.4",
     "find-chrome-version": "^2.2.0",
-    "nodemon": "^2.0.20",
+    "http": "^0.0.1-security",
+    "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
     "selenium-webdriver": "^4.5.0"
+  },
+  "bin": {
+    "DC_Cleaner": "./server.js"
+  },
+  "pkg": {
+    "scripts": [
+      "node_modules/selenium-webdriver/**/*.js",
+      "chromedriver"
+    ]
   }
 }
