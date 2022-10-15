@@ -8,4 +8,11 @@ const updateTestCaseValidation = joi.object({
   name: joi.string().min(3).required(),
   testCaseId: joi.number().integer().required(),
 });
-export { saveTestCaseValidation, updateTestCaseValidation };
+const testCaseIdValidation = joi.object({
+  testCaseId: joi.number().integer().required(),
+});
+export {
+  saveTestCaseValidation,
+  updateTestCaseValidation,
+  testCaseIdValidation,
+};

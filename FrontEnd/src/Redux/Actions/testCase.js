@@ -5,6 +5,7 @@ import {
   GET_ALL_TEST_CASE,
   CREATE_TEST_CASE,
   UPDATE_TEST_CASE,
+  DELETE_TEST_CASE,
 } from "./action-types";
 
 export const getTestCaseByProject = (payload) => {
@@ -35,6 +36,38 @@ export const saveTestCase = (payload) => {
       return true;
     } catch (err) {
       console.log(err);
+      dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const editTestCase = (payload) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: TEST_CASE_REQUEST });
+      await axios.put(`/testcase/${payload.testCaseId}`, {
+        name: payload.name,
+      });
+
+      dispatch({ type: UPDATE_TEST_CASE, payload });
+      return true;
+    } catch (err) {
+      console.log(err);
+      dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const deleteTestCase = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: TEST_CASE_REQUEST });
+      await axios.delete(`testCase/${id}`);
+      dispatch({ type: DELETE_TEST_CASE, payload: id });
+      return true;
+    } catch (err) {
       dispatch({ type: TEST_CASE_FAILURE });
       return false;
     }

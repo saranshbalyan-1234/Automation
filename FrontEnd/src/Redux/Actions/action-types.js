@@ -36,5 +36,5 @@ export const TEST_CASE_FAILURE = "TEST_CASE_FAILURE";
 export const GET_ALL_TEST_CASE = "GET_ALL_TEST_CASE";
 export const CREATE_TEST_CASE = "CREATE_TEST_CASE";
 export const UPDATE_TEST_CASE = "UPDATE_TEST_CASE";
-
+export const DELETE_TEST_CASE = "DELETE_TEST_CASE";
 export const LOGOUT = "LOGOUT";

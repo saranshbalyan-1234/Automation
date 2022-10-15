@@ -2,10 +2,9 @@ import {
   TEST_CASE_REQUEST,
   GET_ALL_TEST_CASE,
   TEST_CASE_FAILURE,
-  DELETE_ROLE_SUCCESS,
+  DELETE_TEST_CASE,
   CREATE_TEST_CASE,
-  EDIT_ROLE_SUCCESS,
-  UPDATE_ROLE_PERMISSION_SUCCESS,
+  UPDATE_TEST_CASE,
 } from "../Actions/action-types";
 
 const initState = {
@@ -31,7 +30,7 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: false,
       };
-    case DELETE_ROLE_SUCCESS:
+    case DELETE_TEST_CASE:
       let temp = [...state.data].filter((el) => el.id !== payload);
       return {
         ...state,
@@ -44,28 +43,17 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         loading: false,
         data: [...state.data, payload],
       };
-    case EDIT_ROLE_SUCCESS:
-      let editedRoles = [...state.data].map((el) => ({
+    case UPDATE_TEST_CASE:
+      let updatedTestCase = [...state.data].map((el) => ({
         ...el,
-        name: el.id === payload.id ? payload.name : el.name,
+        name: el.id === payload.testCaseId ? payload.name : el.name,
       }));
       return {
         ...state,
         loading: false,
-        data: editedRoles,
+        data: updatedTestCase,
       };
-    case UPDATE_ROLE_PERMISSION_SUCCESS:
-      let tempUpdatedRole = [...state.data].map((el) => {
-        return el.id === payload.roleId
-          ? { ...el, permissions: payload.data }
-          : el;
-      });
 
-      return {
-        ...state,
-        loading: false,
-        data: tempUpdatedRole,
-      };
     default:
       return state;
   }

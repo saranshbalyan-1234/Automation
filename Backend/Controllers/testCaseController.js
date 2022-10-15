@@ -4,6 +4,7 @@ import { projectByIdValidation } from "../Utils/Validations/project.js";
 import {
   saveTestCaseValidation,
   updateTestCaseValidation,
+  testCaseIdValidation,
 } from "../Utils/Validations/testCase.js";
 
 const TestCase = db.testcases;
@@ -48,22 +49,9 @@ const updateTestCase = async (req, res) => {
     );
 
     if (updatedTestCase[0]) {
-      const testCase = await TestCase.schema(req.database).findByPk(
-        testCaseId,
-        {
-          attributes: ["id", "name", "updatedAt"],
-          include: [
-            {
-              model: User.schema(req.database),
-              as: "createdBy",
-              attributes: ["id", "name", "email", "active"],
-            },
-          ],
-        }
-      );
       return res
         .status(200)
-        .json({ ...testCase, message: "TestCase updated successfully!" });
+        .json({ message: "TestCase updated successfully!" });
     } else {
       return res.status(400).json({ error: "Record not found" });
     }
@@ -102,4 +90,28 @@ const getAllTestCase = async (req, res) => {
   }
 };
 
-export { saveTestCase, updateTestCase, getAllTestCase };
+const deleteTestCase = async (req, res) => {
+  /*  #swagger.tags = ["TestCase"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const testCaseId = req.params.testCaseId;
+    const { error } = testCaseIdValidation.validate({ testCaseId });
+    if (error) throw new Error(error.details[0].message);
+
+    const deletedTestCase = await TestCase.schema(req.database).destroy({
+      where: { id: testCaseId },
+    });
+
+    if (deletedTestCase > 0) {
+      return res.status(200).json({ message: "TestCase deleted successfully" });
+    } else {
+      return res.status(400).json({ error: "Record not found" });
+    }
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+export { saveTestCase, updateTestCase, getAllTestCase, deleteTestCase };

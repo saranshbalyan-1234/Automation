@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
-import { saveTestCase } from "../../../Redux/Actions/testCase";
+import { saveTestCase, editTestCase } from "../../../Redux/Actions/testCase";
 import { connect } from "react-redux";
 
 const AddEditTestCaseModal = ({
@@ -8,14 +8,22 @@ const AddEditTestCaseModal = ({
   setVisible,
   saveTestCase,
   currentProjectId,
+  editData,
+  editTestCase,
+  setEditData,
+  loading,
 }) => {
-  const [loading, setLoading] = useState(false);
+  const edit = editData.id ? true : false;
 
   const onSubmit = async (data) => {
-    setLoading(true);
-    const result = await saveTestCase({ ...data, projectId: currentProjectId });
+    let result = false;
+    if (edit) {
+      result = await editTestCase({ ...data, testCaseId: editData.id });
+      setEditData({});
+    } else {
+      result = await saveTestCase({ ...data, projectId: currentProjectId });
+    }
     result && setVisible(false);
-    setLoading(false);
   };
 
   return (
@@ -30,10 +38,11 @@ const AddEditTestCaseModal = ({
     >
       <Spin spinning={loading}>
         <Form
-          name="register"
+          name="testCase"
           onFinish={onSubmit}
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 16 }}
+          initialValues={{ name: edit ? editData.name : "" }}
         >
           <Form.Item
             name="name"
@@ -74,8 +83,9 @@ const AddEditTestCaseModal = ({
 };
 const mapStateToProps = (state) => ({
   currentProjectId: state.projects.currentProject.id,
+  loading: state.testCase.loading,
 });
-const mapDispatchToProps = { saveTestCase };
+const mapDispatchToProps = { saveTestCase, editTestCase };
 
 export default connect(
   mapStateToProps,

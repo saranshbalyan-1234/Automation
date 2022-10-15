@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Table, Popconfirm, Button, Typography } from "antd";
+import { Table, Popconfirm, Button, Spin } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { getTestCaseByProject } from "../../../Redux/Actions/testCase";
+import {
+  getTestCaseByProject,
+  deleteTestCase,
+} from "../../../Redux/Actions/testCase";
 import AddEditTestCaseModal from "./AddEditTestCaseModal";
 import UserAvatar from "../../Common/Avatar";
 export const List = ({
@@ -10,9 +13,11 @@ export const List = ({
   getTestCaseByProject,
   testCases,
   loading,
+  deleteTestCase,
 }) => {
-  const { Title } = Typography;
   const [addEditTestCaseModal, setAddEditTestCaseModal] = useState(false);
+  const [editData, setEditData] = useState({});
+
   const columns = [
     {
       title: "Name",
@@ -37,15 +42,18 @@ export const List = ({
       key: "actions",
       render: (_, record) => (
         <>
-          <EditOutlined style={{ fontSize: 17 }} onClick={() => {}} />
+          <EditOutlined
+            style={{ fontSize: 17 }}
+            onClick={() => {
+              setAddEditTestCaseModal(true);
+              setEditData(record);
+            }}
+          />
           <Popconfirm
             title="Are you sure to remove this user?"
-            // onConfirm={async () => {
-            //   await removeMember({
-            //     projectId: currentProject.id,
-            //     userId: record.id,
-            //   });
-            // }}
+            onConfirm={async () => {
+              await deleteTestCase(record.id);
+            }}
             okText="Yes, Remove"
             cancelText="No"
           >
@@ -61,30 +69,37 @@ export const List = ({
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          padding: "10px 0px 10px 0px ",
-        }}
-      >
-        <div></div>
-        <Button
-          type="primary"
-          ghost
-          onClick={() => {
-            setAddEditTestCaseModal(true);
+      <Spin spinning={loading}>
+        {" "}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            padding: "10px 0px 10px 0px ",
           }}
         >
-          New TestCase
-        </Button>
-      </div>
-      <Table columns={columns} dataSource={testCases} />
-      <AddEditTestCaseModal
-        visible={addEditTestCaseModal}
-        setVisible={setAddEditTestCaseModal}
-      />
+          <div></div>
+          <Button
+            type="primary"
+            ghost
+            onClick={() => {
+              setAddEditTestCaseModal(true);
+            }}
+          >
+            New TestCase
+          </Button>
+        </div>
+        <Table columns={columns} dataSource={testCases} />
+        {addEditTestCaseModal && (
+          <AddEditTestCaseModal
+            visible={addEditTestCaseModal}
+            setVisible={setAddEditTestCaseModal}
+            setEditData={setEditData}
+            editData={editData}
+          />
+        )}
+      </Spin>
     </>
   );
 };
@@ -95,6 +110,6 @@ const mapStateToProps = (state) => ({
   loading: state.testCase.loading,
 });
 
-const mapDispatchToProps = { getTestCaseByProject };
+const mapDispatchToProps = { getTestCaseByProject, deleteTestCase };
 
 export default connect(mapStateToProps, mapDispatchToProps)(List);

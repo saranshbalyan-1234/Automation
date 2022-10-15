@@ -3,6 +3,7 @@ import {
   getAllTestCase,
   saveTestCase,
   updateTestCase,
+  deleteTestCase,
 } from "../Controllers/testCaseController.js";
 import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
@@ -18,5 +19,11 @@ Router.get(
   "/:projectId",
   validatePermission("Team & Role", "add"),
   getAllTestCase
+);
+
+Router.delete(
+  "/:testCaseId",
+  validatePermission("Team & Role", "add"),
+  deleteTestCase
 );
 export default Router;
