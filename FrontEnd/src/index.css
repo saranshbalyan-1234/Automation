@@ -37,3 +37,6 @@ code {
 .iconWhite {
   color: white;
 }
+.cursor {
+  cursor: pointer;
+}

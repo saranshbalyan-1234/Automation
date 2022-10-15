@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Table, Popconfirm, Button, Spin } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import moment from "moment";
 import {
   getTestCaseByProject,
   deleteTestCase,
 } from "../../../Redux/Actions/testCase";
 import AddEditTestCaseModal from "./AddEditTestCaseModal";
 import UserAvatar from "../../Common/Avatar";
+import { useNavigate } from "react-router-dom";
 export const List = ({
   currentProjectId,
   getTestCaseByProject,
@@ -15,6 +17,7 @@ export const List = ({
   loading,
   deleteTestCase,
 }) => {
+  const navigate = useNavigate();
   const [addEditTestCaseModal, setAddEditTestCaseModal] = useState(false);
   const [editData, setEditData] = useState({});
 
@@ -34,14 +37,16 @@ export const List = ({
     {
       title: "Last Updated",
       key: "updatedAt",
-      render: (_, record) => <div>{record.updatedAt}</div>,
+      render: (_, record) => (
+        <div>{moment(record.updatedAt).format("DD-MM-YYYY h:mm:ss a")}</div>
+      ),
     },
 
     {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
-        <>
+        <div style={{ display: "flex", gap: 10 }}>
           <EditOutlined
             style={{ fontSize: 17 }}
             onClick={() => {
@@ -50,16 +55,16 @@ export const List = ({
             }}
           />
           <Popconfirm
-            title="Are you sure to remove this user?"
+            title="Are you sure to delete this TestCase?"
             onConfirm={async () => {
               await deleteTestCase(record.id);
             }}
-            okText="Yes, Remove"
+            okText="Yes, Delete"
             cancelText="No"
           >
             <DeleteOutlined style={{ fontSize: 17 }} />
           </Popconfirm>
-        </>
+        </div>
       ),
     },
   ];
@@ -90,7 +95,18 @@ export const List = ({
             New TestCase
           </Button>
         </div>
-        <Table columns={columns} dataSource={testCases} />
+        <Table
+          columns={columns}
+          dataSource={testCases}
+          rowClassName="cursor"
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: () => {
+                navigate(`/TestPlanning/TestCase/${record.id}/Details`);
+              },
+            };
+          }}
+        />
         {addEditTestCaseModal && (
           <AddEditTestCaseModal
             visible={addEditTestCaseModal}
