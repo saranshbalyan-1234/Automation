@@ -10,6 +10,15 @@ export default function Container({ children }) {
   const breadcrumbNameMap = {
     "/setting": "Settings",
   };
+  const renderTitle = () => {
+    if (pathSnippets.length > 0) {
+      if (pathSnippets.includes("project")) {
+        if (pathSnippets.includes("details")) {
+          return "Project Details";
+        } else return pathSnippets[pathSnippets.length - 1];
+      } else return pathSnippets[pathSnippets.length - 1];
+    } else return "Dashboard";
+  };
 
   const pathSnippets = location.pathname.split("/").filter((i) => i);
 
@@ -47,11 +56,7 @@ export default function Container({ children }) {
               }}
             >
               <ImLocation style={{ marginRight: "3px", marginTop: "5px" }} />
-              <div>
-                {pathSnippets.length > 0
-                  ? pathSnippets[pathSnippets.length - 1]
-                  : "Dashboard"}
-              </div>
+              <div>{renderTitle()}</div>
             </div>
           }
           subTitle={

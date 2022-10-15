@@ -67,6 +67,7 @@ export default (sequelize, DataTypes) => {
     foreignKey: "id",
     constraints: false,
   });
+
   sequelize.models.projects.hasMany(sequelize.models.userProjects, {
     foreignKey: "projectId",
     as: "members",
@@ -80,6 +81,12 @@ export default (sequelize, DataTypes) => {
   sequelize.models.userProjects.hasOne(sequelize.models.users, {
     foreignKey: "id",
     sourceKey: "userId",
+    constraints: false,
+  });
+  sequelize.models.testcases.hasOne(sequelize.models.users, {
+    as: "createdBy",
+    sourceKey: "createdByUser",
+    foreignKey: "id",
     constraints: false,
   });
 

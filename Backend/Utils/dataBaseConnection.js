@@ -11,6 +11,7 @@ import UserRole from "../Models/RolePermission/UserRole.js";
 import PermissionList from "../Models/RolePermission/PermissionList.js";
 import Project from "../Models/Project/Project.js";
 import UserProject from "../Models/Project/UserProject.js";
+import TestCase from "../Models/TestCase/TestCase.js";
 
 dotenv.config();
 
@@ -52,14 +53,18 @@ db.userRoles = UserRole(sequelize, DataTypes);
 db.userProjects = UserProject(sequelize, DataTypes);
 db.projects = Project(sequelize, DataTypes);
 db.roles = Role(sequelize, DataTypes);
+db.testcases = TestCase(sequelize, DataTypes);
 db.users = User(sequelize, DataTypes);
 
 db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0").then(() => {
-  db.tenants.sync({ force: false, alter: true }).then(() => {
-    db.customers.sync({ force: false, alter: true }).then(() => {});
-  });
-  db.unverifieds.sync({ force: false, alter: true }).then(() => {});
-  db.permissionList.sync({ force: false, alter: true }).then(() => {});
+  db.tenants
+    .schema("Main")
+    .sync({ force: false, alter: true })
+    .then(() => {
+      db.customers.schema("Main").sync({ force: false, alter: true });
+    });
+  db.unverifieds.schema("Main").sync({ force: false, alter: true });
+  db.permissionList.schema("Main").sync({ force: false, alter: true });
 });
 
 export default db;

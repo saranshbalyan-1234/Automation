@@ -1,8 +1,5 @@
 import joi from "@hapi/joi";
 
-const nameValidation = joi.object({
-  name: joi.string().min(3).required(),
-});
 const updateNameValidation = joi.object({
   name: joi.string().min(3).required(),
   roleId: joi.number().integer().required(),
@@ -19,9 +16,4 @@ const updatePermissionValidation = joi.object({
   delete: joi.boolean().required(),
 });
 
-export {
-  nameValidation,
-  updateNameValidation,
-  roleIdValidation,
-  updatePermissionValidation,
-};
+export { updateNameValidation, roleIdValidation, updatePermissionValidation };

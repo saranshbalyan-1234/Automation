@@ -2,11 +2,11 @@ import db from "../Utils/dataBaseConnection.js";
 import getError from "../Utils/sequelizeError.js";
 import { userIdValidation } from "../Utils/Validations/user.js";
 import {
-  nameValidation,
   updateNameValidation,
   roleIdValidation,
   updatePermissionValidation,
 } from "../Utils/Validations/role.js";
+import { nameValidation } from "../Utils/Validations/index.js";
 import { paginate, pageInfo } from "../Utils/pagination.js";
 const Role = db.roles;
 const UserRole = db.userRoles;
@@ -72,7 +72,9 @@ const updateRole = async (req, res) => {
 
     if (updatedRole[0]) {
       const role = await Role.schema(req.database).findByPk(roleId);
-      return res.status(200).json(role);
+      return res
+        .status(200)
+        .json({ ...role, message: "Role Updated Successfully!" });
     } else {
       return res.status(400).json({ error: "Record not found" });
     }
