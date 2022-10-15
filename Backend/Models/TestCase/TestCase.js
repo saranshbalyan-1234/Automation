@@ -7,6 +7,10 @@ export default (sequelize, DataTypes) => {
         notNull: true,
       },
     },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     projectId: {
       type: DataTypes.INTEGER,
       references: {

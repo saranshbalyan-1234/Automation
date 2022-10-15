@@ -10,6 +10,7 @@ import {
 const initState = {
   loading: false,
   data: [],
+  currentTestCase: {},
 };
 
 const testCaseReducer = (state = initState, { type, payload }) => {

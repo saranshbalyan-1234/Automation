@@ -44,7 +44,7 @@ export const AllProject = ({
   }, []);
 
   const formatDates = (startDate, endDate) => {
-    let currentDate = moment(new Date()).format("YYYY/MM/DD");
+    let currentDate = moment(new Date()).format("DD/MM/YYYY");
     let totalDays = moment(endDate).diff(moment(startDate), "days");
     let daysPassed = moment(currentDate).diff(moment(startDate), "days");
     let percentagePassed = Math.floor((daysPassed / totalDays) * 100);

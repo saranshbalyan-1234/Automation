@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, Button } from "antd";
+import { Tabs, Button, Badge } from "antd";
 import Profile from "./Profile";
 import ComingSoon from "../../Views/ComingSoon";
 import Team from "./Team";
@@ -11,7 +11,8 @@ import ChangePasswordModal from "./Profile/ChangePasswordModal";
 import AddEditRoleModal from "./Role/AddEditRoleModal";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-function Setting({ roles }) {
+import MemberBadge from "../Common/MemberBadge";
+function Setting({ roles, team }) {
   const { tab } = useParams();
   const navigate = useNavigate();
   const [editUserId, setEditUserId] = useState(0);
@@ -48,16 +49,28 @@ function Setting({ roles }) {
       );
     else if (activeTab === "team")
       return (
-        <Button
-          type="primary"
-          ghost
-          style={{ position: "absolute", right: 0, top: 10 }}
-          onClick={() => {
-            setAddUserModal(true);
+        <div
+          style={{
+            position: "absolute",
+            right: 0,
+            top: 10,
+            display: "flex",
+            gap: 40,
           }}
         >
-          <PlusOutlined /> Add User
-        </Button>
+          <div>
+            <MemberBadge members={team} />
+          </div>
+          <Button
+            type="primary"
+            ghost
+            onClick={() => {
+              setAddUserModal(true);
+            }}
+          >
+            <PlusOutlined /> Add User
+          </Button>
+        </div>
       );
     else if (activeTab === "profile")
       return (
@@ -156,7 +169,10 @@ function Setting({ roles }) {
     </>
   );
 }
-const mapStateToProps = (state) => ({ roles: state.roles });
+const mapStateToProps = (state) => ({
+  roles: state.roles,
+  team: state.team.data,
+});
 
 const mapDispatchToProps = {};
 

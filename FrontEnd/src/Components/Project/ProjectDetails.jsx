@@ -10,15 +10,15 @@ import {
   Spin,
   Popconfirm,
   Tag,
-  Badge,
 } from "antd";
 import Avatar from "../Common/Avatar";
 import moment from "moment";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { getProjectById, removeMember } from "../../Redux/Actions/project";
 import AddEditProjectModal from "./AddEditProjectModal";
 import AddProjectMemberModal from "./AddProjectMemberModal";
+import MemberBadge from "../Common/MemberBadge";
 const { Title } = Typography;
 const { Meta } = Card;
 export const ProjectDetails = ({
@@ -35,32 +35,8 @@ export const ProjectDetails = ({
     getProjectById(id);
   }, [id]);
 
-  const statusBadge = () => {
-    const activeMembers = currentProject.members.filter((el) => {
-      return el.active === true;
-    }).length;
-    const inactiveMembers = currentProject.members.length - activeMembers;
-    const unverifiedMembers = currentProject.members.filter((el) => {
-      return el.verifiedAt === null;
-    }).length;
-    return (
-      <>
-        <Badge
-          count={`Active: ${activeMembers}`}
-          overflowCount={999}
-          style={{ backgroundColor: "#52c41a" }}
-        />
-        <Badge overflowCount={999} count={`Inactive: ${inactiveMembers}`} />
-        <Badge
-          count={`Verification Pending: ${unverifiedMembers}`}
-          overflowCount={999}
-          style={{ backgroundColor: "grey" }}
-        />
-      </>
-    );
-  };
   const formatDates = (startDate, endDate) => {
-    let currentDate = moment(new Date()).format("YYYY/MM/DD");
+    let currentDate = moment(new Date()).format("DD/MM/YYYY");
     let totalDays = moment(endDate).diff(moment(startDate), "days");
     let daysPassed = moment(currentDate).diff(moment(startDate), "days");
     let percentagePassed = Math.floor((daysPassed / totalDays) * 100);
@@ -147,7 +123,7 @@ export const ProjectDetails = ({
               description={
                 <div style={{ color: "black" }}>
                   Created On
-                  {moment(currentProject.createdAt).format("YYYY/MM/DD")} By
+                  {moment(currentProject.createdAt).format("DD/MM/YY")} By
                   &nbsp;
                   {currentProject.createdBy && (
                     <Avatar name={currentProject.createdBy.name} />
@@ -169,7 +145,7 @@ export const ProjectDetails = ({
                   setEditProjectModal(true);
                 }}
               >
-                Edit Project Details
+                <EditOutlined /> Edit Project Details
               </Button>
             </div>
           </div>
@@ -229,7 +205,7 @@ export const ProjectDetails = ({
                 style={{ display: "flex", flexWrap: "wrap", gap: 10 }}
               >
                 <div>Members</div> <div>({currentProject.members.length})</div>
-                {statusBadge()}
+                <MemberBadge members={currentProject.members} />
               </Title>
               <Button
                 type="primary"
@@ -237,7 +213,9 @@ export const ProjectDetails = ({
                 onClick={() => {
                   setAddProjectMemberModal(true);
                 }}
+                style={{ marginTop: "-15px" }}
               >
+                <PlusOutlined />
                 Add Member
               </Button>
             </div>
