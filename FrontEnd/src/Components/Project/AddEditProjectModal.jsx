@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Input, Modal, Button, Spin, DatePicker } from "antd";
-import { addProject } from "../../Redux/Actions/project";
+import { addProject, editProject } from "../../Redux/Actions/project";
 import { connect } from "react-redux";
 import moment from "moment";
 const { TextArea } = Input;
@@ -8,11 +8,10 @@ const { RangePicker } = DatePicker;
 const AddEditProjectModal = ({
   visible,
   setVisible,
-  editRole,
+  editProject,
   addProject,
   edit = false,
   projects,
-  roleData,
 }) => {
   const format = "YYYY/MM/DD";
   const onSubmit = async (data) => {
@@ -21,16 +20,11 @@ const AddEditProjectModal = ({
     let endDate = moment(data.date[1]).format(format);
     const payload = { name, description, startDate, endDate };
     if (edit) {
-      let result = await editRole({ ...data, id: roleData.id });
+      let result = await editProject(payload);
       result && setVisible(false);
     } else {
       let result = await addProject(payload);
       result && setVisible(false);
-      //   if (result) {
-      //     await setSingleRoleData({ ...result, permissions: [] });
-      //     setAddPermissionModal(true);
-      //     setVisible(false);
-      //   }
     }
   };
 
@@ -46,18 +40,19 @@ const AddEditProjectModal = ({
     >
       <Spin spinning={projects.loading}>
         <Form
-          name="role"
+          name="project"
           onFinish={onSubmit}
           labelCol={{ span: 7 }}
           wrapperCol={{ span: 16 }}
           initialValues={{
             name: edit ? projects.currentProject.name : "",
             description: edit ? projects.currentProject.description : "",
-            date: edit &&
-              projects.currentProject && [
-                (moment(projects.currentProject.startDate, format),
-                moment(projects.currentProject.endDate, format)),
-              ],
+            date: edit
+              ? [
+                  moment(projects.currentProject.startDate, format),
+                  moment(projects.currentProject.endDate, format),
+                ]
+              : [],
           }}
         >
           <Form.Item
@@ -66,7 +61,7 @@ const AddEditProjectModal = ({
             rules={[
               {
                 required: true,
-                message: "Please input role name!",
+                message: "Please input project name!",
               },
             ]}
           >
@@ -113,7 +108,7 @@ const AddEditProjectModal = ({
   );
 };
 const mapStateToProps = (state) => ({ projects: state.projects });
-const mapDispatchToProps = { addProject };
+const mapDispatchToProps = { addProject, editProject };
 
 export default connect(
   mapStateToProps,

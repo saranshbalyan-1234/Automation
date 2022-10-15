@@ -17,7 +17,7 @@ import moment from "moment";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { getProjectById, removeMember } from "../../Redux/Actions/project";
-// import AddEditProjectModal from "./AddEditProjectModal";
+import AddEditProjectModal from "./AddEditProjectModal";
 import AddProjectMemberModal from "./AddProjectMemberModal";
 const { Title } = Typography;
 const { Meta } = Card;
@@ -30,6 +30,7 @@ export const ProjectDetails = ({
   const { id } = useParams();
 
   const [addProjectMemberModal, setAddProjectMemberModal] = useState(false);
+  const [editProjectModal, setEditProjectModal] = useState(false);
   useEffect(() => {
     getProjectById(id);
   }, [id]);
@@ -161,7 +162,13 @@ export const ProjectDetails = ({
                 gap: 25,
               }}
             >
-              <Button type="primary" ghost>
+              <Button
+                type="primary"
+                ghost
+                onClick={() => {
+                  setEditProjectModal(true);
+                }}
+              >
                 Edit Project Details
               </Button>
             </div>
@@ -246,6 +253,13 @@ export const ProjectDetails = ({
         <AddProjectMemberModal
           visible={addProjectMemberModal}
           setVisible={setAddProjectMemberModal}
+        />
+      )}
+      {editProjectModal && (
+        <AddEditProjectModal
+          visible={editProjectModal}
+          setVisible={setEditProjectModal}
+          edit={true}
         />
       )}
     </div>

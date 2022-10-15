@@ -6,6 +6,7 @@ import {
   deleteProject,
   addMember,
   deleteMember,
+  editProject,
 } from "../Controllers/projectController.js";
 import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
@@ -28,4 +29,5 @@ Router.delete(
   validatePermission("project", "delete"),
   deleteProject
 );
+Router.put("/:projectId", validatePermission("project", "delete"), editProject);
 export default Router;

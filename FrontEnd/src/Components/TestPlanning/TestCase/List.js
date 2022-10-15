@@ -102,7 +102,7 @@ export const List = ({
           onRow={(record, rowIndex) => {
             return {
               onClick: () => {
-                navigate(`/TestPlanning/TestCase/${record.id}/Details`);
+                navigate(`/TestPlanning/TestCase/${record.id}/details`);
               },
             };
           }}

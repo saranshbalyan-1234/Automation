@@ -9,6 +9,7 @@ import {
   REMOVE_CURRENT_PROJECT_MEMBER,
   DELETE_PROJECT,
   ADD_CURRENT_PROJECT_MEMBER,
+  EDIT_PROJECT_DETAILS,
 } from "./action-types";
 
 export const getAllProject = (payload) => {
@@ -93,6 +94,25 @@ export const deleteProject = (projectId) => {
         throw message.error("Cannot delete selected project!");
       await axios.delete(`/project/${projectId}`);
       dispatch({ type: DELETE_PROJECT, payload: projectId });
+      return true;
+    } catch (err) {
+      dispatch({ type: PROJECT_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const editProject = (payload) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: PROJECT_REQUEST });
+      let currentProjectId = getState().projects.currentProject?.id;
+      await axios.put(`/project/${currentProjectId}`, payload);
+      let editedProject = { ...payload };
+      dispatch({
+        type: EDIT_PROJECT_DETAILS,
+        payload: { data: editedProject, projectId: currentProjectId },
+      });
       return true;
     } catch (err) {
       dispatch({ type: PROJECT_FAILURE });

@@ -7,6 +7,7 @@ import {
   REMOVE_CURRENT_PROJECT_MEMBER,
   DELETE_PROJECT,
   ADD_CURRENT_PROJECT_MEMBER,
+  EDIT_PROJECT_DETAILS,
 } from "../Actions/action-types";
 
 const initState = {
@@ -72,6 +73,13 @@ const projectReducer = (state = initState, { type, payload }) => {
         ...state,
         data: removedProject,
         loading: false,
+      };
+    case EDIT_PROJECT_DETAILS:
+      const updatedProject = payload.data;
+      return {
+        ...state,
+        loading: false,
+        currentProject: { ...state.currentProject, ...updatedProject },
       };
     default:
       return state;

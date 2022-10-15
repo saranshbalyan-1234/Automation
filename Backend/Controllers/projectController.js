@@ -231,6 +231,32 @@ const deleteMember = async (req, res) => {
   }
 };
 
+const editProject = async (req, res) => {
+  /*  #swagger.tags = ["Project"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+  try {
+    const projectId = req.params.projectId;
+
+    const { error } = projectByIdValidation.validate({ projectId });
+    if (error) throw new Error(error.details[0].message);
+
+    const updatedProject = await Project.schema(req.database).update(req.body, {
+      where: {
+        id: projectId,
+      },
+    });
+
+    if (updatedProject[0]) {
+      return res.status(200).json({ message: "Project Updated Successfully!" });
+    } else {
+      return res.status(400).json({ error: "Record not found" });
+    }
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
 export {
   getMyProject,
   getProjectById,
@@ -238,4 +264,5 @@ export {
   deleteProject,
   addMember,
   deleteMember,
+  editProject,
 };
