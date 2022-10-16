@@ -10,7 +10,7 @@ import {
 import AddEditTestCaseModal from "./AddEditTestCaseModal";
 import UserAvatar from "../../Common/Avatar";
 import { useNavigate } from "react-router-dom";
-export const List = ({
+export const TestCaseList = ({
   currentProjectId,
   getTestCaseByProject,
   testCases,
@@ -128,4 +128,4 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = { getTestCaseByProject, deleteTestCase };
 
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+export default connect(mapStateToProps, mapDispatchToProps)(TestCaseList);

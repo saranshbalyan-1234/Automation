@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const TestCase = sequelize.define("testcases", {
+  const TestCase = sequelize.define("testCases", {
     name: {
       type: DataTypes.STRING,
       allowNull: false,

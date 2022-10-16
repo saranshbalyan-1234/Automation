@@ -10,7 +10,10 @@ import mailRoutes from "./Routes/mailRoutes.js";
 import roleRoutes from "./Routes/roleRoutes.js";
 import globalRoutes from "./Routes/globalRoutes.js";
 import projectRoutes from "./Routes/projectRoutes.js";
-import testCaseRoutes from "./Routes/testCaseRoutes.js";
+import testCaseRoutes from "./Routes/TestCase/testCaseRoutes.js";
+import testObjectRoutes from "./Routes/TestCase/testObjectRoutes.js";
+import testStepRoutes from "./Routes/TestCase/testStepRoutes.js";
+import testParameterRoutes from "./Routes/TestCase/testParameterRoutes.js";
 
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
@@ -45,6 +48,9 @@ app.use("/role", roleRoutes);
 app.use("/mail", mailRoutes);
 app.use("/project", projectRoutes);
 app.use("/testcase", testCaseRoutes);
+app.use("/testobject", testObjectRoutes);
+app.use("/teststep", testStepRoutes);
+app.use("/testparameter", testParameterRoutes);
 
 app.use((req, res) => {
   return res.status(404).json({ error: "Endpoint Not Found" });

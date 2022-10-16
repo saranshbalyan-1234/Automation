@@ -4,8 +4,8 @@ import {
   saveTestCase,
   updateTestCase,
   deleteTestCase,
-} from "../Controllers/testCaseController.js";
-import { validatePermission } from "../Utils/Middlewares/permissions.js";
+} from "../../Controllers/TestCase/testCaseController.js";
+import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
 Router.post("/", validatePermission("Team & Role", "add"), saveTestCase);
@@ -26,4 +26,5 @@ Router.delete(
   validatePermission("Team & Role", "add"),
   deleteTestCase
 );
+
 export default Router;

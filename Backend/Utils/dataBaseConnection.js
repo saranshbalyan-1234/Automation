@@ -8,10 +8,14 @@ import Role from "../Models/RolePermission/Role.js";
 import Permission from "../Models/RolePermission/Permission.js";
 import User from "../Models/User.js";
 import UserRole from "../Models/RolePermission/UserRole.js";
-import PermissionList from "../Models/RolePermission/PermissionList.js";
+import PermissionList from "../Models/Global/PermissionList.js";
 import Project from "../Models/Project/Project.js";
 import UserProject from "../Models/Project/UserProject.js";
 import TestCase from "../Models/TestCase/TestCase.js";
+import ActionEvent from "../Models/Global/ActionEvent.js";
+import TestObject from "../Models/TestCase/TestObject.js";
+import TestParameter from "../Models/TestCase/TestParameter.js";
+import TestStep from "../Models/TestCase/TestStep.js";
 
 dotenv.config();
 
@@ -46,6 +50,7 @@ db.tenants = Tenant(sequelize, DataTypes);
 db.customers = Customer(sequelize, DataTypes);
 db.unverifieds = Unverified(sequelize, DataTypes);
 db.permissionList = PermissionList(sequelize, DataTypes);
+db.actionEvent = ActionEvent(sequelize, DataTypes);
 
 //Tenant
 db.permissions = Permission(sequelize, DataTypes);
@@ -53,18 +58,20 @@ db.userRoles = UserRole(sequelize, DataTypes);
 db.userProjects = UserProject(sequelize, DataTypes);
 db.projects = Project(sequelize, DataTypes);
 db.roles = Role(sequelize, DataTypes);
-db.testcases = TestCase(sequelize, DataTypes);
-db.users = User(sequelize, DataTypes);
+db.testParameters = TestParameter(sequelize, DataTypes);
+db.testObjects = TestObject(sequelize, DataTypes);
+db.testSteps = TestStep(sequelize, DataTypes);
+db.testCases = TestCase(sequelize, DataTypes);
 
-db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0").then(() => {
-  db.tenants
-    .schema("Main")
-    .sync({ force: false, alter: true })
-    .then(() => {
-      db.customers.schema("Main").sync({ force: false, alter: true });
-    });
-  db.unverifieds.schema("Main").sync({ force: false, alter: true });
-  db.permissionList.schema("Main").sync({ force: false, alter: true });
-});
+db.users = User(sequelize, DataTypes); //all associations
+
+db.tenants.schema("Main").sync({ force: false, alter: true });
+db.customers.schema("Main").sync({ force: false, alter: true });
+db.unverifieds.schema("Main").sync({ force: false, alter: true });
+db.permissionList.schema("Main").sync({ force: false, alter: true });
+db.actionEvent.schema("Main").sync({ force: false, alter: true });
+// db.testParameters
+//   .schema("saranshbalyan123gmailcom")
+//   .sync({ force: false, alter: true });
 
 export default db;

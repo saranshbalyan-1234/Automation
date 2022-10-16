@@ -1,6 +1,20 @@
 export default (sequelize, DataTypes) => {
-  const TestObject = sequelize.define("testobjects", {
+  const TestObject = sequelize.define("testObjects", {
     name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
+    },
+    locator: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {

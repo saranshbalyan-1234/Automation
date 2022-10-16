@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const TestCase = sequelize.define("teststeps", {
+  const TestCase = sequelize.define("testSteps", {
     actionEvent: {
       type: DataTypes.STRING,
       allowNull: false,

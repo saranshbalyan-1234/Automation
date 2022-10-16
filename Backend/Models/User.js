@@ -83,9 +83,27 @@ export default (sequelize, DataTypes) => {
     sourceKey: "userId",
     constraints: false,
   });
-  sequelize.models.testcases.hasOne(sequelize.models.users, {
+  sequelize.models.testCases.hasOne(sequelize.models.users, {
     as: "createdBy",
     sourceKey: "createdByUser",
+    foreignKey: "id",
+    constraints: false,
+  });
+
+  sequelize.models.testCases.hasMany(sequelize.models.testSteps, {
+    sourceKey: "id",
+    foreignKey: "testCaseId",
+    constraints: false,
+  });
+
+  sequelize.models.testSteps.hasMany(sequelize.models.testParameters, {
+    sourceKey: "id",
+    foreignKey: "testStepId",
+    constraints: false,
+  });
+
+  sequelize.models.testSteps.hasOne(sequelize.models.testObjects, {
+    sourceKey: "testObjectId",
     foreignKey: "id",
     constraints: false,
   });

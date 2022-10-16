@@ -1,16 +1,16 @@
-import db from "../Utils/dataBaseConnection.js";
-import getError from "../Utils/sequelizeError.js";
-import { projectByIdValidation } from "../Utils/Validations/project.js";
+import db from "../../Utils/dataBaseConnection.js";
+import getError from "../../Utils/sequelizeError.js";
+import { projectByIdValidation } from "../../Utils/Validations/project.js";
 import {
   saveTestCaseValidation,
   updateTestCaseValidation,
   testCaseIdValidation,
-} from "../Utils/Validations/testCase.js";
+} from "../../Utils/Validations/testCase.js";
 
-const TestCase = db.testcases;
+const TestCase = db.testCases;
 const User = db.users;
 const saveTestCase = async (req, res) => {
-  /*  #swagger.tags = ["TestCase"] 
+  /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 

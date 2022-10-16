@@ -1,12 +1,12 @@
 import React from "react";
-import List from "./TestCase/List";
+import TestCaseList from "./TestCase/TestCaseList";
 import TestCase from "./TestCase";
 import { Routes, Route } from "react-router-dom";
 export default function index() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<List />} />
+        <Route path="/" element={<TestCaseList />} />
         <Route path="/:testCaseId/:tab" element={<TestCase />} />
       </Routes>
     </>

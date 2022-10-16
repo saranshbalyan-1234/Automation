@@ -19,7 +19,9 @@ const Tenant = db.tenants;
 const Unverified = db.unverifieds;
 const Project = db.projects;
 const UserProject = db.userProjects;
-const TestCase = db.testcases;
+const TestCase = db.testCases;
+const TestObject = db.testObjects;
+const TestStep = db.testSteps;
 
 const register = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
@@ -163,6 +165,9 @@ const verifyCustomer = async (req, res) => {
         await Role.schema(database).sync({ force: true, alter: true });
         await UserProject.schema(database).sync({ force: true, alter: true });
         await Project.schema(database).sync({ force: true, alter: true });
+        await TestObject.schema(database).sync({ force: true, alter: true });
+        await TestStep.schema(database).sync({ force: true, alter: true });
+
         await User.schema(database).sync({ force: true, alter: true });
         await TestCase.schema(database).sync({
           force: true,

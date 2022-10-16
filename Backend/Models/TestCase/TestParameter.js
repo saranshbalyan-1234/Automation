@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const TestParameter = sequelize.define("testparameters", {
+  const TestParameter = sequelize.define("testParameters", {
     type: {
       type: DataTypes.STRING,
       allowNull: false,
