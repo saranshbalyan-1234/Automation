@@ -148,7 +148,7 @@ const getTestCaseDetailsById = async (req, res) => {
 };
 
 const getTestStepByTestCase = async (req, res) => {
-  /*  #swagger.tags = ["Test Step"] 
+  /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
