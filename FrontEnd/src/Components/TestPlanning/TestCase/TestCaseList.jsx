@@ -16,10 +16,10 @@ export const TestCaseList = ({
   testCases,
   loading,
   deleteTestCase,
+  setAddEditTestCaseModal,
+  addEditTestCaseModal,
 }) => {
   const navigate = useNavigate();
-  const [addEditTestCaseModal, setAddEditTestCaseModal] = useState(false);
-  const [editData, setEditData] = useState({});
 
   const columns = [
     {
@@ -47,16 +47,10 @@ export const TestCaseList = ({
       key: "actions",
       render: (_, record) => (
         <div style={{ display: "flex", gap: 10 }}>
-          <EditOutlined
-            style={{ fontSize: 17 }}
-            onClick={() => {
-              setAddEditTestCaseModal(true);
-              setEditData(record);
-            }}
-          />
           <Popconfirm
             title="Are you sure to delete this TestCase?"
-            onConfirm={async () => {
+            onConfirm={async (e) => {
+              e.stopPropagation();
               await deleteTestCase(record.id);
             }}
             okText="Yes, Delete"
@@ -111,8 +105,6 @@ export const TestCaseList = ({
           <AddEditTestCaseModal
             visible={addEditTestCaseModal}
             setVisible={setAddEditTestCaseModal}
-            setEditData={setEditData}
-            editData={editData}
           />
         )}
       </Spin>

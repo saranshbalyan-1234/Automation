@@ -4,17 +4,19 @@ import { Typography, Card, Button, Spin, Popconfirm, Tag } from "antd";
 import moment from "moment";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
-
+import UserAvatar from "../../Common/Avatar";
+import AddEditTestCaseModal from "./AddEditTestCaseModal";
 const { Title } = Typography;
 const { Meta } = Card;
 export const TestCaseDetails = ({
-  currentProject,
+  currentTestCase,
   loading,
   getProjectById,
   removeMember,
 }) => {
   const { testCaseId } = useParams();
-
+  const [addEditTestCaseModal, setAddEditTestCaseModal] = useState(false);
+  const [editData, setEditData] = useState({});
   useEffect(() => {
     // getProjectById(id);
   }, [testCaseId]);
@@ -34,14 +36,17 @@ export const TestCaseDetails = ({
             <Meta
               title={
                 <Title style={{ textTransform: "capitalize" }} level={3}>
-                  Test Case: {currentProject.name}
+                  Test Case: {currentTestCase.name}
                 </Title>
               }
               description={
                 <div style={{ color: "black" }}>
-                  Created On &nbsp;
-                  {moment(currentProject.createdAt).format("DD/MM/YYYY")}
+                  Created On
+                  {moment(currentTestCase.createdAt).format("DD/MM/YY")} By
                   &nbsp;
+                  {currentTestCase.createdBy && (
+                    <UserAvatar name={currentTestCase.createdBy.name} />
+                  )}
                 </div>
               }
             />
@@ -55,9 +60,10 @@ export const TestCaseDetails = ({
               <Button
                 type="primary"
                 ghost
-                // onClick={() => {
-                //   setEditProjectModal(true);
-                // }}
+                onClick={() => {
+                  setEditData(currentTestCase);
+                  setAddEditTestCaseModal(true);
+                }}
               >
                 <EditOutlined />
                 Edit TestCase Details
@@ -77,7 +83,7 @@ export const TestCaseDetails = ({
                 <div
                   style={{ marginTop: "5px" }}
                   dangerouslySetInnerHTML={{
-                    __html: currentProject.description,
+                    __html: currentTestCase.description,
                   }}
                 ></div>
               }
@@ -92,26 +98,38 @@ export const TestCaseDetails = ({
                   alignSelf: "end",
                 }}
               >
-                <Card>
+                {/* <Card>
                   <Meta
                     title="Start Date"
-                    description={currentProject.startDate}
+                    description={currentTestCase.startDate}
                   />
                 </Card>
                 <Card>
-                  <Meta title="End Date" description={currentProject.endDate} />
-                </Card>
+                  <Meta
+                    title="End Date"
+                    description={currentTestCase.endDate}
+                  />
+                </Card> */}
               </div>
             </div>
           </div>
         </Card>
       </Spin>
+      {addEditTestCaseModal && (
+        <AddEditTestCaseModal
+          visible={addEditTestCaseModal}
+          setVisible={setAddEditTestCaseModal}
+          editData={editData}
+          setEditData={setEditData}
+          edit={true}
+        />
+      )}
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  currentProject: state.projects.currentProject,
+  currentTestCase: state.testCase.currentTestCase,
   loading: state.projects.loading,
 });
 

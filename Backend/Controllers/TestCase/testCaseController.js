@@ -113,5 +113,40 @@ const deleteTestCase = async (req, res) => {
     getError(err, res);
   }
 };
+const getTestCaseById = async (req, res) => {
+  /*  #swagger.tags = ["Test Case"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
 
-export { saveTestCase, updateTestCase, getAllTestCase, deleteTestCase };
+  try {
+    const testCaseId = req.params.testCaseId;
+    // const { error } = projectByIdValidation.validate({ projectId });
+    // if (error) throw new Error(error.details[0].message);
+
+    const testCase = await TestCase.schema(req.database).findOne({
+      where: {
+        id: testCaseId,
+      },
+      attributes: ["id", "name", "createdAt", "updatedAt", "description"],
+      include: [
+        {
+          model: User.schema(req.database),
+          as: "createdBy",
+          attributes: ["id", "name", "email", "active"],
+        },
+      ],
+    });
+
+    return res.status(200).json(testCase);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+export {
+  saveTestCase,
+  updateTestCase,
+  getAllTestCase,
+  deleteTestCase,
+  getTestCaseById,
+};

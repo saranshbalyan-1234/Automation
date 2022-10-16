@@ -12,13 +12,12 @@ const AddEditTestCaseModal = ({
   editTestCase,
   setEditData,
   loading,
+  edit = false,
 }) => {
-  const edit = editData.id ? true : false;
-
   const onSubmit = async (data) => {
     let result = false;
     if (edit) {
-      result = await editTestCase({ ...data, testCaseId: editData.id });
+      result = await editTestCase(data);
       setEditData({});
     } else {
       result = await saveTestCase({ ...data, projectId: currentProjectId });

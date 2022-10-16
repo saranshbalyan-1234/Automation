@@ -4,7 +4,8 @@ import {
   TEST_CASE_FAILURE,
   DELETE_TEST_CASE,
   CREATE_TEST_CASE,
-  UPDATE_TEST_CASE,
+  UPDATE_CURRENT_TEST_CASE,
+  GET_TEST_CASE_BY_ID,
 } from "../Actions/action-types";
 
 const initState = {
@@ -44,17 +45,19 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         loading: false,
         data: [...state.data, payload],
       };
-    case UPDATE_TEST_CASE:
-      let updatedTestCase = [...state.data].map((el) => ({
-        ...el,
-        name: el.id === payload.testCaseId ? payload.name : el.name,
-      }));
+    case UPDATE_CURRENT_TEST_CASE:
+      const updatedTestCase = payload.data;
       return {
         ...state,
         loading: false,
-        data: updatedTestCase,
+        currentTestCase: { ...state.currentTestCase, ...updatedTestCase },
       };
-
+    case GET_TEST_CASE_BY_ID:
+      return {
+        ...state,
+        currentTestCase: payload,
+        loading: false,
+      };
     default:
       return state;
   }

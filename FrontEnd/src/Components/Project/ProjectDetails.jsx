@@ -11,7 +11,7 @@ import {
   Popconfirm,
   Tag,
 } from "antd";
-import Avatar from "../Common/Avatar";
+import UserAvatar from "../Common/Avatar";
 import moment from "moment";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
@@ -126,7 +126,7 @@ export const ProjectDetails = ({
                   {moment(currentProject.createdAt).format("DD/MM/YY")} By
                   &nbsp;
                   {currentProject.createdBy && (
-                    <Avatar name={currentProject.createdBy.name} />
+                    <UserAvatar name={currentProject.createdBy.name} />
                   )}
                 </div>
               }

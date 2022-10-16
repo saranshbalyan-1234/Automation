@@ -2,7 +2,7 @@ import React from "react";
 import TestCaseList from "./TestCase/TestCaseList";
 import TestCase from "./TestCase";
 import { Routes, Route } from "react-router-dom";
-export default function index() {
+export default function TestPlanning() {
   return (
     <>
       <Routes>

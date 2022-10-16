@@ -4,8 +4,13 @@ import { PlusOutlined, EditOutlined, SettingOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import TestCaseDetails from "./TestCaseDetails";
+import { getTestCaseById } from "../../../Redux/Actions/testCase";
 import TestStep from "./TestStep";
-function TestCase({}) {
+function TestCase({
+  getTestCaseById,
+  addEditTestCaseModal,
+  setAddEditTestCaseModal,
+}) {
   const { tab, testCaseId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
@@ -17,6 +22,10 @@ function TestCase({}) {
   useEffect(() => {
     setActiveTab(tab);
   }, [tab]);
+
+  useEffect(() => {
+    getTestCaseById(testCaseId);
+  }, [testCaseId]);
 
   const renderButton = () => {
     if (activeTab === "roles")
@@ -56,8 +65,8 @@ function TestCase({}) {
     </>
   );
 }
-const mapStateToProps = (state) => ({ roles: state.roles });
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { getTestCaseById };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestCase);
