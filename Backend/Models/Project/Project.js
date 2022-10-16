@@ -21,7 +21,10 @@ export default (sequelize, DataTypes) => {
     },
     createdByUser: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
       references: {
         model: "users",
         key: "id",

@@ -4,6 +4,7 @@ import { PlusOutlined, EditOutlined, SettingOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import TestCaseDetails from "./TestCaseDetails";
+import TestStep from "./TestStep";
 function TestCase({}) {
   const { tab, testCaseId } = useParams();
   const navigate = useNavigate();
@@ -41,10 +42,10 @@ function TestCase({}) {
           onChange={handleActiveTab}
         >
           <Tabs.TabPane tab="Details" key="details">
-            <TestCaseDetails />
+            {activeTab == "details" && <TestCaseDetails />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Test Step" key="teststep">
-            <TestCaseDetails />
+            {activeTab == "teststep" && <TestStep />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Activity Log" key="activitylog">
             <TestCaseDetails />

@@ -23,6 +23,10 @@ export default (sequelize, DataTypes) => {
     },
     projectId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
       references: {
         model: "projects",
         key: "id",

@@ -7,6 +7,10 @@ export default (sequelize, DataTypes) => {
         notNull: true,
       },
     },
+    comment: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     testObjectId: {
       type: DataTypes.INTEGER,
       references: {
@@ -16,6 +20,10 @@ export default (sequelize, DataTypes) => {
     },
     testCaseId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
       references: {
         model: "testcases",
         key: "id",

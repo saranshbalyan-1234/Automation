@@ -29,7 +29,7 @@ const saveTestCase = async (req, res) => {
 };
 
 const updateTestCase = async (req, res) => {
-  /*  #swagger.tags = ["TestCase"] 
+  /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -61,7 +61,7 @@ const updateTestCase = async (req, res) => {
 };
 
 const getAllTestCase = async (req, res) => {
-  /*  #swagger.tags = ["TestCase"] 
+  /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -91,7 +91,7 @@ const getAllTestCase = async (req, res) => {
 };
 
 const deleteTestCase = async (req, res) => {
-  /*  #swagger.tags = ["TestCase"] 
+  /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 

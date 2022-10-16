@@ -13,6 +13,10 @@ export default (sequelize, DataTypes) => {
     },
     projectId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
       references: {
         model: "projects",
         key: "id",
@@ -20,6 +24,10 @@ export default (sequelize, DataTypes) => {
     },
     createdByUser: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
       references: {
         model: "users",
         key: "id",

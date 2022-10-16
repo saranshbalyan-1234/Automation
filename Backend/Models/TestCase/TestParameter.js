@@ -16,6 +16,10 @@ export default (sequelize, DataTypes) => {
     },
     testStepId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
       references: {
         model: "teststeps",
         key: "id",

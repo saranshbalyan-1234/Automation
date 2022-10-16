@@ -12,12 +12,12 @@ export default (sequelize, DataTypes) => {
     roleId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        notNull: true,
+      },
       references: {
         model: "roles",
         key: "id",
-      },
-      validate: {
-        notNull: true,
       },
     },
     view: {

@@ -3,6 +3,9 @@ export default (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        notNull: true,
+      },
       references: {
         model: "users",
         key: "id",
@@ -10,7 +13,10 @@ export default (sequelize, DataTypes) => {
     },
     roleId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
       references: {
         model: "roles",
         key: "id",
