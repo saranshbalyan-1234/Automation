@@ -9,6 +9,10 @@ import {
 
 const TestCase = db.testCases;
 const User = db.users;
+const TestProcess = db.testProcess;
+const TestObject = db.testObjects;
+const TestParameter = db.testParameters;
+const TestStep = db.testSteps;
 const saveTestCase = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
@@ -113,7 +117,7 @@ const deleteTestCase = async (req, res) => {
     getError(err, res);
   }
 };
-const getTestCaseById = async (req, res) => {
+const getTestCaseDetailsById = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
@@ -143,10 +147,43 @@ const getTestCaseById = async (req, res) => {
   }
 };
 
+const getTestStepByTestCase = async (req, res) => {
+  /*  #swagger.tags = ["Test Step"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    // const { error } = nameValidation.validate(req.body);
+    // if (error) throw new Error(error.details[0].message);
+
+    const testCaseId = req.params.testCaseId;
+    const data = await TestProcess.schema(req.database).findAll({
+      where: { testCaseId },
+      include: [
+        {
+          model: TestStep.schema(req.database),
+          include: [
+            {
+              model: TestObject.schema(req.database),
+            },
+            {
+              model: TestParameter.schema(req.database),
+            },
+          ],
+        },
+      ],
+    });
+    return res.status(200).json(data);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
 export {
   saveTestCase,
   updateTestCase,
   getAllTestCase,
   deleteTestCase,
-  getTestCaseById,
+  getTestCaseDetailsById,
+  getTestStepByTestCase,
 };

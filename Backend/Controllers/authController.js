@@ -22,6 +22,8 @@ const UserProject = db.userProjects;
 const TestCase = db.testCases;
 const TestObject = db.testObjects;
 const TestStep = db.testSteps;
+const TestProcess = db.testProcess;
+const TestParameter = db.testParameters;
 
 const register = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
@@ -167,13 +169,20 @@ const verifyCustomer = async (req, res) => {
         await Project.schema(database).sync({ force: true, alter: true });
         await TestObject.schema(database).sync({ force: true, alter: true });
         await TestStep.schema(database).sync({ force: true, alter: true });
-
-        await User.schema(database).sync({ force: true, alter: true });
+        await TestProcess.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+        await TestParameter.schema(database).sync({
+          force: true,
+          alter: true,
+        });
         await TestCase.schema(database).sync({
           force: true,
           alter: true,
         });
 
+        await User.schema(database).sync({ force: true, alter: true });
         await User.schema(database).create({
           name,
           email,

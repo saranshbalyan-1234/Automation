@@ -6,13 +6,26 @@ const columns = [
     title: "Action Event",
     width: 100,
     dataIndex: "actionEvent",
-    key: "name",
   },
   {
-    title: "Age",
+    title: "Test Object",
     width: 100,
-    dataIndex: "age",
-    key: "age",
+    dataIndex: "testObject",
+  },
+  {
+    title: "Test Parameter",
+    width: 100,
+    dataIndex: "testParameter",
+  },
+  {
+    title: "Options",
+    width: 100,
+    dataIndex: "options",
+  },
+  {
+    title: "Comment",
+    width: 100,
+    dataIndex: "comment",
   },
 ];
 const data = [];

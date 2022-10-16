@@ -16,10 +16,9 @@ export const TestCaseList = ({
   testCases,
   loading,
   deleteTestCase,
-  setAddEditTestCaseModal,
-  addEditTestCaseModal,
 }) => {
   const navigate = useNavigate();
+  const [addEditTestCaseModal, setAddEditTestCaseModal] = useState(false);
 
   const columns = [
     {

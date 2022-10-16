@@ -90,9 +90,14 @@ export default (sequelize, DataTypes) => {
     constraints: false,
   });
 
-  sequelize.models.testCases.hasMany(sequelize.models.testSteps, {
+  sequelize.models.testCases.hasMany(sequelize.models.testProcesses, {
     sourceKey: "id",
-    foreignKey: "testCaseId",
+    foreignKey: "testProcessId",
+    constraints: false,
+  });
+  sequelize.models.testProcesses.hasMany(sequelize.models.testSteps, {
+    sourceKey: "id",
+    foreignKey: "testProcessId",
     constraints: false,
   });
 

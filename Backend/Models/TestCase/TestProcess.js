@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
-  const TestCase = sequelize.define("testSteps", {
-    actionEvent: {
+  const TestProcess = sequelize.define("testProcesses", {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -11,25 +11,18 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    testObjectId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "testobjects",
-        key: "id",
-      },
-    },
-    testProcessId: {
+    testCaseId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: true,
       },
       references: {
-        model: "testProcesses",
+        model: "testcases",
         key: "id",
       },
     },
   });
 
-  return TestCase;
+  return TestProcess;
 };

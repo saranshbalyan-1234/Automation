@@ -81,11 +81,11 @@ export const deleteTestCase = (testCaseId) => {
     }
   };
 };
-export const getTestCaseById = (id) => {
+export const getTestCaseDetailsById = (id) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
-      const { data } = await axios.get(`/testcase/${id}`);
+      const { data } = await axios.get(`/testcase/${id}/details`);
       dispatch({ type: GET_TEST_CASE_BY_ID, payload: data });
       return true;
     } catch (err) {

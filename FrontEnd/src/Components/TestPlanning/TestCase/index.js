@@ -4,10 +4,10 @@ import { PlusOutlined, EditOutlined, SettingOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import TestCaseDetails from "./TestCaseDetails";
-import { getTestCaseById } from "../../../Redux/Actions/testCase";
+import { getTestCaseDetailsById } from "../../../Redux/Actions/testCase";
 import TestStep from "./TestStep";
 function TestCase({
-  getTestCaseById,
+  getTestCaseDetailsById,
   addEditTestCaseModal,
   setAddEditTestCaseModal,
 }) {
@@ -24,7 +24,7 @@ function TestCase({
   }, [tab]);
 
   useEffect(() => {
-    getTestCaseById(testCaseId);
+    getTestCaseDetailsById(testCaseId);
   }, [testCaseId]);
 
   const renderButton = () => {
@@ -53,8 +53,8 @@ function TestCase({
           <Tabs.TabPane tab="Details" key="details">
             {activeTab == "details" && <TestCaseDetails />}
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Test Step" key="teststep">
-            {activeTab == "teststep" && <TestStep />}
+          <Tabs.TabPane tab="Test Steps" key="teststeps">
+            {activeTab == "teststeps" && <TestStep />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Activity Log" key="activitylog">
             <TestCaseDetails />
@@ -67,6 +67,6 @@ function TestCase({
 }
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = { getTestCaseById };
+const mapDispatchToProps = { getTestCaseDetailsById };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestCase);
