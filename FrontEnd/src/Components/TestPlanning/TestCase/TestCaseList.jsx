@@ -56,7 +56,10 @@ export const TestCaseList = ({
             okText="Yes, Delete"
             cancelText="No"
           >
-            <DeleteOutlined style={{ fontSize: 17 }} />
+            <DeleteOutlined
+              onClick={(e) => e.stopPropagation()}
+              style={{ fontSize: 17 }}
+            />
           </Popconfirm>
         </div>
       ),

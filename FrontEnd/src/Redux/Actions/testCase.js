@@ -8,6 +8,7 @@ import {
   DELETE_TEST_CASE,
   GET_TEST_CASE_BY_ID,
 } from "./action-types";
+import { message } from "antd";
 
 export const getTestCaseByProject = (payload) => {
   return async (dispatch, getState) => {
@@ -46,10 +47,10 @@ export const saveTestCase = (payload) => {
 export const editTestCase = (payload) => {
   return async (dispatch, getState) => {
     try {
+      dispatch({ type: TEST_CASE_REQUEST });
+
       let currentTestCaseId = getState().testCase.currentTestCase?.id;
       let editedTestCase = { ...payload };
-
-      dispatch({ type: TEST_CASE_REQUEST });
 
       await axios.put(`/testcase/${currentTestCaseId}`, payload);
       dispatch({
@@ -66,12 +67,13 @@ export const editTestCase = (payload) => {
   };
 };
 
-export const deleteTestCase = (id) => {
+export const deleteTestCase = (testCaseId) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
-      await axios.delete(`testCase/${id}`);
-      dispatch({ type: DELETE_TEST_CASE, payload: id });
+
+      await axios.delete(`testCase/${testCaseId}`);
+      dispatch({ type: DELETE_TEST_CASE, payload: testCaseId });
       return true;
     } catch (err) {
       dispatch({ type: TEST_CASE_FAILURE });

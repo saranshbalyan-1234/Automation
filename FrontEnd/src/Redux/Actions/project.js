@@ -106,6 +106,7 @@ export const editProject = (payload) => {
   return async (dispatch, getState) => {
     try {
       dispatch({ type: PROJECT_REQUEST });
+
       let currentProjectId = getState().projects.currentProject?.id;
       await axios.put(`/project/${currentProjectId}`, payload);
       let editedProject = { ...payload };
