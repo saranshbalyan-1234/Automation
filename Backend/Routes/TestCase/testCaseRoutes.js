@@ -29,7 +29,7 @@ Router.get(
 );
 
 Router.get(
-  "/:testCaseId/teststep",
+  "/:testCaseId/teststeps",
   validatePermission("Team & Role", "add"),
   getTestStepByTestCase
 );

@@ -6,9 +6,10 @@ import {
   CREATE_TEST_CASE,
   UPDATE_CURRENT_TEST_CASE,
   DELETE_TEST_CASE,
-  GET_TEST_CASE_BY_ID,
+  GET_TEST_CASE_DETAILS_BY_ID,
+  GET_TEST_CASE_STEPS_BY_ID,
+  ADD_FIRST_PROCESS,
 } from "./action-types";
-import { message } from "antd";
 
 export const getTestCaseByProject = (payload) => {
   return async (dispatch, getState) => {
@@ -86,7 +87,35 @@ export const getTestCaseDetailsById = (id) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
       const { data } = await axios.get(`/testcase/${id}/details`);
-      dispatch({ type: GET_TEST_CASE_BY_ID, payload: data });
+      dispatch({ type: GET_TEST_CASE_DETAILS_BY_ID, payload: data });
+      return true;
+    } catch (err) {
+      dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const getTestCaseStepsById = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: TEST_CASE_REQUEST });
+      const { data } = await axios.get(`/testcase/${id}/testSteps`);
+      dispatch({ type: GET_TEST_CASE_STEPS_BY_ID, payload: data });
+      return true;
+    } catch (err) {
+      dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const addFirstProcess = (payload) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: TEST_CASE_REQUEST });
+      const { data } = await axios.post(`/testProcess`, payload);
+      dispatch({ type: ADD_FIRST_PROCESS, payload: data });
       return true;
     } catch (err) {
       dispatch({ type: TEST_CASE_FAILURE });

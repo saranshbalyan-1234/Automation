@@ -5,13 +5,15 @@ import {
   DELETE_TEST_CASE,
   CREATE_TEST_CASE,
   UPDATE_CURRENT_TEST_CASE,
-  GET_TEST_CASE_BY_ID,
+  GET_TEST_CASE_DETAILS_BY_ID,
+  GET_TEST_CASE_STEPS_BY_ID,
+  ADD_FIRST_PROCESS,
 } from "../Actions/action-types";
 
 const initState = {
   loading: false,
   data: [],
-  currentTestCase: {},
+  currentTestCase: { testSteps: [] },
 };
 
 const testCaseReducer = (state = initState, { type, payload }) => {
@@ -52,10 +54,25 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         loading: false,
         currentTestCase: { ...state.currentTestCase, ...updatedTestCase },
       };
-    case GET_TEST_CASE_BY_ID:
+    case GET_TEST_CASE_DETAILS_BY_ID:
       return {
         ...state,
-        currentTestCase: payload,
+        currentTestCase: { ...payload, testSteps: [] },
+        loading: false,
+      };
+    case GET_TEST_CASE_STEPS_BY_ID:
+      return {
+        ...state,
+        currentTestCase: { ...state.currentTestCase, testSteps: payload },
+        loading: false,
+      };
+    case ADD_FIRST_PROCESS:
+      return {
+        ...state,
+        currentTestCase: {
+          ...state.currentTestCase,
+          testSteps: [...state.currentTestCase.testSteps, payload],
+        },
         loading: false,
       };
     default:
