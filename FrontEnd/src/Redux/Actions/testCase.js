@@ -110,7 +110,7 @@ export const getTestCaseStepsById = (id) => {
   };
 };
 
-export const addFirstProcess = (payload) => {
+export const addProcess = (payload) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });

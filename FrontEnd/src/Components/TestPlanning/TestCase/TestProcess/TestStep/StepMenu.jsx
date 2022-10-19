@@ -1,6 +1,11 @@
 import React from "react";
 import { Dropdown, Menu } from "antd";
-import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 export default function StepMenu() {
   const menu = (
     <Menu
@@ -9,21 +14,10 @@ export default function StepMenu() {
         {
           label: (
             <>
-              <DeleteOutlined style={{ marginRight: "5px" }} /> Delete Step
-            </>
-          ),
-          key: "2",
-          onClick: (e) => {
-            e.domEvent.stopPropagation();
-          },
-        },
-        {
-          label: (
-            <>
               <PlusOutlined style={{ marginRight: "5px" }} /> Add Step Before
             </>
           ),
-          key: "3",
+          key: "1",
           onClick: (e) => {
             e.domEvent.stopPropagation();
           },
@@ -34,7 +28,7 @@ export default function StepMenu() {
               <PlusOutlined style={{ marginRight: "5px" }} /> Add Step After
             </>
           ),
-          key: "4",
+          key: "2",
           onClick: (e) => {
             e.domEvent.stopPropagation();
           },
@@ -50,7 +44,7 @@ export default function StepMenu() {
           e.stopPropagation();
         }}
       >
-        <EditOutlined />
+        <SettingOutlined />
       </div>
     </Dropdown>
   );

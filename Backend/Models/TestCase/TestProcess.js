@@ -11,6 +11,13 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    step: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
+    },
     testCaseId: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -2,68 +2,21 @@ import React, { useEffect } from "react";
 import { Table, Spin, Collapse, Tag } from "antd";
 import {
   getTestCaseStepsById,
-  addFirstProcess,
+  addProcess,
 } from "../../../../Redux/Actions/testCase";
 import { connect } from "react-redux";
 import ProcessMenu from "./ProcessMenu";
-import StepMenu from "./StepMenu";
 import { useParams } from "react-router-dom";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { TestStepTable } from "./TestStep";
 const { Panel } = Collapse;
-const TestStep = ({ getTestCaseStepsById, testSteps, addFirstProcess }) => {
+const TestStep = ({ getTestCaseStepsById, testSteps, addProcess }) => {
   const { testCaseId } = useParams();
 
   useEffect(() => {
     getTestCaseStepsById(testCaseId);
   }, [testCaseId]);
 
-  const columns = [
-    {
-      title: "",
-      width: 30,
-      dataIndex: "action",
-      render: (text, record) => (
-        <div style={{ cursor: "pointer" }}>
-          <StepMenu />
-        </div>
-      ),
-    },
-    {
-      title: "Action Event",
-      width: 100,
-      dataIndex: "actionEvent",
-    },
-    {
-      title: "Test Object",
-      width: 100,
-      dataIndex: "testObject",
-    },
-    {
-      title: "Test Parameter",
-      width: 100,
-      dataIndex: "testParameter",
-    },
-    {
-      title: "Options",
-      width: 100,
-      dataIndex: "options",
-    },
-    {
-      title: "Comment",
-      width: 100,
-      dataIndex: "comment",
-    },
-  ];
-
-  const renderProcessSteps = (item) => {
-    return (
-      <Table
-        columns={columns}
-        dataSource={[{ actionEvent: "saransh" }]}
-        pagination={false}
-        sticky
-      />
-    );
-  };
   return (
     <>
       <Spin spinning={false}>
@@ -88,7 +41,7 @@ const TestStep = ({ getTestCaseStepsById, testSteps, addFirstProcess }) => {
                         alignItems: "center",
                       }}
                     >
-                      <ProcessMenu />
+                      <ProcessMenu process={item} />
                       Process: {item.name}
                       <div
                         style={{
@@ -98,10 +51,16 @@ const TestStep = ({ getTestCaseStepsById, testSteps, addFirstProcess }) => {
                         }}
                       ></div>
                     </div>
+                    <div
+                      style={{ display: "flex", gap: 10, alignItems: "center" }}
+                    >
+                      <EditOutlined />
+                      <DeleteOutlined />
+                    </div>
                   </div>
                 }
               >
-                {renderProcessSteps(item)}
+                <TestStepTable testSteps={item.testSteps} />
               </Panel>
             </Collapse>
           );
@@ -110,7 +69,7 @@ const TestStep = ({ getTestCaseStepsById, testSteps, addFirstProcess }) => {
           <Tag
             style={{ cursor: "pointer" }}
             onClick={() => {
-              addFirstProcess({ name: "First Process", testCaseId });
+              addProcess({ name: "First Process", testCaseId, step: 1 });
             }}
           >
             Add First Process
@@ -125,6 +84,6 @@ const mapStateToProps = (state) => ({
   testSteps: state.testCase.currentTestCase.testSteps,
 });
 
-const mapDispatchToProps = { getTestCaseStepsById, addFirstProcess };
+const mapDispatchToProps = { getTestCaseStepsById, addProcess };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestStep);

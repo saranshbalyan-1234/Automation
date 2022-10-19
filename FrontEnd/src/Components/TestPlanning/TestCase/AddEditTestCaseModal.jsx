@@ -27,7 +27,7 @@ const AddEditTestCaseModal = ({
 
   return (
     <Modal
-      title="Create New TestCase"
+      title={edit ? "Edit TestCase" : "Create New TestCase"}
       visible={visible}
       footer={false}
       onCancel={() => {

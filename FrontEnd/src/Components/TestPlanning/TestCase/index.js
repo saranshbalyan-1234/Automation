@@ -5,12 +5,8 @@ import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import TestCaseDetails from "./TestCaseDetails";
 import { getTestCaseDetailsById } from "../../../Redux/Actions/testCase";
-import TestStep from "./TestStep";
-function TestCase({
-  getTestCaseDetailsById,
-  addEditTestCaseModal,
-  setAddEditTestCaseModal,
-}) {
+import TestProcess from "./TestProcess";
+function TestCase({ getTestCaseDetailsById }) {
   const { tab, testCaseId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
@@ -54,7 +50,7 @@ function TestCase({
             {activeTab == "details" && <TestCaseDetails />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Test Steps" key="teststeps">
-            {activeTab == "teststeps" && <TestStep />}
+            {activeTab == "teststeps" && <TestProcess />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Activity Log" key="activitylog">
             <TestCaseDetails />
