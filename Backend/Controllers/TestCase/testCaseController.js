@@ -162,6 +162,8 @@ const getTestStepByTestCase = async (req, res) => {
       include: [
         {
           model: TestStep.schema(req.database),
+          // separate: true,
+          order: [["step", "ASC"]],
           include: [
             {
               model: TestObject.schema(req.database),
@@ -172,7 +174,12 @@ const getTestStepByTestCase = async (req, res) => {
           ],
         },
       ],
+      order: [
+        ["step", "ASC"],
+        [TestStep, "step", "ASC"],
+      ],
     });
+
     return res.status(200).json(data);
   } catch (err) {
     getError(err, res);

@@ -24,7 +24,7 @@ export default function ProcessMenu({ process }) {
           key: "1",
           onClick: (e) => {
             e.domEvent.stopPropagation();
-            setStep(process.step - 1);
+            setStep(process.step);
             setAddEditProcessModal(true);
           },
         },
@@ -67,11 +67,13 @@ export default function ProcessMenu({ process }) {
           <SettingOutlined />
         </div>
       </Dropdown>
-      <AddEditProcessModal
-        visible={addEditProcessModal}
-        setVisible={setAddEditProcessModal}
-        step={step}
-      />
+      {addEditProcessModal && (
+        <AddEditProcessModal
+          visible={addEditProcessModal}
+          setVisible={setAddEditProcessModal}
+          step={step}
+        />
+      )}
     </>
   );
 }
