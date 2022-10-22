@@ -46,6 +46,7 @@ const updateTestProcess = async (req, res) => {
       return res.status(400).json({ error: "Record not found" });
     }
   } catch (err) {
+    console.log(err);
     getError(err, res);
   }
 };

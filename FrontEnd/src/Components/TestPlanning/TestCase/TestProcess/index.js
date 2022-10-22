@@ -1,16 +1,25 @@
-import React, { useEffect } from "react";
-import { Table, Spin, Collapse, Tag } from "antd";
+import React, { useEffect, useState } from "react";
+import { Popconfirm, Spin, Collapse, Tag } from "antd";
 import {
   getTestCaseStepsById,
   addProcess,
+  deleteProcess,
 } from "../../../../Redux/Actions/testCase";
 import { connect } from "react-redux";
 import ProcessMenu from "./ProcessMenu";
 import { useParams } from "react-router-dom";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { TestStepTable } from "./TestStep";
+import AddEditProcessModal from "./AddEditProcessModal";
 const { Panel } = Collapse;
-const TestStep = ({ getTestCaseStepsById, testSteps, addProcess }) => {
+const TestProcess = ({
+  getTestCaseStepsById,
+  testProcess,
+  addProcess,
+  deleteProcess,
+}) => {
+  const [addEditProcessModal, setAddEditProcessModal] = useState(false);
+  const [editProcessData, setEditProcessData] = useState({});
   const { testCaseId } = useParams();
 
   useEffect(() => {
@@ -20,7 +29,7 @@ const TestStep = ({ getTestCaseStepsById, testSteps, addProcess }) => {
   return (
     <>
       <Spin spinning={false}>
-        {testSteps.map((item, index) => {
+        {testProcess.map((item, index) => {
           return (
             <Collapse style={{ marginTop: "10px" }} key={index}>
               <Panel
@@ -53,9 +62,26 @@ const TestStep = ({ getTestCaseStepsById, testSteps, addProcess }) => {
                     </div>
                     <div
                       style={{ display: "flex", gap: 10, alignItems: "center" }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
                     >
-                      <EditOutlined />
-                      <DeleteOutlined />
+                      <EditOutlined
+                        onClick={() => {
+                          setEditProcessData(item);
+                          setAddEditProcessModal(true);
+                        }}
+                      />
+                      <Popconfirm
+                        title="Are you sure to remove this process?"
+                        onConfirm={async () => {
+                          await deleteProcess(item.id);
+                        }}
+                        okText="Yes, Remove"
+                        cancelText="No"
+                      >
+                        <DeleteOutlined />
+                      </Popconfirm>
                     </div>
                   </div>
                 }
@@ -65,7 +91,7 @@ const TestStep = ({ getTestCaseStepsById, testSteps, addProcess }) => {
             </Collapse>
           );
         })}
-        {testSteps.length == 0 && (
+        {testProcess.length == 0 && (
           <Tag
             style={{ cursor: "pointer" }}
             onClick={() => {
@@ -76,14 +102,23 @@ const TestStep = ({ getTestCaseStepsById, testSteps, addProcess }) => {
           </Tag>
         )}
       </Spin>
+      {addEditProcessModal && (
+        <AddEditProcessModal
+          visible={addEditProcessModal}
+          setVisible={setAddEditProcessModal}
+          editData={editProcessData}
+          setEditData={setEditProcessData}
+          edit={true}
+        />
+      )}
     </>
   );
 };
 
 const mapStateToProps = (state) => ({
-  testSteps: state.testCase.currentTestCase.testSteps,
+  testProcess: state.testCase.currentTestCase.testProcess,
 });
 
-const mapDispatchToProps = { getTestCaseStepsById, addProcess };
+const mapDispatchToProps = { getTestCaseStepsById, addProcess, deleteProcess };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestStep);
+export default connect(mapStateToProps, mapDispatchToProps)(TestProcess);

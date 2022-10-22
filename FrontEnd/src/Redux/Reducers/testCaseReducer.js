@@ -8,12 +8,14 @@ import {
   GET_TEST_CASE_DETAILS_BY_ID,
   GET_TEST_CASE_STEPS_BY_ID,
   ADD_FIRST_PROCESS,
+  EDIT_PROCESS,
+  DELETE_PROCESS,
 } from "../Actions/action-types";
 
 const initState = {
   loading: false,
   data: [],
-  currentTestCase: { testSteps: [] },
+  currentTestCase: { testProcess: [] },
 };
 
 const testCaseReducer = (state = initState, { type, payload }) => {
@@ -57,13 +59,13 @@ const testCaseReducer = (state = initState, { type, payload }) => {
     case GET_TEST_CASE_DETAILS_BY_ID:
       return {
         ...state,
-        currentTestCase: { ...payload, testSteps: [] },
+        currentTestCase: { ...payload, testProcess: [] },
         loading: false,
       };
     case GET_TEST_CASE_STEPS_BY_ID:
       return {
         ...state,
-        currentTestCase: { ...state.currentTestCase, testSteps: payload },
+        currentTestCase: { ...state.currentTestCase, testProcess: payload },
         loading: false,
       };
     case ADD_FIRST_PROCESS:
@@ -71,10 +73,37 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         ...state,
         currentTestCase: {
           ...state.currentTestCase,
-          testSteps: [...state.currentTestCase.testSteps, payload],
+          testProcess: [...state.currentTestCase.testProcess, payload],
         },
         loading: false,
       };
+    case EDIT_PROCESS:
+      const editedProcess = [...state.currentTestCase.testProcess].map((el) => {
+        const newData = payload.data;
+        return el.id == payload.processId ? { ...el, ...newData } : el;
+      });
+      return {
+        ...state,
+        currentTestCase: {
+          ...state.currentTestCase,
+          testProcess: editedProcess,
+        },
+        loading: false,
+      };
+
+    case DELETE_PROCESS:
+      let deletedProcess = [...state.currentTestCase.testProcess].filter(
+        (el) => el.id !== payload
+      );
+      return {
+        ...state,
+        currentTestCase: {
+          ...state.currentTestCase,
+          testProcess: deletedProcess,
+        },
+        loading: false,
+      };
+
     default:
       return state;
   }

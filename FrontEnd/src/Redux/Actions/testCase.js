@@ -9,6 +9,8 @@ import {
   GET_TEST_CASE_DETAILS_BY_ID,
   GET_TEST_CASE_STEPS_BY_ID,
   ADD_FIRST_PROCESS,
+  EDIT_PROCESS,
+  DELETE_PROCESS,
 } from "./action-types";
 
 export const getTestCaseByProject = (payload) => {
@@ -118,6 +120,46 @@ export const addProcess = (payload) => {
       dispatch({ type: ADD_FIRST_PROCESS, payload: data });
       return true;
     } catch (err) {
+      dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const editProcess = (payload) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: TEST_CASE_REQUEST });
+
+      await axios.put(`/testProcess/${payload.processId}`, payload.data);
+      dispatch({
+        type: EDIT_PROCESS,
+        payload,
+      });
+
+      return true;
+    } catch (err) {
+      console.log(err);
+      dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const deleteProcess = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: TEST_CASE_REQUEST });
+
+      await axios.delete(`/testProcess/${id}`);
+      dispatch({
+        type: DELETE_PROCESS,
+        payload: id,
+      });
+
+      return true;
+    } catch (err) {
+      console.log(err);
       dispatch({ type: TEST_CASE_FAILURE });
       return false;
     }

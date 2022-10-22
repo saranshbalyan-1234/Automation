@@ -1,14 +1,14 @@
 import React from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
 import { connect } from "react-redux";
-import { addProcess, editTestCase } from "../../../../Redux/Actions/testCase";
+import { addProcess, editProcess } from "../../../../Redux/Actions/testCase";
 const AddEditProcessModal = ({
   visible,
   setVisible,
   addProcess,
   currentTestCaseId,
   editData,
-  editTestCase,
+  editProcess,
   setEditData,
   loading,
   edit = false,
@@ -17,7 +17,7 @@ const AddEditProcessModal = ({
   const onSubmit = async (data) => {
     let result = false;
     if (edit) {
-      result = await editTestCase(data);
+      result = await editProcess({ data: data, processId: editData.id });
       setEditData({});
     } else {
       result = await addProcess({
@@ -50,7 +50,10 @@ const AddEditProcessModal = ({
             onFinish={onSubmit}
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 16 }}
-            initialValues={{ name: edit ? editData.name : "" }}
+            initialValues={{
+              name: edit ? editData.name : "",
+              comment: edit ? editData.comment : "",
+            }}
           >
             <Form.Item
               name="name"
@@ -63,6 +66,9 @@ const AddEditProcessModal = ({
               ]}
             >
               <Input name="name" />
+            </Form.Item>
+            <Form.Item name="comment" label="Comment">
+              <Input name="comment" showCount maxLength={50} />
             </Form.Item>
 
             <div style={{ display: "flex", justifyContent: "center" }}>
@@ -94,7 +100,7 @@ const mapStateToProps = (state) => ({
   currentTestCaseId: state.testCase.currentTestCase.id,
   loading: state.testCase.loading,
 });
-const mapDispatchToProps = { addProcess, editTestCase };
+const mapDispatchToProps = { addProcess, editProcess };
 
 export default connect(
   mapStateToProps,
