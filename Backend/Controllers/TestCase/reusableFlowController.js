@@ -8,7 +8,6 @@ import {
 } from "../../Utils/Validations/testCase.js";
 
 const User = db.users;
-const TestProcess = db.testProcess;
 const TestObject = db.testObjects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
@@ -162,27 +161,14 @@ const getTestStepByReusableFlow = async (req, res) => {
     // if (error) throw new Error(error.details[0].message);
 
     const reusableFlowId = req.params.reusableFlowId;
-    const data = await TestProcess.schema(req.database).findAll({
+    const data = await TestStep.schema(req.database).findAll({
       where: { reusableFlowId },
+
       include: [
-        {
-          model: TestStep.schema(req.database),
-          // separate: true,
-          order: [["step", "ASC"]],
-          include: [
-            {
-              model: TestObject.schema(req.database),
-            },
-            {
-              model: TestParameter.schema(req.database),
-            },
-          ],
-        },
+        { model: TestObject.schema(req.database) },
+        { model: TestParameter.schema(req.database) },
       ],
-      order: [
-        ["step", "ASC"],
-        [TestStep, "step", "ASC"],
-      ],
+      order: [["step", "ASC"]],
     });
 
     return res.status(200).json(data);

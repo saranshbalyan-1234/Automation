@@ -4,7 +4,7 @@ import StepMenu from "./StepMenu";
 import { Table, Tag, Popconfirm } from "antd";
 import AddEditStepModal from "./AddEditStepModal";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { deleteStep } from "../../../../../Redux/Actions/testCase";
+import { deleteStep } from "../../../../../Redux/Actions/TestPlanning/testCase";
 const TestStepTable = ({ processId, testSteps, deleteStep }) => {
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [edit, setEdit] = useState(true);

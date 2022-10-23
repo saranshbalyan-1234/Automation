@@ -4,7 +4,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import TestCaseDetails from "./TestCaseDetails";
-import { getTestCaseDetailsById } from "../../../Redux/Actions/testCase";
+import { getTestCaseDetailsById } from "../../../Redux/Actions/TestPlanning/testCase";
 import TestProcess from "./TestProcess";
 function TestCaseTabs({ getTestCaseDetailsById }) {
   const { tab, testCaseId } = useParams();

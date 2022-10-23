@@ -6,7 +6,7 @@ import moment from "moment";
 import {
   getTestCaseByProject,
   deleteTestCase,
-} from "../../../Redux/Actions/testCase";
+} from "../../../Redux/Actions/TestPlanning/testCase";
 import AddEditTestCaseModal from "./AddEditTestCaseModal";
 import UserAvatar from "../../Common/Avatar";
 import { useNavigate } from "react-router-dom";

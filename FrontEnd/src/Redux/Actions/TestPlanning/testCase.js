@@ -14,16 +14,14 @@ import {
   ADD_STEP,
   EDIT_STEP,
   DELETE_STEP,
-} from "./action-types";
+} from "../action-types";
 
-export const getReusableFlowByProject = (payload) => {
+export const getTestCaseByProject = (payload) => {
   return async (dispatch, getState) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
       let currentProjectId = getState().projects.currentProject.id;
-      const { data } = await axios.get(
-        `/reusableFlow/project/${currentProjectId}`
-      );
+      const { data } = await axios.get(`/testcase/project/${currentProjectId}`);
       dispatch({ type: GET_ALL_TEST_CASE, payload: data });
       return true;
     } catch (err) {
@@ -33,11 +31,11 @@ export const getReusableFlowByProject = (payload) => {
   };
 };
 
-export const saveReusableFlow = (payload) => {
+export const saveTestCase = (payload) => {
   return async (dispatch, getState) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
-      const { data } = await axios.post(`/reusableFlow`, payload);
+      const { data } = await axios.post(`/testcase`, payload);
       const updatedTestCase = {
         ...data,
         createdBy: getState().auth.user,
@@ -52,7 +50,7 @@ export const saveReusableFlow = (payload) => {
   };
 };
 
-export const editReusableFlow = (payload) => {
+export const editTestCase = (payload) => {
   return async (dispatch, getState) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
@@ -60,7 +58,7 @@ export const editReusableFlow = (payload) => {
       let currentTestCaseId = getState().testCase.currentTestCase?.id;
       let editedTestCase = { ...payload };
 
-      await axios.put(`/reusableFlow/${currentTestCaseId}`, payload);
+      await axios.put(`/testcase/${currentTestCaseId}`, payload);
       dispatch({
         type: UPDATE_CURRENT_TEST_CASE,
         payload: { data: editedTestCase, testCaseId: currentTestCaseId },
@@ -75,7 +73,7 @@ export const editReusableFlow = (payload) => {
   };
 };
 
-export const deleteReusableFlow = (testCaseId) => {
+export const deleteTestCase = (testCaseId) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
@@ -89,11 +87,11 @@ export const deleteReusableFlow = (testCaseId) => {
     }
   };
 };
-export const getReusableFlowDetailsById = (id) => {
+export const getTestCaseDetailsById = (id) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
-      const { data } = await axios.get(`/reusableFlow/${id}/details`);
+      const { data } = await axios.get(`/testcase/${id}/details`);
       dispatch({ type: GET_TEST_CASE_DETAILS_BY_ID, payload: data });
       return true;
     } catch (err) {
@@ -103,11 +101,11 @@ export const getReusableFlowDetailsById = (id) => {
   };
 };
 
-export const getReusableFlowStepsById = (id) => {
+export const getTestCaseStepsById = (id) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
-      const { data } = await axios.get(`/reusableFlow/${id}/testSteps`);
+      const { data } = await axios.get(`/testcase/${id}/testSteps`);
       dispatch({ type: GET_TEST_CASE_STEPS_BY_ID, payload: data });
       return true;
     } catch (err) {

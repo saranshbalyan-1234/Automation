@@ -1,7 +1,10 @@
 import React from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
 import { connect } from "react-redux";
-import { addProcess, editProcess } from "../../../../Redux/Actions/testCase";
+import {
+  addProcess,
+  editProcess,
+} from "../../../../Redux/Actions/TestPlanning/testCase";
 const AddEditProcessModal = ({
   visible,
   setVisible,

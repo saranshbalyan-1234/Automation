@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Modal, Button, Spin, Select } from "antd";
 import { connect } from "react-redux";
-import { addProcess } from "../../../../../Redux/Actions/testCase";
-import { addStep, editStep } from "../../../../../Redux/Actions/testCase";
+import { addProcess } from "../../../../../Redux/Actions/TestPlanning/testCase";
+import {
+  addStep,
+  editStep,
+} from "../../../../../Redux/Actions/TestPlanning/testCase";
 import axios from "axios";
 const Option = { Select };
 const AddEditStepModal = ({

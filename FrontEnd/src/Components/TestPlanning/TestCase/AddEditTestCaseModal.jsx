@@ -1,6 +1,9 @@
 import React from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
-import { saveTestCase, editTestCase } from "../../../Redux/Actions/testCase";
+import {
+  saveTestCase,
+  editTestCase,
+} from "../../../Redux/Actions/TestPlanning/testCase";
 import { connect } from "react-redux";
 
 const AddEditTestCaseModal = ({

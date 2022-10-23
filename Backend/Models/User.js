@@ -102,6 +102,13 @@ export default (sequelize, DataTypes) => {
     foreignKey: "testCaseId",
     constraints: false,
   });
+
+  sequelize.models.reusableFlows.hasMany(sequelize.models.testSteps, {
+    sourceKey: "id",
+    foreignKey: "reusableFlowId",
+    constraints: false,
+  });
+
   sequelize.models.testProcesses.hasMany(sequelize.models.testSteps, {
     sourceKey: "id",
     foreignKey: "testProcessId",

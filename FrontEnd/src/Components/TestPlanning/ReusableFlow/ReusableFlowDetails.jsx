@@ -9,7 +9,7 @@ import AddEditTestCaseModal from "./AddEditReusableFlowModal";
 const { Title } = Typography;
 const { Meta } = Card;
 const ReusableFlowDetails = ({
-  currentTestCase,
+  currentReusableFlow,
   loading,
   getProjectById,
   removeMember,
@@ -36,16 +36,16 @@ const ReusableFlowDetails = ({
             <Meta
               title={
                 <Title style={{ textTransform: "capitalize" }} level={3}>
-                  Test Case: {currentTestCase.name}
+                  Reusable Flow: {currentReusableFlow.name}
                 </Title>
               }
               description={
                 <div style={{ color: "black" }}>
                   Created On
-                  {moment(currentTestCase.createdAt).format("DD/MM/YY")} By
+                  {moment(currentReusableFlow.createdAt).format("DD/MM/YY")} By
                   &nbsp;
-                  {currentTestCase.createdBy && (
-                    <UserAvatar name={currentTestCase.createdBy.name} />
+                  {currentReusableFlow.createdBy && (
+                    <UserAvatar name={currentReusableFlow.createdBy.name} />
                   )}
                 </div>
               }
@@ -61,7 +61,7 @@ const ReusableFlowDetails = ({
                 type="primary"
                 ghost
                 onClick={() => {
-                  setEditData(currentTestCase);
+                  setEditData(currentReusableFlow);
                   setAddEditTestCaseModal(true);
                 }}
               >
@@ -83,7 +83,7 @@ const ReusableFlowDetails = ({
                 <div
                   style={{ marginTop: "5px" }}
                   dangerouslySetInnerHTML={{
-                    __html: currentTestCase.description,
+                    __html: currentReusableFlow.description,
                   }}
                 ></div>
               }
@@ -129,7 +129,7 @@ const ReusableFlowDetails = ({
 };
 
 const mapStateToProps = (state) => ({
-  currentTestCase: state.testCase.currentTestCase,
+  currentReusableFlow: state.reusableFlow.currentReusableFlow,
   loading: state.projects.loading,
 });
 

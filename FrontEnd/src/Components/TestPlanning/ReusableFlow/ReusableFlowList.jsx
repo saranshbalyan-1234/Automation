@@ -6,7 +6,7 @@ import moment from "moment";
 import {
   getReusableFlowByProject,
   deleteReusableFlow,
-} from "../../../Redux/Actions/reusableFlow";
+} from "../../../Redux/Actions/TestPlanning/reusableFlow";
 import AddEditReusableFlowModal from "./AddEditReusableFlowModal";
 import UserAvatar from "../../Common/Avatar";
 import { useNavigate } from "react-router-dom";
