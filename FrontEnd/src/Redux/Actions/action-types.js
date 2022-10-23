@@ -49,5 +49,6 @@ export const DELETE_PROCESS = "DELETE_PROCESS";
 //Step
 export const ADD_STEP = "ADD_STEP";
 export const EDIT_STEP = "EDIT_STEP";
+export const DELETE_STEP = "DELETE_STEP";
 
 export const LOGOUT = "LOGOUT";

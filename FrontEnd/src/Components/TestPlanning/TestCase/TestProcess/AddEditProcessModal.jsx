@@ -12,7 +12,7 @@ const AddEditProcessModal = ({
   setEditData,
   loading,
   edit = false,
-  setEdit,
+  setEdit = () => {},
   step,
 }) => {
   const onSubmit = async (data) => {

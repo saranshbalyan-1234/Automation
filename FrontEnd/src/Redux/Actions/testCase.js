@@ -13,6 +13,7 @@ import {
   DELETE_PROCESS,
   ADD_STEP,
   EDIT_STEP,
+  DELETE_STEP,
 } from "./action-types";
 
 export const getTestCaseByProject = (payload) => {
@@ -149,15 +150,15 @@ export const editProcess = (payload) => {
   };
 };
 
-export const deleteProcess = (id) => {
+export const deleteProcess = (testProcessId, step) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
 
-      await axios.delete(`/testProcess/${id}`);
+      await axios.delete(`/testProcess/${testProcessId}`);
       dispatch({
         type: DELETE_PROCESS,
-        payload: id,
+        payload: { testProcessId, step },
       });
 
       return true;
@@ -192,6 +193,26 @@ export const editStep = (payload) => {
       dispatch({ type: EDIT_STEP, payload });
       return true;
     } catch (err) {
+      dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const deleteStep = (testStepId, testProcessId, step) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: TEST_CASE_REQUEST });
+
+      await axios.delete(`/testStep/${testStepId}`);
+      dispatch({
+        type: DELETE_STEP,
+        payload: { testStepId, testProcessId, step },
+      });
+
+      return true;
+    } catch (err) {
+      console.log(err);
       dispatch({ type: TEST_CASE_FAILURE });
       return false;
     }

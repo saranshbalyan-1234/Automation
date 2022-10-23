@@ -1,6 +1,6 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-
+import { Op } from "sequelize";
 const TestStep = db.testSteps;
 const TestObject = db.testObjects;
 const TestParameter = db.testParameters;
@@ -52,4 +52,41 @@ const updateTestStep = async (req, res) => {
   }
 };
 
-export { saveTestStep, updateTestStep };
+const deleteTestStep = async (req, res) => {
+  /*  #swagger.tags = ["Test Step"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const testStepId = req.params.testStepId;
+    // const { error } = testCaseIdValidation.validate({ testCaseId });
+    // if (error) throw new Error(error.details[0].message);
+    const deletingTestStep = await TestStep.schema(req.database).findByPk(
+      testStepId
+    );
+
+    const deletedTestStep = await TestStep.schema(req.database).destroy({
+      where: { id: testStepId },
+    });
+
+    if (deletedTestStep > 0) {
+      await TestStep.schema(req.database).decrement("step", {
+        by: 1,
+        where: {
+          testProcessId: { [Op.eq]: deletingTestStep.testProcessId },
+          step: {
+            [Op.gt]: deletingTestStep.step,
+          },
+        },
+      });
+
+      return res.status(200).json({ message: "TestStep deleted successfully" });
+    } else {
+      return res.status(400).json({ error: "Record not found" });
+    }
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+export { saveTestStep, updateTestStep, deleteTestStep };

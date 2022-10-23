@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import StepMenu from "./StepMenu";
-import { Table, Tag } from "antd";
+import { Table, Tag, Popconfirm } from "antd";
 import AddEditStepModal from "./AddEditStepModal";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-
-export const TestStepTable = ({ processId, testSteps }) => {
+import { deleteStep } from "../../../../../Redux/Actions/testCase";
+const TestStepTable = ({ processId, testSteps, deleteStep }) => {
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [edit, setEdit] = useState(true);
   const [editData, setEditData] = useState({});
@@ -57,7 +57,16 @@ export const TestStepTable = ({ processId, testSteps }) => {
               setAddEditStepModal(true);
             }}
           />
-          <DeleteOutlined />
+          <Popconfirm
+            title="Are you sure to remove this step?"
+            onConfirm={async () => {
+              await deleteStep(record.id, processId, record.step);
+            }}
+            okText="Yes, Remove"
+            cancelText="No"
+          >
+            <DeleteOutlined />
+          </Popconfirm>
         </div>
       ),
     },
@@ -104,6 +113,6 @@ export const TestStepTable = ({ processId, testSteps }) => {
 
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { deleteStep };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestStepTable);

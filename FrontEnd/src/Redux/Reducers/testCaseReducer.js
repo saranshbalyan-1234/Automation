@@ -10,6 +10,8 @@ import {
   ADD_PROCESS,
   EDIT_PROCESS,
   DELETE_PROCESS,
+  ADD_STEP,
+  DELETE_STEP,
 } from "../Actions/action-types";
 import { orderBy } from "lodash";
 const initState = {
@@ -74,8 +76,8 @@ const testCaseReducer = (state = initState, { type, payload }) => {
           return el.step >= payload.step ? { ...el, step: el.step + 1 } : el;
         }
       );
-      const filteredProcess = orderBy(
-        [...changedStepProcess, payload],
+      const orderedProcess = orderBy(
+        [...changedStepProcess, { ...payload, testSteps: [] }],
         ["step"],
         ["asc"]
       );
@@ -84,7 +86,7 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         ...state,
         currentTestCase: {
           ...state.currentTestCase,
-          testProcess: filteredProcess,
+          testProcess: orderedProcess,
         },
         loading: false,
       };
@@ -103,9 +105,13 @@ const testCaseReducer = (state = initState, { type, payload }) => {
       };
 
     case DELETE_PROCESS:
-      let deletedProcess = [...state.currentTestCase.testProcess].filter(
-        (el) => el.id !== payload
-      );
+      let deletedProcess = [...state.currentTestCase.testProcess]
+        .filter((el) => {
+          return el.id !== payload.testProcessId;
+        })
+        .map((el) => {
+          return el.step > payload.step ? { ...el, step: el.step - 1 } : el;
+        });
       return {
         ...state,
         currentTestCase: {
@@ -114,7 +120,58 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         },
         loading: false,
       };
+    case ADD_STEP:
+      const editedStep = [...state.currentTestCase.testProcess].map((el) => {
+        return el.id == payload.testProcessId
+          ? {
+              ...el,
+              testSteps: [
+                ...[...el.testSteps].map((step) => {
+                  return step.step >= payload.step
+                    ? { ...step, step: step.step + 1 }
+                    : step;
+                }),
+                payload,
+              ],
+            }
+          : el;
+      });
+      const orderedStepProcess = orderBy([...editedStep], ["step"], ["asc"]);
 
+      return {
+        ...state,
+        currentTestCase: {
+          ...state.currentTestCase,
+          testProcess: orderedStepProcess,
+        },
+        loading: false,
+      };
+    case DELETE_STEP:
+      const deletedStep = [...state.currentTestCase.testProcess].map((el) => {
+        return el.id == payload.testProcessId
+          ? {
+              ...el,
+              testSteps: [...el.testSteps]
+                .filter((step) => {
+                  return step.id !== payload.testStepId;
+                })
+                .map((el1) => {
+                  return el1.step > payload.step
+                    ? { ...el1, step: el1.step - 1 }
+                    : el1;
+                }),
+            }
+          : el;
+      });
+
+      return {
+        ...state,
+        currentTestCase: {
+          ...state.currentTestCase,
+          testProcess: deletedStep,
+        },
+        loading: false,
+      };
     default:
       return state;
   }

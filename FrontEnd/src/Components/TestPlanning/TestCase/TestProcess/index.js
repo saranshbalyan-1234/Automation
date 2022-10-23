@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import ProcessMenu from "./ProcessMenu";
 import { useParams } from "react-router-dom";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { TestStepTable } from "./TestStep";
+import TestStepTable from "./TestStep";
 import AddEditProcessModal from "./AddEditProcessModal";
 const { Panel } = Collapse;
 const TestProcess = ({
@@ -76,7 +76,7 @@ const TestProcess = ({
                       <Popconfirm
                         title="Are you sure to remove this process?"
                         onConfirm={async () => {
-                          await deleteProcess(item.id);
+                          await deleteProcess(item.id, item.step);
                         }}
                         okText="Yes, Remove"
                         cancelText="No"

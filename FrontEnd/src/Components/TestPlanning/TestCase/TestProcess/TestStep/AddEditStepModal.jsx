@@ -16,7 +16,7 @@ const AddEditStepModal = ({
   step,
   addStep,
   processId,
-  setEdit,
+  setEdit = () => {},
 }) => {
   const [actionEvent, setActionEvent] = useState([]);
   useEffect(() => {
