@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const TestCase = sequelize.define("testSteps", {
+  const TestStep = sequelize.define("testSteps", {
     actionEvent: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -27,16 +27,29 @@ export default (sequelize, DataTypes) => {
     },
     testProcessId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: true,
-      },
+      // allowNull: false,
+      // validate: {
+      //   notNull: true,
+      // },
       references: {
         model: "testProcesses",
         key: "id",
       },
+      onDelete: "CASCADE",
+    },
+    reusableFlowId: {
+      type: DataTypes.INTEGER,
+      // allowNull: false,
+      // validate: {
+      //   notNull: true,
+      // },
+      references: {
+        model: "reusableFlows",
+        key: "id",
+      },
+      onDelete: "CASCADE",
     },
   });
 
-  return TestCase;
+  return TestStep;
 };

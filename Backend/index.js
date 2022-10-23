@@ -15,6 +15,7 @@ import testObjectRoutes from "./Routes/TestCase/testObjectRoutes.js";
 import testStepRoutes from "./Routes/TestCase/testStepRoutes.js";
 import testParameterRoutes from "./Routes/TestCase/testParameterRoutes.js";
 import testProcessRoutes from "./Routes/TestCase/testProcessRoutes.js";
+import reusableFlowRoutes from "./Routes/TestCase/reusableFlowRoutes.js";
 
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
@@ -53,6 +54,7 @@ app.use("/testobject", testObjectRoutes);
 app.use("/teststep", testStepRoutes);
 app.use("/testparameter", testParameterRoutes);
 app.use("/testProcess", testProcessRoutes);
+app.use("/reusableFlow", reusableFlowRoutes);
 
 app.use((req, res) => {
   return res.status(404).json({ error: "Endpoint Not Found" });

@@ -9,7 +9,8 @@ import Setting from "./Components/Settings";
 import Dashboard from "./Components/Dashboard";
 import Support from "./Views/Support";
 import Project from "./Components/Project";
-import TestPlanning from "./Components/TestPlanning";
+import TestCase from "./Components/TestPlanning/TestCase";
+import ReusableFlow from "./Components/TestPlanning/ReusableFlow";
 function Routess({ user }) {
   const location = useLocation();
   return user ? (
@@ -22,7 +23,12 @@ function Routess({ user }) {
         <Route
           exact
           path="/testPlanning/testCase/*"
-          element={<TestPlanning />}
+          element={<TestCase />}
+        ></Route>
+        <Route
+          exact
+          path="/testPlanning/reusableFlow/*"
+          element={<ReusableFlow />}
         ></Route>
         <Route
           exact

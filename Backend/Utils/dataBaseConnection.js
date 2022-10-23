@@ -17,6 +17,7 @@ import TestObject from "../Models/TestCase/TestObject.js";
 import TestParameter from "../Models/TestCase/TestParameter.js";
 import TestStep from "../Models/TestCase/TestStep.js";
 import TestProcess from "../Models/TestCase/TestProcess.js";
+import ReusableFlow from "../Models/TestCase/ReusableFlow.js";
 
 dotenv.config();
 
@@ -64,6 +65,7 @@ db.testObjects = TestObject(sequelize, DataTypes);
 db.testSteps = TestStep(sequelize, DataTypes);
 db.testCases = TestCase(sequelize, DataTypes);
 db.testProcess = TestProcess(sequelize, DataTypes);
+db.reusableFlows = ReusableFlow(sequelize, DataTypes);
 
 db.users = User(sequelize, DataTypes); //all associations
 
@@ -72,8 +74,8 @@ db.customers.schema("Main").sync({ force: false, alter: true });
 db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
-// db.testParameters
+// db.testSteps
 //   .schema("saranshbalyan123gmailcom")
-//   .sync({ force: false, alter: true });
+//   .sync({ force: true, alter: true });
 
 export default db;
