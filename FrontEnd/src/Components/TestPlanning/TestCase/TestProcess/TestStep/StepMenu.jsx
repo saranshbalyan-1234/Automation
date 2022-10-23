@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Dropdown, Menu } from "antd";
 import {
   EditOutlined,
@@ -6,7 +6,10 @@ import {
   PlusOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-export default function StepMenu() {
+import AddEditStepModal from "./AddEditStepModal";
+export default function StepMenu({ processId, testStep }) {
+  const [addEditStepModal, setAddEditStepModal] = useState(false);
+  const [step, setStep] = useState(0);
   const menu = (
     <Menu
       theme="dark"
@@ -20,6 +23,8 @@ export default function StepMenu() {
           key: "1",
           onClick: (e) => {
             e.domEvent.stopPropagation();
+            setStep(testStep.step);
+            setAddEditStepModal(true);
           },
         },
         {
@@ -31,6 +36,8 @@ export default function StepMenu() {
           key: "2",
           onClick: (e) => {
             e.domEvent.stopPropagation();
+            setStep(testStep.step + 1);
+            setAddEditStepModal(true);
           },
         },
       ]}
@@ -38,14 +45,24 @@ export default function StepMenu() {
   );
 
   return (
-    <Dropdown overlay={menu} trigger={["hover"]}>
-      <div
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        <SettingOutlined />
-      </div>
-    </Dropdown>
+    <>
+      <Dropdown overlay={menu} trigger={["hover"]}>
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <SettingOutlined />
+        </div>
+      </Dropdown>
+      {addEditStepModal && (
+        <AddEditStepModal
+          visible={addEditStepModal}
+          setVisible={setAddEditStepModal}
+          processId={processId}
+          step={step}
+        />
+      )}
+    </>
   );
 }

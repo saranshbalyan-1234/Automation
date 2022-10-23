@@ -16,7 +16,7 @@ const TestStepTable = ({ processId, testSteps, deleteStep }) => {
       dataIndex: "action",
       render: (text, record) => (
         <div style={{ cursor: "pointer" }}>
-          <StepMenu />
+          <StepMenu processId={processId} testStep={record} />
         </div>
       ),
     },
@@ -97,16 +97,18 @@ const TestStepTable = ({ processId, testSteps, deleteStep }) => {
         pagination={false}
         sticky
       />
-      <AddEditStepModal
-        visible={addEditStepModal}
-        setVisible={setAddEditStepModal}
-        processId={processId}
-        step={1}
-        edit={edit}
-        editData={editData}
-        setEdit={setEdit}
-        setEditData={setEditData}
-      />
+      {addEditStepModal && (
+        <AddEditStepModal
+          visible={addEditStepModal}
+          setVisible={setAddEditStepModal}
+          processId={processId}
+          step={1}
+          edit={edit}
+          editData={editData}
+          setEdit={setEdit}
+          setEditData={setEditData}
+        />
+      )}
     </>
   );
 };

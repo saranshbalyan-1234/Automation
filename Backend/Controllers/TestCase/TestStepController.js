@@ -13,6 +13,18 @@ const saveTestStep = async (req, res) => {
     // const { error } = nameValidation.validate(req.body);
     // if (error) throw new Error(error.details[0].message);
 
+    const { testProcessId, step } = req.body;
+
+    await TestStep.schema(req.database).increment("step", {
+      by: 1,
+      where: {
+        testProcessId: { [Op.eq]: testProcessId },
+        step: {
+          [Op.gte]: step,
+        },
+      },
+    });
+
     const data = await TestStep.schema(req.database).create(req.body);
     return res.status(200).json(data);
   } catch (err) {

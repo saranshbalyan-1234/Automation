@@ -260,6 +260,28 @@
         ]
       }
     },
+    "/global/actionEvent": {
+      "get": {
+        "tags": [
+          "Global"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
     "/user/customer": {
       "delete": {
         "tags": [
@@ -1150,7 +1172,7 @@
         ]
       }
     },
-    "/testcase/{testCaseId}/teststep": {
+    "/testcase/{testCaseId}/teststeps": {
       "get": {
         "tags": [
           "Test Case"
@@ -1269,10 +1291,88 @@
           "Test Step"
         ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "testProcessId": {
+                  "example": "any"
+                },
+                "step": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/teststep/{testStepId}": {
+      "put": {
+        "tags": [
+          "Test Step"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "testStepId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Test Step"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "testStepId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
@@ -1375,7 +1475,23 @@
           "Test Process"
         ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "testCaseId": {
+                  "example": "any"
+                },
+                "step": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"

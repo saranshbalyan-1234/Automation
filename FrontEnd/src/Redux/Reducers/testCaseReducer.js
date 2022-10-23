@@ -125,14 +125,18 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         return el.id == payload.testProcessId
           ? {
               ...el,
-              testSteps: [
-                ...[...el.testSteps].map((step) => {
-                  return step.step >= payload.step
-                    ? { ...step, step: step.step + 1 }
-                    : step;
-                }),
-                payload,
-              ],
+              testSteps: orderBy(
+                [
+                  ...[...el.testSteps].map((step) => {
+                    return step.step >= payload.step
+                      ? { ...step, step: step.step + 1 }
+                      : step;
+                  }),
+                  payload,
+                ],
+                ["step"],
+                ["asc"]
+              ),
             }
           : el;
       });
