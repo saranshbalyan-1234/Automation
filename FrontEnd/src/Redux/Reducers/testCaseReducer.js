@@ -7,11 +7,11 @@ import {
   UPDATE_CURRENT_TEST_CASE,
   GET_TEST_CASE_DETAILS_BY_ID,
   GET_TEST_CASE_STEPS_BY_ID,
-  ADD_FIRST_PROCESS,
+  ADD_PROCESS,
   EDIT_PROCESS,
   DELETE_PROCESS,
 } from "../Actions/action-types";
-
+import { orderBy } from "lodash";
 const initState = {
   loading: false,
   data: [],
@@ -68,19 +68,30 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         currentTestCase: { ...state.currentTestCase, testProcess: payload },
         loading: false,
       };
-    case ADD_FIRST_PROCESS:
+    case ADD_PROCESS:
+      const changedStepProcess = [...state.currentTestCase.testProcess].map(
+        (el) => {
+          return el.step >= payload.step ? { ...el, step: el.step + 1 } : el;
+        }
+      );
+      const filteredProcess = orderBy(
+        [...changedStepProcess, payload],
+        ["step"],
+        ["asc"]
+      );
+
       return {
         ...state,
         currentTestCase: {
           ...state.currentTestCase,
-          testProcess: [...state.currentTestCase.testProcess, payload],
+          testProcess: filteredProcess,
         },
         loading: false,
       };
     case EDIT_PROCESS:
       const editedProcess = [...state.currentTestCase.testProcess].map((el) => {
         const newData = payload.data;
-        return el.id == payload.processId ? { ...el, ...newData } : el;
+        return el.id === payload.processId ? { ...el, ...newData } : el;
       });
       return {
         ...state,

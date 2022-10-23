@@ -20,6 +20,7 @@ const TestProcess = ({
 }) => {
   const [addEditProcessModal, setAddEditProcessModal] = useState(false);
   const [editProcessData, setEditProcessData] = useState({});
+  const [edit, setEdit] = useState(true);
   const { testCaseId } = useParams();
 
   useEffect(() => {
@@ -86,16 +87,18 @@ const TestProcess = ({
                   </div>
                 }
               >
-                <TestStepTable testSteps={item.testSteps} />
+                <TestStepTable testSteps={item.testSteps} processId={item.id} />
               </Panel>
             </Collapse>
           );
         })}
-        {testProcess.length == 0 && (
+        {testProcess.length === 0 && (
           <Tag
             style={{ cursor: "pointer" }}
             onClick={() => {
-              addProcess({ name: "First Process", testCaseId, step: 1 });
+              setEdit(false);
+              setAddEditProcessModal(true);
+              // addProcess({ name: "First Process", testCaseId, step: 1 });
             }}
           >
             Add First Process
@@ -108,7 +111,9 @@ const TestProcess = ({
           setVisible={setAddEditProcessModal}
           editData={editProcessData}
           setEditData={setEditProcessData}
-          edit={true}
+          edit={edit}
+          step={1}
+          setEdit={setEdit}
         />
       )}
     </>

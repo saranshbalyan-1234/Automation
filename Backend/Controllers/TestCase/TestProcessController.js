@@ -12,7 +12,7 @@ const saveTestProcess = async (req, res) => {
     // const { error } = nameValidation.validate(req.body);
     // if (error) throw new Error(error.details[0].message);
 
-    const { testCaseId, step, type } = req.body;
+    const { testCaseId, step } = req.body;
 
     await TestProcess.schema(req.database).increment("step", {
       by: 1,

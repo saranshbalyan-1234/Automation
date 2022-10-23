@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Button } from "antd";
-import { PlusOutlined, EditOutlined, SettingOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import TestCaseDetails from "./TestCaseDetails";
@@ -47,10 +47,10 @@ function TestCase({ getTestCaseDetailsById }) {
           onChange={handleActiveTab}
         >
           <Tabs.TabPane tab="Details" key="details">
-            {activeTab == "details" && <TestCaseDetails />}
+            {activeTab === "details" && <TestCaseDetails />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Test Steps" key="teststeps">
-            {activeTab == "teststeps" && <TestProcess />}
+            {activeTab === "teststeps" && <TestProcess />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Activity Log" key="activitylog">
             <TestCaseDetails />

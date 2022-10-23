@@ -1,11 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Dropdown, Menu } from "antd";
-import {
-  EditOutlined,
-  DeleteOutlined,
-  PlusOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, SettingOutlined } from "@ant-design/icons";
 import AddEditProcessModal from "./AddEditProcessModal";
 export default function ProcessMenu({ process }) {
   const [addEditProcessModal, setAddEditProcessModal] = useState(false);
@@ -39,17 +34,6 @@ export default function ProcessMenu({ process }) {
             e.domEvent.stopPropagation();
             setStep(process.step + 1);
             setAddEditProcessModal(true);
-          },
-        },
-        {
-          label: (
-            <>
-              <PlusOutlined style={{ marginRight: "5px" }} /> Add Step
-            </>
-          ),
-          key: "3",
-          onClick: (e) => {
-            e.domEvent.stopPropagation();
           },
         },
       ]}

@@ -40,7 +40,14 @@ export const UPDATE_CURRENT_TEST_CASE = "UPDATE_CURRENT_TEST_CASE";
 export const DELETE_TEST_CASE = "DELETE_TEST_CASE";
 export const GET_TEST_CASE_DETAILS_BY_ID = "GET_TEST_CASE_DETAILS_BY_ID";
 export const GET_TEST_CASE_STEPS_BY_ID = "GET_TEST_CASE_STEPS_BY_ID";
-export const ADD_FIRST_PROCESS = "ADD_FIRST_PROCESS";
+
+//Process
+export const ADD_PROCESS = "ADD_PROCESS";
 export const EDIT_PROCESS = "EDIT_PROCESS";
 export const DELETE_PROCESS = "DELETE_PROCESS";
+
+//Step
+export const ADD_STEP = "ADD_STEP";
+export const EDIT_STEP = "EDIT_STEP";
+
 export const LOGOUT = "LOGOUT";

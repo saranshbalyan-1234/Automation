@@ -1,5 +1,8 @@
 import express from "express";
-import { getAllPermission } from "../Controllers/Global/permissionController.js";
+import {
+  getAllPermission,
+  getAllActionEvent,
+} from "../Controllers/globalController.js";
 import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 Router.get(
@@ -7,7 +10,10 @@ Router.get(
   validatePermission("Team & Role", "view"),
   getAllPermission
 );
-
-getAllPermission;
+Router.get(
+  "/actionEvent",
+  validatePermission("Team & Role", "view"),
+  getAllActionEvent
+);
 
 export default Router;

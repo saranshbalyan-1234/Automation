@@ -20,4 +20,36 @@ const saveTestStep = async (req, res) => {
   }
 };
 
-export { saveTestStep };
+const updateTestStep = async (req, res) => {
+  /*  #swagger.tags = ["Test Step"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const testStepId = req.params.testStepId;
+    // const { error } = updateTestCaseValidation.validate({ name, testCaseId });
+    // if (error) throw new Error(error.details[0].message);
+
+    const updatedTestStep = await TestStep.schema(req.database).update(
+      req.body,
+      {
+        where: {
+          id: testStepId,
+        },
+      }
+    );
+
+    if (updatedTestStep[0]) {
+      return res
+        .status(200)
+        .json({ message: "TestStep updated successfully!" });
+    } else {
+      return res.status(400).json({ error: "Record not found" });
+    }
+  } catch (err) {
+    console.log(err);
+    getError(err, res);
+  }
+};
+
+export { saveTestStep, updateTestStep };

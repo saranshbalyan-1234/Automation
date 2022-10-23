@@ -8,9 +8,11 @@ import {
   DELETE_TEST_CASE,
   GET_TEST_CASE_DETAILS_BY_ID,
   GET_TEST_CASE_STEPS_BY_ID,
-  ADD_FIRST_PROCESS,
+  ADD_PROCESS,
   EDIT_PROCESS,
   DELETE_PROCESS,
+  ADD_STEP,
+  EDIT_STEP,
 } from "./action-types";
 
 export const getTestCaseByProject = (payload) => {
@@ -112,12 +114,13 @@ export const getTestCaseStepsById = (id) => {
   };
 };
 
+//Process
 export const addProcess = (payload) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
       const { data } = await axios.post(`/testProcess`, payload);
-      dispatch({ type: ADD_FIRST_PROCESS, payload: data });
+      dispatch({ type: ADD_PROCESS, payload: data });
       return true;
     } catch (err) {
       dispatch({ type: TEST_CASE_FAILURE });
@@ -160,6 +163,35 @@ export const deleteProcess = (id) => {
       return true;
     } catch (err) {
       console.log(err);
+      dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+
+//Step
+export const addStep = (payload) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: TEST_CASE_REQUEST });
+      const { data } = await axios.post(`/testStep`, payload);
+      dispatch({ type: ADD_STEP, payload: data });
+      return true;
+    } catch (err) {
+      dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const editStep = (payload) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: TEST_CASE_REQUEST });
+      await axios.put(`/testStep/${payload.stepId}`, payload.data);
+      dispatch({ type: EDIT_STEP, payload });
+      return true;
+    } catch (err) {
       dispatch({ type: TEST_CASE_FAILURE });
       return false;
     }

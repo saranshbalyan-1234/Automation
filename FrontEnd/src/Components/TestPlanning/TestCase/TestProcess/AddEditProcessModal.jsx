@@ -12,6 +12,7 @@ const AddEditProcessModal = ({
   setEditData,
   loading,
   edit = false,
+  setEdit,
   step,
 }) => {
   const onSubmit = async (data) => {
@@ -25,6 +26,7 @@ const AddEditProcessModal = ({
         testCaseId: currentTestCaseId,
         step,
       });
+      if (step === 1 && edit === false) setEdit(true);
     }
     result && setVisible(false);
   };
@@ -36,7 +38,7 @@ const AddEditProcessModal = ({
       }}
     >
       <Modal
-        title="Create New Process"
+        title={edit ? "Edit Process" : "Create New Process"}
         visible={visible}
         footer={false}
         onCancel={() => {
@@ -46,7 +48,7 @@ const AddEditProcessModal = ({
       >
         <Spin spinning={loading}>
           <Form
-            name="testCase"
+            name="testProcess"
             onFinish={onSubmit}
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 16 }}
