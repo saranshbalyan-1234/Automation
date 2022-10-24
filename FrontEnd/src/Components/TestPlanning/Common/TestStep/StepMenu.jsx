@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Dropdown, Menu } from "antd";
-import { PlusOutlined, SettingOutlined } from "@ant-design/icons";
-import AddEditProcessModal from "./AddEditProcessModal";
-export default function ProcessMenu({ process }) {
-  const [addEditProcessModal, setAddEditProcessModal] = useState(false);
+import {
+  EditOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+import AddEditStepModal from "./AddEditStepModal";
+export default function StepMenu({ processId, testStep, reusableFlowId }) {
+  const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [step, setStep] = useState(0);
-
   const menu = (
     <Menu
       theme="dark"
@@ -13,27 +17,27 @@ export default function ProcessMenu({ process }) {
         {
           label: (
             <>
-              <PlusOutlined style={{ marginRight: "5px" }} /> Add Process Before
+              <PlusOutlined style={{ marginRight: "5px" }} /> Add Step Before
             </>
           ),
           key: "1",
           onClick: (e) => {
             e.domEvent.stopPropagation();
-            setStep(process.step);
-            setAddEditProcessModal(true);
+            setStep(testStep.step);
+            setAddEditStepModal(true);
           },
         },
         {
           label: (
             <>
-              <PlusOutlined style={{ marginRight: "5px" }} /> Add Process After
+              <PlusOutlined style={{ marginRight: "5px" }} /> Add Step After
             </>
           ),
           key: "2",
           onClick: (e) => {
             e.domEvent.stopPropagation();
-            setStep(process.step + 1);
-            setAddEditProcessModal(true);
+            setStep(testStep.step + 1);
+            setAddEditStepModal(true);
           },
         },
       ]}
@@ -51,10 +55,12 @@ export default function ProcessMenu({ process }) {
           <SettingOutlined />
         </div>
       </Dropdown>
-      {addEditProcessModal && (
-        <AddEditProcessModal
-          visible={addEditProcessModal}
-          setVisible={setAddEditProcessModal}
+      {addEditStepModal && (
+        <AddEditStepModal
+          visible={addEditStepModal}
+          setVisible={setAddEditStepModal}
+          processId={processId}
+          reusableFlowId={reusableFlowId}
           step={step}
         />
       )}

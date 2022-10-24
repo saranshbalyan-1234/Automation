@@ -2,21 +2,21 @@ import React, { useEffect, useState } from "react";
 import { Popconfirm, Spin, Collapse, Tag } from "antd";
 import {
   getTestCaseStepsById,
-  addProcess,
   deleteProcess,
+  deleteStep,
 } from "../../../../Redux/Actions/TestPlanning/testCase";
 import { connect } from "react-redux";
 import ProcessMenu from "./ProcessMenu";
 import { useParams } from "react-router-dom";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import TestStepTable from "./TestStep";
+import TestStepTable from "../../Common/TestStep";
 import AddEditProcessModal from "./AddEditProcessModal";
 const { Panel } = Collapse;
 const TestProcess = ({
   getTestCaseStepsById,
   testProcess,
-  addProcess,
   deleteProcess,
+  deleteStep,
 }) => {
   const [addEditProcessModal, setAddEditProcessModal] = useState(false);
   const [editProcessData, setEditProcessData] = useState({});
@@ -87,7 +87,11 @@ const TestProcess = ({
                   </div>
                 }
               >
-                <TestStepTable testSteps={item.testSteps} processId={item.id} />
+                <TestStepTable
+                  testSteps={item.testSteps}
+                  processId={item.id}
+                  deleteStep={deleteStep}
+                />
               </Panel>
             </Collapse>
           );
@@ -98,7 +102,6 @@ const TestProcess = ({
             onClick={() => {
               setEdit(false);
               setAddEditProcessModal(true);
-              // addProcess({ name: "First Process", testCaseId, step: 1 });
             }}
           >
             Add First Process
@@ -124,6 +127,6 @@ const mapStateToProps = (state) => ({
   testProcess: state.testCase.currentTestCase.testProcess,
 });
 
-const mapDispatchToProps = { getTestCaseStepsById, addProcess, deleteProcess };
+const mapDispatchToProps = { getTestCaseStepsById, deleteProcess, deleteStep };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestProcess);

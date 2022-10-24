@@ -4,8 +4,12 @@ import StepMenu from "./StepMenu";
 import { Table, Tag, Popconfirm } from "antd";
 import AddEditStepModal from "./AddEditStepModal";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { deleteStep } from "../../../../../Redux/Actions/TestPlanning/testCase";
-const TestStepTable = ({ processId, testSteps, deleteStep }) => {
+const TestStepTable = ({
+  processId,
+  testSteps,
+  deleteStep,
+  reusableFlowId,
+}) => {
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [edit, setEdit] = useState(true);
   const [editData, setEditData] = useState({});
@@ -16,7 +20,11 @@ const TestStepTable = ({ processId, testSteps, deleteStep }) => {
       dataIndex: "action",
       render: (text, record) => (
         <div style={{ cursor: "pointer" }}>
-          <StepMenu processId={processId} testStep={record} />
+          <StepMenu
+            processId={processId}
+            reusableFlowId={reusableFlowId}
+            testStep={record}
+          />
         </div>
       ),
     },
@@ -72,7 +80,9 @@ const TestStepTable = ({ processId, testSteps, deleteStep }) => {
           <Popconfirm
             title="Are you sure to remove this step?"
             onConfirm={async () => {
-              await deleteStep(record.id, processId, record.step);
+              if (processId)
+                await deleteStep(record.id, record.step, processId);
+              else deleteStep(record.id, record.step);
             }}
             okText="Yes, Remove"
             cancelText="No"
@@ -114,6 +124,7 @@ const TestStepTable = ({ processId, testSteps, deleteStep }) => {
           visible={addEditStepModal}
           setVisible={setAddEditStepModal}
           processId={processId}
+          reusableFlowId={reusableFlowId}
           step={1}
           edit={edit}
           editData={editData}
@@ -127,6 +138,6 @@ const TestStepTable = ({ processId, testSteps, deleteStep }) => {
 
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = { deleteStep };
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestStepTable);

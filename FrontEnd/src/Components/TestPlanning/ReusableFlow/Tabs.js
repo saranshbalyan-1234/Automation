@@ -3,25 +3,42 @@ import { Tabs, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import ReusableFlowDetails from "./ReusableFlowDetails";
-import { getTestCaseDetailsById } from "../../../Redux/Actions/TestPlanning/testCase";
-import TestProcess from "./TestProcess";
-function ReusableFlowTabs({ getTestCaseDetailsById }) {
-  const { tab, testCaseId } = useParams();
+// import ReusableFlowDetails from "./ReusableFlowDetails";
+import {
+  getReusableFlowDetailsById,
+  deleteStep,
+  getReusableFlowStepsById,
+} from "../../../Redux/Actions/TestPlanning/reusableFlow";
+import TestStep from "../Common/TestStep";
+import Details from "../Common/Details";
+function ReusableFlowTabs({
+  getReusableFlowDetailsById,
+  getReusableFlowStepsById,
+  testSteps,
+  deleteStep,
+  currentReusableFlow,
+  loading,
+}) {
+  const { tab, reusableFlowId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
 
   const handleActiveTab = (value) => {
-    navigate(`/TestPlanning/TestCase/${testCaseId}/${value}`);
+    navigate(`/TestPlanning/ReusableFlow/${reusableFlowId}/${value}`);
   };
 
   useEffect(() => {
     setActiveTab(tab);
   }, [tab]);
+  useEffect(() => {
+    if (tab == "teststeps") {
+      getReusableFlowStepsById(reusableFlowId);
+    }
+  }, [reusableFlowId]);
 
   useEffect(() => {
-    getTestCaseDetailsById(testCaseId);
-  }, [testCaseId]);
+    getReusableFlowDetailsById(reusableFlowId);
+  }, [reusableFlowId]);
 
   const renderButton = () => {
     if (activeTab === "roles")
@@ -47,13 +64,26 @@ function ReusableFlowTabs({ getTestCaseDetailsById }) {
           onChange={handleActiveTab}
         >
           <Tabs.TabPane tab="Details" key="details">
-            {activeTab === "details" && <ReusableFlowDetails />}
+            {activeTab === "details" && (
+              <Details
+                reusable={true}
+                details={currentReusableFlow}
+                loading={loading}
+              />
+            )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Test Steps" key="teststeps">
-            {activeTab === "teststeps" && <TestProcess />}
+            {activeTab === "teststeps" && (
+              <TestStep
+                reusableFlowId={reusableFlowId}
+                deleteStep={deleteStep}
+                testSteps={testSteps}
+              />
+            )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Activity Log" key="activitylog">
-            <ReusableFlowDetails />
+            <>Activity Log</>
+            {/* <Details reusable={true} details={currentReusableFlow} /> */}
           </Tabs.TabPane>
         </Tabs>
         {renderButton()}
@@ -61,8 +91,16 @@ function ReusableFlowTabs({ getTestCaseDetailsById }) {
     </>
   );
 }
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  testSteps: state.reusableFlow.currentReusableFlow.testSteps,
+  currentReusableFlow: state.reusableFlow.currentReusableFlow,
+  loading: state.reusableFlow.loading,
+});
 
-const mapDispatchToProps = { getTestCaseDetailsById };
+const mapDispatchToProps = {
+  getReusableFlowDetailsById,
+  getReusableFlowStepsById,
+  deleteStep,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReusableFlowTabs);

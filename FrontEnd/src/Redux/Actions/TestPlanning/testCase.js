@@ -61,7 +61,7 @@ export const editTestCase = (payload) => {
       await axios.put(`/testcase/${currentTestCaseId}`, payload);
       dispatch({
         type: UPDATE_CURRENT_TEST_CASE,
-        payload: { data: editedTestCase, testCaseId: currentTestCaseId },
+        payload: editedTestCase,
       });
 
       return true;
@@ -199,7 +199,7 @@ export const editStep = (payload) => {
   };
 };
 
-export const deleteStep = (testStepId, testProcessId, step) => {
+export const deleteStep = (testStepId, step, testProcessId) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });

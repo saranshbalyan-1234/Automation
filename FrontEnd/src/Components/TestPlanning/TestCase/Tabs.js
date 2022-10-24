@@ -6,7 +6,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import TestCaseDetails from "./TestCaseDetails";
 import { getTestCaseDetailsById } from "../../../Redux/Actions/TestPlanning/testCase";
 import TestProcess from "./TestProcess";
-function TestCaseTabs({ getTestCaseDetailsById }) {
+import Details from "../Common/Details";
+function TestCaseTabs({ getTestCaseDetailsById, currentTestCase, loading }) {
   const { tab, testCaseId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
@@ -47,7 +48,9 @@ function TestCaseTabs({ getTestCaseDetailsById }) {
           onChange={handleActiveTab}
         >
           <Tabs.TabPane tab="Details" key="details">
-            {activeTab === "details" && <TestCaseDetails />}
+            {activeTab === "details" && (
+              <Details loading={loading} details={currentTestCase} />
+            )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Test Steps" key="teststeps">
             {activeTab === "teststeps" && <TestProcess />}
@@ -61,7 +64,10 @@ function TestCaseTabs({ getTestCaseDetailsById }) {
     </>
   );
 }
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  loading: state.testCase.loading,
+  currentTestCase: state.testCase.currentTestCase,
+});
 
 const mapDispatchToProps = { getTestCaseDetailsById };
 

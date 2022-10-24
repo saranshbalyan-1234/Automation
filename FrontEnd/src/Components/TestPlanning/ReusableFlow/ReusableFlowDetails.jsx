@@ -41,7 +41,7 @@ const ReusableFlowDetails = ({
               }
               description={
                 <div style={{ color: "black" }}>
-                  Created On
+                  Created On &nbsp;
                   {moment(currentReusableFlow.createdAt).format("DD/MM/YY")} By
                   &nbsp;
                   {currentReusableFlow.createdBy && (

@@ -52,11 +52,10 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         data: [...state.data, payload],
       };
     case UPDATE_CURRENT_TEST_CASE:
-      const updatedTestCase = payload.data;
       return {
         ...state,
         loading: false,
-        currentTestCase: { ...state.currentTestCase, ...updatedTestCase },
+        currentTestCase: { ...state.currentTestCase, ...payload },
       };
     case GET_TEST_CASE_DETAILS_BY_ID:
       return {

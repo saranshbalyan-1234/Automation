@@ -1,17 +1,17 @@
 import {
-  TEST_CASE_REQUEST,
-  GET_ALL_TEST_CASE,
-  TEST_CASE_FAILURE,
-  DELETE_TEST_CASE,
-  CREATE_TEST_CASE,
-  UPDATE_CURRENT_TEST_CASE,
-  GET_TEST_CASE_DETAILS_BY_ID,
-  GET_TEST_CASE_STEPS_BY_ID,
+  REUSABLE_FLOW_REQUEST,
+  REUSABLE_FLOW_FAILURE,
+  GET_ALL_REUSABLE_FLOW,
+  CREATE_REUSABLE_FLOW,
+  UPDATE_CURRENT_REUSABLE_FLOW,
+  DELETE_REUSABLE_FLOW,
+  GET_REUSABLE_FLOW_DETAILS_BY_ID,
+  GET_REUSABLE_FLOW_STEPS_BY_ID,
   ADD_PROCESS,
   EDIT_PROCESS,
   DELETE_PROCESS,
-  ADD_STEP,
-  DELETE_STEP,
+  ADD_REUSABLE_STEP,
+  DELETE_REUSABLE_STEP,
 } from "../../Actions/action-types";
 import { orderBy } from "lodash";
 const initState = {
@@ -22,57 +22,56 @@ const initState = {
 
 const reusableFlowReducer = (state = initState, { type, payload }) => {
   switch (type) {
-    case TEST_CASE_REQUEST:
+    case REUSABLE_FLOW_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case GET_ALL_TEST_CASE:
+    case GET_ALL_REUSABLE_FLOW:
       return {
         ...state,
         data: payload,
         loading: false,
       };
-    case TEST_CASE_FAILURE:
+    case REUSABLE_FLOW_FAILURE:
       return {
         ...state,
         loading: false,
       };
-    case DELETE_TEST_CASE:
+    case DELETE_REUSABLE_FLOW:
       let temp = [...state.data].filter((el) => el.id !== payload);
       return {
         ...state,
         loading: false,
         data: temp,
       };
-    case CREATE_TEST_CASE:
+    case CREATE_REUSABLE_FLOW:
       return {
         ...state,
         loading: false,
         data: [...state.data, payload],
       };
-    case UPDATE_CURRENT_TEST_CASE:
-      const updatedTestCase = payload.data;
+    case UPDATE_CURRENT_REUSABLE_FLOW:
       return {
         ...state,
         loading: false,
         currentReusableFlow: {
           ...state.currentReusableFlow,
-          ...updatedTestCase,
+          ...payload,
         },
       };
-    case GET_TEST_CASE_DETAILS_BY_ID:
+    case GET_REUSABLE_FLOW_DETAILS_BY_ID:
       return {
         ...state,
         currentReusableFlow: { ...payload, testProcess: [] },
         loading: false,
       };
-    case GET_TEST_CASE_STEPS_BY_ID:
+    case GET_REUSABLE_FLOW_STEPS_BY_ID:
       return {
         ...state,
         currentReusableFlow: {
           ...state.currentReusableFlow,
-          testProcess: payload,
+          testSteps: payload,
         },
         loading: false,
       };
@@ -128,63 +127,40 @@ const reusableFlowReducer = (state = initState, { type, payload }) => {
         },
         loading: false,
       };
-    case ADD_STEP:
-      const editedStep = [...state.currentReusableFlow.testProcess].map(
-        (el) => {
-          return el.id == payload.testProcessId
-            ? {
-                ...el,
-                testSteps: orderBy(
-                  [
-                    ...[...el.testSteps].map((step) => {
-                      return step.step >= payload.step
-                        ? { ...step, step: step.step + 1 }
-                        : step;
-                    }),
-                    payload,
-                  ],
-                  ["step"],
-                  ["asc"]
-                ),
-              }
-            : el;
-        }
-      );
+    case ADD_REUSABLE_STEP:
+      const editedStep = [
+        ...[...state.currentReusableFlow.testSteps].map((step) => {
+          return step.step >= payload.step
+            ? { ...step, step: step.step + 1 }
+            : step;
+        }),
+        payload,
+      ];
+
       const orderedStepProcess = orderBy([...editedStep], ["step"], ["asc"]);
 
       return {
         ...state,
         currentReusableFlow: {
           ...state.currentReusableFlow,
-          testProcess: orderedStepProcess,
+          testSteps: orderedStepProcess,
         },
         loading: false,
       };
-    case DELETE_STEP:
-      const deletedStep = [...state.currentReusableFlow.testProcess].map(
-        (el) => {
-          return el.id == payload.testProcessId
-            ? {
-                ...el,
-                testSteps: [...el.testSteps]
-                  .filter((step) => {
-                    return step.id !== payload.testStepId;
-                  })
-                  .map((el1) => {
-                    return el1.step > payload.step
-                      ? { ...el1, step: el1.step - 1 }
-                      : el1;
-                  }),
-              }
-            : el;
-        }
-      );
+    case DELETE_REUSABLE_STEP:
+      const deletedStep = [...state.currentReusableFlow.testSteps]
+        .filter((step) => {
+          return step.id !== payload.testStepId;
+        })
+        .map((el) => {
+          return el.step > payload.step ? { ...el, step: el.step - 1 } : el;
+        });
 
       return {
         ...state,
         currentReusableFlow: {
           ...state.currentReusableFlow,
-          testProcess: deletedStep,
+          testSteps: deletedStep,
         },
         loading: false,
       };

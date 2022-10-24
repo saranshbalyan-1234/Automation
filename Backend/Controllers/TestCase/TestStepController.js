@@ -13,18 +13,29 @@ const saveTestStep = async (req, res) => {
     // const { error } = nameValidation.validate(req.body);
     // if (error) throw new Error(error.details[0].message);
 
-    const { testProcessId, step } = req.body;
+    const { testProcessId, reusableFlowId, step } = req.body;
 
-    await TestStep.schema(req.database).increment("step", {
-      by: 1,
-      where: {
-        testProcessId: { [Op.eq]: testProcessId },
-        step: {
-          [Op.gte]: step,
+    if (testProcessId) {
+      await TestStep.schema(req.database).increment("step", {
+        by: 1,
+        where: {
+          testProcessId: { [Op.eq]: testProcessId },
+          step: {
+            [Op.gte]: step,
+          },
         },
-      },
-    });
-
+      });
+    } else {
+      await TestStep.schema(req.database).increment("step", {
+        by: 1,
+        where: {
+          reusableFlowId: { [Op.eq]: reusableFlowId },
+          step: {
+            [Op.gte]: step,
+          },
+        },
+      });
+    }
     const data = await TestStep.schema(req.database).create(req.body);
     return res.status(200).json(data);
   } catch (err) {
@@ -82,16 +93,27 @@ const deleteTestStep = async (req, res) => {
     });
 
     if (deletedTestStep > 0) {
-      await TestStep.schema(req.database).decrement("step", {
-        by: 1,
-        where: {
-          testProcessId: { [Op.eq]: deletingTestStep.testProcessId },
-          step: {
-            [Op.gt]: deletingTestStep.step,
+      if (deletingTestStep.testProcessId) {
+        await TestStep.schema(req.database).decrement("step", {
+          by: 1,
+          where: {
+            testProcessId: { [Op.eq]: deletingTestStep.testProcessId },
+            step: {
+              [Op.gt]: deletingTestStep.step,
+            },
           },
-        },
-      });
-
+        });
+      } else {
+        await TestStep.schema(req.database).decrement("step", {
+          by: 1,
+          where: {
+            reusableFlowId: { [Op.eq]: deletingTestStep.reusableFlowId },
+            step: {
+              [Op.gt]: deletingTestStep.step,
+            },
+          },
+        });
+      }
       return res.status(200).json({ message: "TestStep deleted successfully" });
     } else {
       return res.status(400).json({ error: "Record not found" });

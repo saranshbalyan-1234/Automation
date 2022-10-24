@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Modal, Button, Spin, Select } from "antd";
 import { connect } from "react-redux";
-import { addProcess } from "../../../../../Redux/Actions/TestPlanning/testCase";
+import { addProcess } from "../../../../Redux/Actions/TestPlanning/testCase";
 import {
   addStep,
   editStep,
-} from "../../../../../Redux/Actions/TestPlanning/testCase";
+} from "../../../../Redux/Actions/TestPlanning/testCase";
+import {
+  addReusableStep,
+  editReusableStep,
+} from "../../../../Redux/Actions/TestPlanning/reusableFlow";
 import axios from "axios";
 const Option = { Select };
 const AddEditStepModal = ({
@@ -13,12 +17,15 @@ const AddEditStepModal = ({
   setVisible,
   editData,
   editStep,
+  editReusableStep,
   setEditData,
   loading,
   edit = false,
   step,
   addStep,
+  addReusableStep,
   processId,
+  reusableFlowId,
   setEdit = () => {},
 }) => {
   const [actionEvent, setActionEvent] = useState([]);
@@ -31,14 +38,26 @@ const AddEditStepModal = ({
   const onSubmit = async (data) => {
     let result = false;
     if (edit) {
-      result = await editStep({ data: data, stepId: editData.id });
+      if (processId) {
+        result = await editStep({ data: data, stepId: editData.id });
+      } else {
+        result = await editReusableStep({ data: data, stepId: editData.id });
+      }
       setEditData({});
     } else {
-      result = await addStep({
-        ...data,
-        testProcessId: processId,
-        step,
-      });
+      if (processId) {
+        result = await addStep({
+          ...data,
+          testProcessId: processId,
+          step,
+        });
+      } else {
+        result = await addReusableStep({
+          ...data,
+          reusableFlowId,
+          step,
+        });
+      }
     }
     if (step === 1 && edit === false) setEdit(true);
     result && setVisible(false);
@@ -121,9 +140,14 @@ const AddEditStepModal = ({
   );
 };
 const mapStateToProps = (state) => ({
-  currentTestCaseId: state.testCase.currentTestCase.id,
   loading: state.testCase.loading,
 });
-const mapDispatchToProps = { addProcess, editStep, addStep };
+const mapDispatchToProps = {
+  addProcess,
+  editStep,
+  addStep,
+  addReusableStep,
+  editReusableStep,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditStepModal);

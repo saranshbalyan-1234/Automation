@@ -1,33 +1,33 @@
 import axios from "axios";
 import {
-  TEST_CASE_REQUEST,
-  TEST_CASE_FAILURE,
-  GET_ALL_TEST_CASE,
-  CREATE_TEST_CASE,
-  UPDATE_CURRENT_TEST_CASE,
-  DELETE_TEST_CASE,
-  GET_TEST_CASE_DETAILS_BY_ID,
-  GET_TEST_CASE_STEPS_BY_ID,
+  REUSABLE_FLOW_REQUEST,
+  REUSABLE_FLOW_FAILURE,
+  GET_ALL_REUSABLE_FLOW,
+  CREATE_REUSABLE_FLOW,
+  UPDATE_CURRENT_REUSABLE_FLOW,
+  DELETE_REUSABLE_FLOW,
+  GET_REUSABLE_FLOW_DETAILS_BY_ID,
+  GET_REUSABLE_FLOW_STEPS_BY_ID,
   ADD_PROCESS,
   EDIT_PROCESS,
   DELETE_PROCESS,
-  ADD_STEP,
+  ADD_REUSABLE_STEP,
   EDIT_STEP,
-  DELETE_STEP,
+  DELETE_REUSABLE_STEP,
 } from "../action-types";
 
 export const getReusableFlowByProject = (payload) => {
   return async (dispatch, getState) => {
     try {
-      dispatch({ type: TEST_CASE_REQUEST });
+      dispatch({ type: REUSABLE_FLOW_REQUEST });
       let currentProjectId = getState().projects.currentProject.id;
       const { data } = await axios.get(
         `/reusableFlow/project/${currentProjectId}`
       );
-      dispatch({ type: GET_ALL_TEST_CASE, payload: data });
+      dispatch({ type: GET_ALL_REUSABLE_FLOW, payload: data });
       return true;
     } catch (err) {
-      dispatch({ type: TEST_CASE_FAILURE });
+      dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }
   };
@@ -36,17 +36,17 @@ export const getReusableFlowByProject = (payload) => {
 export const saveReusableFlow = (payload) => {
   return async (dispatch, getState) => {
     try {
-      dispatch({ type: TEST_CASE_REQUEST });
+      dispatch({ type: REUSABLE_FLOW_REQUEST });
       const { data } = await axios.post(`/reusableFlow`, payload);
-      const updatedTestCase = {
+      const updatedReusableFlow = {
         ...data,
         createdBy: getState().auth.user,
       };
-      dispatch({ type: CREATE_TEST_CASE, payload: updatedTestCase });
+      dispatch({ type: CREATE_REUSABLE_FLOW, payload: updatedReusableFlow });
       return true;
     } catch (err) {
       console.log(err);
-      dispatch({ type: TEST_CASE_FAILURE });
+      dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }
   };
@@ -55,49 +55,52 @@ export const saveReusableFlow = (payload) => {
 export const editReusableFlow = (payload) => {
   return async (dispatch, getState) => {
     try {
-      dispatch({ type: TEST_CASE_REQUEST });
+      dispatch({ type: REUSABLE_FLOW_REQUEST });
 
-      let currentTestCaseId = getState().testCase.currentTestCase?.id;
-      let editedTestCase = { ...payload };
+      let currentReusableFlowId =
+        getState().reusableFlow.currentReusableFlow?.id;
+      let editedReusableFlow = { ...payload };
 
-      await axios.put(`/reusableFlow/${currentTestCaseId}`, payload);
+      await axios.put(`/reusableFlow/${currentReusableFlowId}`, payload);
       dispatch({
-        type: UPDATE_CURRENT_TEST_CASE,
-        payload: { data: editedTestCase, testCaseId: currentTestCaseId },
+        type: UPDATE_CURRENT_REUSABLE_FLOW,
+        payload: editedReusableFlow,
       });
 
       return true;
     } catch (err) {
       console.log(err);
-      dispatch({ type: TEST_CASE_FAILURE });
+      dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }
   };
 };
 
-export const deleteReusableFlow = (testCaseId) => {
+export const deleteReusableFlow = (reusableFlowId) => {
   return async (dispatch) => {
     try {
-      dispatch({ type: TEST_CASE_REQUEST });
+      dispatch({ type: REUSABLE_FLOW_REQUEST });
 
-      await axios.delete(`testCase/${testCaseId}`);
-      dispatch({ type: DELETE_TEST_CASE, payload: testCaseId });
+      await axios.delete(`reusableFlow/${reusableFlowId}`);
+      dispatch({ type: DELETE_REUSABLE_FLOW, payload: reusableFlowId });
       return true;
     } catch (err) {
-      dispatch({ type: TEST_CASE_FAILURE });
+      dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }
   };
 };
-export const getReusableFlowDetailsById = (id) => {
+export const getReusableFlowDetailsById = (reusableFlowId) => {
   return async (dispatch) => {
     try {
-      dispatch({ type: TEST_CASE_REQUEST });
-      const { data } = await axios.get(`/reusableFlow/${id}/details`);
-      dispatch({ type: GET_TEST_CASE_DETAILS_BY_ID, payload: data });
+      dispatch({ type: REUSABLE_FLOW_REQUEST });
+      const { data } = await axios.get(
+        `/reusableFlow/${reusableFlowId}/details`
+      );
+      dispatch({ type: GET_REUSABLE_FLOW_DETAILS_BY_ID, payload: data });
       return true;
     } catch (err) {
-      dispatch({ type: TEST_CASE_FAILURE });
+      dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }
   };
@@ -106,12 +109,12 @@ export const getReusableFlowDetailsById = (id) => {
 export const getReusableFlowStepsById = (id) => {
   return async (dispatch) => {
     try {
-      dispatch({ type: TEST_CASE_REQUEST });
+      dispatch({ type: REUSABLE_FLOW_REQUEST });
       const { data } = await axios.get(`/reusableFlow/${id}/testSteps`);
-      dispatch({ type: GET_TEST_CASE_STEPS_BY_ID, payload: data });
+      dispatch({ type: GET_REUSABLE_FLOW_STEPS_BY_ID, payload: data });
       return true;
     } catch (err) {
-      dispatch({ type: TEST_CASE_FAILURE });
+      dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }
   };
@@ -121,12 +124,12 @@ export const getReusableFlowStepsById = (id) => {
 export const addProcess = (payload) => {
   return async (dispatch) => {
     try {
-      dispatch({ type: TEST_CASE_REQUEST });
+      dispatch({ type: REUSABLE_FLOW_REQUEST });
       const { data } = await axios.post(`/testProcess`, payload);
       dispatch({ type: ADD_PROCESS, payload: data });
       return true;
     } catch (err) {
-      dispatch({ type: TEST_CASE_FAILURE });
+      dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }
   };
@@ -135,7 +138,7 @@ export const addProcess = (payload) => {
 export const editProcess = (payload) => {
   return async (dispatch) => {
     try {
-      dispatch({ type: TEST_CASE_REQUEST });
+      dispatch({ type: REUSABLE_FLOW_REQUEST });
 
       await axios.put(`/testProcess/${payload.processId}`, payload.data);
       dispatch({
@@ -146,7 +149,7 @@ export const editProcess = (payload) => {
       return true;
     } catch (err) {
       console.log(err);
-      dispatch({ type: TEST_CASE_FAILURE });
+      dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }
   };
@@ -155,7 +158,7 @@ export const editProcess = (payload) => {
 export const deleteProcess = (testProcessId, step) => {
   return async (dispatch) => {
     try {
-      dispatch({ type: TEST_CASE_REQUEST });
+      dispatch({ type: REUSABLE_FLOW_REQUEST });
 
       await axios.delete(`/testProcess/${testProcessId}`);
       dispatch({
@@ -166,56 +169,56 @@ export const deleteProcess = (testProcessId, step) => {
       return true;
     } catch (err) {
       console.log(err);
-      dispatch({ type: TEST_CASE_FAILURE });
+      dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }
   };
 };
 
 //Step
-export const addStep = (payload) => {
+export const addReusableStep = (payload) => {
   return async (dispatch) => {
     try {
-      dispatch({ type: TEST_CASE_REQUEST });
+      dispatch({ type: REUSABLE_FLOW_REQUEST });
       const { data } = await axios.post(`/testStep`, payload);
-      dispatch({ type: ADD_STEP, payload: data });
+      dispatch({ type: ADD_REUSABLE_STEP, payload: data });
       return true;
     } catch (err) {
-      dispatch({ type: TEST_CASE_FAILURE });
+      dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }
   };
 };
 
-export const editStep = (payload) => {
+export const editReusableStep = (payload) => {
   return async (dispatch) => {
     try {
-      dispatch({ type: TEST_CASE_REQUEST });
+      dispatch({ type: REUSABLE_FLOW_REQUEST });
       await axios.put(`/testStep/${payload.stepId}`, payload.data);
       dispatch({ type: EDIT_STEP, payload });
       return true;
     } catch (err) {
-      dispatch({ type: TEST_CASE_FAILURE });
+      dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }
   };
 };
 
-export const deleteStep = (testStepId, testProcessId, step) => {
+export const deleteStep = (testStepId, step) => {
   return async (dispatch) => {
     try {
-      dispatch({ type: TEST_CASE_REQUEST });
+      dispatch({ type: REUSABLE_FLOW_REQUEST });
 
       await axios.delete(`/testStep/${testStepId}`);
       dispatch({
-        type: DELETE_STEP,
-        payload: { testStepId, testProcessId, step },
+        type: DELETE_REUSABLE_STEP,
+        payload: { testStepId, step },
       });
 
       return true;
     } catch (err) {
       console.log(err);
-      dispatch({ type: TEST_CASE_FAILURE });
+      dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }
   };
