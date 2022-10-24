@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { Dropdown, Menu } from "antd";
-import {
-  EditOutlined,
-  DeleteOutlined,
-  PlusOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, SettingOutlined } from "@ant-design/icons";
 import AddEditStepModal from "./AddEditStepModal";
 export default function StepMenu({ processId, testStep, reusableFlowId }) {
   const [addEditStepModal, setAddEditStepModal] = useState(false);

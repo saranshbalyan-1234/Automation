@@ -7,9 +7,6 @@ import {
   DELETE_REUSABLE_FLOW,
   GET_REUSABLE_FLOW_DETAILS_BY_ID,
   GET_REUSABLE_FLOW_STEPS_BY_ID,
-  ADD_PROCESS,
-  EDIT_PROCESS,
-  DELETE_PROCESS,
   ADD_REUSABLE_STEP,
   DELETE_REUSABLE_STEP,
 } from "../../Actions/action-types";
@@ -63,7 +60,7 @@ const reusableFlowReducer = (state = initState, { type, payload }) => {
     case GET_REUSABLE_FLOW_DETAILS_BY_ID:
       return {
         ...state,
-        currentReusableFlow: { ...payload, testProcess: [] },
+        currentReusableFlow: { ...payload, testSteps: [] },
         loading: false,
       };
     case GET_REUSABLE_FLOW_STEPS_BY_ID:
@@ -72,58 +69,6 @@ const reusableFlowReducer = (state = initState, { type, payload }) => {
         currentReusableFlow: {
           ...state.currentReusableFlow,
           testSteps: payload,
-        },
-        loading: false,
-      };
-    case ADD_PROCESS:
-      const changedStepProcess = [...state.currentReusableFlow.testProcess].map(
-        (el) => {
-          return el.step >= payload.step ? { ...el, step: el.step + 1 } : el;
-        }
-      );
-      const orderedProcess = orderBy(
-        [...changedStepProcess, { ...payload, testSteps: [] }],
-        ["step"],
-        ["asc"]
-      );
-
-      return {
-        ...state,
-        currentReusableFlow: {
-          ...state.currentReusableFlow,
-          testProcess: orderedProcess,
-        },
-        loading: false,
-      };
-    case EDIT_PROCESS:
-      const editedProcess = [...state.currentReusableFlow.testProcess].map(
-        (el) => {
-          const newData = payload.data;
-          return el.id === payload.processId ? { ...el, ...newData } : el;
-        }
-      );
-      return {
-        ...state,
-        currentReusableFlow: {
-          ...state.currentReusableFlow,
-          testProcess: editedProcess,
-        },
-        loading: false,
-      };
-
-    case DELETE_PROCESS:
-      let deletedProcess = [...state.currentReusableFlow.testProcess]
-        .filter((el) => {
-          return el.id !== payload.testProcessId;
-        })
-        .map((el) => {
-          return el.step > payload.step ? { ...el, step: el.step - 1 } : el;
-        });
-      return {
-        ...state,
-        currentReusableFlow: {
-          ...state.currentReusableFlow,
-          testProcess: deletedProcess,
         },
         loading: false,
       };

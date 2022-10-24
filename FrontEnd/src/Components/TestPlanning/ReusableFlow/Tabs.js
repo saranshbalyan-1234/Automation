@@ -11,6 +11,7 @@ import {
 } from "../../../Redux/Actions/TestPlanning/reusableFlow";
 import TestStep from "../Common/TestStep";
 import Details from "../Common/Details";
+import ActivityLog from "../Common/ActivityLog";
 function ReusableFlowTabs({
   getReusableFlowDetailsById,
   getReusableFlowStepsById,
@@ -82,8 +83,7 @@ function ReusableFlowTabs({
             )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Activity Log" key="activitylog">
-            <>Activity Log</>
-            {/* <Details reusable={true} details={currentReusableFlow} /> */}
+            <ActivityLog />
           </Tabs.TabPane>
         </Tabs>
         {renderButton()}

@@ -121,7 +121,7 @@ const testCaseReducer = (state = initState, { type, payload }) => {
       };
     case ADD_STEP:
       const editedStep = [...state.currentTestCase.testProcess].map((el) => {
-        return el.id == payload.testProcessId
+        return el.id === payload.testProcessId
           ? {
               ...el,
               testSteps: orderBy(
@@ -151,7 +151,7 @@ const testCaseReducer = (state = initState, { type, payload }) => {
       };
     case DELETE_STEP:
       const deletedStep = [...state.currentTestCase.testProcess].map((el) => {
-        return el.id == payload.testProcessId
+        return el.id === payload.testProcessId
           ? {
               ...el,
               testSteps: [...el.testSteps]

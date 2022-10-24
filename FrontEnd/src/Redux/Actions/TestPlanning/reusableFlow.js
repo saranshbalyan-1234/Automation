@@ -8,9 +8,6 @@ import {
   DELETE_REUSABLE_FLOW,
   GET_REUSABLE_FLOW_DETAILS_BY_ID,
   GET_REUSABLE_FLOW_STEPS_BY_ID,
-  ADD_PROCESS,
-  EDIT_PROCESS,
-  DELETE_PROCESS,
   ADD_REUSABLE_STEP,
   EDIT_STEP,
   DELETE_REUSABLE_STEP,
@@ -120,61 +117,6 @@ export const getReusableFlowStepsById = (id) => {
   };
 };
 
-//Process
-export const addProcess = (payload) => {
-  return async (dispatch) => {
-    try {
-      dispatch({ type: REUSABLE_FLOW_REQUEST });
-      const { data } = await axios.post(`/testProcess`, payload);
-      dispatch({ type: ADD_PROCESS, payload: data });
-      return true;
-    } catch (err) {
-      dispatch({ type: REUSABLE_FLOW_FAILURE });
-      return false;
-    }
-  };
-};
-
-export const editProcess = (payload) => {
-  return async (dispatch) => {
-    try {
-      dispatch({ type: REUSABLE_FLOW_REQUEST });
-
-      await axios.put(`/testProcess/${payload.processId}`, payload.data);
-      dispatch({
-        type: EDIT_PROCESS,
-        payload,
-      });
-
-      return true;
-    } catch (err) {
-      console.log(err);
-      dispatch({ type: REUSABLE_FLOW_FAILURE });
-      return false;
-    }
-  };
-};
-
-export const deleteProcess = (testProcessId, step) => {
-  return async (dispatch) => {
-    try {
-      dispatch({ type: REUSABLE_FLOW_REQUEST });
-
-      await axios.delete(`/testProcess/${testProcessId}`);
-      dispatch({
-        type: DELETE_PROCESS,
-        payload: { testProcessId, step },
-      });
-
-      return true;
-    } catch (err) {
-      console.log(err);
-      dispatch({ type: REUSABLE_FLOW_FAILURE });
-      return false;
-    }
-  };
-};
-
 //Step
 export const addReusableStep = (payload) => {
   return async (dispatch) => {
@@ -184,6 +126,7 @@ export const addReusableStep = (payload) => {
       dispatch({ type: ADD_REUSABLE_STEP, payload: data });
       return true;
     } catch (err) {
+      console.log("saransh", err);
       dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }

@@ -6,6 +6,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getTestCaseDetailsById } from "../../../Redux/Actions/TestPlanning/testCase";
 import TestProcess from "./TestProcess";
 import Details from "../Common/Details";
+import ActivityLog from "../Common/ActivityLog";
 function TestCaseTabs({ getTestCaseDetailsById, currentTestCase, loading }) {
   const { tab, testCaseId } = useParams();
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ function TestCaseTabs({ getTestCaseDetailsById, currentTestCase, loading }) {
             {activeTab === "teststeps" && <TestProcess />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Activity Log" key="activitylog">
-            <>Activity Log</>
+            <ActivityLog />
           </Tabs.TabPane>
         </Tabs>
         {renderButton()}
