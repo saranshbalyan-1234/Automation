@@ -1,27 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Typography, Card, Button, Spin, Popconfirm, Tag } from "antd";
 import moment from "moment";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { useParams } from "react-router-dom";
+import { EditOutlined } from "@ant-design/icons";
 import UserAvatar from "../../Common/Avatar";
-import AddEditTestCaseModal from "./AddEditTestCaseModal";
+import AddEditModal from "./AddEditModal";
 const { Title } = Typography;
 const { Meta } = Card;
-export const TestCaseDetails = ({
-  currentTestCase,
-  loading,
-  getProjectById,
-  removeMember,
-}) => {
-  const { testCaseId } = useParams();
-  const [addEditTestCaseModal, setAddEditTestCaseModal] = useState(false);
+export const Details = ({ loading, details, reusable = false }) => {
+  const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
-  useEffect(() => {
-    // getProjectById(id);
-  }, [testCaseId]);
 
-  if (loading) return null;
+  if (loading) return <Spin />;
   return (
     <div style={{ paddingTop: 20 }}>
       <Spin spinning={loading}>
@@ -36,16 +26,17 @@ export const TestCaseDetails = ({
             <Meta
               title={
                 <Title style={{ textTransform: "capitalize" }} level={3}>
-                  Test Case: {currentTestCase.name}
+                  {`${reusable ? "Reusable Flow:" : "Test Case:"} ${
+                    details.name
+                  }`}
                 </Title>
               }
               description={
                 <div style={{ color: "black" }}>
                   Created On &nbsp;
-                  {moment(currentTestCase.createdAt).format("DD/MM/YY")} By
-                  &nbsp;
-                  {currentTestCase.createdBy && (
-                    <UserAvatar name={currentTestCase.createdBy.name} />
+                  {moment(details.createdAt).format("DD/MM/YY")} By &nbsp;
+                  {details.createdBy && (
+                    <UserAvatar name={details.createdBy.name} />
                   )}
                 </div>
               }
@@ -61,12 +52,12 @@ export const TestCaseDetails = ({
                 type="primary"
                 ghost
                 onClick={() => {
-                  setEditData(currentTestCase);
-                  setAddEditTestCaseModal(true);
+                  setEditData(details);
+                  setAddEditModal(true);
                 }}
               >
                 <EditOutlined />
-                Edit TestCase Details
+                Edit {reusable ? "Reusable Flow" : "Test Case"} Details
               </Button>
             </div>
           </div>
@@ -83,7 +74,7 @@ export const TestCaseDetails = ({
                 <div
                   style={{ marginTop: "5px" }}
                   dangerouslySetInnerHTML={{
-                    __html: currentTestCase.description,
+                    __html: details.description,
                   }}
                 ></div>
               }
@@ -115,24 +106,23 @@ export const TestCaseDetails = ({
           </div>
         </Card>
       </Spin>
-      {addEditTestCaseModal && (
-        <AddEditTestCaseModal
-          visible={addEditTestCaseModal}
-          setVisible={setAddEditTestCaseModal}
+      {addEditModal && (
+        <AddEditModal
+          visible={addEditModal}
+          setVisible={setAddEditModal}
           editData={editData}
           setEditData={setEditData}
           edit={true}
+          reusable={reusable}
+          loading={loading}
         />
       )}
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  currentTestCase: state.testCase.currentTestCase,
-  loading: state.projects.loading,
-});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestCaseDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(Details);

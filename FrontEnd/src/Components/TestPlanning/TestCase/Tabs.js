@@ -3,7 +3,6 @@ import { Tabs, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import TestCaseDetails from "./TestCaseDetails";
 import { getTestCaseDetailsById } from "../../../Redux/Actions/TestPlanning/testCase";
 import TestProcess from "./TestProcess";
 import Details from "../Common/Details";
@@ -56,7 +55,7 @@ function TestCaseTabs({ getTestCaseDetailsById, currentTestCase, loading }) {
             {activeTab === "teststeps" && <TestProcess />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Activity Log" key="activitylog">
-            <TestCaseDetails />
+            <>Activity Log</>
           </Tabs.TabPane>
         </Tabs>
         {renderButton()}

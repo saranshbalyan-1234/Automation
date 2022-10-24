@@ -3,14 +3,14 @@ import { Form, Input, Modal, Button, Spin } from "antd";
 import {
   saveTestCase,
   editTestCase,
-} from "../../../../Redux/Actions/TestPlanning/testCase";
+} from "../../../Redux/Actions/TestPlanning/testCase";
 import {
   saveReusableFlow,
   editReusableFlow,
-} from "../../../../Redux/Actions/TestPlanning/reusableFlow";
+} from "../../../Redux/Actions/TestPlanning/reusableFlow";
 import { connect } from "react-redux";
 
-const AddEditTestCaseModal = ({
+const AddEditModal = ({
   visible,
   setVisible,
   saveTestCase,
@@ -114,7 +114,4 @@ const mapDispatchToProps = {
   editReusableFlow,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddEditTestCaseModal);
+export default connect(mapStateToProps, mapDispatchToProps)(AddEditModal);

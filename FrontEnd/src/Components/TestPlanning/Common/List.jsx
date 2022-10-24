@@ -1,25 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import React, { useState } from "react";
 import { Table, Popconfirm, Button, Spin } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
-import {
-  getReusableFlowByProject,
-  deleteReusableFlow,
-} from "../../../Redux/Actions/TestPlanning/reusableFlow";
-import AddEditReusableFlowModal from "./AddEditReusableFlowModal";
+import AddEditModal from "./AddEditModal";
 import UserAvatar from "../../Common/Avatar";
 import { useNavigate } from "react-router-dom";
-const ReusableFlowList = ({
-  currentProjectId,
-  getReusableFlowByProject,
-  reusableFlows,
-  loading,
-  deleteReusableFlow,
-}) => {
+export const List = ({ onDelete, loading, data, reusable = false }) => {
   const navigate = useNavigate();
-  const [addEditReusableFlowModal, setAddEditReusableFlowModal] =
-    useState(false);
+  const [addEditModal, setAddEditModal] = useState(false);
 
   const columns = [
     {
@@ -48,10 +36,12 @@ const ReusableFlowList = ({
       render: (_, record) => (
         <div style={{ display: "flex", gap: 10 }}>
           <Popconfirm
-            title="Are you sure to delete this ReusableFlow?"
+            title={`Are you sure to delete this ${
+              reusable ? "Reusable Flow" : "Test Case"
+            }?`}
             onConfirm={async (e) => {
               e.stopPropagation();
-              await deleteReusableFlow(record.id);
+              await onDelete(record.id);
             }}
             okText="Yes, Delete"
             cancelText="No"
@@ -65,9 +55,6 @@ const ReusableFlowList = ({
       ),
     },
   ];
-  useEffect(() => {
-    getReusableFlowByProject();
-  }, [currentProjectId]);
 
   return (
     <>
@@ -86,28 +73,34 @@ const ReusableFlowList = ({
             type="primary"
             ghost
             onClick={() => {
-              setAddEditReusableFlowModal(true);
+              setAddEditModal(true);
             }}
           >
-            New ReusableFlow
+            New {reusable ? "Reusable Flow" : "Test Case"}
           </Button>
         </div>
         <Table
           columns={columns}
-          dataSource={reusableFlows}
+          dataSource={data}
           rowClassName="cursor"
           onRow={(record, rowIndex) => {
             return {
               onClick: () => {
-                navigate(`/TestPlanning/ReusableFlow/${record.id}/details`);
+                navigate(
+                  `/TestPlanning/${reusable ? "ReusableFlow" : "TestCase"}/${
+                    record.id
+                  }/details`
+                );
               },
             };
           }}
         />
-        {addEditReusableFlowModal && (
-          <AddEditReusableFlowModal
-            visible={addEditReusableFlowModal}
-            setVisible={setAddEditReusableFlowModal}
+        {addEditModal && (
+          <AddEditModal
+            visible={addEditModal}
+            setVisible={setAddEditModal}
+            loading={loading}
+            reusable={reusable}
           />
         )}
       </Spin>
@@ -115,12 +108,4 @@ const ReusableFlowList = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  currentProjectId: state.projects.currentProject.id,
-  reusableFlows: state.reusableFlow.data,
-  loading: state.reusableFlow.loading,
-});
-
-const mapDispatchToProps = { getReusableFlowByProject, deleteReusableFlow };
-
-export default connect(mapStateToProps, mapDispatchToProps)(ReusableFlowList);
+export default List;
