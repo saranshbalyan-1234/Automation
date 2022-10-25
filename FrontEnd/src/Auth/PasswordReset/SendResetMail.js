@@ -29,7 +29,6 @@ const SendResetMail = ({ sendResetPasswordMail }) => {
             />
             <Form
               name="normal_login"
-              className="login-form"
               initialValues={{ remember: true }}
               onFinish={handleReset}
             >
@@ -41,7 +40,7 @@ const SendResetMail = ({ sendResetPasswordMail }) => {
               >
                 <Input
                   type="email"
-                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  prefix={<UserOutlined />}
                   placeholder="Email"
                   name="email"
                   onChange={(e) => {
@@ -54,7 +53,6 @@ const SendResetMail = ({ sendResetPasswordMail }) => {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  className="login-form-button"
                   style={{ marginRight: "10px" }}
                 >
                   Reset
@@ -65,7 +63,6 @@ const SendResetMail = ({ sendResetPasswordMail }) => {
                     navigate("/signin");
                   }}
                   htmlType="button"
-                  className="login-form-button"
                   style={{ marginLeft: "10px" }}
                 >
                   Login

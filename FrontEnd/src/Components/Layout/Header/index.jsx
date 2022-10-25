@@ -48,10 +48,7 @@ const Headers = ({
   );
 
   return (
-    <Header
-      className="site-layout-sub-header-background"
-      style={{ padding: 0 }}
-    >
+    <Header style={{ padding: 0, background: "#001529" }}>
       <div
         style={{
           display: "flex",

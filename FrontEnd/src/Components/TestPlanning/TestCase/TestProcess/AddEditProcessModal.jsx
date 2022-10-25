@@ -79,14 +79,12 @@ const AddEditProcessModal = ({
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Button
                 type="primary"
-                className="login-form-button"
                 style={{ marginRight: "20px" }}
                 htmlType="submit"
               >
                 Submit
               </Button>
               <Button
-                className="login-form-button"
                 style={{ marginRight: "20px" }}
                 onClick={() => {
                   setVisible(false);

@@ -43,9 +43,9 @@ export default function Container({ children }) {
 
   return (
     <>
-      <div className="site-layout-background">
+      <div>
         <PageHeader
-          style={{ padding: "5px 15px 5px 15px" }}
+          style={{ padding: "5px 15px 5px 15px", background: "#fff" }}
           onBack={() => window.history.back()}
           title={
             <div
@@ -77,11 +77,11 @@ export default function Container({ children }) {
       </div>
 
       <div
-        className="site-layout-background"
         style={{
           padding: "0px 20px 20px 20px",
           minHeight: "calc(100vh - 120px)",
           marginTop: "10px",
+          background: "#fff",
         }}
       >
         {children}

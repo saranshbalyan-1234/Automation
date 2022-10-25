@@ -47,7 +47,6 @@ export const Role = ({
     return (
       <div style={{ paddingLeft: "30px" }}>
         <List
-          className="demo-loadmore-list"
           dataSource={role.permissions}
           renderItem={(permission) => (
             <List.Item>

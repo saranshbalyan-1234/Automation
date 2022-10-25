@@ -82,7 +82,6 @@ export const List = ({ onDelete, loading, data, reusable = false }) => {
         <Table
           columns={columns}
           dataSource={data}
-          rowClassName="cursor"
           onRow={(record, rowIndex) => {
             return {
               onClick: () => {

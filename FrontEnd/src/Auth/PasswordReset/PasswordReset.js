@@ -132,7 +132,6 @@ const PasswordReset = ({ resetPassword }) => {
                   <Button
                     type="primary"
                     htmlType="submit"
-                    className="login-form-button"
                     style={{ marginRight: "20px" }}
                   >
                     Reset Password

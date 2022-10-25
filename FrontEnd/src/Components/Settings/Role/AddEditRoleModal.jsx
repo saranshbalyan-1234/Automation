@@ -62,14 +62,12 @@ const AddEditRoleModal = ({
           <div style={{ display: "flex", justifyContent: "center" }}>
             <Button
               type="primary"
-              className="login-form-button"
               style={{ marginRight: "20px" }}
               htmlType="submit"
             >
               {edit ? "Edit" : "Add"} Role
             </Button>
             <Button
-              className="login-form-button"
               style={{ marginRight: "20px" }}
               onClick={() => {
                 setVisible(false);

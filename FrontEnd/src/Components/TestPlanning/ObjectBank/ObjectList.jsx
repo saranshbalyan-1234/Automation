@@ -92,7 +92,6 @@ export const ObjectList = ({
         <Table
           columns={columns}
           dataSource={objectList}
-          rowClassName="cursor"
           onRow={(record, rowIndex) => {
             return {
               onClick: () => {

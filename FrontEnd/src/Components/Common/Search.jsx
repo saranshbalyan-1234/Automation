@@ -9,10 +9,9 @@ export default function CustomSearch({
   onChange = () => {},
 }) {
   return (
-    <StyledSearch className="search" width={width}>
+    <StyledSearch width={width}>
       <Input
         onChange={onChange}
-        className="search"
         placeholder={placeholder}
         prefix={<SearchOutlined style={{ marginRight: "5px" }} />}
       />

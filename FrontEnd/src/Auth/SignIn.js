@@ -40,12 +40,7 @@ const SignIn = ({ loading, signIn, logout }) => {
               src="/Logo/logo2.svg"
               style={{ height: "50px", marginBottom: "10px" }}
             />
-            <Form
-              name="normal_login"
-              className="login-form"
-              initialValues={{ remember: false }}
-              onFinish={handleSignIn}
-            >
+            <Form initialValues={{ remember: false }} onFinish={handleSignIn}>
               <Form.Item
                 name="email"
                 rules={[
@@ -54,7 +49,7 @@ const SignIn = ({ loading, signIn, logout }) => {
               >
                 <Input
                   type="email"
-                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  prefix={<UserOutlined />}
                   placeholder="Email"
                   name="email"
                   onChange={(e) => {
@@ -84,19 +79,13 @@ const SignIn = ({ loading, signIn, logout }) => {
                   <Checkbox onChange={handleRememberMe}>Remember me</Checkbox>
                 </Form.Item>
 
-                <Link
-                  className="login-form-forgot"
-                  to="/reset-password/send-mail"
-                >
-                  Forgot password!
-                </Link>
+                <Link to="/reset-password/send-mail">Forgot password!</Link>
               </Form.Item>
 
               <Form.Item>
                 <Button
                   type="primary"
                   htmlType="submit"
-                  className="login-form-button"
                   style={{ marginRight: "20px" }}
                 >
                   Log in

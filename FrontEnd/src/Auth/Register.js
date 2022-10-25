@@ -163,7 +163,6 @@ const Register = ({ register }) => {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  className="login-form-button"
                   style={{ marginRight: "20px" }}
                 >
                   Register

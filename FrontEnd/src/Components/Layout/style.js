@@ -31,12 +31,4 @@ export const StyledLayout = styled.div`
     margin: 16px;
     background: rgba(255, 255, 255, 0.2);
   }
-
-  .site-layout-sub-header-background {
-    background: #fff;
-  }
-
-  .site-layout-background {
-    background: #fff;
-  }
 `;

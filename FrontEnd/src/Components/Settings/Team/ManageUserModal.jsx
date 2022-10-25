@@ -148,7 +148,6 @@ function ManageUser({ visible, setVisible, userId, updateUserRole }) {
         >
           <Button
             type="primary"
-            className="login-form-button"
             style={{ marginRight: "20px" }}
             disabled={addedRole.length === 0}
             onClick={handleSubmit}
@@ -156,7 +155,6 @@ function ManageUser({ visible, setVisible, userId, updateUserRole }) {
             Submit
           </Button>
           <Button
-            className="login-form-button"
             onClick={() => {
               setVisible(false);
             }}

@@ -134,14 +134,12 @@ const AddUserModal = ({
           <div style={{ display: "flex", justifyContent: "center" }}>
             <Button
               type="primary"
-              className="login-form-button"
               style={{ marginRight: "20px" }}
               htmlType="submit"
             >
               Add User
             </Button>
             <Button
-              className="login-form-button"
               style={{ marginRight: "20px" }}
               onClick={() => {
                 setAddUserModal(false);

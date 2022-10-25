@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Modal, Button, Spin } from "antd";
+import { Form, Input, Modal, Button, Spin, Select } from "antd";
 import {
   saveTestCase,
   editTestCase,
@@ -9,7 +9,8 @@ import {
   editReusableFlow,
 } from "../../../Redux/Actions/TestPlanning/reusableFlow";
 import { connect } from "react-redux";
-
+import locatorTypes from "./locatorType";
+const { Option } = Select;
 const AddEditObjectModal = ({
   visible,
   setVisible,
@@ -63,9 +64,13 @@ const AddEditObjectModal = ({
         <Form
           name="testCase"
           onFinish={onSubmit}
-          labelCol={{ span: 5 }}
+          labelCol={{ span: 7 }}
           wrapperCol={{ span: 16 }}
-          initialValues={{ name: edit ? editData.name : "" }}
+          initialValues={{
+            name: edit ? editData.name : "",
+            type: edit ? editData.type : "",
+            locator: edit ? editData.locator : "",
+          }}
         >
           <Form.Item
             name="name"
@@ -79,18 +84,50 @@ const AddEditObjectModal = ({
           >
             <Input name="name" />
           </Form.Item>
-
+          <Form.Item
+            name="type"
+            label="Locator Type"
+            rules={[
+              {
+                required: true,
+                message: "Please select locator type!",
+              },
+            ]}
+          >
+            <Select
+              placeholder="Select Locator Type"
+              style={{ minWidth: "160px" }}
+            >
+              {locatorTypes.map((el, i) => {
+                return (
+                  <Option value={el} key={i}>
+                    {el}
+                  </Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="locator"
+            label="Locator"
+            rules={[
+              {
+                required: true,
+                message: "Please input Locator value!",
+              },
+            ]}
+          >
+            <Input name="locator" />
+          </Form.Item>
           <div style={{ display: "flex", justifyContent: "center" }}>
             <Button
               type="primary"
-              className="login-form-button"
               style={{ marginRight: "20px" }}
               htmlType="submit"
             >
               Submit
             </Button>
             <Button
-              className="login-form-button"
               style={{ marginRight: "20px" }}
               onClick={() => {
                 setVisible(false);

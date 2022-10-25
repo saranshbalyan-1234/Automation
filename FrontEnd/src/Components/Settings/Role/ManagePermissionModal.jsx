@@ -183,7 +183,6 @@ const ManagePermissionModal = ({
         >
           <Button
             type="primary"
-            className="login-form-button"
             style={{ marginRight: "20px" }}
             disabled={addedPermission.length === 0}
             onClick={handleSubmit}
@@ -191,7 +190,6 @@ const ManagePermissionModal = ({
             Submit
           </Button>
           <Button
-            className="login-form-button"
             onClick={() => {
               setVisible(false);
             }}
