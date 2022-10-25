@@ -3,16 +3,16 @@ import {
   REUSABLE_FLOW_REQUEST,
   REUSABLE_FLOW_FAILURE,
   GET_ALL_TEST_OBJECT,
-  CREATE_REUSABLE_FLOW,
-  UPDATE_CURRENT_REUSABLE_FLOW,
-  DELETE_REUSABLE_FLOW,
-  GET_REUSABLE_FLOW_DETAILS_BY_ID,
+  DELETE_TEST_OBJECT,
   GET_REUSABLE_FLOW_STEPS_BY_ID,
   ADD_REUSABLE_STEP,
   EDIT_STEP,
   DELETE_REUSABLE_STEP,
   OBJECT_BANK_REQUEST,
   OBJECT_BANK_FAILURE,
+  GET_OBJECT_DETAILS_BY_ID,
+  CREATE_TEST_OBJECT,
+  UPDATE_TEST_OBJECT,
 } from "../action-types";
 
 export const getTestObjectByProject = (payload) => {
@@ -32,74 +32,71 @@ export const getTestObjectByProject = (payload) => {
   };
 };
 
-export const saveReusableFlow = (payload) => {
+export const saveObject = (payload) => {
   return async (dispatch, getState) => {
     try {
-      dispatch({ type: REUSABLE_FLOW_REQUEST });
-      const { data } = await axios.post(`/reusableFlow`, payload);
-      const updatedReusableFlow = {
+      dispatch({ type: OBJECT_BANK_REQUEST });
+      const { data } = await axios.post(`/testObject`, payload);
+      const updatedObject = {
         ...data,
         createdBy: getState().auth.user,
       };
-      dispatch({ type: CREATE_REUSABLE_FLOW, payload: updatedReusableFlow });
+      dispatch({ type: CREATE_TEST_OBJECT, payload: updatedObject });
       return true;
     } catch (err) {
       console.log(err);
-      dispatch({ type: REUSABLE_FLOW_FAILURE });
+      dispatch({ type: OBJECT_BANK_FAILURE });
       return false;
     }
   };
 };
 
-export const editReusableFlow = (payload) => {
+export const editObject = (payload) => {
   return async (dispatch, getState) => {
     try {
-      dispatch({ type: REUSABLE_FLOW_REQUEST });
+      dispatch({ type: OBJECT_BANK_REQUEST });
 
-      let currentReusableFlowId =
-        getState().reusableFlow.currentReusableFlow?.id;
-      let editedReusableFlow = { ...payload };
+      let currentObjectId = getState().objectBank.currentObject?.id;
+      let editedObject = { ...payload };
 
-      await axios.put(`/reusableFlow/${currentReusableFlowId}`, payload);
+      await axios.put(`/testObject/${currentObjectId}`, payload);
       dispatch({
-        type: UPDATE_CURRENT_REUSABLE_FLOW,
-        payload: editedReusableFlow,
+        type: UPDATE_TEST_OBJECT,
+        payload: editedObject,
       });
 
       return true;
     } catch (err) {
       console.log(err);
-      dispatch({ type: REUSABLE_FLOW_FAILURE });
+      dispatch({ type: OBJECT_BANK_FAILURE });
       return false;
     }
   };
 };
 
-export const deleteReusableFlow = (reusableFlowId) => {
+export const deleteObject = (testObjectId) => {
   return async (dispatch) => {
     try {
-      dispatch({ type: REUSABLE_FLOW_REQUEST });
+      dispatch({ type: OBJECT_BANK_REQUEST });
 
-      await axios.delete(`reusableFlow/${reusableFlowId}`);
-      dispatch({ type: DELETE_REUSABLE_FLOW, payload: reusableFlowId });
+      await axios.delete(`testObject/${testObjectId}`);
+      dispatch({ type: DELETE_TEST_OBJECT, payload: testObjectId });
       return true;
     } catch (err) {
-      dispatch({ type: REUSABLE_FLOW_FAILURE });
+      dispatch({ type: OBJECT_BANK_FAILURE });
       return false;
     }
   };
 };
-export const getReusableFlowDetailsById = (reusableFlowId) => {
+export const getTestObjectDetailsById = (testObjectId) => {
   return async (dispatch) => {
     try {
-      dispatch({ type: REUSABLE_FLOW_REQUEST });
-      const { data } = await axios.get(
-        `/reusableFlow/${reusableFlowId}/details`
-      );
-      dispatch({ type: GET_REUSABLE_FLOW_DETAILS_BY_ID, payload: data });
+      dispatch({ type: OBJECT_BANK_REQUEST });
+      const { data } = await axios.get(`/testObject/${testObjectId}/details`);
+      dispatch({ type: GET_OBJECT_DETAILS_BY_ID, payload: data });
       return true;
     } catch (err) {
-      dispatch({ type: REUSABLE_FLOW_FAILURE });
+      dispatch({ type: OBJECT_BANK_FAILURE });
       return false;
     }
   };

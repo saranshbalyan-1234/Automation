@@ -3,6 +3,7 @@ import getError from "../../Utils/sequelizeError.js";
 import { projectByIdValidation } from "../../Utils/Validations/project.js";
 const TestObject = db.testObjects;
 const User = db.users;
+const ObjectLocator = db.ObjectLocators;
 
 const saveTestObject = async (req, res) => {
   /*  #swagger.tags = ["Test Object"] 
@@ -12,9 +13,46 @@ const saveTestObject = async (req, res) => {
   try {
     // const { error } = nameValidation.validate(req.body);
     // if (error) throw new Error(error.details[0].message);
+    const payload = { ...req.body };
+    payload.createdByUser = req.user.id;
 
-    const data = await TestObject.schema(req.database).create(req.body);
-    return res.status(200).json(data);
+    const testObject = await TestObject.schema(req.database).create(payload);
+
+    return res.status(200).json(testObject);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+const getTestObjectDetailsById = async (req, res) => {
+  /*  #swagger.tags = ["Test Case"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const testObjectId = req.params.testObjectId;
+    // const { error } = projectByIdValidation.validate({ projectId });
+    // if (error) throw new Error(error.details[0].message);
+
+    const testCase = await TestObject.schema(req.database).findOne({
+      where: {
+        id: testObjectId,
+      },
+      // attributes: ["id", "name", "createdAt", "updatedAt", "description"],
+      include: [
+        {
+          model: User.schema(req.database),
+          as: "createdBy",
+          attributes: ["id", "name", "email", "active"],
+        },
+        {
+          model: ObjectLocator.schema(req.database),
+          as: "locators",
+          // attributes: ["id", "name", "email", "active"],
+        },
+      ],
+    });
+
+    return res.status(200).json(testCase);
   } catch (err) {
     getError(err, res);
   }
@@ -107,4 +145,10 @@ const getAllTestObject = async (req, res) => {
   }
 };
 
-export { getAllTestObject, saveTestObject, updateTestObject, deleteTestObject };
+export {
+  getAllTestObject,
+  getTestObjectDetailsById,
+  saveTestObject,
+  updateTestObject,
+  deleteTestObject,
+};

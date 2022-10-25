@@ -63,9 +63,12 @@ const AddEditModal = ({
         <Form
           name="testCase"
           onFinish={onSubmit}
-          labelCol={{ span: 5 }}
+          labelCol={{ span: 7 }}
           wrapperCol={{ span: 16 }}
-          initialValues={{ name: edit ? editData.name : "" }}
+          initialValues={{
+            name: edit ? editData.name : "",
+            description: edit ? editData.description : "",
+          }}
         >
           <Form.Item
             name="name"
@@ -78,6 +81,9 @@ const AddEditModal = ({
             ]}
           >
             <Input name="name" />
+          </Form.Item>
+          <Form.Item name="description" label="Description">
+            <Input.TextArea name="description" />
           </Form.Item>
 
           <div style={{ display: "flex", justifyContent: "center" }}>

@@ -82,6 +82,7 @@ export const List = ({ onDelete, loading, data, reusable = false }) => {
         <Table
           columns={columns}
           dataSource={data}
+          rowClassName="pointer"
           onRow={(record, rowIndex) => {
             return {
               onClick: () => {

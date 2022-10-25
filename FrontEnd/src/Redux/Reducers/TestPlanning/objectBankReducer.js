@@ -1,14 +1,14 @@
 import {
   GET_ALL_TEST_OBJECT,
-  CREATE_REUSABLE_FLOW,
-  UPDATE_CURRENT_REUSABLE_FLOW,
-  DELETE_REUSABLE_FLOW,
-  GET_REUSABLE_FLOW_DETAILS_BY_ID,
+  CREATE_TEST_OBJECT,
+  UPDATE_TEST_OBJECT,
   GET_REUSABLE_FLOW_STEPS_BY_ID,
   ADD_REUSABLE_STEP,
   DELETE_REUSABLE_STEP,
   OBJECT_BANK_REQUEST,
   OBJECT_BANK_FAILURE,
+  GET_OBJECT_DETAILS_BY_ID,
+  DELETE_TEST_OBJECT,
 } from "../../Actions/action-types";
 import { orderBy } from "lodash";
 const initState = {
@@ -35,46 +35,46 @@ const objectBankReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: false,
       };
-    case DELETE_REUSABLE_FLOW:
+    case DELETE_TEST_OBJECT:
       let temp = [...state.data].filter((el) => el.id !== payload);
       return {
         ...state,
         loading: false,
         data: temp,
       };
-    case CREATE_REUSABLE_FLOW:
+    case CREATE_TEST_OBJECT:
       return {
         ...state,
         loading: false,
         data: [...state.data, payload],
       };
-    case UPDATE_CURRENT_REUSABLE_FLOW:
+    case UPDATE_TEST_OBJECT:
       return {
         ...state,
         loading: false,
-        currentReusableFlow: {
-          ...state.currentReusableFlow,
+        currentObject: {
+          ...state.currentObject,
           ...payload,
         },
       };
-    case GET_REUSABLE_FLOW_DETAILS_BY_ID:
+    case GET_OBJECT_DETAILS_BY_ID:
       return {
         ...state,
-        currentReusableFlow: { ...payload, testSteps: [] },
+        currentObject: { ...payload, testSteps: [] },
         loading: false,
       };
     case GET_REUSABLE_FLOW_STEPS_BY_ID:
       return {
         ...state,
-        currentReusableFlow: {
-          ...state.currentReusableFlow,
+        currentObject: {
+          ...state.currentObject,
           testSteps: payload,
         },
         loading: false,
       };
     case ADD_REUSABLE_STEP:
       const editedStep = [
-        ...[...state.currentReusableFlow.testSteps].map((step) => {
+        ...[...state.currentObject.testSteps].map((step) => {
           return step.step >= payload.step
             ? { ...step, step: step.step + 1 }
             : step;
@@ -86,14 +86,14 @@ const objectBankReducer = (state = initState, { type, payload }) => {
 
       return {
         ...state,
-        currentReusableFlow: {
-          ...state.currentReusableFlow,
+        currentObject: {
+          ...state.currentObject,
           testSteps: orderedStepProcess,
         },
         loading: false,
       };
     case DELETE_REUSABLE_STEP:
-      const deletedStep = [...state.currentReusableFlow.testSteps]
+      const deletedStep = [...state.currentObject.testSteps]
         .filter((step) => {
           return step.id !== payload.testStepId;
         })
@@ -103,8 +103,8 @@ const objectBankReducer = (state = initState, { type, payload }) => {
 
       return {
         ...state,
-        currentReusableFlow: {
-          ...state.currentReusableFlow,
+        currentObject: {
+          ...state.currentObject,
           testSteps: deletedStep,
         },
         loading: false,

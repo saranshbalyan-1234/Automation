@@ -4,6 +4,7 @@ import {
   updateTestObject,
   deleteTestObject,
   getAllTestObject,
+  getTestObjectDetailsById,
 } from "../../Controllers/TestCase/TestObjectController.js";
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
@@ -23,5 +24,10 @@ Router.get(
   "/project/:projectId",
   validatePermission("testcase", "view"),
   getAllTestObject
+);
+Router.get(
+  "/:testObjectId/details",
+  validatePermission("Team & Role", "add"),
+  getTestObjectDetailsById
 );
 export default Router;

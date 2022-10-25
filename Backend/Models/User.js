@@ -74,6 +74,12 @@ export default (sequelize, DataTypes) => {
     constraints: false,
   });
 
+  sequelize.models.testObjects.hasMany(sequelize.models.objectLocators, {
+    foreignKey: "testObjectId",
+    as: "locators",
+    constraints: false,
+  });
+
   sequelize.models.projects.hasMany(sequelize.models.userProjects, {
     foreignKey: "projectId",
     as: "members",

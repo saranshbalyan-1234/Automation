@@ -13,7 +13,8 @@ import Project from "../Models/Project/Project.js";
 import UserProject from "../Models/Project/UserProject.js";
 import TestCase from "../Models/TestCase/TestCase.js";
 import ActionEvent from "../Models/Global/ActionEvent.js";
-import TestObject from "../Models/TestCase/TestObject.js";
+import TestObject from "../Models/TestCase/TestObject/TestObject.js";
+import ObjectLocator from "../Models/TestCase/TestObject/ObjectLocator.js";
 import TestParameter from "../Models/TestCase/TestParameter.js";
 import TestStep from "../Models/TestCase/TestStep.js";
 import TestProcess from "../Models/TestCase/TestProcess.js";
@@ -62,6 +63,7 @@ db.projects = Project(sequelize, DataTypes);
 db.roles = Role(sequelize, DataTypes);
 db.testParameters = TestParameter(sequelize, DataTypes);
 db.testObjects = TestObject(sequelize, DataTypes);
+db.ObjectLocators = ObjectLocator(sequelize, DataTypes);
 db.testSteps = TestStep(sequelize, DataTypes);
 db.testCases = TestCase(sequelize, DataTypes);
 db.testProcess = TestProcess(sequelize, DataTypes);
@@ -74,8 +76,9 @@ db.customers.schema("Main").sync({ force: false, alter: true });
 db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
-// db.testObjects
-//   .schema("saranshbalyan123gmailcom")
-//   .sync({ force: true, alter: true });
+// db.ObjectLocators.schema("saranshbalyan123gmailcom").sync({
+//   force: true,
+//   alter: true,
+// });
 
 export default db;

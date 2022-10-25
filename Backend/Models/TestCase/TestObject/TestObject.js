@@ -7,19 +7,8 @@ export default (sequelize, DataTypes) => {
         notNull: true,
       },
     },
-    type: {
+    description: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: true,
-      },
-    },
-    locator: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: true,
-      },
     },
     projectId: {
       type: DataTypes.INTEGER,

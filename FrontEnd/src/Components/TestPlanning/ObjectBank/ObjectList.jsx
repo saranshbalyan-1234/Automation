@@ -6,9 +6,12 @@ import AddEditObjectModal from "./AddEditObjectModal";
 import UserAvatar from "../../Common/Avatar";
 import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
-import { getTestObjectByProject } from "../../../Redux/Actions/TestPlanning/testObject";
+import {
+  getTestObjectByProject,
+  deleteObject,
+} from "../../../Redux/Actions/TestPlanning/testObject";
 export const ObjectList = ({
-  onDelete,
+  deleteObject,
   loading,
   currentProjectId,
   objectList,
@@ -19,7 +22,7 @@ export const ObjectList = ({
   }, [currentProjectId]);
 
   const navigate = useNavigate();
-  const [addEditModal, setAddEditModal] = useState(false);
+  const [addEditObjectModal, setAddEditObjectModal] = useState(false);
 
   const columns = [
     {
@@ -51,7 +54,7 @@ export const ObjectList = ({
             title={`Are you sure to delete this Object?`}
             onConfirm={async (e) => {
               e.stopPropagation();
-              await onDelete(record.id);
+              await deleteObject(record.id);
             }}
             okText="Yes, Delete"
             cancelText="No"
@@ -83,7 +86,7 @@ export const ObjectList = ({
             type="primary"
             ghost
             onClick={() => {
-              setAddEditModal(true);
+              setAddEditObjectModal(true);
             }}
           >
             New Object
@@ -92,6 +95,7 @@ export const ObjectList = ({
         <Table
           columns={columns}
           dataSource={objectList}
+          rowClassName="pointer"
           onRow={(record, rowIndex) => {
             return {
               onClick: () => {
@@ -100,10 +104,10 @@ export const ObjectList = ({
             };
           }}
         />
-        {addEditModal && (
+        {addEditObjectModal && (
           <AddEditObjectModal
-            visible={addEditModal}
-            setVisible={setAddEditModal}
+            visible={addEditObjectModal}
+            setVisible={setAddEditObjectModal}
             loading={loading}
           />
         )}
@@ -117,6 +121,6 @@ const mapStateToProps = (state) => ({
   objectList: state.objectBank.data,
   loading: state.objectBank.loading,
 });
-const mapDispatchToProps = { getTestObjectByProject };
+const mapDispatchToProps = { getTestObjectByProject, deleteObject };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ObjectList);
