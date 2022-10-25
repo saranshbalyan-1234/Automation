@@ -3,20 +3,25 @@ import {
   saveTestObject,
   updateTestObject,
   deleteTestObject,
+  getAllTestObject,
 } from "../../Controllers/TestCase/TestObjectController.js";
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
-Router.post("/", validatePermission("Team & Role", "add"), saveTestObject);
+Router.post("/", validatePermission("testcase", "add"), saveTestObject);
 Router.put(
   "/:testObjectId",
-  validatePermission("Team & Role", "add"),
+  validatePermission("testcase", "edit"),
   updateTestObject
 );
 Router.delete(
   "/:testObjectId",
-  validatePermission("Team & Role", "add"),
+  validatePermission("testcase", "delete"),
   deleteTestObject
 );
-
+Router.get(
+  "/project/:projectId",
+  validatePermission("testcase", "view"),
+  getAllTestObject
+);
 export default Router;

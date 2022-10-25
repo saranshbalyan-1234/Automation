@@ -1,7 +1,8 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-
+import { projectByIdValidation } from "../../Utils/Validations/project.js";
 const TestObject = db.testObjects;
+const User = db.users;
 
 const saveTestObject = async (req, res) => {
   /*  #swagger.tags = ["Test Object"] 
@@ -76,4 +77,34 @@ const deleteTestObject = async (req, res) => {
   }
 };
 
-export { saveTestObject, updateTestObject, deleteTestObject };
+const getAllTestObject = async (req, res) => {
+  /*  #swagger.tags = ["Test Ovject"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const projectId = req.params.projectId;
+    const { error } = projectByIdValidation.validate({ projectId });
+    if (error) throw new Error(error.details[0].message);
+
+    const testObjects = await TestObject.schema(req.database).findAll({
+      where: {
+        projectId,
+      },
+      // attributes: ["id", "name", "updatedAt"],
+      include: [
+        {
+          model: User.schema(req.database),
+          as: "createdBy",
+          attributes: ["id", "name", "email", "active"],
+        },
+      ],
+    });
+
+    return res.status(200).json(testObjects);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+export { getAllTestObject, saveTestObject, updateTestObject, deleteTestObject };

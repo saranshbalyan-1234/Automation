@@ -11,6 +11,7 @@ import Support from "./Views/Support";
 import Project from "./Components/Project";
 import TestCase from "./Components/TestPlanning/TestCase";
 import ReusableFlow from "./Components/TestPlanning/ReusableFlow";
+import ObjectBank from "./Components/TestPlanning/ObjectBank";
 function Routess({ user }) {
   const location = useLocation();
   return user ? (
@@ -29,6 +30,11 @@ function Routess({ user }) {
           exact
           path="/testPlanning/reusableFlow/*"
           element={<ReusableFlow />}
+        ></Route>
+        <Route
+          exact
+          path="/testPlanning/objectBank/*"
+          element={<ObjectBank />}
         ></Route>
         <Route
           exact

@@ -23,7 +23,8 @@ const getAllActionEvent = async (req, res) => {
   */
   try {
     const data = await ActionEvent.schema("Main").findAll({
-      attributes: ["name"],
+      // attributes: ["name",],
+      order: [["name", "ASC"]],
     });
     return res.status(200).json(data);
   } catch (error) {

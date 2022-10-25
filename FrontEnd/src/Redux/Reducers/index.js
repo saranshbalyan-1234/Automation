@@ -5,6 +5,7 @@ import roleReducer from "./roleReducer";
 import projectReducer from "./projectReducer";
 import testCaseReducer from "./TestPlanning/testCaseReducer";
 import reusableFlowReducer from "./TestPlanning/reusableFlowReducer";
+import objectBankReducer from "./TestPlanning/objectBankReducer";
 export default combineReducers({
   auth: authReducer,
   team: teamReducer,
@@ -12,4 +13,5 @@ export default combineReducers({
   projects: projectReducer,
   testCase: testCaseReducer,
   reusableFlow: reusableFlowReducer,
+  objectBank: objectBankReducer,
 });

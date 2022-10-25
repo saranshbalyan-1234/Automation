@@ -7,6 +7,21 @@ export default (sequelize, DataTypes) => {
         notNull: true,
       },
     },
+    object: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
+      values: [0, 1],
+      allowNull: false,
+    },
+    parameter1: {
+      type: DataTypes.STRING,
+    },
+    parameter2: {
+      type: DataTypes.STRING,
+    },
+    parameter3: {
+      type: DataTypes.STRING,
+    },
   });
 
   return ActionEvent;
