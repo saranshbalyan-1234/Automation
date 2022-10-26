@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  CopyOutlined,
   DashboardOutlined,
-  AlertOutlined,
   FileOutlined,
   BankOutlined,
 } from "@ant-design/icons";

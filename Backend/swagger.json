@@ -1285,6 +1285,147 @@
         ]
       }
     },
+    "/testobject/locator/{locatorId}": {
+      "delete": {
+        "tags": [
+          "Test Object"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "locatorId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/testobject/project/{projectId}": {
+      "get": {
+        "tags": [
+          "Test Ovject"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/testobject/{testObjectId}/details": {
+      "get": {
+        "tags": [
+          "Test Object"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "testObjectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/testobject/{testObjectId}/locator": {
+      "get": {
+        "tags": [
+          "Test Object"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "testObjectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/testobject/locator": {
+      "post": {
+        "tags": [
+          "Test Object"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
     "/teststep/": {
       "post": {
         "tags": [
@@ -1299,6 +1440,9 @@
               "type": "object",
               "properties": {
                 "testProcessId": {
+                  "example": "any"
+                },
+                "reusableFlowId": {
                   "example": "any"
                 },
                 "step": {
@@ -1560,6 +1704,208 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/reusableFlow/": {
+      "post": {
+        "tags": [
+          "Test Case"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/reusableFlow/{reusableFlowId}": {
+      "put": {
+        "tags": [
+          "Test Case"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "reusableFlowId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Test Case"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "reusableFlowId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/reusableFlow/{reusableFlowId}/details": {
+      "get": {
+        "tags": [
+          "Test Case"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "reusableFlowId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/reusableFlow/project/{projectId}": {
+      "get": {
+        "tags": [
+          "Test Case"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/reusableFlow/{reusableFlowId}/teststeps": {
+      "get": {
+        "tags": [
+          "Test Case"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "reusableFlowId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/dashboard/": {
+      "get": {
+        "tags": [
+          "Global"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         },
         "security": [

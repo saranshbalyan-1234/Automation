@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Button, Spin, Checkbox, Select, Input, Form } from "antd";
+import React from "react";
+import { Modal, Button, Spin, Select, Input, Form } from "antd";
 import { addObjectLocator } from "../../Redux/Actions/testObject";
 import { connect } from "react-redux";
-import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import locatorTypes from "./locatorTypes";
 const { Option } = Select;
 const AddLocatorsModal = ({
