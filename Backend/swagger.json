@@ -1320,7 +1320,7 @@
     "/testobject/project/{projectId}": {
       "get": {
         "tags": [
-          "Test Ovject"
+          "Test Object"
         ],
         "description": "",
         "parameters": [
@@ -1899,7 +1899,7 @@
     "/dashboard/": {
       "get": {
         "tags": [
-          "Global"
+          "Dashboard"
         ],
         "description": "",
         "parameters": [],

@@ -6,7 +6,7 @@ const ReusableFlow = db.reusableFlows;
 const TestObject = db.testObjects;
 const UserProject = db.userProjects;
 const dashboard = async (req, res) => {
-  /*  #swagger.tags = ["Global"] 
+  /*  #swagger.tags = ["Dashboard"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {

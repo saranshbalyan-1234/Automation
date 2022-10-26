@@ -111,7 +111,7 @@ const deleteTestObject = async (req, res) => {
 };
 
 const getAllTestObject = async (req, res) => {
-  /*  #swagger.tags = ["Test Ovject"] 
+  /*  #swagger.tags = ["Test Object"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
