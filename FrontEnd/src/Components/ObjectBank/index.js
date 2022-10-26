@@ -5,7 +5,7 @@ import {
   getTestObjectByProject,
   deleteObject,
   saveObject,
-} from "../../../Redux/Actions/TestPlanning/testObject";
+} from "../../Redux/Actions/testObject";
 import { connect } from "react-redux";
 import List from "../Common/List";
 const ObjectBank = ({

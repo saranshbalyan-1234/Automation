@@ -11,7 +11,7 @@ import {
   ADD_REUSABLE_STEP,
   EDIT_STEP,
   DELETE_REUSABLE_STEP,
-} from "../action-types";
+} from "../Actions/action-types";
 
 export const getReusableFlowByProject = (payload) => {
   return async (dispatch, getState) => {

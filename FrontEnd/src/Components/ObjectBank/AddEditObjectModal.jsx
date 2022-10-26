@@ -1,9 +1,6 @@
 import React from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
-import {
-  saveObject,
-  editObject,
-} from "../../../Redux/Actions/TestPlanning/testObject";
+import { saveObject, editObject } from "../../Redux/Actions/testObject";
 import { connect } from "react-redux";
 const AddEditObjectModal = ({
   visible,

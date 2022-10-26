@@ -3,7 +3,7 @@ import { Table, Popconfirm, Button, Spin } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
 import AddEditModal from "./AddEditModal";
-import UserAvatar from "../../Common/Avatar";
+import UserAvatar from "./Avatar";
 import { useNavigate } from "react-router-dom";
 export const List = ({
   onDelete,
@@ -91,7 +91,7 @@ export const List = ({
           onRow={(record, rowIndex) => {
             return {
               onClick: () => {
-                navigate(`/TestPlanning/${link}/${record.id}/details`);
+                navigate(`/${link}/${record.id}/details`);
               },
             };
           }}

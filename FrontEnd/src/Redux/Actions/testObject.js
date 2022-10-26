@@ -13,7 +13,7 @@ import {
   GET_OBJECT_DETAILS_BY_ID,
   CREATE_TEST_OBJECT,
   UPDATE_TEST_OBJECT,
-} from "../action-types";
+} from "./action-types";
 
 export const getTestObjectByProject = (payload) => {
   return async (dispatch, getState) => {

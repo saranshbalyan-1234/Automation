@@ -4,38 +4,33 @@ import { PlusOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  getTestObjectDetailsById,
-  editObject,
-} from "../../../Redux/Actions/TestPlanning/testObject";
-import ActivityLog from "../Common/ActivityLog";
+  getTestCaseDetailsById,
+  editTestCase,
+} from "../../Redux/Actions/testCase";
+import TestProcess from "./TestProcess";
 import Details from "../Common/Details";
-const ObjectBankTabs = ({
-  getTestObjectDetailsById,
-  locators,
-  currentObject,
+import ActivityLog from "../Common/ActivityLog";
+function TestCaseTabs({
+  getTestCaseDetailsById,
+  currentTestCase,
   loading,
-  editObject,
-}) => {
-  const { tab, testObjectId } = useParams();
+  editTestCase,
+}) {
+  const { tab, testCaseId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
 
   const handleActiveTab = (value) => {
-    navigate(`/TestPlanning/objectBank/${testObjectId}/${value}`);
+    navigate(`/TestCase/${testCaseId}/${value}`);
   };
 
   useEffect(() => {
     setActiveTab(tab);
   }, [tab]);
-  useEffect(() => {
-    // if (tab == "teststeps") {
-    //   getReusableFlowStepsById(testObjectId);
-    // }
-  }, [testObjectId]);
 
   useEffect(() => {
-    getTestObjectDetailsById(testObjectId);
-  }, [testObjectId]);
+    getTestCaseDetailsById(testCaseId);
+  }, [testCaseId]);
 
   const renderButton = () => {
     if (activeTab === "roles")
@@ -64,20 +59,14 @@ const ObjectBankTabs = ({
             {activeTab === "details" && (
               <Details
                 loading={loading}
-                details={currentObject}
-                name="Object"
-                onEdit={editObject}
+                details={currentTestCase}
+                name="Test Case"
+                onEdit={editTestCase}
               />
             )}
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Locators" key="locators">
-            {/* {activeTab === "locators" && (
-              <TestStep
-                testObjectId={testObjectId}
-                deleteStep={deleteStep}
-                testSteps={testSteps}
-              />
-            )} */}
+          <Tabs.TabPane tab="Test Steps" key="teststeps">
+            {activeTab === "teststeps" && <TestProcess />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Activity Log" key="activitylog">
             <ActivityLog />
@@ -87,16 +76,12 @@ const ObjectBankTabs = ({
       </div>
     </>
   );
-};
+}
 const mapStateToProps = (state) => ({
-  locators: state.objectBank.currentObject.locators,
-  currentObject: state.objectBank.currentObject,
-  loading: state.objectBank.loading,
+  loading: state.testCase.loading,
+  currentTestCase: state.testCase.currentTestCase,
 });
 
-const mapDispatchToProps = {
-  getTestObjectDetailsById,
-  editObject,
-};
+const mapDispatchToProps = { getTestCaseDetailsById, editTestCase };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ObjectBankTabs);
+export default connect(mapStateToProps, mapDispatchToProps)(TestCaseTabs);

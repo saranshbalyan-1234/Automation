@@ -8,7 +8,7 @@ import {
   getTestCaseByProject,
   deleteTestCase,
   saveTestCase,
-} from "../../../Redux/Actions/TestPlanning/testCase";
+} from "../../Redux/Actions/testCase";
 const TestCase = ({
   getTestCaseByProject,
   deleteTestCase,

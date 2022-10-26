@@ -14,7 +14,7 @@ import {
   ADD_STEP,
   EDIT_STEP,
   DELETE_STEP,
-} from "../action-types";
+} from "../Actions/action-types";
 
 export const getTestCaseByProject = (payload) => {
   return async (dispatch, getState) => {

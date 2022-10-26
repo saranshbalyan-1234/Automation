@@ -30,27 +30,12 @@ export default function Sidebar({ collapsed, setCollapsed }) {
   const items = [
     { label: "Dashboard", key: "Dashboard", icon: <DashboardOutlined /> }, // remember to pass the key prop
 
+    { label: "Test Case", key: "TestCase", icon: <FileOutlined /> },
+    { label: " Object Bank", key: "ObjectBank", icon: <BankOutlined /> },
     {
-      label: "Test Planning",
-      key: "TestPlanning",
-      icon: <AlertOutlined />,
-
-      children: [
-        { label: "Test Case", key: "TestCase", icon: <FileOutlined /> },
-        { label: " Object Bank", key: "ObjectBank", icon: <BankOutlined /> },
-        {
-          label: "Reusable Flow",
-          key: "ReusableFlow",
-          icon: <VscDebugRestart />,
-        },
-      ],
-    },
-    {
-      label: "Test Execution",
-      key: "TestExecution",
-      icon: <CopyOutlined />,
-
-      children: [],
+      label: "Reusable Flow",
+      key: "ReusableFlow",
+      icon: <VscDebugRestart />,
     },
   ];
 

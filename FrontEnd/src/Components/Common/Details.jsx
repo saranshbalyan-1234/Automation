@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Typography, Card, Button, Spin, Popconfirm, Tag } from "antd";
 import moment from "moment";
 import { EditOutlined } from "@ant-design/icons";
-import UserAvatar from "../../Common/Avatar";
+import UserAvatar from "./Avatar";
 import AddEditModal from "./AddEditModal";
 const { Title } = Typography;
 const { Meta } = Card;

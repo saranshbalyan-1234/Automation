@@ -3,9 +3,9 @@ import { combineReducers } from "redux";
 import teamReducer from "./teamReducer";
 import roleReducer from "./roleReducer";
 import projectReducer from "./projectReducer";
-import testCaseReducer from "./TestPlanning/testCaseReducer";
-import reusableFlowReducer from "./TestPlanning/reusableFlowReducer";
-import objectBankReducer from "./TestPlanning/objectBankReducer";
+import testCaseReducer from "./testCaseReducer";
+import reusableFlowReducer from "./reusableFlowReducer";
+import objectBankReducer from "./objectBankReducer";
 export default combineReducers({
   auth: authReducer,
   team: teamReducer,

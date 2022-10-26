@@ -12,7 +12,7 @@ import {
   DELETE_PROCESS,
   ADD_STEP,
   DELETE_STEP,
-} from "../../Actions/action-types";
+} from "../Actions/action-types";
 import { orderBy } from "lodash";
 const initState = {
   loading: false,

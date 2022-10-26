@@ -4,7 +4,7 @@ import {
   getTestCaseStepsById,
   deleteProcess,
   deleteStep,
-} from "../../../../Redux/Actions/TestPlanning/testCase";
+} from "../../../Redux/Actions/testCase";
 import { connect } from "react-redux";
 import ProcessMenu from "./ProcessMenu";
 import { useParams } from "react-router-dom";

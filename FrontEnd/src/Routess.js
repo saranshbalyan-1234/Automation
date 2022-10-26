@@ -9,9 +9,9 @@ import Setting from "./Components/Settings";
 import Dashboard from "./Components/Dashboard";
 import Support from "./Views/Support";
 import Project from "./Components/Project";
-import TestCase from "./Components/TestPlanning/TestCase";
-import ReusableFlow from "./Components/TestPlanning/ReusableFlow";
-import ObjectBank from "./Components/TestPlanning/ObjectBank";
+import TestCase from "./Components/TestCase";
+import ReusableFlow from "./Components/ReusableFlow";
+import ObjectBank from "./Components/ObjectBank";
 function Routess({ user }) {
   const location = useLocation();
   return user ? (
@@ -21,21 +21,9 @@ function Routess({ user }) {
         <Route exact path="/support" element={<Support />}></Route>
         <Route exact path="/settings/:tab" element={<Setting />}></Route>
         <Route exact path="/project/*" element={<Project />}></Route>
-        <Route
-          exact
-          path="/testPlanning/testCase/*"
-          element={<TestCase />}
-        ></Route>
-        <Route
-          exact
-          path="/testPlanning/reusableFlow/*"
-          element={<ReusableFlow />}
-        ></Route>
-        <Route
-          exact
-          path="/testPlanning/objectBank/*"
-          element={<ObjectBank />}
-        ></Route>
+        <Route exact path="/testCase/*" element={<TestCase />}></Route>
+        <Route exact path="/reusableFlow/*" element={<ReusableFlow />}></Route>
+        <Route exact path="/objectBank/*" element={<ObjectBank />}></Route>
         <Route
           exact
           path="*"

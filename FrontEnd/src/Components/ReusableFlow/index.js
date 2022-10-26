@@ -8,7 +8,7 @@ import {
   deleteReusableFlow,
   getReusableFlowByProject,
   saveReusableFlow,
-} from "../../../Redux/Actions/TestPlanning/reusableFlow";
+} from "../../Redux/Actions/reusableFlow";
 const ReusableFlow = ({
   loading,
   getReusableFlowByProject,
