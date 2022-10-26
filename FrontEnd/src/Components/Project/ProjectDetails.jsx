@@ -32,7 +32,7 @@ export const ProjectDetails = ({
   const [addProjectMemberModal, setAddProjectMemberModal] = useState(false);
   const [editProjectModal, setEditProjectModal] = useState(false);
   useEffect(() => {
-    getProjectById(id);
+    id && getProjectById(id);
   }, [id]);
 
   const formatDates = (startDate, endDate) => {

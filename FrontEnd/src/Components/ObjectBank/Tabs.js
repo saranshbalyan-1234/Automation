@@ -9,9 +9,10 @@ import {
 } from "../../Redux/Actions/testObject";
 import ActivityLog from "../Common/ActivityLog";
 import Details from "../Common/Details";
+import Locators from "./Locators";
+import AddLocatorsModal from "./AddLocatorsModal";
 const ObjectBankTabs = ({
   getTestObjectDetailsById,
-  locators,
   currentObject,
   loading,
   editObject,
@@ -19,6 +20,7 @@ const ObjectBankTabs = ({
   const { tab, testObjectId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
+  const [addLocatorModal, setAddLocatorModal] = useState(false);
 
   const handleActiveTab = (value) => {
     navigate(`/objectBank/${testObjectId}/${value}`);
@@ -27,28 +29,23 @@ const ObjectBankTabs = ({
   useEffect(() => {
     setActiveTab(tab);
   }, [tab]);
-  useEffect(() => {
-    // if (tab == "teststeps") {
-    //   getReusableFlowStepsById(testObjectId);
-    // }
-  }, [testObjectId]);
 
   useEffect(() => {
-    getTestObjectDetailsById(testObjectId);
+    testObjectId && getTestObjectDetailsById(testObjectId);
   }, [testObjectId]);
 
   const renderButton = () => {
-    if (activeTab === "roles")
+    if (activeTab === "locators")
       return (
         <Button
           type="primary"
           ghost
           style={{ position: "absolute", right: 0, top: 10 }}
-          //   onClick={() => {
-          //     setAddRoleModal(true);
-          //   }}
+          onClick={() => {
+            setAddLocatorModal(true);
+          }}
         >
-          <PlusOutlined /> Add Role
+          <PlusOutlined /> Add Locator
         </Button>
       );
   };
@@ -71,13 +68,7 @@ const ObjectBankTabs = ({
             )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Locators" key="locators">
-            {/* {activeTab === "locators" && (
-              <TestStep
-                testObjectId={testObjectId}
-                deleteStep={deleteStep}
-                testSteps={testSteps}
-              />
-            )} */}
+            <Locators />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Activity Log" key="activitylog">
             <ActivityLog />
@@ -85,11 +76,16 @@ const ObjectBankTabs = ({
         </Tabs>
         {renderButton()}
       </div>
+      {addLocatorModal && (
+        <AddLocatorsModal
+          visible={addLocatorModal}
+          setVisible={setAddLocatorModal}
+        />
+      )}
     </>
   );
 };
 const mapStateToProps = (state) => ({
-  locators: state.objectBank.currentObject.locators,
   currentObject: state.objectBank.currentObject,
   loading: state.objectBank.loading,
 });

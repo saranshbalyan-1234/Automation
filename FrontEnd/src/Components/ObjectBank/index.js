@@ -17,7 +17,7 @@ const ObjectBank = ({
   saveObject,
 }) => {
   useEffect(() => {
-    getTestObjectByProject();
+    currentProjectId && getTestObjectByProject();
   }, [currentProjectId]);
 
   return (

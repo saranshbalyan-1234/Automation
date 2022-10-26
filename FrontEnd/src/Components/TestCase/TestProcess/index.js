@@ -24,7 +24,7 @@ const TestProcess = ({
   const { testCaseId } = useParams();
 
   useEffect(() => {
-    getTestCaseStepsById(testCaseId);
+    testCaseId && getTestCaseStepsById(testCaseId);
   }, [testCaseId]);
 
   return (

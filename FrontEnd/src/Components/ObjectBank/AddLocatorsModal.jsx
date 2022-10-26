@@ -1,0 +1,100 @@
+import React, { useState, useEffect } from "react";
+import { Modal, Button, Spin, Checkbox, Select, Input, Form } from "antd";
+import { addObjectLocator } from "../../Redux/Actions/testObject";
+import { connect } from "react-redux";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import locatorTypes from "./locatorTypes";
+const { Option } = Select;
+const AddLocatorsModal = ({
+  visible,
+  setVisible,
+  loading,
+  addObjectLocator,
+  currentObjectId,
+}) => {
+  const onSubmit = async (data) => {
+    console.log("saransh");
+    let result = false;
+    result = await addObjectLocator({ ...data, testObjectId: currentObjectId });
+    result && setVisible(false);
+  };
+
+  return (
+    <Modal
+      title="Add Locator"
+      visible={visible}
+      footer={false}
+      onCancel={() => {
+        setVisible(false);
+      }}
+      closable={false}
+      width={550}
+    >
+      <Spin spinning={loading}>
+        <Form
+          onFinish={onSubmit}
+          labelCol={{ span: 7 }}
+          wrapperCol={{ span: 16 }}
+        >
+          <Form.Item
+            name="type"
+            label="Locator Type"
+            rules={[
+              {
+                required: true,
+                message: "Please select locator type!",
+              },
+            ]}
+          >
+            <Select>
+              {locatorTypes.map((el, i) => {
+                return (
+                  <Option value={el} key={i}>
+                    {el}
+                  </Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="locator"
+            label="Locator"
+            rules={[
+              {
+                required: true,
+                message: "Please input Locator value!",
+              },
+            ]}
+          >
+            <Input name="locator" />
+          </Form.Item>
+
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              type="primary"
+              style={{ marginRight: "20px" }}
+              htmlType="submit"
+            >
+              Submit
+            </Button>
+            <Button
+              style={{ marginRight: "20px" }}
+              onClick={() => {
+                setVisible(false);
+              }}
+            >
+              Cancel
+            </Button>
+          </div>
+        </Form>
+      </Spin>
+    </Modal>
+  );
+};
+const mapStateToProps = (state) => ({
+  loading: state.objectBank.loading,
+  currentObjectId: state.objectBank.currentObject.id,
+});
+const mapDispatchToProps = { addObjectLocator };
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddLocatorsModal);

@@ -18,7 +18,7 @@ const ReusableFlow = ({
   saveReusableFlow,
 }) => {
   useEffect(() => {
-    getReusableFlowByProject();
+    currentProjectId && getReusableFlowByProject();
   }, [currentProjectId]);
 
   return (

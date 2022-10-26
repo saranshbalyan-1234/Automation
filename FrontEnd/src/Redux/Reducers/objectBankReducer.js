@@ -2,19 +2,18 @@ import {
   GET_ALL_TEST_OBJECT,
   CREATE_TEST_OBJECT,
   UPDATE_TEST_OBJECT,
-  GET_REUSABLE_FLOW_STEPS_BY_ID,
-  ADD_REUSABLE_STEP,
-  DELETE_REUSABLE_STEP,
   OBJECT_BANK_REQUEST,
   OBJECT_BANK_FAILURE,
   GET_OBJECT_DETAILS_BY_ID,
   DELETE_TEST_OBJECT,
+  GET_OBJECT_LOCATORS,
+  ADD_OBJECT_LOCATOR,
+  DELETE_OBJECT_LOCATOR,
 } from "../Actions/action-types";
-import { orderBy } from "lodash";
 const initState = {
   loading: false,
   data: [],
-  currentObject: {},
+  currentObject: { locators: [] },
 };
 
 const objectBankReducer = (state = initState, { type, payload }) => {
@@ -60,52 +59,39 @@ const objectBankReducer = (state = initState, { type, payload }) => {
     case GET_OBJECT_DETAILS_BY_ID:
       return {
         ...state,
-        currentObject: { ...payload, testSteps: [] },
+        currentObject: { ...payload, locators: [] },
         loading: false,
       };
-    case GET_REUSABLE_FLOW_STEPS_BY_ID:
+    case GET_OBJECT_LOCATORS:
       return {
         ...state,
         currentObject: {
           ...state.currentObject,
-          testSteps: payload,
+          locators: payload,
         },
         loading: false,
       };
-    case ADD_REUSABLE_STEP:
-      const editedStep = [
-        ...[...state.currentObject.testSteps].map((step) => {
-          return step.step >= payload.step
-            ? { ...step, step: step.step + 1 }
-            : step;
-        }),
-        payload,
-      ];
-
-      const orderedStepProcess = orderBy([...editedStep], ["step"], ["asc"]);
-
+    case ADD_OBJECT_LOCATOR:
       return {
         ...state,
         currentObject: {
           ...state.currentObject,
-          testSteps: orderedStepProcess,
+          locators: [...state.currentObject.locators, payload],
         },
         loading: false,
       };
-    case DELETE_REUSABLE_STEP:
-      const deletedStep = [...state.currentObject.testSteps]
-        .filter((step) => {
-          return step.id !== payload.testStepId;
-        })
-        .map((el) => {
-          return el.step > payload.step ? { ...el, step: el.step - 1 } : el;
-        });
+    case DELETE_OBJECT_LOCATOR:
+      const deletedLocator = [...state.currentObject.locators].filter(
+        (step) => {
+          return step.id !== payload;
+        }
+      );
 
       return {
         ...state,
         currentObject: {
           ...state.currentObject,
-          testSteps: deletedStep,
+          locators: deletedLocator,
         },
         loading: false,
       };

@@ -24,7 +24,7 @@ const saveTestObject = async (req, res) => {
   }
 };
 const getTestObjectDetailsById = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
+  /*  #swagger.tags = ["Test Object"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -43,11 +43,6 @@ const getTestObjectDetailsById = async (req, res) => {
           model: User.schema(req.database),
           as: "createdBy",
           attributes: ["id", "name", "email", "active"],
-        },
-        {
-          model: ObjectLocator.schema(req.database),
-          as: "locators",
-          // attributes: ["id", "name", "email", "active"],
         },
       ],
     });
@@ -144,6 +139,69 @@ const getAllTestObject = async (req, res) => {
     getError(err, res);
   }
 };
+const getObjectLocatorsByObjectId = async (req, res) => {
+  /*  #swagger.tags = ["Test Object"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const testObjectId = req.params.testObjectId;
+    // const { error } = projectByIdValidation.validate({ projectId });
+    // if (error) throw new Error(error.details[0].message);
+
+    const locators = await ObjectLocator.schema(req.database).findAll({
+      where: {
+        testObjectId,
+      },
+    });
+
+    return res.status(200).json(locators);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+const saveObjectLocator = async (req, res) => {
+  /*  #swagger.tags = ["Test Object"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    // const { error } = nameValidation.validate(req.body);
+    // if (error) throw new Error(error.details[0].message);
+
+    const locator = await ObjectLocator.schema(req.database).create(req.body);
+    return res.status(200).json(locator);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+const deleteObjectLocator = async (req, res) => {
+  /*  #swagger.tags = ["Test Object"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const locatorId = req.params.locatorId;
+    // const { error } = testCaseIdValidation.validate({ testCaseId });
+    // if (error) throw new Error(error.details[0].message);
+
+    const deletedLocator = await ObjectLocator.schema(req.database).destroy({
+      where: { id: locatorId },
+    });
+
+    if (deletedLocator > 0) {
+      return res
+        .status(200)
+        .json({ message: "ObjectLocator deleted successfully" });
+    } else {
+      return res.status(400).json({ error: "Record not found" });
+    }
+  } catch (err) {
+    getError(err, res);
+  }
+};
 
 export {
   getAllTestObject,
@@ -151,4 +209,7 @@ export {
   saveTestObject,
   updateTestObject,
   deleteTestObject,
+  getObjectLocatorsByObjectId,
+  saveObjectLocator,
+  deleteObjectLocator,
 };

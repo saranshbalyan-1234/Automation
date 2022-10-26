@@ -34,13 +34,13 @@ function ReusableFlowTabs({
     setActiveTab(tab);
   }, [tab]);
   useEffect(() => {
-    if (tab == "teststeps") {
-      getReusableFlowStepsById(reusableFlowId);
+    if (tab === "teststeps") {
+      reusableFlowId && getReusableFlowStepsById(reusableFlowId);
     }
   }, [reusableFlowId]);
 
   useEffect(() => {
-    getReusableFlowDetailsById(reusableFlowId);
+    reusableFlowId && getReusableFlowDetailsById(reusableFlowId);
   }, [reusableFlowId]);
 
   const renderButton = () => {

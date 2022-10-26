@@ -29,7 +29,7 @@ function TestCaseTabs({
   }, [tab]);
 
   useEffect(() => {
-    getTestCaseDetailsById(testCaseId);
+    testCaseId && getTestCaseDetailsById(testCaseId);
   }, [testCaseId]);
 
   const renderButton = () => {
