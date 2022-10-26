@@ -5,18 +5,16 @@ import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   getTestObjectDetailsById,
-  // deleteStep,
-  // getReusableFlowStepsById,
+  editObject,
 } from "../../../Redux/Actions/TestPlanning/testObject";
 import ActivityLog from "../Common/ActivityLog";
-import ObjectDetails from "./ObjectDetails";
+import Details from "../Common/Details";
 const ObjectBankTabs = ({
   getTestObjectDetailsById,
-  getReusableFlowStepsById,
   locators,
-  deleteStep,
   currentObject,
   loading,
+  editObject,
 }) => {
   const { tab, testObjectId } = useParams();
   const navigate = useNavigate();
@@ -63,7 +61,14 @@ const ObjectBankTabs = ({
           onChange={handleActiveTab}
         >
           <Tabs.TabPane tab="Details" key="details">
-            {activeTab === "details" && <ObjectDetails />}
+            {activeTab === "details" && (
+              <Details
+                loading={loading}
+                details={currentObject}
+                name="Object"
+                onEdit={editObject}
+              />
+            )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Locators" key="locators">
             {/* {activeTab === "locators" && (
@@ -91,8 +96,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getTestObjectDetailsById,
-  // getReusableFlowStepsById,
-  // deleteStep,
+  editObject,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ObjectBankTabs);

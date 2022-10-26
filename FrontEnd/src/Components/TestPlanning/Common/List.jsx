@@ -5,7 +5,14 @@ import moment from "moment";
 import AddEditModal from "./AddEditModal";
 import UserAvatar from "../../Common/Avatar";
 import { useNavigate } from "react-router-dom";
-export const List = ({ onDelete, loading, data, reusable = false }) => {
+export const List = ({
+  onDelete,
+  onSave = () => {},
+  loading,
+  data,
+  name,
+  link,
+}) => {
   const navigate = useNavigate();
   const [addEditModal, setAddEditModal] = useState(false);
 
@@ -36,9 +43,7 @@ export const List = ({ onDelete, loading, data, reusable = false }) => {
       render: (_, record) => (
         <div style={{ display: "flex", gap: 10 }}>
           <Popconfirm
-            title={`Are you sure to delete this ${
-              reusable ? "Reusable Flow" : "Test Case"
-            }?`}
+            title={`Are you sure to delete this ${name}?`}
             onConfirm={async (e) => {
               e.stopPropagation();
               await onDelete(record.id);
@@ -76,7 +81,7 @@ export const List = ({ onDelete, loading, data, reusable = false }) => {
               setAddEditModal(true);
             }}
           >
-            New {reusable ? "Reusable Flow" : "Test Case"}
+            New {name}
           </Button>
         </div>
         <Table
@@ -86,11 +91,7 @@ export const List = ({ onDelete, loading, data, reusable = false }) => {
           onRow={(record, rowIndex) => {
             return {
               onClick: () => {
-                navigate(
-                  `/TestPlanning/${reusable ? "ReusableFlow" : "TestCase"}/${
-                    record.id
-                  }/details`
-                );
+                navigate(`/TestPlanning/${link}/${record.id}/details`);
               },
             };
           }}
@@ -100,7 +101,8 @@ export const List = ({ onDelete, loading, data, reusable = false }) => {
             visible={addEditModal}
             setVisible={setAddEditModal}
             loading={loading}
-            reusable={reusable}
+            name={name}
+            onSave={onSave}
           />
         )}
       </Spin>

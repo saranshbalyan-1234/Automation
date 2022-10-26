@@ -8,6 +8,7 @@ import {
   getReusableFlowDetailsById,
   deleteStep,
   getReusableFlowStepsById,
+  editReusableFlow,
 } from "../../../Redux/Actions/TestPlanning/reusableFlow";
 import TestStep from "../Common/TestStep";
 import Details from "../Common/Details";
@@ -19,6 +20,7 @@ function ReusableFlowTabs({
   deleteStep,
   currentReusableFlow,
   loading,
+  editReusableFlow,
 }) {
   const { tab, reusableFlowId } = useParams();
   const navigate = useNavigate();
@@ -67,9 +69,10 @@ function ReusableFlowTabs({
           <Tabs.TabPane tab="Details" key="details">
             {activeTab === "details" && (
               <Details
-                reusable={true}
+                name="Reusable Flow"
                 details={currentReusableFlow}
                 loading={loading}
+                onEdit={editReusableFlow}
               />
             )}
           </Tabs.TabPane>
@@ -101,6 +104,7 @@ const mapDispatchToProps = {
   getReusableFlowDetailsById,
   getReusableFlowStepsById,
   deleteStep,
+  editReusableFlow,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReusableFlowTabs);

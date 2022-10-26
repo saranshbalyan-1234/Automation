@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import {
   getTestCaseByProject,
   deleteTestCase,
+  saveTestCase,
 } from "../../../Redux/Actions/TestPlanning/testCase";
 const TestCase = ({
   getTestCaseByProject,
@@ -14,6 +15,7 @@ const TestCase = ({
   currentProjectId,
   testCases,
   loading,
+  saveTestCase,
 }) => {
   useEffect(() => {
     getTestCaseByProject();
@@ -28,6 +30,9 @@ const TestCase = ({
               data={testCases}
               loading={loading}
               onDelete={deleteTestCase}
+              onSave={saveTestCase}
+              name="Test Case"
+              link="TestCase"
             />
           }
         />
@@ -42,6 +47,11 @@ const mapStateToProps = (state) => ({
   loading: state.testCase.loading,
 });
 
-const mapDispatchToProps = { getTestCaseByProject, deleteTestCase };
+const mapDispatchToProps = {
+  getTestCaseByProject,
+  deleteTestCase,
+
+  saveTestCase,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestCase);

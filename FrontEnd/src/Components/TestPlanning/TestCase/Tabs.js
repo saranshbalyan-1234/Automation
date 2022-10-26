@@ -3,11 +3,19 @@ import { Tabs, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import { getTestCaseDetailsById } from "../../../Redux/Actions/TestPlanning/testCase";
+import {
+  getTestCaseDetailsById,
+  editTestCase,
+} from "../../../Redux/Actions/TestPlanning/testCase";
 import TestProcess from "./TestProcess";
 import Details from "../Common/Details";
 import ActivityLog from "../Common/ActivityLog";
-function TestCaseTabs({ getTestCaseDetailsById, currentTestCase, loading }) {
+function TestCaseTabs({
+  getTestCaseDetailsById,
+  currentTestCase,
+  loading,
+  editTestCase,
+}) {
   const { tab, testCaseId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
@@ -49,7 +57,12 @@ function TestCaseTabs({ getTestCaseDetailsById, currentTestCase, loading }) {
         >
           <Tabs.TabPane tab="Details" key="details">
             {activeTab === "details" && (
-              <Details loading={loading} details={currentTestCase} />
+              <Details
+                loading={loading}
+                details={currentTestCase}
+                name="Test Case"
+                onEdit={editTestCase}
+              />
             )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Test Steps" key="teststeps">
@@ -69,6 +82,6 @@ const mapStateToProps = (state) => ({
   currentTestCase: state.testCase.currentTestCase,
 });
 
-const mapDispatchToProps = { getTestCaseDetailsById };
+const mapDispatchToProps = { getTestCaseDetailsById, editTestCase };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestCaseTabs);

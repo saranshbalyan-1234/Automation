@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import {
   deleteReusableFlow,
   getReusableFlowByProject,
+  saveReusableFlow,
 } from "../../../Redux/Actions/TestPlanning/reusableFlow";
 const ReusableFlow = ({
   loading,
@@ -14,6 +15,7 @@ const ReusableFlow = ({
   deleteReusableFlow,
   reusableFlow,
   currentProjectId,
+  saveReusableFlow,
 }) => {
   useEffect(() => {
     getReusableFlowByProject();
@@ -29,7 +31,9 @@ const ReusableFlow = ({
               data={reusableFlow}
               loading={loading}
               onDelete={deleteReusableFlow}
-              reusable={true}
+              name="Reusable Flow"
+              link="ReusableFlow"
+              onSave={saveReusableFlow}
             />
           }
         />
@@ -44,6 +48,10 @@ const mapStateToProps = (state) => ({
   loading: state.reusableFlow.loading,
 });
 
-const mapDispatchToProps = { getReusableFlowByProject, deleteReusableFlow };
+const mapDispatchToProps = {
+  getReusableFlowByProject,
+  deleteReusableFlow,
+  saveReusableFlow,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReusableFlow);

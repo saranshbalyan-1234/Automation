@@ -7,7 +7,7 @@ import UserAvatar from "../../Common/Avatar";
 import AddEditModal from "./AddEditModal";
 const { Title } = Typography;
 const { Meta } = Card;
-export const Details = ({ loading, details, reusable = false }) => {
+export const Details = ({ loading, details, name, onEdit = () => {} }) => {
   const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
 
@@ -26,9 +26,7 @@ export const Details = ({ loading, details, reusable = false }) => {
             <Meta
               title={
                 <Title style={{ textTransform: "capitalize" }} level={3}>
-                  {`${reusable ? "Reusable Flow:" : "Test Case:"} ${
-                    details.name
-                  }`}
+                  {`${name}: ${details.name}`}
                 </Title>
               }
               description={
@@ -57,7 +55,7 @@ export const Details = ({ loading, details, reusable = false }) => {
                 }}
               >
                 <EditOutlined />
-                Edit {reusable ? "Reusable Flow" : "Test Case"} Details
+                Edit {name} Details
               </Button>
             </div>
           </div>
@@ -113,7 +111,8 @@ export const Details = ({ loading, details, reusable = false }) => {
           editData={editData}
           setEditData={setEditData}
           edit={true}
-          reusable={reusable}
+          name={name}
+          onEdit={onEdit}
           loading={loading}
         />
       )}

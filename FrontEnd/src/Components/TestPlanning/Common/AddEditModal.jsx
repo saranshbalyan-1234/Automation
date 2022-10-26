@@ -1,57 +1,37 @@
 import React from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
-import {
-  saveTestCase,
-  editTestCase,
-} from "../../../Redux/Actions/TestPlanning/testCase";
-import {
-  saveReusableFlow,
-  editReusableFlow,
-} from "../../../Redux/Actions/TestPlanning/reusableFlow";
+
 import { connect } from "react-redux";
 
 const AddEditModal = ({
   visible,
   setVisible,
-  saveTestCase,
-  saveReusableFlow,
   currentProjectId,
   editData,
-  editTestCase,
-  editReusableFlow,
   setEditData,
   loading,
   edit = false,
-  reusable,
+  onSave,
+  onEdit,
+  name,
 }) => {
   const onSubmit = async (data) => {
     let result = false;
     if (edit) {
-      if (reusable) {
-        result = await editReusableFlow(data);
-      } else {
-        result = await editTestCase(data);
-      }
+      result = await onEdit(data);
       setEditData({});
     } else {
-      if (reusable) {
-        result = await saveReusableFlow({
-          ...data,
-          projectId: currentProjectId,
-        });
-      } else {
-        result = await saveTestCase({
-          ...data,
-          projectId: currentProjectId,
-        });
-      }
+      result = await onSave({
+        ...data,
+        projectId: currentProjectId,
+      });
     }
     result && setVisible(false);
   };
 
   return (
     <Modal
-      title={edit ? "Edit TestCase" : "Create New TestCase"}
+      title={edit ? `Edit ${name}` : `Create New ${name}`}
       visible={visible}
       footer={false}
       onCancel={() => {
@@ -61,7 +41,7 @@ const AddEditModal = ({
     >
       <Spin spinning={loading}>
         <Form
-          name="testCase"
+          name={name}
           onFinish={onSubmit}
           labelCol={{ span: 7 }}
           wrapperCol={{ span: 16 }}
@@ -111,11 +91,6 @@ const AddEditModal = ({
 const mapStateToProps = (state) => ({
   currentProjectId: state.projects.currentProject.id,
 });
-const mapDispatchToProps = {
-  saveTestCase,
-  editTestCase,
-  saveReusableFlow,
-  editReusableFlow,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditModal);
