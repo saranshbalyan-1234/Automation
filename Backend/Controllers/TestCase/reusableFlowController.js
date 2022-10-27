@@ -13,7 +13,7 @@ const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const ReusableFlow = db.reusableFlows;
 const saveReusableFlow = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
+  /*  #swagger.tags = ["Reusable Flow"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -33,7 +33,7 @@ const saveReusableFlow = async (req, res) => {
 };
 
 const updateReusableFlow = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
+  /*  #swagger.tags = ["Reusable Flow"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -65,7 +65,7 @@ const updateReusableFlow = async (req, res) => {
 };
 
 const getAllReusableFlow = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
+  /*  #swagger.tags = ["Reusable Flow"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -95,7 +95,7 @@ const getAllReusableFlow = async (req, res) => {
 };
 
 const deleteReusableFlow = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
+  /*  #swagger.tags = ["Reusable Flow"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -122,7 +122,7 @@ const deleteReusableFlow = async (req, res) => {
   }
 };
 const getReusableFlowDetailsById = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
+  /*  #swagger.tags = ["Reusable Flow"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -152,7 +152,7 @@ const getReusableFlowDetailsById = async (req, res) => {
 };
 
 const getTestStepByReusableFlow = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
+  /*  #swagger.tags = ["Reusable Flow"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 

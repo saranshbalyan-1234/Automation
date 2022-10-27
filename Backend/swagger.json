@@ -1040,6 +1040,106 @@
         ]
       }
     },
+    "/testcase/process": {
+      "post": {
+        "tags": [
+          "Test Case"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "testCaseId": {
+                  "example": "any"
+                },
+                "step": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/testcase/process/{processId}": {
+      "put": {
+        "tags": [
+          "Test Case"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "processId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Test Case"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "processId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
     "/testcase/{testCaseId}": {
       "put": {
         "tags": [
@@ -1613,110 +1713,10 @@
         ]
       }
     },
-    "/testProcess/": {
-      "post": {
-        "tags": [
-          "Test Process"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "testCaseId": {
-                  "example": "any"
-                },
-                "step": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/testProcess/{testProcessId}": {
-      "put": {
-        "tags": [
-          "Test Process"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "testProcessId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      },
-      "delete": {
-        "tags": [
-          "Test Process"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "testProcessId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
     "/reusableFlow/": {
       "post": {
         "tags": [
-          "Test Case"
+          "Reusable Flow"
         ],
         "description": "",
         "parameters": [],
@@ -1738,7 +1738,7 @@
     "/reusableFlow/{reusableFlowId}": {
       "put": {
         "tags": [
-          "Test Case"
+          "Reusable Flow"
         ],
         "description": "",
         "parameters": [
@@ -1780,7 +1780,7 @@
       },
       "delete": {
         "tags": [
-          "Test Case"
+          "Reusable Flow"
         ],
         "description": "",
         "parameters": [
@@ -1812,7 +1812,7 @@
     "/reusableFlow/{reusableFlowId}/details": {
       "get": {
         "tags": [
-          "Test Case"
+          "Reusable Flow"
         ],
         "description": "",
         "parameters": [
@@ -1841,7 +1841,7 @@
     "/reusableFlow/project/{projectId}": {
       "get": {
         "tags": [
-          "Test Case"
+          "Reusable Flow"
         ],
         "description": "",
         "parameters": [
@@ -1870,7 +1870,7 @@
     "/reusableFlow/{reusableFlowId}/teststeps": {
       "get": {
         "tags": [
-          "Test Case"
+          "Reusable Flow"
         ],
         "description": "",
         "parameters": [

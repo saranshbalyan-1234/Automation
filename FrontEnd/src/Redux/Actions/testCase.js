@@ -120,7 +120,7 @@ export const addProcess = (payload) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
-      const { data } = await axios.post(`/testProcess`, payload);
+      const { data } = await axios.post(`/testCase/process`, payload);
       dispatch({ type: ADD_PROCESS, payload: data });
       return true;
     } catch (err) {
@@ -135,7 +135,7 @@ export const editProcess = (payload) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
 
-      await axios.put(`/testProcess/${payload.processId}`, payload.data);
+      await axios.put(`/testCase/process/${payload.processId}`, payload.data);
       dispatch({
         type: EDIT_PROCESS,
         payload,
@@ -155,7 +155,7 @@ export const deleteProcess = (testProcessId, step) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
 
-      await axios.delete(`/testProcess/${testProcessId}`);
+      await axios.delete(`/testCase/process/${testProcessId}`);
       dispatch({
         type: DELETE_PROCESS,
         payload: { testProcessId, step },
