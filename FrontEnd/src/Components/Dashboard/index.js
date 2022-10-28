@@ -23,16 +23,17 @@ export const Dashboard = ({ user }) => {
     axios.get("/dashboard").then((res) => {
       setData(res.data);
       setLoading(false);
-      let mainData = Object.entries(res.data)
+      let mainData = Object.entries(res.data.createdByMe)
         .filter((el) => {
           return (
             el[0] == "testCase" ||
             el[0] == "reusableFlow" ||
-            el[0] == "testObject"
+            el[0] == "testObject" ||
+            el[0] == "Project"
           );
         })
         .map((el) => {
-          let key = "";
+          let key = el[0];
           if (el[0] == "testCase") {
             key = "Test Case";
           } else if (el[0] == "reusableFlow") {
@@ -42,7 +43,7 @@ export const Dashboard = ({ user }) => {
           }
           return { name: key, Total: el[1] };
         });
-
+      console.log("saransh", mainData);
       setMainData(mainData);
       let tempUserdata = { ...res.data.user };
       delete tempUserdata.total;
@@ -90,13 +91,13 @@ export const Dashboard = ({ user }) => {
         </Row>
 
         <Row gutter={[16, 16]}>
-          {/* <Col>
-            <Card title="Data Oriented" className="card" style={{ width: 400 }}>
+          <Col>
+            <Card title="Created By Me" className="card" style={{ width: 400 }}>
               <div style={{ width: 350, height: 200 }}>
-                <ColumnGraph data={mainData} />
+                <ColumnGraph data={mainData} width={360} />
               </div>
             </Card>
-          </Col> */}
+          </Col>
           <Col>
             <Card
               title={`Total Users: ${data.user?.total}`}

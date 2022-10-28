@@ -22,10 +22,14 @@ export const List = ({
       dataIndex: "name",
     },
     {
-      title: "Created By",
+      title: "Created At",
       dataIndex: "createdBy",
       render: (_, record) => (
-        <div>{<UserAvatar name={record.createdBy.name} />}</div>
+        <div>
+          {moment(record.createdAt).format("DD/MM/YY")} By &nbsp;
+          {record.createdBy && <UserAvatar name={record.createdBy.name} />}
+        </div>
+        // <div>{<UserAvatar name={record.createdBy.name} />}</div>
       ),
     },
 

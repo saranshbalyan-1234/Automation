@@ -5,12 +5,12 @@ const TestCase = db.testCases;
 const ReusableFlow = db.reusableFlows;
 const TestObject = db.testObjects;
 const UserProject = db.userProjects;
+const Project = db.projects;
 const dashboard = async (req, res) => {
   /*  #swagger.tags = ["Dashboard"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const projectId = req.params.projectId;
     const user = await User.schema(req.database).findAll();
 
     const active = user.filter((el) => {
@@ -21,20 +21,27 @@ const dashboard = async (req, res) => {
       return el.verifiedAt === null;
     }).length;
 
-    const testCase = await TestCase.schema(req.database).count();
-    const reusableFlow = await ReusableFlow.schema(req.database).count();
-    const testObject = await TestObject.schema(req.database).count();
+    const testCase = await TestCase.schema(req.database).count({
+      where: { createdByUser: req.user.id },
+    });
+    const reusableFlow = await ReusableFlow.schema(req.database).count({
+      where: { createdByUser: req.user.id },
+    });
+    const testObject = await TestObject.schema(req.database).count({
+      where: { createdByUser: req.user.id },
+    });
+    const projects = await Project.schema(req.database).count({
+      where: { createdByUser: req.user.id },
+    });
 
-    const project = await UserProject.schema(req.database).count({
+    const userProject = await UserProject.schema(req.database).count({
       where: { userId: req.user.id },
     });
 
     return res.status(200).json({
-      project,
+      project: userProject,
       user: { total: user.length, active, inactive, unverified },
-      testCase,
-      reusableFlow,
-      testObject,
+      createdByMe: { Project: projects, testCase, testObject, reusableFlow },
     });
   } catch (error) {
     getError(error, res);
