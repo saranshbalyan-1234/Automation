@@ -10,7 +10,17 @@ const dashboard = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const user = await User.schema(req.database).count();
+    const projectId = req.params.projectId;
+    const user = await User.schema(req.database).findAll();
+
+    const active = user.filter((el) => {
+      return el.active === true;
+    }).length;
+    const inactive = user.length - active;
+    const unverified = user.filter((el) => {
+      return el.verifiedAt === null;
+    }).length;
+
     const testCase = await TestCase.schema(req.database).count();
     const reusableFlow = await ReusableFlow.schema(req.database).count();
     const testObject = await TestObject.schema(req.database).count();
@@ -19,9 +29,13 @@ const dashboard = async (req, res) => {
       where: { userId: req.user.id },
     });
 
-    return res
-      .status(200)
-      .json({ project, user, testCase, reusableFlow, testObject });
+    return res.status(200).json({
+      project,
+      user: { total: user.length, active, inactive, unverified },
+      testCase,
+      reusableFlow,
+      testObject,
+    });
   } catch (error) {
     getError(error, res);
   }

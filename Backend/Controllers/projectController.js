@@ -9,6 +9,9 @@ import {
 const UserProject = db.userProjects;
 const Project = db.projects;
 const User = db.users;
+const TestCase = db.testCases;
+const ReusableFlow = db.reusableFlows;
+const TestObject = db.testObjects;
 const getMyProject = async (req, res) => {
   /*  #swagger.tags = ["Project"] 
       #swagger.security = [{"apiKeyAuth": []}] */
@@ -95,13 +98,26 @@ const getProjectById = async (req, res) => {
         },
       ],
     });
+
     let temp = { ...project.dataValues };
 
     temp.members = temp.members.map((user) => {
       return user.dataValues.user;
     });
 
-    return res.status(200).json(temp);
+    const testCase = await TestCase.schema(req.database).count({
+      where: { projectId },
+    });
+    const reusableFlow = await ReusableFlow.schema(req.database).count({
+      where: { projectId },
+    });
+    const testObject = await TestObject.schema(req.database).count({
+      where: { projectId },
+    });
+
+    return res
+      .status(200)
+      .json({ ...temp, count: { testCase, reusableFlow, testObject } });
   } catch (error) {
     getError(error, res);
   }

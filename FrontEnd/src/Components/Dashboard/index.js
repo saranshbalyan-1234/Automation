@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Typography, Statistic, Row, Col, Card, Spin } from "antd";
 import axios from "axios";
-import { Column } from "@ant-design/plots";
+
 import {
   FileOutlined,
   BankOutlined,
@@ -11,77 +11,55 @@ import {
 } from "@ant-design/icons";
 import styled from "styled-components";
 import { VscDebugRestart } from "react-icons/vsc";
+import ColumnGraph from "../Common/ColumnGraph";
 const { Title } = Typography;
+
 export const Dashboard = ({ user }) => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [graohData, setGraphData] = useState([]);
+  const [mainData, setMainData] = useState([]);
+  const [userData, setUserData] = useState([]);
   useEffect(() => {
     axios.get("/dashboard").then((res) => {
       setData(res.data);
       setLoading(false);
-      setGraphData(
-        Object.entries(res.data)
-          .filter((el) => {
-            return (
-              el[0] == "testCase" ||
-              el[0] == "reusableFlow" ||
-              el[0] == "testObject"
-            );
-          })
-          .map((el) => {
-            let key = "";
-            if (el[0] == "testCase") {
-              key = "Test Case";
-            } else if (el[0] == "reusableFlow") {
-              key = "Reusable Flow";
-            } else if (el[0] == "testObject") {
-              key = "Test Object";
-            }
-            return { name: key, Total: el[1] };
-          })
-      );
+      let mainData = Object.entries(res.data)
+        .filter((el) => {
+          return (
+            el[0] == "testCase" ||
+            el[0] == "reusableFlow" ||
+            el[0] == "testObject"
+          );
+        })
+        .map((el) => {
+          let key = "";
+          if (el[0] == "testCase") {
+            key = "Test Case";
+          } else if (el[0] == "reusableFlow") {
+            key = "Reusable Flow";
+          } else if (el[0] == "testObject") {
+            key = "Test Object";
+          }
+          return { name: key, Total: el[1] };
+        });
+
+      setMainData(mainData);
+      let tempUserdata = { ...res.data.user };
+      delete tempUserdata.total;
+      let userData = Object.entries(tempUserdata).map((el) => {
+        return { name: el[0], Total: el[1] };
+      });
+      setUserData(userData);
     });
   }, []);
-
-  const config = {
-    data: graohData,
-    xField: "name",
-    yField: "Total",
-    label: {
-      position: "middle",
-      // 'top', 'bottom', 'middle',
-      style: {
-        fill: "white",
-        opacity: 0.7,
-      },
-    },
-
-    xAxis: {
-      label: {
-        style: {
-          lineWidth: 2,
-          fill: "black",
-        },
-      },
-    },
-    yAxis: {
-      label: {
-        style: {
-          lineWidth: 2,
-          fill: "black",
-        },
-      },
-    },
-    color: "#001529",
-  };
 
   return (
     <Spin spinning={loading}>
       <StyledContainer>
         {/* <Title level={3}>Hi, {user.name}</Title> */}
+
         <Row gutter={[16, 16]} style={{ justifyContent: "space-between" }}>
-          <div className="flex">
+          <div className="row">
             <Col>
               <Card className="card">
                 <Statistic
@@ -104,20 +82,41 @@ export const Dashboard = ({ user }) => {
                       <Title level={5}>Total Users</Title>
                     </div>
                   }
-                  value={data.user}
+                  value={data.user?.total}
                 />
               </Card>
             </Col>
           </div>
-          <Card title="Data Oriented" className="card" style={{ width: 500 }}>
-            <div style={{ width: 450, height: 350 }}>
-              <Column {...config} />
-            </div>
-          </Card>
         </Row>
 
-        {/*   <Row gutter={[16, 16]}>
-       <Col>
+        <Row gutter={[16, 16]}>
+          {/* <Col>
+            <Card title="Data Oriented" className="card" style={{ width: 400 }}>
+              <div style={{ width: 350, height: 200 }}>
+                <ColumnGraph data={mainData} />
+              </div>
+            </Card>
+          </Col> */}
+          <Col>
+            <Card
+              title={`Total Users: ${data.user?.total}`}
+              className="card"
+              style={{ width: 400 }}
+            >
+              <div style={{ width: 350, height: 200 }}>
+                <ColumnGraph data={userData} />
+              </div>
+            </Card>
+          </Col>
+          <Col>
+            {/* <Card className="card" style={{ width: 400 }}>
+              <div style={{ width: 350, height: 200 }}>
+                {mainData.data && <Column {...mainData} />}
+              </div>
+            </Card> */}
+          </Col>
+
+          {/*  <Col>
             <Card className="card">
               <Statistic
                 title={
@@ -157,8 +156,8 @@ export const Dashboard = ({ user }) => {
                 value={data.testObject}
               />
             </Card>
-          </Col>
-        </Row> */}
+          </Col>*/}
+        </Row>
       </StyledContainer>
     </Spin>
   );

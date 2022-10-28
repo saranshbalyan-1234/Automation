@@ -54,8 +54,11 @@ export default function App() {
 }
 
 const GlobalStyleContainer = styled.div`
-  .flex {
+  .row {
     display: flex;
     flex-wrap: wrap;
+  }
+  .space-between {
+    justify-content: space-between;
   }
 `;

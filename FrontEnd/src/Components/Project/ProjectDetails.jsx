@@ -19,6 +19,7 @@ import { getProjectById, removeMember } from "../../Redux/Actions/project";
 import AddEditProjectModal from "./AddEditProjectModal";
 import AddProjectMemberModal from "./AddProjectMemberModal";
 import MemberBadge from "../Common/MemberBadge";
+import ColumnGraph from "../Common/ColumnGraph";
 const { Title } = Typography;
 const { Meta } = Card;
 export const ProjectDetails = ({
@@ -31,9 +32,38 @@ export const ProjectDetails = ({
 
   const [addProjectMemberModal, setAddProjectMemberModal] = useState(false);
   const [editProjectModal, setEditProjectModal] = useState(false);
+  const [graphCount, setGraphCount] = useState([]);
   useEffect(() => {
-    id && getProjectById(id);
+    getProject();
   }, [id]);
+
+  const getProject = async () => {
+    if (id) {
+      await getProjectById(id);
+
+      let count = Object.entries(currentProject.count)
+        .filter((el) => {
+          return (
+            el[0] == "testCase" ||
+            el[0] == "reusableFlow" ||
+            el[0] == "testObject"
+          );
+        })
+        .map((el) => {
+          let key = "";
+          if (el[0] == "testCase") {
+            key = "Test Case";
+          } else if (el[0] == "reusableFlow") {
+            key = "Reusable Flow";
+          } else if (el[0] == "testObject") {
+            key = "Test Object";
+          }
+          return { name: key, Total: el[1] };
+        });
+
+      setGraphCount(count);
+    }
+  };
 
   const formatDates = (startDate, endDate) => {
     let currentDate = moment(new Date()).format("DD/MM/YYYY");
@@ -106,91 +136,103 @@ export const ProjectDetails = ({
   return (
     <div style={{ paddingTop: 20 }}>
       <Spin spinning={loading}>
-        <Card>
-          <div
+        <div className="row ">
+          <Card
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
+              minWidth: "calc(100% - 410px)",
             }}
           >
-            <Meta
-              title={
-                <Title style={{ textTransform: "capitalize" }} level={3}>
-                  Project: {currentProject.name}
-                </Title>
-              }
-              description={
-                <div style={{ color: "black" }}>
-                  Created On
-                  {moment(currentProject.createdAt).format("DD/MM/YY")} By
-                  &nbsp;
-                  {currentProject.createdBy && (
-                    <UserAvatar name={currentProject.createdBy.name} />
-                  )}
-                </div>
-              }
-            />
             <div
               style={{
                 display: "flex",
+                justifyContent: "space-between",
                 flexWrap: "wrap",
-                gap: 25,
               }}
             >
-              <Button
-                type="primary"
-                ghost
-                onClick={() => {
-                  setEditProjectModal(true);
-                }}
-              >
-                <EditOutlined /> Edit Project Details
-              </Button>
-            </div>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: 30,
-            }}
-          >
-            <Meta
-              title="Description"
-              description={
-                <div
-                  style={{ marginTop: "5px" }}
-                  dangerouslySetInnerHTML={{
-                    __html: currentProject.description,
-                  }}
-                ></div>
-              }
-            />
-
-            <div>
+              <Meta
+                title={
+                  <Title style={{ textTransform: "capitalize" }} level={3}>
+                    Project: {currentProject.name}
+                  </Title>
+                }
+                description={
+                  <div style={{ color: "black" }}>
+                    Created On
+                    {moment(currentProject.createdAt).format("DD/MM/YY")} By
+                    &nbsp;
+                    {currentProject.createdBy && (
+                      <UserAvatar name={currentProject.createdBy.name} />
+                    )}
+                  </div>
+                }
+              />
               <div
                 style={{
                   display: "flex",
                   flexWrap: "wrap",
                   gap: 25,
-                  alignSelf: "end",
                 }}
               >
-                <Card>
-                  <Meta
-                    title="Start Date"
-                    description={currentProject.startDate}
-                  />
-                </Card>
-                <Card>
-                  <Meta title="End Date" description={currentProject.endDate} />
-                </Card>
+                <Button
+                  type="primary"
+                  ghost
+                  onClick={() => {
+                    setEditProjectModal(true);
+                  }}
+                >
+                  <EditOutlined /> Edit Project Details
+                </Button>
               </div>
-              {formatDates(currentProject.startDate, currentProject.endDate)}
             </div>
-          </div>
-        </Card>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: 30,
+              }}
+            >
+              <Meta
+                title="Description"
+                description={
+                  <div
+                    style={{ marginTop: "5px" }}
+                    dangerouslySetInnerHTML={{
+                      __html: currentProject.description,
+                    }}
+                  ></div>
+                }
+              />
+
+              <div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 25,
+                    alignSelf: "end",
+                  }}
+                >
+                  <Card>
+                    <Meta
+                      title="Start Date"
+                      description={currentProject.startDate}
+                    />
+                  </Card>
+                  <Card>
+                    <Meta
+                      title="End Date"
+                      description={currentProject.endDate}
+                    />
+                  </Card>
+                </div>
+                {formatDates(currentProject.startDate, currentProject.endDate)}
+              </div>
+            </div>
+          </Card>
+          <Card style={{ boxShadow: "5px 10px #f6f6f6" }}>
+            <ColumnGraph data={graphCount} />
+          </Card>
+        </div>
         <Card style={{ marginTop: 20 }}>
           {currentProject.members && (
             <div
