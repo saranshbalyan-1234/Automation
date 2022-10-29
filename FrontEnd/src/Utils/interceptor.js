@@ -12,11 +12,16 @@ export default {
       let token = store.getState().auth.user?.accessToken;
       return token;
     }
+    function getCurrentProjectId() {
+      let currentProjectId = store.getState().projects.currentProject?.id;
+      return currentProjectId;
+    }
     axios.interceptors.request.use((req) => {
       if (req.url.includes("auth") || req.url.includes("jwt")) {
         //No Authorization token
       } else {
         req.headers.Authorization = `Bearer ${getJWT()}`;
+        req.headers["x-project-id"] = getCurrentProjectId();
       }
       return req;
     });

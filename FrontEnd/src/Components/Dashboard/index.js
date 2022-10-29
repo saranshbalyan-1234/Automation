@@ -28,7 +28,7 @@ export const Dashboard = ({ user }) => {
           return (
             el[0] == "testCase" ||
             el[0] == "reusableFlow" ||
-            el[0] == "testObject" ||
+            el[0] == "object" ||
             el[0] == "Project"
           );
         })
@@ -38,7 +38,7 @@ export const Dashboard = ({ user }) => {
             key = "Test Case";
           } else if (el[0] == "reusableFlow") {
             key = "Reusable Flow";
-          } else if (el[0] == "testObject") {
+          } else if (el[0] == "object") {
             key = "Test Object";
           }
           return { name: key, Total: el[1] };
@@ -154,7 +154,7 @@ export const Dashboard = ({ user }) => {
                     <Title level={5}>Total Objects</Title>
                   </div>
                 }
-                value={data.testObject}
+                value={data.object}
               />
             </Card>
           </Col>*/}

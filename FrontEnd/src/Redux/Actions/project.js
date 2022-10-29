@@ -41,11 +41,11 @@ export const addProject = (payload) => {
   };
 };
 
-export const getProjectById = (id) => {
+export const getProjectById = (projectId) => {
   return async (dispatch) => {
     try {
       dispatch({ type: PROJECT_REQUEST });
-      const { data } = await axios.get(`/project/${id}`);
+      const { data } = await axios.get(`/project/${projectId}`);
       dispatch({ type: GET_SELECTED_PROJECT, payload: data });
       return true;
     } catch (err) {
@@ -92,7 +92,7 @@ export const deleteProject = (projectId) => {
       let currentProjectId = getState().projects.currentProject?.id;
       if (currentProjectId === projectId)
         throw message.error("Cannot delete selected project!");
-      await axios.delete(`/project/${projectId}`);
+      await axios.delete(`/project`);
       dispatch({ type: DELETE_PROJECT, payload: projectId });
       return true;
     } catch (err) {
@@ -108,7 +108,7 @@ export const editProject = (payload) => {
       dispatch({ type: PROJECT_REQUEST });
 
       let currentProjectId = getState().projects.currentProject?.id;
-      await axios.put(`/project/${currentProjectId}`, payload);
+      await axios.put(`/project`, payload);
       let editedProject = { ...payload };
       dispatch({
         type: EDIT_PROJECT_DETAILS,

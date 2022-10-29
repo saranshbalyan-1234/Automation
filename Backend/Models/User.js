@@ -67,15 +67,15 @@ export default (sequelize, DataTypes) => {
     foreignKey: "id",
     constraints: false,
   });
-  sequelize.models.testObjects.hasOne(sequelize.models.users, {
+  sequelize.models.objects.hasOne(sequelize.models.users, {
     as: "createdBy",
     sourceKey: "createdByUser",
     foreignKey: "id",
     constraints: false,
   });
 
-  sequelize.models.testObjects.hasMany(sequelize.models.objectLocators, {
-    foreignKey: "testObjectId",
+  sequelize.models.objects.hasMany(sequelize.models.objectLocators, {
+    foreignKey: "objectId",
     as: "locators",
     constraints: false,
   });
@@ -109,7 +109,7 @@ export default (sequelize, DataTypes) => {
     constraints: false,
   });
 
-  sequelize.models.testCases.hasMany(sequelize.models.testProcesses, {
+  sequelize.models.testCases.hasMany(sequelize.models.processes, {
     sourceKey: "id",
     foreignKey: "testCaseId",
     constraints: false,
@@ -121,9 +121,9 @@ export default (sequelize, DataTypes) => {
     constraints: false,
   });
 
-  sequelize.models.testProcesses.hasMany(sequelize.models.testSteps, {
+  sequelize.models.processes.hasMany(sequelize.models.testSteps, {
     sourceKey: "id",
-    foreignKey: "testProcessId",
+    foreignKey: "processId",
     constraints: false,
   });
 
@@ -133,8 +133,8 @@ export default (sequelize, DataTypes) => {
     constraints: false,
   });
 
-  sequelize.models.testSteps.hasOne(sequelize.models.testObjects, {
-    sourceKey: "testObjectId",
+  sequelize.models.testSteps.hasOne(sequelize.models.objects, {
+    sourceKey: "objectId",
     foreignKey: "id",
     constraints: false,
   });

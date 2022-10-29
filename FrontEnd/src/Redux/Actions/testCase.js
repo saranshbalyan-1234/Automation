@@ -20,8 +20,8 @@ export const getTestCaseByProject = (payload) => {
   return async (dispatch, getState) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
-      let currentProjectId = getState().projects.currentProject.id;
-      const { data } = await axios.get(`/testcase/project/${currentProjectId}`);
+
+      const { data } = await axios.get(`/testcase`);
       dispatch({ type: GET_ALL_TEST_CASE, payload: data });
       return true;
     } catch (err) {
@@ -150,15 +150,15 @@ export const editProcess = (payload) => {
   };
 };
 
-export const deleteProcess = (testProcessId, step) => {
+export const deleteProcess = (processId, step) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
 
-      await axios.delete(`/testCase/process/${testProcessId}`);
+      await axios.delete(`/testCase/process/${processId}`);
       dispatch({
         type: DELETE_PROCESS,
-        payload: { testProcessId, step },
+        payload: { processId, step },
       });
 
       return true;
@@ -199,7 +199,7 @@ export const editStep = (payload) => {
   };
 };
 
-export const deleteStep = (testStepId, step, testProcessId) => {
+export const deleteStep = (testStepId, step, processId) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
@@ -207,7 +207,7 @@ export const deleteStep = (testStepId, step, testProcessId) => {
       await axios.delete(`/testStep/${testStepId}`);
       dispatch({
         type: DELETE_STEP,
-        payload: { testStepId, testProcessId, step },
+        payload: { testStepId, processId, step },
       });
 
       return true;

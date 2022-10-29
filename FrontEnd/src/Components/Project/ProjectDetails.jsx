@@ -28,25 +28,23 @@ export const ProjectDetails = ({
   getProjectById,
   removeMember,
 }) => {
-  const { id } = useParams();
+  const { projectId } = useParams();
 
   const [addProjectMemberModal, setAddProjectMemberModal] = useState(false);
   const [editProjectModal, setEditProjectModal] = useState(false);
   const [graphCount, setGraphCount] = useState([]);
   useEffect(() => {
     getProject();
-  }, [id]);
+  }, [projectId]);
 
   const getProject = async () => {
-    if (id) {
-      await getProjectById(id);
+    if (projectId) {
+      await getProjectById(projectId);
 
       let count = Object.entries(currentProject.count)
         .filter((el) => {
           return (
-            el[0] == "testCase" ||
-            el[0] == "reusableFlow" ||
-            el[0] == "testObject"
+            el[0] == "testCase" || el[0] == "reusableFlow" || el[0] == "object"
           );
         })
         .map((el) => {
@@ -55,7 +53,7 @@ export const ProjectDetails = ({
             key = "Test Case";
           } else if (el[0] == "reusableFlow") {
             key = "Reusable Flow";
-          } else if (el[0] == "testObject") {
+          } else if (el[0] == "object") {
             key = "Test Object";
           }
           return { name: key, Total: el[1] };

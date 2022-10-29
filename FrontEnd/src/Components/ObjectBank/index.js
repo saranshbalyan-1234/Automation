@@ -2,22 +2,22 @@ import React, { useEffect } from "react";
 import ObjectBankTabs from "./Tabs";
 import { Routes, Route } from "react-router-dom";
 import {
-  getTestObjectByProject,
+  getObjectByProject,
   deleteObject,
   saveObject,
-} from "../../Redux/Actions/testObject";
+} from "../../Redux/Actions/object";
 import { connect } from "react-redux";
 import List from "../Common/List";
 const ObjectBank = ({
   objectList,
   loading,
-  getTestObjectByProject,
+  getObjectByProject,
   deleteObject,
   currentProjectId,
   saveObject,
 }) => {
   useEffect(() => {
-    currentProjectId && getTestObjectByProject();
+    currentProjectId && getObjectByProject();
   }, [currentProjectId]);
 
   return (
@@ -36,7 +36,7 @@ const ObjectBank = ({
             />
           }
         />
-        <Route path="/:testObjectId/:tab" element={<ObjectBankTabs />} />
+        <Route path="/:objectId/:tab" element={<ObjectBankTabs />} />
       </Routes>
     </>
   );
@@ -48,7 +48,7 @@ const mapStateToProps = (state) => ({
   loading: state.objectBank.loading,
 });
 const mapDispatchToProps = {
-  getTestObjectByProject,
+  getObjectByProject,
   deleteObject,
   saveObject,
 };

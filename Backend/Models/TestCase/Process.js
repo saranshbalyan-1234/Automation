@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const TestProcess = sequelize.define("testProcesses", {
+  const Process = sequelize.define("processes", {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -31,5 +31,5 @@ export default (sequelize, DataTypes) => {
     },
   });
 
-  return TestProcess;
+  return Process;
 };

@@ -11,7 +11,7 @@ const Project = db.projects;
 const User = db.users;
 const TestCase = db.testCases;
 const ReusableFlow = db.reusableFlows;
-const TestObject = db.testObjects;
+const Object = db.objects;
 const getMyProject = async (req, res) => {
   /*  #swagger.tags = ["Project"] 
       #swagger.security = [{"apiKeyAuth": []}] */
@@ -111,13 +111,13 @@ const getProjectById = async (req, res) => {
     const reusableFlow = await ReusableFlow.schema(req.database).count({
       where: { projectId },
     });
-    const testObject = await TestObject.schema(req.database).count({
+    const object = await Object.schema(req.database).count({
       where: { projectId },
     });
 
     return res
       .status(200)
-      .json({ ...temp, count: { testCase, reusableFlow, testObject } });
+      .json({ ...temp, count: { testCase, reusableFlow, object } });
   } catch (error) {
     getError(error, res);
   }
@@ -132,8 +132,6 @@ const addProject = async (req, res) => {
 
     const { error } = addProjectValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
-
-    await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
 
     const project = await Project.schema(req.database).create({
       name,
@@ -158,7 +156,7 @@ const deleteProject = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const projectId = req.params.projectId;
+    const projectId = req.headers["x-project-id"];
 
     const { error } = projectByIdValidation.validate({ projectId });
     if (error) throw new Error(error.details[0].message);
@@ -200,7 +198,7 @@ const addMember = async (req, res) => {
       where: { userId: req.user.id, projectId },
     });
     if (!userProject) return res.status(401).json({ error: "Unauthorized" });
-    await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
+
     await UserProject.schema(req.database).create({
       userId: userId,
       projectId: projectId,
@@ -252,7 +250,7 @@ const editProject = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const projectId = req.params.projectId;
+    const projectId = req.headers["x-project-id"];
 
     const { error } = projectByIdValidation.validate({ projectId });
     if (error) throw new Error(error.details[0].message);

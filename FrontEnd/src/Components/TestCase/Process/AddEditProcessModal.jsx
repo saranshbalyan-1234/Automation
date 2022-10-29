@@ -48,7 +48,7 @@ const AddEditProcessModal = ({
       >
         <Spin spinning={loading}>
           <Form
-            name="testProcess"
+            name="process"
             onFinish={onSubmit}
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 16 }}

@@ -3,27 +3,24 @@ import { Tabs, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  getTestObjectDetailsById,
-  editObject,
-} from "../../Redux/Actions/testObject";
+import { getObjectDetailsById, editObject } from "../../Redux/Actions/object";
 import ActivityLog from "../Common/ActivityLog";
 import Details from "../Common/Details";
 import Locators from "./Locators";
 import AddLocatorsModal from "./AddLocatorsModal";
 const ObjectBankTabs = ({
-  getTestObjectDetailsById,
+  getObjectDetailsById,
   currentObject,
   loading,
   editObject,
 }) => {
-  const { tab, testObjectId } = useParams();
+  const { tab, objectId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
   const [addLocatorModal, setAddLocatorModal] = useState(false);
 
   const handleActiveTab = (value) => {
-    navigate(`/objectBank/${testObjectId}/${value}`);
+    navigate(`/objectBank/${objectId}/${value}`);
   };
 
   useEffect(() => {
@@ -31,8 +28,8 @@ const ObjectBankTabs = ({
   }, [tab]);
 
   useEffect(() => {
-    testObjectId && getTestObjectDetailsById(testObjectId);
-  }, [testObjectId]);
+    objectId && getObjectDetailsById(objectId);
+  }, [objectId]);
 
   const renderButton = () => {
     if (activeTab === "locators")
@@ -91,7 +88,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  getTestObjectDetailsById,
+  getObjectDetailsById,
   editObject,
 };
 

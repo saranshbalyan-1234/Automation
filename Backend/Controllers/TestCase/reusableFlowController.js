@@ -8,7 +8,7 @@ import {
 } from "../../Utils/Validations/testCase.js";
 
 const User = db.users;
-const TestObject = db.testObjects;
+const Object = db.objects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const ReusableFlow = db.reusableFlows;
@@ -70,7 +70,7 @@ const getAllReusableFlow = async (req, res) => {
   */
 
   try {
-    const projectId = req.params.projectId;
+    const projectId = req.headers["x-project-id"];
     const { error } = projectByIdValidation.validate({ projectId });
     if (error) throw new Error(error.details[0].message);
 
@@ -165,7 +165,7 @@ const getTestStepByReusableFlow = async (req, res) => {
       where: { reusableFlowId },
 
       include: [
-        { model: TestObject.schema(req.database) },
+        { model: Object.schema(req.database) },
         { model: TestParameter.schema(req.database) },
       ],
       order: [["step", "ASC"]],

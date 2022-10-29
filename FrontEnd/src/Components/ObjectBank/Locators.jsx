@@ -12,10 +12,7 @@ import {
   Tag,
 } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-import {
-  deleteLocator,
-  getObjectLocator,
-} from "../../Redux/Actions/testObject";
+import { deleteLocator, getObjectLocator } from "../../Redux/Actions/object";
 export const Locators = ({
   locators,
   currentObjectId,

@@ -13,11 +13,11 @@ import Project from "../Models/Project/Project.js";
 import UserProject from "../Models/Project/UserProject.js";
 import TestCase from "../Models/TestCase/TestCase.js";
 import ActionEvent from "../Models/Global/ActionEvent.js";
-import TestObject from "../Models/TestCase/TestObject/TestObject.js";
-import ObjectLocator from "../Models/TestCase/TestObject/ObjectLocator.js";
+import Object from "../Models/TestCase/Object/Object.js";
+import ObjectLocator from "../Models/TestCase/Object/ObjectLocator.js";
 import TestParameter from "../Models/TestCase/TestParameter.js";
 import TestStep from "../Models/TestCase/TestStep.js";
-import TestProcess from "../Models/TestCase/TestProcess.js";
+import Process from "../Models/TestCase/Process.js";
 import ReusableFlow from "../Models/TestCase/ReusableFlow.js";
 
 dotenv.config();
@@ -62,11 +62,11 @@ db.userProjects = UserProject(sequelize, DataTypes);
 db.projects = Project(sequelize, DataTypes);
 db.roles = Role(sequelize, DataTypes);
 db.testParameters = TestParameter(sequelize, DataTypes);
-db.testObjects = TestObject(sequelize, DataTypes);
+db.objects = Object(sequelize, DataTypes);
 db.ObjectLocators = ObjectLocator(sequelize, DataTypes);
 db.testSteps = TestStep(sequelize, DataTypes);
 db.testCases = TestCase(sequelize, DataTypes);
-db.testProcess = TestProcess(sequelize, DataTypes);
+db.process = Process(sequelize, DataTypes);
 db.reusableFlows = ReusableFlow(sequelize, DataTypes);
 
 db.users = User(sequelize, DataTypes); //all associations
@@ -76,7 +76,7 @@ db.customers.schema("Main").sync({ force: false, alter: true });
 db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
-// db.testObjects.schema("saranshbalyan123gmailcom").sync({
+// db.reusableFlows.schema("saranshbalyan123gmailcom").sync({
 //   force: true,
 //   alter: true,
 // });

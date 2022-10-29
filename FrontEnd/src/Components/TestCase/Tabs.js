@@ -7,7 +7,7 @@ import {
   getTestCaseDetailsById,
   editTestCase,
 } from "../../Redux/Actions/testCase";
-import TestProcess from "./TestProcess";
+import Process from "./Process";
 import Details from "../Common/Details";
 import ActivityLog from "../Common/ActivityLog";
 function TestCaseTabs({
@@ -66,7 +66,7 @@ function TestCaseTabs({
             )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Test Steps" key="teststeps">
-            {activeTab === "teststeps" && <TestProcess />}
+            {activeTab === "teststeps" && <Process />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Activity Log" key="activitylog">
             <ActivityLog />

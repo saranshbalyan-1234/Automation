@@ -1,32 +1,38 @@
 export default (sequelize, DataTypes) => {
-  const ObjectLocator = sequelize.define("objectLocators", {
-    type: {
+  const Object = sequelize.define("objects", {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notNull: true,
       },
     },
-    locator: {
+    description: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: true,
-      },
     },
-
-    testObjectId: {
+    projectId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: true,
       },
       references: {
-        model: "testObjects",
+        model: "projects",
+        key: "id",
+      },
+    },
+    createdByUser: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
+      references: {
+        model: "users",
         key: "id",
       },
     },
   });
 
-  return ObjectLocator;
+  return Object;
 };

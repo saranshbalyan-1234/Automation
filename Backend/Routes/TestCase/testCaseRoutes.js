@@ -6,25 +6,25 @@ import {
   deleteTestCase,
   getTestCaseDetailsById,
   getTestStepByTestCase,
-  saveTestProcess,
-  updateTestProcess,
-  deleteTestProcess,
+  saveProcess,
+  updateProcess,
+  deleteProcess,
 } from "../../Controllers/TestCase/testCaseController.js";
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
 Router.post("/", validatePermission("testcase", "add"), saveTestCase);
-Router.post("/process", validatePermission("testcase", "add"), saveTestProcess);
+Router.post("/process", validatePermission("testcase", "add"), saveProcess);
 
 Router.put(
   "/process/:processId",
   validatePermission("Ttestcase", "add"),
-  updateTestProcess
+  updateProcess
 );
 Router.delete(
   "/process/:processId",
   validatePermission("testcase", "add"),
-  deleteTestProcess
+  deleteProcess
 );
 
 Router.put(
@@ -38,11 +38,7 @@ Router.get(
   getTestCaseDetailsById
 );
 
-Router.get(
-  "/project/:projectId",
-  validatePermission("testcase", "add"),
-  getAllTestCase
-);
+Router.get("/", validatePermission("testcase", "view"), getAllTestCase);
 
 Router.get(
   "/:testCaseId/teststeps",

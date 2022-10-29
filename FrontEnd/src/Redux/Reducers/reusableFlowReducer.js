@@ -60,7 +60,7 @@ const reusableFlowReducer = (state = initState, { type, payload }) => {
     case GET_REUSABLE_FLOW_DETAILS_BY_ID:
       return {
         ...state,
-        currentReusableFlow: { ...payload, testSteps: [] },
+        currentReusableFlow: { ...state.currentReusableFlow, ...payload },
         loading: false,
       };
     case GET_REUSABLE_FLOW_STEPS_BY_ID:

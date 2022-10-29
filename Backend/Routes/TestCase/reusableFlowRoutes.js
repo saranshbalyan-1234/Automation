@@ -22,11 +22,7 @@ Router.get(
   getReusableFlowDetailsById
 );
 
-Router.get(
-  "/project/:projectId",
-  validatePermission("Team & Role", "add"),
-  getAllReusableFlow
-);
+Router.get("/", validatePermission("Team & Role", "add"), getAllReusableFlow);
 
 Router.get(
   "/:reusableFlowId/teststeps",

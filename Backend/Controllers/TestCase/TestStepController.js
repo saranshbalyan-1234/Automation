@@ -2,7 +2,7 @@ import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
 import { Op } from "sequelize";
 const TestStep = db.testSteps;
-const TestObject = db.testObjects;
+const Object = db.objects;
 const TestParameter = db.testParameters;
 const saveTestStep = async (req, res) => {
   /*  #swagger.tags = ["Test Step"] 
@@ -13,13 +13,13 @@ const saveTestStep = async (req, res) => {
     // const { error } = nameValidation.validate(req.body);
     // if (error) throw new Error(error.details[0].message);
 
-    const { testProcessId, reusableFlowId, step } = req.body;
+    const { processId, reusableFlowId, step } = req.body;
 
-    if (testProcessId) {
+    if (processId) {
       await TestStep.schema(req.database).increment("step", {
         by: 1,
         where: {
-          testProcessId: { [Op.eq]: testProcessId },
+          processId: { [Op.eq]: processId },
           step: {
             [Op.gte]: step,
           },
@@ -93,11 +93,11 @@ const deleteTestStep = async (req, res) => {
     });
 
     if (deletedTestStep > 0) {
-      if (deletingTestStep.testProcessId) {
+      if (deletingTestStep.processId) {
         await TestStep.schema(req.database).decrement("step", {
           by: 1,
           where: {
-            testProcessId: { [Op.eq]: deletingTestStep.testProcessId },
+            processId: { [Op.eq]: deletingTestStep.processId },
             step: {
               [Op.gt]: deletingTestStep.step,
             },

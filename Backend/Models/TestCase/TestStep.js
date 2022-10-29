@@ -18,21 +18,21 @@ export default (sequelize, DataTypes) => {
         notNull: true,
       },
     },
-    testObjectId: {
+    objectId: {
       type: DataTypes.INTEGER,
       references: {
-        model: "testobjects",
+        model: "objects",
         key: "id",
       },
     },
-    testProcessId: {
+    processId: {
       type: DataTypes.INTEGER,
       // allowNull: false,
       // validate: {
       //   notNull: true,
       // },
       references: {
-        model: "testProcesses",
+        model: "processes",
         key: "id",
       },
       onDelete: "CASCADE",

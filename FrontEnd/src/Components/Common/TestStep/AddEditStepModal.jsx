@@ -23,12 +23,18 @@ const AddEditStepModal = ({
   addReusableStep,
   processId,
   reusableFlowId,
+  currentProjectId,
   setEdit = () => {},
 }) => {
   const [actionEvent, setActionEvent] = useState([]);
+  const [currentEvent, setCurrentEvent] = useState({});
+  const [objects, setObjects] = useState([]);
   useEffect(() => {
     axios.get("/global/actionEvent").then((res) => {
       setActionEvent(res.data);
+    });
+    axios.get(`/object/project/${currentProjectId}`).then((res) => {
+      setObjects(res.data);
     });
   }, []);
 
@@ -45,7 +51,7 @@ const AddEditStepModal = ({
       if (processId) {
         result = await addStep({
           ...data,
-          testProcessId: processId,
+          processId,
           step,
         });
       } else {
@@ -97,7 +103,16 @@ const AddEditStepModal = ({
                 },
               ]}
             >
-              <Select style={{ minWidth: "160px" }}>
+              <Select
+                style={{ minWidth: "160px" }}
+                onChange={(e) =>
+                  setCurrentEvent(
+                    actionEvent.find((el) => {
+                      return el.name == e;
+                    })
+                  )
+                }
+              >
                 {actionEvent.map((el, i) => {
                   return (
                     <Option value={el.name} key={i}>
@@ -110,6 +125,37 @@ const AddEditStepModal = ({
             <Form.Item name="comment" label="Comment">
               <Input name="comment" showCount maxLength={50} />
             </Form.Item>
+            {currentEvent.object && (
+              <Form.Item
+                name="objectId"
+                label="Object"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select object!",
+                  },
+                ]}
+              >
+                <Select
+                  style={{ minWidth: "160px" }}
+                  // onChange={(e) =>
+                  //   setCurrentEvent(
+                  //     actionEvent.find((el) => {
+                  //       return el.name == e;
+                  //     })
+                  //   )
+                  // }
+                >
+                  {objects.map((el, i) => {
+                    return (
+                      <Option value={el.id} key={i}>
+                        {el.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            )}
 
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Button
@@ -136,6 +182,7 @@ const AddEditStepModal = ({
 };
 const mapStateToProps = (state) => ({
   loading: state.testCase.loading,
+  currentProjectId: state.projects.currentProject.id,
 });
 const mapDispatchToProps = {
   addProcess,

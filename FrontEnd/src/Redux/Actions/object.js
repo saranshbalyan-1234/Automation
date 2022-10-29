@@ -15,14 +15,12 @@ import {
   DELETE_OBJECT_LOCATOR,
 } from "./action-types";
 
-export const getTestObjectByProject = (payload) => {
+export const getObjectByProject = (payload) => {
   return async (dispatch, getState) => {
     try {
       dispatch({ type: OBJECT_BANK_REQUEST });
-      let currentProjectId = getState().projects.currentProject.id;
-      const { data } = await axios.get(
-        `/testObject/project/${currentProjectId}`
-      );
+
+      const { data } = await axios.get(`/object`);
       dispatch({ type: GET_ALL_TEST_OBJECT, payload: data });
       return true;
     } catch (err) {
@@ -36,7 +34,7 @@ export const saveObject = (payload) => {
   return async (dispatch, getState) => {
     try {
       dispatch({ type: OBJECT_BANK_REQUEST });
-      const { data } = await axios.post(`/testObject`, payload);
+      const { data } = await axios.post(`/object`, payload);
       const updatedObject = {
         ...data,
         createdBy: getState().auth.user,
@@ -59,7 +57,7 @@ export const editObject = (payload) => {
       let currentObjectId = getState().objectBank.currentObject?.id;
       let editedObject = { ...payload };
 
-      await axios.put(`/testObject/${currentObjectId}`, payload);
+      await axios.put(`/object/${currentObjectId}`, payload);
       dispatch({
         type: UPDATE_TEST_OBJECT,
         payload: editedObject,
@@ -74,13 +72,13 @@ export const editObject = (payload) => {
   };
 };
 
-export const deleteObject = (testObjectId) => {
+export const deleteObject = (objectId) => {
   return async (dispatch) => {
     try {
       dispatch({ type: OBJECT_BANK_REQUEST });
 
-      await axios.delete(`testObject/${testObjectId}`);
-      dispatch({ type: DELETE_TEST_OBJECT, payload: testObjectId });
+      await axios.delete(`object/${objectId}`);
+      dispatch({ type: DELETE_TEST_OBJECT, payload: objectId });
       return true;
     } catch (err) {
       dispatch({ type: OBJECT_BANK_FAILURE });
@@ -88,11 +86,11 @@ export const deleteObject = (testObjectId) => {
     }
   };
 };
-export const getTestObjectDetailsById = (testObjectId) => {
+export const getObjectDetailsById = (objectId) => {
   return async (dispatch) => {
     try {
       dispatch({ type: OBJECT_BANK_REQUEST });
-      const { data } = await axios.get(`/testObject/${testObjectId}/details`);
+      const { data } = await axios.get(`/object/${objectId}/details`);
       dispatch({ type: GET_OBJECT_DETAILS_BY_ID, payload: data });
       return true;
     } catch (err) {
@@ -108,7 +106,7 @@ export const getObjectLocator = (id) => {
   return async (dispatch) => {
     try {
       dispatch({ type: OBJECT_BANK_REQUEST });
-      const { data } = await axios.get(`/testObject/${id}/locator`);
+      const { data } = await axios.get(`/object/${id}/locator`);
       dispatch({ type: GET_OBJECT_LOCATORS, payload: data });
       return true;
     } catch (err) {
@@ -122,7 +120,7 @@ export const addObjectLocator = (payload) => {
   return async (dispatch) => {
     try {
       dispatch({ type: OBJECT_BANK_REQUEST });
-      const { data } = await axios.post(`/testObject/locator`, payload);
+      const { data } = await axios.post(`/object/locator`, payload);
       dispatch({ type: ADD_OBJECT_LOCATOR, payload: data });
       return true;
     } catch (err) {
@@ -151,7 +149,7 @@ export const deleteLocator = (locatorId) => {
     try {
       dispatch({ type: OBJECT_BANK_REQUEST });
 
-      await axios.delete(`/testObject/locator/${locatorId}`);
+      await axios.delete(`/object/locator/${locatorId}`);
       dispatch({
         type: DELETE_OBJECT_LOCATOR,
         payload: locatorId,

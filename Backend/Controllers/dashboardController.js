@@ -3,7 +3,7 @@ import getError from "../Utils/sequelizeError.js";
 const User = db.users;
 const TestCase = db.testCases;
 const ReusableFlow = db.reusableFlows;
-const TestObject = db.testObjects;
+const Object = db.objects;
 const UserProject = db.userProjects;
 const Project = db.projects;
 const dashboard = async (req, res) => {
@@ -27,7 +27,7 @@ const dashboard = async (req, res) => {
     const reusableFlow = await ReusableFlow.schema(req.database).count({
       where: { createdByUser: req.user.id },
     });
-    const testObject = await TestObject.schema(req.database).count({
+    const object = await Object.schema(req.database).count({
       where: { createdByUser: req.user.id },
     });
     const projects = await Project.schema(req.database).count({
@@ -41,7 +41,7 @@ const dashboard = async (req, res) => {
     return res.status(200).json({
       project: userProject,
       user: { total: user.length, active, inactive, unverified },
-      createdByMe: { Project: projects, testCase, testObject, reusableFlow },
+      createdByMe: { Project: projects, testCase, object, reusableFlow },
     });
   } catch (error) {
     getError(error, res);

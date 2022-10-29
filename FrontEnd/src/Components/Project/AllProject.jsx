@@ -69,11 +69,11 @@ export const AllProject = ({
     );
   };
 
-  const handleSelectProject = (id) => {
-    getProjectById(id);
+  const handleSelectProject = (projectId) => {
+    getProjectById(projectId);
   };
-  const handleDefaultProject = (id) => {
-    editDetails({ defaultProjectId: id });
+  const handleDefaultProject = (projectId) => {
+    editDetails({ defaultProjectId: projectId });
   };
   return (
     <div>

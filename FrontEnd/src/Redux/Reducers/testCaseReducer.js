@@ -17,7 +17,7 @@ import { orderBy } from "lodash";
 const initState = {
   loading: false,
   data: [],
-  currentTestCase: { testProcess: [] },
+  currentTestCase: { process: [] },
 };
 
 const testCaseReducer = (state = initState, { type, payload }) => {
@@ -60,17 +60,20 @@ const testCaseReducer = (state = initState, { type, payload }) => {
     case GET_TEST_CASE_DETAILS_BY_ID:
       return {
         ...state,
-        currentTestCase: { ...payload, testProcess: [] },
+        currentTestCase: {
+          ...state.currentTestCase,
+          ...payload,
+        },
         loading: false,
       };
     case GET_TEST_CASE_STEPS_BY_ID:
       return {
         ...state,
-        currentTestCase: { ...state.currentTestCase, testProcess: payload },
+        currentTestCase: { ...state.currentTestCase, process: payload },
         loading: false,
       };
     case ADD_PROCESS:
-      const changedStepProcess = [...state.currentTestCase.testProcess].map(
+      const changedStepProcess = [...state.currentTestCase.process].map(
         (el) => {
           return el.step >= payload.step ? { ...el, step: el.step + 1 } : el;
         }
@@ -85,12 +88,12 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         ...state,
         currentTestCase: {
           ...state.currentTestCase,
-          testProcess: orderedProcess,
+          process: orderedProcess,
         },
         loading: false,
       };
     case EDIT_PROCESS:
-      const editedProcess = [...state.currentTestCase.testProcess].map((el) => {
+      const editedProcess = [...state.currentTestCase.process].map((el) => {
         const newData = payload.data;
         return el.id === payload.processId ? { ...el, ...newData } : el;
       });
@@ -98,15 +101,15 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         ...state,
         currentTestCase: {
           ...state.currentTestCase,
-          testProcess: editedProcess,
+          process: editedProcess,
         },
         loading: false,
       };
 
     case DELETE_PROCESS:
-      let deletedProcess = [...state.currentTestCase.testProcess]
+      let deletedProcess = [...state.currentTestCase.process]
         .filter((el) => {
-          return el.id !== payload.testProcessId;
+          return el.id !== payload.processId;
         })
         .map((el) => {
           return el.step > payload.step ? { ...el, step: el.step - 1 } : el;
@@ -115,13 +118,13 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         ...state,
         currentTestCase: {
           ...state.currentTestCase,
-          testProcess: deletedProcess,
+          process: deletedProcess,
         },
         loading: false,
       };
     case ADD_STEP:
-      const editedStep = [...state.currentTestCase.testProcess].map((el) => {
-        return el.id === payload.testProcessId
+      const editedStep = [...state.currentTestCase.process].map((el) => {
+        return el.id === payload.processId
           ? {
               ...el,
               testSteps: orderBy(
@@ -145,13 +148,13 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         ...state,
         currentTestCase: {
           ...state.currentTestCase,
-          testProcess: orderedStepProcess,
+          process: orderedStepProcess,
         },
         loading: false,
       };
     case DELETE_STEP:
-      const deletedStep = [...state.currentTestCase.testProcess].map((el) => {
-        return el.id === payload.testProcessId
+      const deletedStep = [...state.currentTestCase.process].map((el) => {
+        return el.id === payload.processId
           ? {
               ...el,
               testSteps: [...el.testSteps]
@@ -171,7 +174,7 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         ...state,
         currentTestCase: {
           ...state.currentTestCase,
-          testProcess: deletedStep,
+          process: deletedStep,
         },
         loading: false,
       };

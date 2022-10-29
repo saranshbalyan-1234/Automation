@@ -1,11 +1,11 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
 import { projectByIdValidation } from "../../Utils/Validations/project.js";
-const TestObject = db.testObjects;
+const Object = db.objects;
 const User = db.users;
 const ObjectLocator = db.ObjectLocators;
 
-const saveTestObject = async (req, res) => {
+const saveObject = async (req, res) => {
   /*  #swagger.tags = ["Test Object"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
@@ -16,26 +16,26 @@ const saveTestObject = async (req, res) => {
     const payload = { ...req.body };
     payload.createdByUser = req.user.id;
 
-    const testObject = await TestObject.schema(req.database).create(payload);
+    const object = await Object.schema(req.database).create(payload);
 
-    return res.status(200).json(testObject);
+    return res.status(200).json(object);
   } catch (err) {
     getError(err, res);
   }
 };
-const getTestObjectDetailsById = async (req, res) => {
+const getObjectDetailsById = async (req, res) => {
   /*  #swagger.tags = ["Test Object"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
   try {
-    const testObjectId = req.params.testObjectId;
+    const objectId = req.params.objectId;
     // const { error } = projectByIdValidation.validate({ projectId });
     // if (error) throw new Error(error.details[0].message);
 
-    const testCase = await TestObject.schema(req.database).findOne({
+    const testCase = await Object.schema(req.database).findOne({
       where: {
-        id: testObjectId,
+        id: objectId,
       },
       // attributes: ["id", "name", "createdAt", "updatedAt", "description"],
       include: [
@@ -53,29 +53,24 @@ const getTestObjectDetailsById = async (req, res) => {
   }
 };
 
-const updateTestObject = async (req, res) => {
+const updateObject = async (req, res) => {
   /*  #swagger.tags = ["Test Object"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
   try {
-    const testObjectId = req.params.testObjectId;
+    const objectId = req.params.objectId;
     // const { error } = updateTestCaseValidation.validate({ name, testCaseId });
     // if (error) throw new Error(error.details[0].message);
 
-    const updatedTestObject = await TestObject.schema(req.database).update(
-      req.body,
-      {
-        where: {
-          id: testObjectId,
-        },
-      }
-    );
+    const updatedObject = await Object.schema(req.database).update(req.body, {
+      where: {
+        id: objectId,
+      },
+    });
 
-    if (updatedTestObject[0]) {
-      return res
-        .status(200)
-        .json({ message: "TestObject updated successfully!" });
+    if (updatedObject[0]) {
+      return res.status(200).json({ message: "Object updated successfully!" });
     } else {
       return res.status(400).json({ error: "Record not found" });
     }
@@ -84,24 +79,22 @@ const updateTestObject = async (req, res) => {
   }
 };
 
-const deleteTestObject = async (req, res) => {
+const deleteObject = async (req, res) => {
   /*  #swagger.tags = ["Test Object"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
   try {
-    const testObjectId = req.params.testObjectId;
+    const objectId = req.params.objectId;
     // const { error } = testCaseIdValidation.validate({ testCaseId });
     // if (error) throw new Error(error.details[0].message);
 
-    const deletedTestObject = await TestObject.schema(req.database).destroy({
-      where: { id: testObjectId },
+    const deletedObject = await Object.schema(req.database).destroy({
+      where: { id: objectId },
     });
 
-    if (deletedTestObject > 0) {
-      return res
-        .status(200)
-        .json({ message: "TestObject deleted successfully" });
+    if (deleteObject > 0) {
+      return res.status(200).json({ message: "Object deleted successfully" });
     } else {
       return res.status(400).json({ error: "Record not found" });
     }
@@ -110,17 +103,17 @@ const deleteTestObject = async (req, res) => {
   }
 };
 
-const getAllTestObject = async (req, res) => {
+const getAllObject = async (req, res) => {
   /*  #swagger.tags = ["Test Object"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
   try {
-    const projectId = req.params.projectId;
+    const projectId = req.headers["x-project-id"];
     const { error } = projectByIdValidation.validate({ projectId });
     if (error) throw new Error(error.details[0].message);
 
-    const testObjects = await TestObject.schema(req.database).findAll({
+    const objects = await Object.schema(req.database).findAll({
       where: {
         projectId,
       },
@@ -134,7 +127,7 @@ const getAllTestObject = async (req, res) => {
       ],
     });
 
-    return res.status(200).json(testObjects);
+    return res.status(200).json(objects);
   } catch (err) {
     getError(err, res);
   }
@@ -145,13 +138,13 @@ const getObjectLocatorsByObjectId = async (req, res) => {
   */
 
   try {
-    const testObjectId = req.params.testObjectId;
+    const objectId = req.params.objectId;
     // const { error } = projectByIdValidation.validate({ projectId });
     // if (error) throw new Error(error.details[0].message);
 
     const locators = await ObjectLocator.schema(req.database).findAll({
       where: {
-        testObjectId,
+        objectId,
       },
     });
 
@@ -204,11 +197,11 @@ const deleteObjectLocator = async (req, res) => {
 };
 
 export {
-  getAllTestObject,
-  getTestObjectDetailsById,
-  saveTestObject,
-  updateTestObject,
-  deleteTestObject,
+  getAllObject,
+  getObjectDetailsById,
+  saveObject,
+  updateObject,
+  deleteObject,
   getObjectLocatorsByObjectId,
   saveObjectLocator,
   deleteObjectLocator,

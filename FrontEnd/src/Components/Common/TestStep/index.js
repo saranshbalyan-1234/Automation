@@ -4,15 +4,19 @@ import StepMenu from "./StepMenu";
 import { Table, Tag, Popconfirm } from "antd";
 import AddEditStepModal from "./AddEditStepModal";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import ViewObjectModal from "./ViewObjectModal";
 const TestStepTable = ({
   processId,
   testSteps,
   deleteStep,
   reusableFlowId,
 }) => {
+  console.log("saransh", testSteps);
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [edit, setEdit] = useState(true);
   const [editData, setEditData] = useState({});
+  const [viewObjectModal, setViewObjectModal] = useState(false);
+  const [object, setObject] = useState({});
   const columns = [
     {
       title: "",
@@ -32,23 +36,25 @@ const TestStepTable = ({
       title: "Action Event",
       // width: 100,
       dataIndex: "actionEvent",
-      onCell: (record, index) => ({
-        colSpan: record.reusableFlow ? 5 : 1,
-      }),
-      render: (text, record) => (
-        <div>
-          {record.reusableFlow ? (
-            <div>ReusableFlow: {record.reusableFlow.name}</div>
-          ) : (
-            <div>{text}</div>
-          )}
-        </div>
-      ),
     },
     {
       title: "Test Object",
       // width: 100,
-      dataIndex: "testObject",
+      dataIndex: "object",
+      render: (text, record) => (
+        <div>
+          <Tag
+            style={{ cursor: "pointer" }}
+            color="blue"
+            onClick={() => {
+              setObject(text);
+              setViewObjectModal(true);
+            }}
+          >
+            {text?.name ? text.name : "N/A"}
+          </Tag>
+        </div>
+      ),
     },
     {
       title: "Test Parameter",
@@ -132,6 +138,12 @@ const TestStepTable = ({
           setEditData={setEditData}
         />
       )}
+      <ViewObjectModal
+        visible={viewObjectModal}
+        setVisible={setViewObjectModal}
+        object={object}
+        setObject={setObject}
+      />
     </>
   );
 };

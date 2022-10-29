@@ -17,10 +17,7 @@ export const getReusableFlowByProject = (payload) => {
   return async (dispatch, getState) => {
     try {
       dispatch({ type: REUSABLE_FLOW_REQUEST });
-      let currentProjectId = getState().projects.currentProject.id;
-      const { data } = await axios.get(
-        `/reusableFlow/project/${currentProjectId}`
-      );
+      const { data } = await axios.get(`/reusableFlow}`);
       dispatch({ type: GET_ALL_REUSABLE_FLOW, payload: data });
       return true;
     } catch (err) {

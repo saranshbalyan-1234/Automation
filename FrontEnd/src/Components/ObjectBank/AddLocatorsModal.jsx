@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Button, Spin, Select, Input, Form } from "antd";
-import { addObjectLocator } from "../../Redux/Actions/testObject";
+import { addObjectLocator } from "../../Redux/Actions/object";
 import { connect } from "react-redux";
 import locatorTypes from "./locatorTypes";
 const { Option } = Select;
@@ -14,7 +14,7 @@ const AddLocatorsModal = ({
   const onSubmit = async (data) => {
     console.log("saransh");
     let result = false;
-    result = await addObjectLocator({ ...data, testObjectId: currentObjectId });
+    result = await addObjectLocator({ ...data, objectId: currentObjectId });
     result && setVisible(false);
   };
 

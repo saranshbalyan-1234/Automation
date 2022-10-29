@@ -12,9 +12,9 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import TestStepTable from "../../Common/TestStep";
 import AddEditProcessModal from "./AddEditProcessModal";
 const { Panel } = Collapse;
-const TestProcess = ({
+const Process = ({
   getTestCaseStepsById,
-  testProcess,
+  process,
   deleteProcess,
   deleteStep,
 }) => {
@@ -30,7 +30,7 @@ const TestProcess = ({
   return (
     <>
       <Spin spinning={false}>
-        {testProcess.map((item, index) => {
+        {process.map((item, index) => {
           return (
             <Collapse style={{ marginTop: "10px" }} key={index}>
               <Panel
@@ -96,7 +96,7 @@ const TestProcess = ({
             </Collapse>
           );
         })}
-        {testProcess.length === 0 && (
+        {process.length === 0 && (
           <Tag
             style={{ cursor: "pointer" }}
             onClick={() => {
@@ -124,9 +124,9 @@ const TestProcess = ({
 };
 
 const mapStateToProps = (state) => ({
-  testProcess: state.testCase.currentTestCase.testProcess,
+  process: state.testCase.currentTestCase.process,
 });
 
 const mapDispatchToProps = { getTestCaseStepsById, deleteProcess, deleteStep };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestProcess);
+export default connect(mapStateToProps, mapDispatchToProps)(Process);

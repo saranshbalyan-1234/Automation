@@ -9,8 +9,8 @@ import {
 
 const TestCase = db.testCases;
 const User = db.users;
-const TestProcess = db.testProcess;
-const TestObject = db.testObjects;
+const Process = db.process;
+const Object = db.objects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const saveTestCase = async (req, res) => {
@@ -70,7 +70,7 @@ const getAllTestCase = async (req, res) => {
   */
 
   try {
-    const projectId = req.params.projectId;
+    const projectId = req.headers["x-project-id"];
     const { error } = projectByIdValidation.validate({ projectId });
     if (error) throw new Error(error.details[0].message);
 
@@ -157,7 +157,7 @@ const getTestStepByTestCase = async (req, res) => {
     // if (error) throw new Error(error.details[0].message);
 
     const testCaseId = req.params.testCaseId;
-    const data = await TestProcess.schema(req.database).findAll({
+    const data = await Process.schema(req.database).findAll({
       where: { testCaseId },
       include: [
         {
@@ -166,9 +166,7 @@ const getTestStepByTestCase = async (req, res) => {
           // order: [["step", "ASC"]],
           include: [
             {
-              model: TestObject.schema(req.database),
-            },
-            {
+              model: Object.schema(req.database),
               model: TestParameter.schema(req.database),
             },
           ],
@@ -186,7 +184,7 @@ const getTestStepByTestCase = async (req, res) => {
   }
 };
 
-const saveTestProcess = async (req, res) => {
+const saveProcess = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
@@ -197,7 +195,7 @@ const saveTestProcess = async (req, res) => {
 
     const { testCaseId, step } = req.body;
 
-    await TestProcess.schema(req.database).increment("step", {
+    await Process.schema(req.database).increment("step", {
       by: 1,
       where: {
         testCaseId: { [Op.eq]: testCaseId },
@@ -207,7 +205,7 @@ const saveTestProcess = async (req, res) => {
       },
     });
 
-    const data = await TestProcess.schema(req.database).create(req.body);
+    const data = await Process.schema(req.database).create(req.body);
 
     return res.status(200).json(data);
   } catch (err) {
@@ -215,7 +213,7 @@ const saveTestProcess = async (req, res) => {
   }
 };
 
-const updateTestProcess = async (req, res) => {
+const updateProcess = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
@@ -225,19 +223,14 @@ const updateTestProcess = async (req, res) => {
     // const { error } = updateTestCaseValidation.validate({ name, testCaseId });
     // if (error) throw new Error(error.details[0].message);
 
-    const updatedTestProcess = await TestProcess.schema(req.database).update(
-      req.body,
-      {
-        where: {
-          id: processId,
-        },
-      }
-    );
+    const updatedProcess = await Process.schema(req.database).update(req.body, {
+      where: {
+        id: processId,
+      },
+    });
 
-    if (updatedTestProcess[0]) {
-      return res
-        .status(200)
-        .json({ message: "TestProcess updated successfully!" });
+    if (updatedProcess[0]) {
+      return res.status(200).json({ message: "Process updated successfully!" });
     } else {
       return res.status(400).json({ error: "Record not found" });
     }
@@ -247,7 +240,7 @@ const updateTestProcess = async (req, res) => {
   }
 };
 
-const deleteTestProcess = async (req, res) => {
+const deleteProcess = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
@@ -256,28 +249,26 @@ const deleteTestProcess = async (req, res) => {
     const processId = req.params.processId;
     // const { error } = testCaseIdValidation.validate({ testCaseId });
     // if (error) throw new Error(error.details[0].message);
-    const deletingTestProcess = await TestProcess.schema(req.database).findByPk(
+    const deletingProcess = await Process.schema(req.database).findByPk(
       processId
     );
 
-    const deletedTestProcess = await TestProcess.schema(req.database).destroy({
+    const deletedProcess = await Process.schema(req.database).destroy({
       where: { id: processId },
     });
 
-    if (deletedTestProcess > 0) {
-      await TestProcess.schema(req.database).decrement("step", {
+    if (deletedProcess > 0) {
+      await Process.schema(req.database).decrement("step", {
         by: 1,
         where: {
-          testCaseId: { [Op.eq]: deletingTestProcess.testCaseId },
+          testCaseId: { [Op.eq]: deletingProcess.testCaseId },
           step: {
-            [Op.gt]: deletingTestProcess.step,
+            [Op.gt]: deletingProcess.step,
           },
         },
       });
 
-      return res
-        .status(200)
-        .json({ message: "TestProcess deleted successfully" });
+      return res.status(200).json({ message: "Process deleted successfully" });
     } else {
       return res.status(400).json({ error: "Record not found" });
     }
@@ -293,7 +284,7 @@ export {
   deleteTestCase,
   getTestCaseDetailsById,
   getTestStepByTestCase,
-  saveTestProcess,
-  updateTestProcess,
-  deleteTestProcess,
+  saveProcess,
+  updateProcess,
+  deleteProcess,
 };

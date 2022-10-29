@@ -20,10 +20,11 @@ const Unverified = db.unverifieds;
 const Project = db.projects;
 const UserProject = db.userProjects;
 const TestCase = db.testCases;
-const TestObject = db.testObjects;
+const Object = db.objects;
 const TestStep = db.testSteps;
-const TestProcess = db.testProcess;
+const Process = db.process;
 const TestParameter = db.testParameters;
+const ReusableFlow = db.reusableFlows;
 
 const register = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
@@ -167,9 +168,10 @@ const verifyCustomer = async (req, res) => {
         await Role.schema(database).sync({ force: true, alter: true });
         await UserProject.schema(database).sync({ force: true, alter: true });
         await Project.schema(database).sync({ force: true, alter: true });
-        await TestObject.schema(database).sync({ force: true, alter: true });
+        await Object.schema(database).sync({ force: true, alter: true });
         await TestStep.schema(database).sync({ force: true, alter: true });
-        await TestProcess.schema(database).sync({
+        await ReusableFlow.schema(database).sync({ force: true, alter: true });
+        await Process.schema(database).sync({
           force: true,
           alter: true,
         });

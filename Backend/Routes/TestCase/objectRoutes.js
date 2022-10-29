@@ -1,27 +1,23 @@
 import express from "express";
 import {
-  saveTestObject,
-  updateTestObject,
-  deleteTestObject,
-  getAllTestObject,
-  getTestObjectDetailsById,
+  saveObject,
+  updateObject,
+  deleteObject,
+  getAllObject,
+  getObjectDetailsById,
   saveObjectLocator,
   getObjectLocatorsByObjectId,
   deleteObjectLocator,
-} from "../../Controllers/TestCase/TestObjectController.js";
+} from "../../Controllers/TestCase/objectController.js";
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
-Router.post("/", validatePermission("testcase", "add"), saveTestObject);
-Router.put(
-  "/:testObjectId",
-  validatePermission("testcase", "edit"),
-  updateTestObject
-);
+Router.post("/", validatePermission("testcase", "add"), saveObject);
+Router.put("/:objectId", validatePermission("testcase", "edit"), updateObject);
 Router.delete(
-  "/:testObjectId",
+  "/:objectId",
   validatePermission("testcase", "delete"),
-  deleteTestObject
+  deleteObject
 );
 Router.delete(
   "/locator/:locatorId",
@@ -29,19 +25,15 @@ Router.delete(
   deleteObjectLocator
 );
 
+Router.get("/", validatePermission("testcase", "view"), getAllObject);
 Router.get(
-  "/project/:projectId",
-  validatePermission("testcase", "view"),
-  getAllTestObject
-);
-Router.get(
-  "/:testObjectId/details",
+  "/:objectId/details",
   validatePermission("testcase", "add"),
-  getTestObjectDetailsById
+  getObjectDetailsById
 );
 
 Router.get(
-  "/:testObjectId/locator",
+  "/:objectId/locator",
   validatePermission("testcase", "view"),
   getObjectLocatorsByObjectId
 );
