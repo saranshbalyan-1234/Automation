@@ -44,16 +44,18 @@ export const ProjectDetails = ({
       let count = Object.entries(currentProject.count)
         .filter((el) => {
           return (
-            el[0] == "testCase" || el[0] == "reusableFlow" || el[0] == "object"
+            el[0] === "testCase" ||
+            el[0] === "reusableFlow" ||
+            el[0] === "object"
           );
         })
         .map((el) => {
           let key = "";
-          if (el[0] == "testCase") {
+          if (el[0] === "testCase") {
             key = "Test Case";
-          } else if (el[0] == "reusableFlow") {
+          } else if (el[0] === "reusableFlow") {
             key = "Reusable Flow";
-          } else if (el[0] == "object") {
+          } else if (el[0] === "object") {
             key = "Test Object";
           }
           return { name: key, Total: el[1] };

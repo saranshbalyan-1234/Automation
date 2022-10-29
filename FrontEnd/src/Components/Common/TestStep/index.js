@@ -40,25 +40,45 @@ const TestStepTable = ({
       title: "Test Object",
       // width: 100,
       dataIndex: "object",
-      render: (text, record) => (
-        <div>
-          <Tag
-            style={{ cursor: "pointer" }}
-            color="blue"
-            onClick={() => {
-              setObject(text);
-              setViewObjectModal(true);
-            }}
-          >
-            {text?.name ? text.name : "N/A"}
-          </Tag>
-        </div>
-      ),
+      render: (text, record) =>
+        text?.name ? (
+          <div>
+            <Tag
+              style={{ cursor: "pointer" }}
+              color="blue"
+              onClick={() => {
+                setObject(text);
+                setViewObjectModal(true);
+              }}
+            >
+              {text.name}
+            </Tag>
+          </div>
+        ) : (
+          "N/A"
+        ),
     },
     {
-      title: "Test Parameter",
+      title: "Test Parameters",
       // width: 100,
-      dataIndex: "testParameter",
+      dataIndex: "testParameters",
+      render: (text, record) =>
+        text?.length ? (
+          <div>
+            <Tag
+              style={{ cursor: "pointer" }}
+              color="red"
+              onClick={() => {
+                // setObject(text);
+                // setViewObjectModal(true);
+              }}
+            >
+              View
+            </Tag>
+          </div>
+        ) : (
+          "N/A"
+        ),
     },
     {
       title: "Options",
@@ -137,12 +157,14 @@ const TestStepTable = ({
           setEditData={setEditData}
         />
       )}
-      <ViewObjectModal
-        visible={viewObjectModal}
-        setVisible={setViewObjectModal}
-        object={object}
-        setObject={setObject}
-      />
+      {viewObjectModal && (
+        <ViewObjectModal
+          visible={viewObjectModal}
+          setVisible={setViewObjectModal}
+          object={object}
+          setObject={setObject}
+        />
+      )}
     </>
   );
 };

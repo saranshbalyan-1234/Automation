@@ -116,7 +116,7 @@ export const AllProject = ({
             <List
               dataSource={projects.data}
               renderItem={(item) => (
-                <List.Item key={item.id}>
+                <List.Item key={`project_${item.id}`}>
                   <List.Item.Meta
                     avatar={
                       <div>

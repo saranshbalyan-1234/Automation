@@ -39,23 +39,42 @@ const AddEditStepModal = ({
 
   const onSubmit = async (data) => {
     let result = false;
+
+    let payload = { ...data, parameters: [] };
+
+    if (currentEvent.parameter1) {
+      const key = currentEvent.parameter1;
+      const value = data.parameter1;
+      payload.parameters.push({ type: key, property: value });
+    }
+    if (currentEvent.parameter2) {
+      const key = currentEvent.parameter2;
+      const value = data.parameter2;
+      payload.parameters.push({ type: key, property: value });
+    }
+    if (currentEvent.parameter3) {
+      const key = currentEvent.parameter3;
+      const value = data.parameter3;
+      payload.parameters.push({ type: key, property: value });
+    }
+
     if (edit) {
       if (processId) {
-        result = await editStep({ data: data, stepId: editData.id });
+        result = await editStep({ data: payload, stepId: editData.id });
       } else {
-        result = await editReusableStep({ data: data, stepId: editData.id });
+        result = await editReusableStep({ data: payload, stepId: editData.id });
       }
       setEditData({});
     } else {
       if (processId) {
         result = await addStep({
-          ...data,
+          ...payload,
           processId,
           step,
         });
       } else {
         result = await addReusableStep({
-          ...data,
+          ...payload,
           reusableFlowId,
           step,
         });
@@ -107,7 +126,7 @@ const AddEditStepModal = ({
                 onChange={(e) =>
                   setCurrentEvent(
                     actionEvent.find((el) => {
-                      return el.name == e;
+                      return el.name === e;
                     })
                   )
                 }
@@ -153,6 +172,51 @@ const AddEditStepModal = ({
                     );
                   })}
                 </Select>
+              </Form.Item>
+            )}
+
+            {currentEvent.parameter1 && (
+              <Form.Item
+                name="parameter1"
+                label={currentEvent.parameter1}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input Parameter!",
+                  },
+                ]}
+              >
+                <Input name="parameter1" showCount maxLength={50} />
+              </Form.Item>
+            )}
+
+            {currentEvent.parameter2 && (
+              <Form.Item
+                name="parameter2"
+                label={currentEvent.parameter1}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input Parameter!",
+                  },
+                ]}
+              >
+                <Input name="parameter2" showCount maxLength={50} />
+              </Form.Item>
+            )}
+
+            {currentEvent.parameter3 && (
+              <Form.Item
+                name="parameter3"
+                label={currentEvent.parameter3}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input Parameter!",
+                  },
+                ]}
+              >
+                <Input name="parameter3" showCount maxLength={50} />
               </Form.Item>
             )}
 

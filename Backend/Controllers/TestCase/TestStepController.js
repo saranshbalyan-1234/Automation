@@ -36,8 +36,19 @@ const saveTestStep = async (req, res) => {
         },
       });
     }
-    const data = await TestStep.schema(req.database).create(req.body);
-    return res.status(200).json(data);
+    const teststep = await TestStep.schema(req.database).create(req.body);
+    const parameterPayload = req.body.parameters.map((el) => {
+      return { ...el, testStepId: teststep.id };
+    });
+    await TestParameter.schema(req.database).bulkCreate(parameterPayload);
+    const stepData = await TestStep.schema(req.database).findByPk(teststep.id, {
+      include: [
+        { model: Object.schema(req.database) },
+        { model: TestParameter.schema(req.database) },
+      ],
+    });
+
+    return res.status(200).json(stepData);
   } catch (err) {
     getError(err, res);
   }

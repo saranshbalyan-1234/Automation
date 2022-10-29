@@ -24,6 +24,7 @@ export default (sequelize, DataTypes) => {
         model: "teststeps",
         key: "id",
       },
+      onDelete: "CASCADE",
     },
   });
 

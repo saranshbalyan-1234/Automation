@@ -1,11 +1,19 @@
-import React from "react";
-import { Modal, Descriptions } from "antd";
-export default function ViewObjectModal({
-  visible,
-  setVisible,
-  object,
-  setObject,
-}) {
+import React, { useEffect, useState } from "react";
+import { Modal, Descriptions, Spin } from "antd";
+import { connect } from "react-redux";
+import axios from "axios";
+const ViewObjectModal = ({ visible, setVisible, object, setObject }) => {
+  const [locators, setLocators] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    getObjectLocators();
+  }, [object.id]);
+
+  const getObjectLocators = async () => {
+    const { data } = await axios.get(`/object/${object.id}/locator`);
+    setLoading(false);
+    setLocators(data);
+  };
   return (
     <Modal
       title={
@@ -20,17 +28,25 @@ export default function ViewObjectModal({
         setVisible(false);
       }}
     >
-      <div style={{ marginTop: "-10px" }}>
-        <Descriptions title="Locators" layout="vertical">
-          <Descriptions.Item label="UserName">Zhou Maomao</Descriptions.Item>
-          <Descriptions.Item label="Telephone">1810000000</Descriptions.Item>
-          <Descriptions.Item label="Live">Hangzhou, Zhejiang</Descriptions.Item>
-          <Descriptions.Item label="Address" span={2}>
-            No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
-          </Descriptions.Item>
-          <Descriptions.Item label="Remark">empty</Descriptions.Item>
-        </Descriptions>
-      </div>
+      <Spin spinning={loading}>
+        <div style={{ marginTop: "-10px" }}>
+          <Descriptions title="Locators">
+            {locators.map((el) => {
+              return (
+                <Descriptions.Item key={`locator_${el.id}`} label={el.type}>
+                  {el.locator}
+                </Descriptions.Item>
+              );
+            })}
+          </Descriptions>
+        </div>
+      </Spin>
     </Modal>
   );
-}
+};
+
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewObjectModal);
