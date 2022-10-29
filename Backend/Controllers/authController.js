@@ -25,6 +25,7 @@ const TestStep = db.testSteps;
 const Process = db.process;
 const TestParameter = db.testParameters;
 const ReusableFlow = db.reusableFlows;
+const ObjectLocator = db.ObjectLocators;
 
 const register = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
@@ -171,6 +172,11 @@ const verifyCustomer = async (req, res) => {
         await Object.schema(database).sync({ force: true, alter: true });
         await TestStep.schema(database).sync({ force: true, alter: true });
         await ReusableFlow.schema(database).sync({ force: true, alter: true });
+        await ObjectLocator.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+
         await Process.schema(database).sync({
           force: true,
           alter: true,

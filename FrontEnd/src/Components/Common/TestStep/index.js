@@ -11,7 +11,6 @@ const TestStepTable = ({
   deleteStep,
   reusableFlowId,
 }) => {
-  console.log("saransh", testSteps);
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [edit, setEdit] = useState(true);
   const [editData, setEditData] = useState({});

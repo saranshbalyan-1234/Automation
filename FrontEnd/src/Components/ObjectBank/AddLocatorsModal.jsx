@@ -12,7 +12,6 @@ const AddLocatorsModal = ({
   currentObjectId,
 }) => {
   const onSubmit = async (data) => {
-    console.log("saransh");
     let result = false;
     result = await addObjectLocator({ ...data, objectId: currentObjectId });
     result && setVisible(false);

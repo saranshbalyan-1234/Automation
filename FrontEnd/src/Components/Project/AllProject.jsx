@@ -120,7 +120,6 @@ export const AllProject = ({
                   <List.Item.Meta
                     avatar={
                       <div>
-                        {" "}
                         <div
                           style={{
                             fontSize: "20px",

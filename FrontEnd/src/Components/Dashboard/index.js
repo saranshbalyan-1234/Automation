@@ -43,7 +43,7 @@ export const Dashboard = ({ user }) => {
           }
           return { name: key, Total: el[1] };
         });
-      console.log("saransh", mainData);
+
       setMainData(mainData);
       let tempUserdata = { ...res.data.user };
       delete tempUserdata.total;

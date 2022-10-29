@@ -76,7 +76,7 @@ db.customers.schema("Main").sync({ force: false, alter: true });
 db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
-// db.reusableFlows.schema("saranshbalyan123gmailcom").sync({
+// db.ObjectLocators.schema("saranshbalyan123gmailcom").sync({
 //   force: true,
 //   alter: true,
 // });

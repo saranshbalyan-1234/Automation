@@ -17,7 +17,7 @@ export const getReusableFlowByProject = (payload) => {
   return async (dispatch, getState) => {
     try {
       dispatch({ type: REUSABLE_FLOW_REQUEST });
-      const { data } = await axios.get(`/reusableFlow}`);
+      const { data } = await axios.get(`/reusableFlow`);
       dispatch({ type: GET_ALL_REUSABLE_FLOW, payload: data });
       return true;
     } catch (err) {
@@ -123,7 +123,6 @@ export const addReusableStep = (payload) => {
       dispatch({ type: ADD_REUSABLE_STEP, payload: data });
       return true;
     } catch (err) {
-      console.log("saransh", err);
       dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }

@@ -23,7 +23,6 @@ const AddEditStepModal = ({
   addReusableStep,
   processId,
   reusableFlowId,
-  currentProjectId,
   setEdit = () => {},
 }) => {
   const [actionEvent, setActionEvent] = useState([]);
@@ -33,7 +32,7 @@ const AddEditStepModal = ({
     axios.get("/global/actionEvent").then((res) => {
       setActionEvent(res.data);
     });
-    axios.get(`/object/project/${currentProjectId}`).then((res) => {
+    axios.get(`/object`).then((res) => {
       setObjects(res.data);
     });
   }, []);
@@ -182,7 +181,6 @@ const AddEditStepModal = ({
 };
 const mapStateToProps = (state) => ({
   loading: state.testCase.loading,
-  currentProjectId: state.projects.currentProject.id,
 });
 const mapDispatchToProps = {
   addProcess,
