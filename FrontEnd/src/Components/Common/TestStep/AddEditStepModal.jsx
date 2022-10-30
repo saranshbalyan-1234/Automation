@@ -3,11 +3,14 @@ import { Form, Input, Modal, Button, Spin, Select } from "antd";
 import { connect } from "react-redux";
 import { addProcess } from "../../../Redux/Actions/testCase";
 import { addStep, editStep } from "../../../Redux/Actions/testCase";
+import { getObjectByProject } from "../../../Redux/Actions/object";
 import {
   addReusableStep,
   editReusableStep,
 } from "../../../Redux/Actions/reusableFlow";
+import AddEditObjectModal from "../../ObjectBank/AddEditObjectModal";
 import axios from "axios";
+import { saveObject } from "../../../Redux/Actions/object";
 const Option = { Select };
 const AddEditStepModal = ({
   visible,
@@ -23,19 +26,26 @@ const AddEditStepModal = ({
   addReusableStep,
   processId,
   reusableFlowId,
+  currentProjectId,
+  objectList,
+  getObjectByProject,
+  objectLoading,
+  saveObject,
   setEdit = () => {},
 }) => {
   const [actionEvent, setActionEvent] = useState([]);
   const [currentEvent, setCurrentEvent] = useState({});
-  const [objects, setObjects] = useState([]);
+  const [addObjectModal, setAddObjectModal] = useState(false);
+
   useEffect(() => {
     axios.get("/global/actionEvent").then((res) => {
       setActionEvent(res.data);
     });
-    axios.get(`/object`).then((res) => {
-      setObjects(res.data);
-    });
   }, []);
+
+  useEffect(() => {
+    currentProjectId && getObjectByProject();
+  }, [currentProjectId]);
 
   const onSubmit = async (data) => {
     let result = false;
@@ -91,7 +101,22 @@ const AddEditStepModal = ({
       }}
     >
       <Modal
-        title={edit ? "Edit Step" : "Create New Step"}
+        title={
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div>{edit ? "Edit Step" : "Create New Step"}</div>
+            {currentEvent.object && (
+              <Button
+                type="primary"
+                ghost
+                onClick={() => {
+                  setAddObjectModal(true);
+                }}
+              >
+                Add New Object
+              </Button>
+            )}
+          </div>
+        }
         visible={visible}
         footer={false}
         onCancel={() => {
@@ -164,7 +189,7 @@ const AddEditStepModal = ({
                   //   )
                   // }
                 >
-                  {objects.map((el, i) => {
+                  {objectList.map((el, i) => {
                     return (
                       <Option value={el.id} key={i}>
                         {el.name}
@@ -240,11 +265,22 @@ const AddEditStepModal = ({
           </Form>
         </Spin>
       </Modal>
+
+      <AddEditObjectModal
+        visible={addObjectModal}
+        setVisible={setAddObjectModal}
+        loading={objectLoading}
+        name={"Object"}
+        onSave={saveObject}
+      />
     </div>
   );
 };
 const mapStateToProps = (state) => ({
   loading: state.testCase.loading,
+  currentProjectId: state.projects.currentProject.id,
+  objectList: state.objectBank.data,
+  objectLoading: state.objectBank.loading,
 });
 const mapDispatchToProps = {
   addProcess,
@@ -252,6 +288,8 @@ const mapDispatchToProps = {
   addStep,
   addReusableStep,
   editReusableStep,
+  getObjectByProject,
+  saveObject,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditStepModal);

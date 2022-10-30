@@ -6,8 +6,9 @@ import {
   saveObject,
 } from "../../Redux/Actions/object";
 import { connect } from "react-redux";
-import List from "../Common/List";
+
 import Details from "./Details";
+import ObjectList from "./ObjectList";
 const ObjectBank = ({
   objectList,
   loading,
@@ -26,7 +27,7 @@ const ObjectBank = ({
         <Route
           path="/"
           element={
-            <List
+            <ObjectList
               data={objectList}
               loading={loading}
               onDelete={deleteObject}

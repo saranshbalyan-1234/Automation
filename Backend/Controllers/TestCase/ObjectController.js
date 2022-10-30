@@ -97,7 +97,7 @@ const deleteObject = async (req, res) => {
       where: { id: objectId },
     });
 
-    if (deleteObject > 0) {
+    if (deletedObject > 0) {
       return res.status(200).json({ message: "Object deleted successfully" });
     } else {
       return res.status(400).json({ error: "Record not found" });

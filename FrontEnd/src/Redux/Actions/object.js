@@ -40,7 +40,7 @@ export const saveObject = (payload) => {
         createdBy: getState().auth.user,
       };
       dispatch({ type: CREATE_TEST_OBJECT, payload: updatedObject });
-      return true;
+      return data;
     } catch (err) {
       console.log(err);
       dispatch({ type: OBJECT_BANK_FAILURE });

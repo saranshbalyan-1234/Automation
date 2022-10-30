@@ -2,19 +2,14 @@ import React from "react";
 import { Modal, Spin } from "antd";
 import { connect } from "react-redux";
 import Details from "../../ObjectBank/Details";
-const ViewObjectModal = ({ visible, setVisible, object, setObject }) => {
+const ViewObjectModal = ({ visible, setVisible, object }) => {
   return (
     <Modal
       width={1000}
-      title={
-        <div style={{ display: "flex", gap: 10 }}>
-          <div>Object Name:</div> <div>{object.name}</div>
-        </div>
-      }
+      title={"Object Details"}
       visible={visible}
       footer={false}
       onCancel={() => {
-        setObject({});
         setVisible(false);
       }}
     >

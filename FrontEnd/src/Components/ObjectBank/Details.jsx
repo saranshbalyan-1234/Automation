@@ -34,7 +34,7 @@ const ObjectDetails = ({
             name={name}
             onEdit={editObject}
           />
-          <div className="row" style={{ flexDirection: "column" }}>
+          <div style={{ display: "flex", flexDirection: "column" }}>
             <Button
               type="primary"
               ghost
