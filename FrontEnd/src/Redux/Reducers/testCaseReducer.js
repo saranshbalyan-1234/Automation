@@ -187,7 +187,7 @@ const testCaseReducer = (state = initState, { type, payload }) => {
           ? {
               ...el,
               testSteps: [...el.testSteps].map((step) => {
-                return step.id == payload.id ? payload : el;
+                return step.id === payload.id ? payload : el;
               }),
             }
           : el;

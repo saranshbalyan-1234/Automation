@@ -3,14 +3,9 @@ import { connect } from "react-redux";
 import { Typography, Statistic, Row, Col, Card, Spin } from "antd";
 import axios from "axios";
 
-import {
-  FileOutlined,
-  BankOutlined,
-  UserOutlined,
-  ProjectOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, UserOutlined, ProjectOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-import { VscDebugRestart } from "react-icons/vsc";
+
 import ColumnGraph from "../Common/ColumnGraph";
 const { Title } = Typography;
 
@@ -26,19 +21,19 @@ export const Dashboard = ({ user }) => {
       let mainData = Object.entries(res.data.createdByMe)
         .filter((el) => {
           return (
-            el[0] == "testCase" ||
-            el[0] == "reusableFlow" ||
-            el[0] == "object" ||
-            el[0] == "Project"
+            el[0] === "testCase" ||
+            el[0] === "reusableFlow" ||
+            el[0] === "object" ||
+            el[0] === "Project"
           );
         })
         .map((el) => {
           let key = el[0];
-          if (el[0] == "testCase") {
+          if (el[0] === "testCase") {
             key = "Test Case";
-          } else if (el[0] == "reusableFlow") {
+          } else if (el[0] === "reusableFlow") {
             key = "Reusable Flow";
-          } else if (el[0] == "object") {
+          } else if (el[0] === "object") {
             key = "Test Object";
           }
           return { name: key, Total: el[1] };
@@ -61,38 +56,50 @@ export const Dashboard = ({ user }) => {
 
         <Row gutter={[16, 16]} style={{ justifyContent: "space-between" }}>
           <div className="row">
-            <Col>
-              <Card className="card">
-                <Statistic
-                  title={
-                    <div className="title">
-                      <ProjectOutlined className="icon" />
-                      <Title level={5}>Projects Assigned</Title>
-                    </div>
-                  }
-                  value={data.project}
-                />
-              </Card>
-            </Col>
-            <Col>
-              <Card className="card">
-                <Statistic
-                  title={
-                    <div className="title">
-                      <UserOutlined className="icon" />
-                      <Title level={5}>Total Users</Title>
-                    </div>
-                  }
-                  value={data.user?.total}
-                />
-              </Card>
-            </Col>
+            <div className="row">
+              <Col>
+                <Card className="card">
+                  <Statistic
+                    title={
+                      <div className="title">
+                        <ProjectOutlined className="icon" />
+                        <Title level={5}>Projects Assigned</Title>
+                      </div>
+                    }
+                    value={data.project}
+                  />
+                </Card>
+              </Col>
+              <Col>
+                <Card className="card">
+                  <Statistic
+                    title={
+                      <div className="title">
+                        <UserOutlined className="icon" />
+                        <Title level={5}>Total Users</Title>
+                      </div>
+                    }
+                    value={data.user?.total}
+                  />
+                </Card>
+              </Col>
+            </div>
           </div>
+          <div style={{ color: "green" }}>All Projects Dashboard</div>
         </Row>
 
         <Row gutter={[16, 16]}>
           <Col>
-            <Card title="Created By Me" className="card" style={{ width: 400 }}>
+            <Card
+              title={
+                <div>
+                  <EditOutlined style={{ marginRight: 10 }} />
+                  Created By Me
+                </div>
+              }
+              className="card"
+              style={{ width: 400, height: 360 }}
+            >
               <div style={{ width: 350, height: 200 }}>
                 <ColumnGraph data={mainData} width={360} />
               </div>
@@ -100,9 +107,14 @@ export const Dashboard = ({ user }) => {
           </Col>
           <Col>
             <Card
-              title={`Total Users: ${data.user?.total}`}
+              title={
+                <div>
+                  <UserOutlined style={{ marginRight: 10 }} />
+                  {`Total Users: ${data.user?.total}`}
+                </div>
+              }
               className="card"
-              style={{ width: 400 }}
+              style={{ width: 400, height: 360 }}
             >
               <div style={{ width: 350, height: 200 }}>
                 <ColumnGraph data={userData} />

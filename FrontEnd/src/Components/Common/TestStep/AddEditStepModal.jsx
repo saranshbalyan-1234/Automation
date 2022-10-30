@@ -45,7 +45,7 @@ const AddEditStepModal = ({
       edit &&
         setCurrentEvent(
           res.data.find((el) => {
-            return el.name == editData.actionEvent;
+            return el.name === editData.actionEvent;
           })
         );
     });
@@ -55,16 +55,16 @@ const AddEditStepModal = ({
     edit &&
       form.setFieldsValue({
         parameter1: editData.testParameters.find((el) => {
-          return el.type == currentEvent.parameter1;
+          return el.type === currentEvent.parameter1;
         })?.property,
         parameter2: editData.testParameters.find((el) => {
-          return el.type == currentEvent.parameter2;
+          return el.type === currentEvent.parameter2;
         })?.property,
         parameter3: editData.testParameters.find((el) => {
-          return el.type == currentEvent.parameter3;
+          return el.type === currentEvent.parameter3;
         })?.property,
       });
-  }, [currentEvent]);
+  }, [currentEvent, edit]);
 
   useEffect(() => {
     currentProjectId && getObjectByProject();
