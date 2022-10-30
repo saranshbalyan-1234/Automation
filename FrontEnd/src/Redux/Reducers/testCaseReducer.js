@@ -12,6 +12,7 @@ import {
   DELETE_PROCESS,
   ADD_STEP,
   DELETE_STEP,
+  EDIT_STEP,
 } from "../Actions/action-types";
 import { orderBy } from "lodash";
 const initState = {
@@ -152,6 +153,7 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         },
         loading: false,
       };
+
     case DELETE_STEP:
       const deletedStep = [...state.currentTestCase.process].map((el) => {
         return el.id === payload.processId
@@ -178,6 +180,28 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         },
         loading: false,
       };
+
+    case EDIT_STEP:
+      const editStep = [...state.currentTestCase.process].map((el) => {
+        return el.id === payload.processId
+          ? {
+              ...el,
+              testSteps: [...el.testSteps].map((step) => {
+                return step.id == payload.id ? payload : el;
+              }),
+            }
+          : el;
+      });
+
+      return {
+        ...state,
+        currentTestCase: {
+          ...state.currentTestCase,
+          process: editStep,
+        },
+        loading: false,
+      };
+
     default:
       return state;
   }

@@ -189,8 +189,15 @@ export const editStep = (payload) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
-      await axios.put(`/testStep/${payload.stepId}`, payload.data);
-      dispatch({ type: EDIT_STEP, payload });
+      const { data } = await axios.put(
+        `/testStep/${payload.stepId}`,
+        payload.data
+      );
+
+      dispatch({
+        type: EDIT_STEP,
+        payload: { ...data, processId: payload.processId },
+      });
       return true;
     } catch (err) {
       dispatch({ type: TEST_CASE_FAILURE });

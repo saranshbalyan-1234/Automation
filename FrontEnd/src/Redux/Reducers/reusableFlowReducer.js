@@ -9,6 +9,7 @@ import {
   GET_REUSABLE_FLOW_STEPS_BY_ID,
   ADD_REUSABLE_STEP,
   DELETE_REUSABLE_STEP,
+  EDIT_REUSABLE_STEP,
 } from "../Actions/action-types";
 import { orderBy } from "lodash";
 const initState = {
@@ -109,6 +110,20 @@ const reusableFlowReducer = (state = initState, { type, payload }) => {
         },
         loading: false,
       };
+
+    case EDIT_REUSABLE_STEP:
+      const editStep = [...state.currentReusableFlow.testSteps].map((el) => {
+        return el.id === payload.id ? payload : el;
+      });
+      return {
+        ...state,
+        currentReusableFlow: {
+          ...state.currentReusableFlow,
+          testSteps: editStep,
+        },
+        loading: false,
+      };
+
     default:
       return state;
   }

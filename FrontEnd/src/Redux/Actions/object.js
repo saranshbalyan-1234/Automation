@@ -1,10 +1,7 @@
 import axios from "axios";
 import {
-  REUSABLE_FLOW_REQUEST,
-  REUSABLE_FLOW_FAILURE,
   GET_ALL_TEST_OBJECT,
   DELETE_TEST_OBJECT,
-  EDIT_STEP,
   OBJECT_BANK_REQUEST,
   OBJECT_BANK_FAILURE,
   GET_OBJECT_DETAILS_BY_ID,
@@ -125,20 +122,6 @@ export const addObjectLocator = (payload) => {
       return true;
     } catch (err) {
       dispatch({ type: OBJECT_BANK_FAILURE });
-      return false;
-    }
-  };
-};
-
-export const editReusableStep = (payload) => {
-  return async (dispatch) => {
-    try {
-      dispatch({ type: REUSABLE_FLOW_REQUEST });
-      await axios.put(`/testStep/${payload.stepId}`, payload.data);
-      dispatch({ type: EDIT_STEP, payload });
-      return true;
-    } catch (err) {
-      dispatch({ type: REUSABLE_FLOW_FAILURE });
       return false;
     }
   };

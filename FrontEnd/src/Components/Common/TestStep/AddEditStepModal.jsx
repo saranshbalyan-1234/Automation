@@ -37,11 +37,34 @@ const AddEditStepModal = ({
   const [currentEvent, setCurrentEvent] = useState({});
   const [addObjectModal, setAddObjectModal] = useState(false);
 
+  const [form] = Form.useForm();
+
   useEffect(() => {
     axios.get("/global/actionEvent").then((res) => {
       setActionEvent(res.data);
+      edit &&
+        setCurrentEvent(
+          res.data.find((el) => {
+            return el.name == editData.actionEvent;
+          })
+        );
     });
   }, []);
+
+  useEffect(() => {
+    edit &&
+      form.setFieldsValue({
+        parameter1: editData.testParameters.find((el) => {
+          return el.type == currentEvent.parameter1;
+        })?.property,
+        parameter2: editData.testParameters.find((el) => {
+          return el.type == currentEvent.parameter2;
+        })?.property,
+        parameter3: editData.testParameters.find((el) => {
+          return el.type == currentEvent.parameter3;
+        })?.property,
+      });
+  }, [currentEvent]);
 
   useEffect(() => {
     currentProjectId && getObjectByProject();
@@ -70,7 +93,11 @@ const AddEditStepModal = ({
 
     if (edit) {
       if (processId) {
-        result = await editStep({ data: payload, stepId: editData.id });
+        result = await editStep({
+          data: payload,
+          stepId: editData.id,
+          processId,
+        });
       } else {
         result = await editReusableStep({ data: payload, stepId: editData.id });
       }
@@ -126,6 +153,7 @@ const AddEditStepModal = ({
       >
         <Spin spinning={loading}>
           <Form
+            form={form}
             name="testStep"
             onFinish={onSubmit}
             labelCol={{ span: 7 }}
@@ -134,6 +162,7 @@ const AddEditStepModal = ({
               name: edit ? editData.name : "",
               comment: edit ? editData.comment : "",
               actionEvent: edit ? editData.actionEvent : "Launch Website",
+              objectId: edit ? editData.object?.id : "",
             }}
           >
             <Form.Item

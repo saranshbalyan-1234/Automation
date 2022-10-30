@@ -6,7 +6,7 @@ import {
   updateTestCaseValidation,
   testCaseIdValidation,
 } from "../../Utils/Validations/testCase.js";
-
+import { Op } from "sequelize";
 const TestCase = db.testCases;
 const User = db.users;
 const Process = db.process;

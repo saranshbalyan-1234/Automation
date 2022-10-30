@@ -73,10 +73,30 @@ const updateTestStep = async (req, res) => {
       }
     );
 
+    await TestParameter.schema(req.database).destroy({
+      where: { id: testStepId },
+    });
+
+    const parameterPayload = req.body.parameters.map((el) => {
+      return { ...el, testStepId };
+    });
+
+    await TestParameter.schema(req.database).bulkCreate(parameterPayload);
+
     if (updatedTestStep[0]) {
+      const step = await TestStep.schema(req.database).findByPk(testStepId, {
+        include: [
+          { model: Object.schema(req.database) },
+          { model: TestParameter.schema(req.database) },
+        ],
+      });
+
       return res
         .status(200)
-        .json({ message: "TestStep updated successfully!" });
+        .json({
+          ...step.dataValues,
+          message: "TestStep updated successfully!",
+        });
     } else {
       return res.status(400).json({ error: "Record not found" });
     }

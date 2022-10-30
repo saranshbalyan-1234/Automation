@@ -9,7 +9,7 @@ import {
   GET_REUSABLE_FLOW_DETAILS_BY_ID,
   GET_REUSABLE_FLOW_STEPS_BY_ID,
   ADD_REUSABLE_STEP,
-  EDIT_STEP,
+  EDIT_REUSABLE_STEP,
   DELETE_REUSABLE_STEP,
 } from "../Actions/action-types";
 
@@ -133,8 +133,11 @@ export const editReusableStep = (payload) => {
   return async (dispatch) => {
     try {
       dispatch({ type: REUSABLE_FLOW_REQUEST });
-      await axios.put(`/testStep/${payload.stepId}`, payload.data);
-      dispatch({ type: EDIT_STEP, payload });
+      const { data } = await axios.put(
+        `/testStep/${payload.stepId}`,
+        payload.data
+      );
+      dispatch({ type: EDIT_REUSABLE_STEP, payload: data });
       return true;
     } catch (err) {
       dispatch({ type: REUSABLE_FLOW_FAILURE });

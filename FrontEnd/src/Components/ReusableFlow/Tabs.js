@@ -37,7 +37,7 @@ function ReusableFlowTabs({
     if (tab === "teststeps") {
       reusableFlowId && getReusableFlowStepsById(reusableFlowId);
     }
-  }, [reusableFlowId]);
+  }, [reusableFlowId, tab]);
 
   useEffect(() => {
     reusableFlowId && getReusableFlowDetailsById(reusableFlowId);
