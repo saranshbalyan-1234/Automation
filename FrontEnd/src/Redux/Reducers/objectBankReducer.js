@@ -59,7 +59,7 @@ const objectBankReducer = (state = initState, { type, payload }) => {
     case GET_OBJECT_DETAILS_BY_ID:
       return {
         ...state,
-        currentObject: { ...payload, locators: [] },
+        currentObject: { ...payload },
         loading: false,
       };
     case GET_OBJECT_LOCATORS:

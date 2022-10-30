@@ -7,7 +7,7 @@ import UserAvatar from "./Avatar";
 import AddEditModal from "./AddEditModal";
 const { Title } = Typography;
 const { Meta } = Card;
-export const Details = ({ loading, details, name, onEdit = () => {} }) => {
+const Details = ({ loading, details, name, onEdit = () => {} }) => {
   const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
 
@@ -120,8 +120,4 @@ export const Details = ({ loading, details, name, onEdit = () => {} }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
-
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Details);
+export default Details;

@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import ObjectBankTabs from "./Tabs";
 import { Routes, Route } from "react-router-dom";
 import {
   getObjectByProject,
@@ -8,6 +7,7 @@ import {
 } from "../../Redux/Actions/object";
 import { connect } from "react-redux";
 import List from "../Common/List";
+import Details from "./Details";
 const ObjectBank = ({
   objectList,
   loading,
@@ -36,7 +36,7 @@ const ObjectBank = ({
             />
           }
         />
-        <Route path="/:objectId/:tab" element={<ObjectBankTabs />} />
+        <Route path="/:objectId/:tab" element={<Details />} />
       </Routes>
     </>
   );

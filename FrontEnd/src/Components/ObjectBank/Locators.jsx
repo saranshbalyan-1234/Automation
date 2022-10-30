@@ -1,28 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import {
-  Typography,
-  Tooltip,
-  Progress,
-  Card,
-  Table,
-  Button,
-  Spin,
-  Popconfirm,
-  Tag,
-} from "antd";
+import { Table, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-import { deleteLocator, getObjectLocator } from "../../Redux/Actions/object";
-export const Locators = ({
-  locators,
-  currentObjectId,
-  deleteLocator,
-  getObjectLocator,
-}) => {
-  useEffect(() => {
-    currentObjectId && getObjectLocator(currentObjectId);
-  }, [currentObjectId]);
-
+import { deleteLocator } from "../../Redux/Actions/object";
+export const Locators = ({ locators, deleteLocator }) => {
   const columns = [
     {
       title: "Type",
@@ -59,10 +40,9 @@ export const Locators = ({
 };
 
 const mapStateToProps = (state) => ({
-  locators: state.objectBank.currentObject.locators,
   currentObjectId: state.objectBank.currentObject.id,
 });
 
-const mapDispatchToProps = { deleteLocator, getObjectLocator };
+const mapDispatchToProps = { deleteLocator };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Locators);

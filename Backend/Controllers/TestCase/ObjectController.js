@@ -44,6 +44,10 @@ const getObjectDetailsById = async (req, res) => {
           as: "createdBy",
           attributes: ["id", "name", "email", "active"],
         },
+        {
+          model: ObjectLocator.schema(req.database),
+          as: "locators",
+        },
       ],
     });
 

@@ -1,21 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Modal, Descriptions, Spin } from "antd";
+import React from "react";
+import { Modal, Spin } from "antd";
 import { connect } from "react-redux";
-import axios from "axios";
+import Details from "../../ObjectBank/Details";
 const ViewObjectModal = ({ visible, setVisible, object, setObject }) => {
-  const [locators, setLocators] = useState([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    getObjectLocators();
-  }, [object.id]);
-
-  const getObjectLocators = async () => {
-    const { data } = await axios.get(`/object/${object.id}/locator`);
-    setLoading(false);
-    setLocators(data);
-  };
   return (
     <Modal
+      width={1000}
       title={
         <div style={{ display: "flex", gap: 10 }}>
           <div>Object Name:</div> <div>{object.name}</div>
@@ -28,18 +18,8 @@ const ViewObjectModal = ({ visible, setVisible, object, setObject }) => {
         setVisible(false);
       }}
     >
-      <Spin spinning={loading}>
-        <div style={{ marginTop: "-10px" }}>
-          <Descriptions title="Locators">
-            {locators.map((el) => {
-              return (
-                <Descriptions.Item key={`locator_${el.id}`} label={el.type}>
-                  {el.locator}
-                </Descriptions.Item>
-              );
-            })}
-          </Descriptions>
-        </div>
+      <Spin spinning={false}>
+        <Details newObjectId={object.id} />
       </Spin>
     </Modal>
   );

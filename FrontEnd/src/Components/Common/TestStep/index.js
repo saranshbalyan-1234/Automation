@@ -5,6 +5,7 @@ import { Table, Tag, Popconfirm } from "antd";
 import AddEditStepModal from "./AddEditStepModal";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ViewObjectModal from "./ViewObjectModal";
+import Details from "../../ObjectBank/Details";
 const TestStepTable = ({
   processId,
   testSteps,
