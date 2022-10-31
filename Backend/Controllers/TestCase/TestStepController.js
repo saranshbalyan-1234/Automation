@@ -74,7 +74,7 @@ const updateTestStep = async (req, res) => {
     );
 
     await TestParameter.schema(req.database).destroy({
-      where: { id: testStepId },
+      where: { testStepId },
     });
 
     const parameterPayload = req.body.parameters.map((el) => {
@@ -91,12 +91,10 @@ const updateTestStep = async (req, res) => {
         ],
       });
 
-      return res
-        .status(200)
-        .json({
-          ...step.dataValues,
-          message: "TestStep updated successfully!",
-        });
+      return res.status(200).json({
+        ...step.dataValues,
+        message: "TestStep updated successfully!",
+      });
     } else {
       return res.status(400).json({ error: "Record not found" });
     }
