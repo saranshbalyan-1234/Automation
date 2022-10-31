@@ -5,10 +5,11 @@ export default function MemberBadge({ members }) {
     const activeMembers = members.filter((el) => {
       return el.active === true;
     }).length;
-    const inactiveMembers = members.length - activeMembers;
+
     const unverifiedMembers = members.filter((el) => {
       return el.verifiedAt === null;
     }).length;
+    const inactiveMembers = members.length - activeMembers - unverifiedMembers;
     return (
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
         <Badge

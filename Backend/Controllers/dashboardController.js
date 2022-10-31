@@ -16,11 +16,11 @@ const dashboard = async (req, res) => {
     const active = user.filter((el) => {
       return el.active === true;
     }).length;
-    const inactive = user.length - active;
+
     const unverified = user.filter((el) => {
       return el.verifiedAt === null;
     }).length;
-
+    const inactive = user.length - active - unverified;
     const testCase = await TestCase.schema(req.database).count({
       where: { createdByUser: req.user.id },
     });
