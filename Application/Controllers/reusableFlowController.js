@@ -1,11 +1,6 @@
-import db from "../Utils/dataBaseConnection.js";
-import getError from "../Utils/sequelizeError.js";
+import db from "../../Utils/dataBaseConnection.js";
+import getError from "../../Utils/sequelizeError.js";
 import { projectByIdValidation } from "../Utils/Validations/project.js";
-import {
-  saveTestCaseValidation,
-  updateTestCaseValidation,
-  testCaseIdValidation,
-} from "../Utils/Validations/testCase.js";
 
 const User = db.users;
 const Object = db.objects;

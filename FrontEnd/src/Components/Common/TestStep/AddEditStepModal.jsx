@@ -42,10 +42,16 @@ const AddEditStepModal = ({
   useEffect(() => {
     axios.get("/global/actionEvent").then((res) => {
       setActionEvent(res.data);
-      edit &&
+      if (edit)
         setCurrentEvent(
           res.data.find((el) => {
             return el.name === editData.actionEvent;
+          })
+        );
+      else
+        setCurrentEvent(
+          res.data.find((el) => {
+            return el.name === "Launch Website";
           })
         );
     });

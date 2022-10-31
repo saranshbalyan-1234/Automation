@@ -1,15 +1,24 @@
 const express = require("express");
-const { createDriver } = require("./utils");
+const { createDriver } = require("./Utils/driver");
+const { getTestStepByTestCase } = require("./Controllers/testCaseController");
+const { handleStep } = require("./Utils/actionEvent");
 const app = express();
 
-app.get("/", async (req, res) => {
-  /*  #swagger.tags = ["Health"] */
-
+app.get("/execute/:testCaseId", async (req, res) => {
   try {
+    const data = await getTestStepByTestCase(req, res);
+    res.status(200).json({ message: "Started Execution" });
     let driver = await createDriver(req, res);
-
-    await driver.get("http://www.youtube.com");
-    // driver.close();
+    data.forEach((process) => {
+      process.testSteps.forEach(async (step) => {
+        let tempParameter = {};
+        await step.testParameters.forEach((parameter) => {
+          tempParameter[parameter.type] = parameter.property;
+        });
+        let tempStep = { ...step.dataValues, testParameters: tempParameter };
+        await handleStep(tempStep, driver);
+      });
+    });
   } catch (err) {
     console.log(err);
   }
@@ -19,6 +28,6 @@ app.use((req, res) => {
   return res.status(404).json({ error: "Endpoint Not Found" });
 });
 
-app.listen(5001, () => {
-  console.log("Server started");
+app.listen(3002, () => {
+  console.log("You can execute now!");
 });
