@@ -25,9 +25,7 @@
   "devDependencies": {
     "selenium-webdriver": "^4.5.0"
   },
-  "bin": {
-    "DC_Cleaner": "./server.js"
-  },
+  "bin": "./index.js",
   "pkg": {
     "scripts": [
       "node_modules/selenium-webdriver/**/*.js",
