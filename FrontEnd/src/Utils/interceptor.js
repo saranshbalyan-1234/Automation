@@ -37,15 +37,27 @@ export default {
           store.dispatch(logout());
         }
         let errorObj = err.response;
-        let errorFormat = {
-          url: errorObj.config.url,
-          method: errorObj.config.method,
-          status: errorObj.status,
-          message: errorObj.data.error,
-        };
+        if (errorObj.data) {
+          let errorFormat = {
+            url: errorObj.config.url,
+            method: errorObj.config.method,
+            status: errorObj.status,
+            message: errorObj.data.error,
+          };
 
-        console.error("errorResponse", errorFormat);
-        message.error(errorObj.data.error);
+          console.error("errorResponse", errorFormat);
+          message.error(errorObj.data.error);
+        } else {
+          let errorFormat = {
+            url: err.config.url,
+            method: err.config.method,
+            status: err.status,
+            message: "Internal Server Error!",
+          };
+          console.error("errorResponse", errorFormat);
+          message.error("Internal Server Error!");
+        }
+
         return Promise.reject(err.response.data);
       }
     );

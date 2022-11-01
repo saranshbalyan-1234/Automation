@@ -23,9 +23,8 @@ const SignIn = ({ loading, signIn, logout }) => {
   };
 
   const handleSignIn = async () => {
-    signIn(details).then(() => {
-      navigate("/");
-    });
+    const result = signIn(details);
+    result && navigate("/");
   };
   const handleRememberMe = (e) => {
     setDetails({ ...details, rememberMe: e.target.checked });
