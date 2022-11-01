@@ -1,7 +1,9 @@
-import React from "react";
-import { Form, Input, Modal, Button, Spin } from "antd";
+import React, { useEffect } from "react";
+import { Form, Input, Modal, Button, Spin, Select } from "antd";
 import { connect } from "react-redux";
 import { addProcess, editProcess } from "../../../Redux/Actions/testCase";
+import { getReusableFlowByProject } from "../../../Redux/Actions/reusableFlow";
+const { Option } = Select;
 const AddEditProcessModal = ({
   visible,
   setVisible,
@@ -14,7 +16,15 @@ const AddEditProcessModal = ({
   edit = false,
   setEdit = () => {},
   step,
+  addReusable = false,
+  getReusableFlowByProject,
+  reusableLoading,
+  reusableFlows,
 }) => {
+  useEffect(() => {
+    addReusable && getReusableFlowByProject();
+  }, []);
+
   const onSubmit = async (data) => {
     let result = false;
     if (edit) {
@@ -46,11 +56,11 @@ const AddEditProcessModal = ({
         }}
         closable={false}
       >
-        <Spin spinning={loading}>
+        <Spin spinning={loading || reusableLoading}>
           <Form
             name="process"
             onFinish={onSubmit}
-            labelCol={{ span: 5 }}
+            labelCol={{ span: 7 }}
             wrapperCol={{ span: 16 }}
             initialValues={{
               name: edit ? editData.name : "",
@@ -69,6 +79,28 @@ const AddEditProcessModal = ({
             >
               <Input name="name" />
             </Form.Item>
+            {addReusable && (
+              <Form.Item
+                name="reusableFlowId"
+                label="Reusable Flow"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Reusable Flow!",
+                  },
+                ]}
+              >
+                <Select style={{ minWidth: "160px" }}>
+                  {reusableFlows.map((el, i) => {
+                    return (
+                      <Option value={el.id} key={i}>
+                        {el.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            )}
             <Form.Item name="comment" label="Comment">
               <Input name="comment" showCount maxLength={50} />
             </Form.Item>
@@ -99,8 +131,14 @@ const AddEditProcessModal = ({
 const mapStateToProps = (state) => ({
   currentTestCaseId: state.testCase.currentTestCase.id,
   loading: state.testCase.loading,
+  reusableFlows: state.reusableFlow.data,
+  reusableLoading: state.reusableFlow.loading,
 });
-const mapDispatchToProps = { addProcess, editProcess };
+const mapDispatchToProps = {
+  addProcess,
+  editProcess,
+  getReusableFlowByProject,
+};
 
 export default connect(
   mapStateToProps,

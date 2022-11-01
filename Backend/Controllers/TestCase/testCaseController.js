@@ -13,6 +13,7 @@ const Process = db.process;
 const Object = db.objects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
+const ReusableFlow = db.reusableFlows;
 const saveTestCase = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
@@ -165,6 +166,18 @@ const getTestStepByTestCase = async (req, res) => {
           include: [
             { model: Object.schema(req.database) },
             { model: TestParameter.schema(req.database) },
+          ],
+        },
+        {
+          model: ReusableFlow.schema(req.database),
+          include: [
+            {
+              model: TestStep.schema(req.database),
+              include: [
+                { model: Object.schema(req.database) },
+                { model: TestParameter.schema(req.database) },
+              ],
+            },
           ],
         },
       ],

@@ -23,7 +23,7 @@ const SignIn = ({ loading, signIn, logout }) => {
   };
 
   const handleSignIn = async () => {
-    const result = signIn(details);
+    const result = await signIn(details);
     result && navigate("/");
   };
   const handleRememberMe = (e) => {

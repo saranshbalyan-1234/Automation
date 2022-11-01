@@ -29,6 +29,13 @@ export default (sequelize, DataTypes) => {
         key: "id",
       },
     },
+    reusableFlowId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "reusableFlows",
+        key: "id",
+      },
+    },
   });
 
   return Process;

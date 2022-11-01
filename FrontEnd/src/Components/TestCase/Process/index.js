@@ -52,14 +52,21 @@ const Process = ({
                       }}
                     >
                       <ProcessMenu process={item} />
-                      Process: {item.name}
+
                       <div
                         style={{
                           display: "flex",
                           flexWrap: "wrap",
                           gap: "5px",
                         }}
-                      ></div>
+                      >
+                        Process: {item.name}
+                      </div>
+                      {item.reusableFlow && (
+                        <Tag color="red">
+                          ReusableFlow : {item.reusableFlow.name}
+                        </Tag>
+                      )}
                     </div>
                     <div
                       style={{ display: "flex", gap: 10, alignItems: "center" }}
@@ -88,8 +95,13 @@ const Process = ({
                 }
               >
                 <TestStepTable
-                  testSteps={item.testSteps}
+                  testSteps={
+                    item.reusableFlow
+                      ? item.reusableFlow.testSteps
+                      : item.testSteps
+                  }
                   processId={item.id}
+                  reusableFlowId={item.reusableFlow?.id}
                   deleteStep={deleteStep}
                 />
               </Panel>
