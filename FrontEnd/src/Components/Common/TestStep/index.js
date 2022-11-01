@@ -5,6 +5,7 @@ import { Table, Tag, Popconfirm } from "antd";
 import AddEditStepModal from "./AddEditStepModal";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ViewObjectModal from "./ViewObjectModal";
+import ViewParameterModal from "./ViewParameterModal";
 const TestStepTable = ({
   processId,
   testSteps,
@@ -12,6 +13,8 @@ const TestStepTable = ({
   reusableFlowId,
 }) => {
   const [addEditStepModal, setAddEditStepModal] = useState(false);
+  const [viewParameterModal, setViewParameterModal] = useState(false);
+  const [parameters, setParameters] = useState([]);
   const [edit, setEdit] = useState(true);
   const [editData, setEditData] = useState({});
   const [viewObjectModal, setViewObjectModal] = useState(false);
@@ -68,9 +71,10 @@ const TestStepTable = ({
             <Tag
               style={{ cursor: "pointer" }}
               color="red"
-              onClick={() => {
-                // setObject(text);
-                // setViewObjectModal(true);
+              onClick={async () => {
+                await setParameters(text);
+                console.log("saransh", text);
+                setViewParameterModal(true);
               }}
             >
               View
@@ -163,6 +167,14 @@ const TestStepTable = ({
           setVisible={setViewObjectModal}
           object={object}
           setObject={setObject}
+        />
+      )}
+
+      {viewParameterModal && (
+        <ViewParameterModal
+          visible={viewParameterModal}
+          setVisible={setViewParameterModal}
+          parameters={parameters}
         />
       )}
     </>

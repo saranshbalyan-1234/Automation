@@ -28,8 +28,18 @@ const getTestStepByTestCase = async (req, res) => {
         [TestStep, "step", "ASC"],
       ],
     });
+    const updatedTestCase = data.map((process) => {
+      let temp = { ...process.dataValues };
 
-    return data;
+      if (temp.reusableFlow != null) {
+        console.log(temp.reusableFlow.dataValues);
+        temp.testSteps = temp.reusableFlow.dataValues.testSteps;
+        delete temp.reusableFlow.dataValues.testSteps;
+      }
+      return temp;
+    });
+
+    return updatedTestCase;
   } catch (err) {
     getError(err, res);
   }
