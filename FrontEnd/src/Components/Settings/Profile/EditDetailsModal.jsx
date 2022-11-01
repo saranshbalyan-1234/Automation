@@ -17,6 +17,7 @@ const EditDetailsModal = ({
 
   return (
     <Modal
+      centered
       title="Edit Details"
       visible={editDetailsModal}
       onCancel={() => setEditDetailsModal(false)}

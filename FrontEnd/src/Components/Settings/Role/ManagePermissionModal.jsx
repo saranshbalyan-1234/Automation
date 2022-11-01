@@ -81,6 +81,7 @@ const ManagePermissionModal = ({
 
   return (
     <Modal
+      centered
       title="Manage Permissions"
       visible={visible}
       footer={false}

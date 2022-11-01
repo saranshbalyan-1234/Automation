@@ -187,7 +187,17 @@ const getTestStepByTestCase = async (req, res) => {
       ],
     });
 
-    return res.status(200).json(data);
+    const updatedTestCase = data.map((process) => {
+      let temp = { ...process.dataValues };
+
+      if (temp.reusableFlow != null) {
+        console.log(temp.reusableFlow.dataValues);
+        temp.testSteps = temp.reusableFlow.dataValues.testSteps;
+        delete temp.reusableFlow.dataValues.testSteps;
+      }
+      return temp;
+    });
+    return res.status(200).json(updatedTestCase);
   } catch (err) {
     getError(err, res);
   }

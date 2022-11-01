@@ -31,6 +31,7 @@ const AddEditModal = ({
 
   return (
     <Modal
+      centered
       title={edit ? `Edit ${name}` : `Create New ${name}`}
       visible={visible}
       footer={false}

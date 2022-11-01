@@ -48,6 +48,7 @@ const AddEditProcessModal = ({
       }}
     >
       <Modal
+        centered
         title={edit ? "Edit Process" : "Create New Process"}
         visible={visible}
         footer={false}

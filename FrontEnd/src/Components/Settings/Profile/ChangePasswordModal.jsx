@@ -19,6 +19,7 @@ const ChangePasswordModal = ({
 
   return (
     <Modal
+      centered
       title="Change Password"
       visible={changePasswordModal}
       onCancel={() => setChangePasswordModal(false)}

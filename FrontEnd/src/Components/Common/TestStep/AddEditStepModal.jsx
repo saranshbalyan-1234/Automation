@@ -98,7 +98,7 @@ const AddEditStepModal = ({
     }
 
     if (edit) {
-      if (reusableFlowId) {
+      if (reusableFlowId && !processId) {
         result = await editReusableStep({
           data: payload,
           stepId: editData.id,
@@ -108,11 +108,12 @@ const AddEditStepModal = ({
           data: payload,
           stepId: editData.id,
           processId,
+          reusableFlowId,
         });
       }
       setEditData({});
     } else {
-      if (reusableFlowId) {
+      if (reusableFlowId && !processId) {
         result = await addReusableStep({
           ...payload,
           reusableFlowId,
@@ -122,6 +123,7 @@ const AddEditStepModal = ({
         result = await addStep({
           ...payload,
           processId,
+          reusableFlowId,
           step,
         });
       }
@@ -137,6 +139,7 @@ const AddEditStepModal = ({
       }}
     >
       <Modal
+        centered
         title={
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div>{edit ? "Edit Step" : "Create New Step"}</div>

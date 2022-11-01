@@ -95,11 +95,7 @@ const Process = ({
                 }
               >
                 <TestStepTable
-                  testSteps={
-                    item.reusableFlow
-                      ? item.reusableFlow.testSteps
-                      : item.testSteps
-                  }
+                  testSteps={item.testSteps}
                   processId={item.id}
                   reusableFlowId={item.reusableFlow?.id}
                   deleteStep={deleteStep}

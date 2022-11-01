@@ -37,6 +37,7 @@ const AddUserModal = ({
 
   return (
     <Modal
+      centered
       title="Add User"
       visible={addUserModal}
       footer={false}

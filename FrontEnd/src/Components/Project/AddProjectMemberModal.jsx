@@ -56,6 +56,7 @@ const AddProjectMemberModal = ({
 
   return (
     <Modal
+      centered
       title={"Add Project Memer"}
       visible={visible}
       footer={false}

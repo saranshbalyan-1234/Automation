@@ -5,6 +5,7 @@ import Details from "../../ObjectBank/Details";
 const ViewObjectModal = ({ visible, setVisible, object }) => {
   return (
     <Modal
+      centered
       width={1000}
       title={"Object Details"}
       visible={visible}

@@ -30,6 +30,7 @@ const AddEditRoleModal = ({
 
   return (
     <Modal
+      centered
       title={edit ? "Edit Role" : "Add Role"}
       visible={visible}
       footer={false}

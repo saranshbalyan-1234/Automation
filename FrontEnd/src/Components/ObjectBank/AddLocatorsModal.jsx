@@ -19,6 +19,7 @@ const AddLocatorsModal = ({
 
   return (
     <Modal
+      centered
       title="Add Locator"
       visible={visible}
       footer={false}

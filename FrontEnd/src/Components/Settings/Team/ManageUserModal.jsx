@@ -77,6 +77,7 @@ function ManageUser({ visible, setVisible, userId, updateUserRole }) {
 
   return (
     <Modal
+      centered
       title="Manager User"
       visible={visible}
       footer={false}
