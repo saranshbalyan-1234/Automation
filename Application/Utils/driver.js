@@ -1,16 +1,5 @@
 const chrome = require("selenium-webdriver/chrome");
 
-// var capabilities = {
-//   browserName: "Chrome",
-//   browser_version: "81.0",
-//   os: "Windows",
-//   os_version: "10",
-//   resolution: "1024x768",
-//   "browserstack.user": "USERNAME",
-//   "browserstack.key": "ACCESS_KEY",
-//   name: "Bstack-[Node] Sample Test",
-// };
-
 const createDriver = async (req, res) => {
   try {
     return createLocalDriver();

@@ -21,6 +21,8 @@ const handleStep = async (step, driver) => {
   }
   return true;
 };
+
+const findObject = (object) => {};
 const launchWebsite = async (step, driver) => {
   console.log("Launching Website: " + step.testParameters.URL);
   try {
@@ -47,13 +49,13 @@ const closeBrowser = async () => {
 
 const waitUntilObjectLocated = async (step, driver) => {
   const timeout = Number(step.testParameters.Timeout);
-  console.log("Waiting for " + time + " ms");
+  console.log("Waiting for " + timeout + " ms");
   try {
     return await driver.wait(async function () {
       chromeDriver.until.elementLocated(
         chromeDriver.By.xpath("//input[@id='searchs']")
       );
-    }, timeout);
+    }, 2000);
   } catch (err) {
     console.log(err);
   }

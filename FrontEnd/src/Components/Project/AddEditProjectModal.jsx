@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Input, Modal, Button, Spin, DatePicker } from "antd";
 import { addProject, editProject } from "../../Redux/Actions/project";
 import { connect } from "react-redux";
+import ReactQuill from "react-quill";
 import moment from "moment";
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -37,6 +38,7 @@ const AddEditProjectModal = ({
         setVisible(false);
       }}
       closable={false}
+      width={500}
     >
       <Spin spinning={projects.loading}>
         <Form
@@ -67,9 +69,7 @@ const AddEditProjectModal = ({
           >
             <Input name="name" />
           </Form.Item>
-          <Form.Item name="description" label="Description">
-            <TextArea name="description" showCount maxLength={100} />
-          </Form.Item>
+
           <Form.Item
             name="date"
             label="Project Duration"
@@ -82,7 +82,15 @@ const AddEditProjectModal = ({
           >
             <RangePicker style={{ width: "100%" }} format={format} />
           </Form.Item>
+          <Form.Item name="description" label="">
+            {/* <TextArea name="description" showCount maxLength={100} /> */}
 
+            <ReactQuill
+              style={{ width: 450 }}
+              placeholder="Enter Description"
+              name="description"
+            />
+          </Form.Item>
           <div style={{ display: "flex", justifyContent: "center" }}>
             <Button
               type="primary"

@@ -191,7 +191,17 @@ export const ProjectDetails = ({
                 marginTop: 30,
               }}
             >
-              <Meta title="Description" />
+              <Meta
+                title="Description"
+                description={
+                  <div
+                    style={{ marginTop: "5px" }}
+                    dangerouslySetInnerHTML={{
+                      __html: currentProject.description,
+                    }}
+                  ></div>
+                }
+              />
 
               <div>
                 <div

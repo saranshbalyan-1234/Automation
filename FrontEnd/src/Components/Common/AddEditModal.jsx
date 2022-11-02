@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
-
+import ReactQuill from "react-quill";
 import { connect } from "react-redux";
 
 const AddEditModal = ({
@@ -32,6 +32,7 @@ const AddEditModal = ({
   return (
     <Modal
       centered
+      width={500}
       title={edit ? `Edit ${name}` : `Create New ${name}`}
       visible={visible}
       footer={false}
@@ -63,8 +64,12 @@ const AddEditModal = ({
           >
             <Input name="name" />
           </Form.Item>
-          <Form.Item name="description" label="Description">
-            <Input.TextArea name="description" />
+          <Form.Item name="description" label="">
+            <ReactQuill
+              style={{ width: 450 }}
+              placeholder="Enter Description"
+              name="description"
+            />
           </Form.Item>
 
           <div style={{ display: "flex", justifyContent: "center" }}>

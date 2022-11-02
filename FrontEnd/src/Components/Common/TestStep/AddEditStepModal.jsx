@@ -11,6 +11,7 @@ import {
 import AddEditObjectModal from "../../ObjectBank/AddEditObjectModal";
 import axios from "axios";
 import { saveObject } from "../../../Redux/Actions/object";
+import ReactQuill from "react-quill";
 const Option = { Select };
 const AddEditStepModal = ({
   visible,
@@ -139,6 +140,7 @@ const AddEditStepModal = ({
       }}
     >
       <Modal
+        width={500}
         centered
         title={
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -206,9 +208,7 @@ const AddEditStepModal = ({
                 })}
               </Select>
             </Form.Item>
-            <Form.Item name="comment" label="Comment">
-              <Input name="comment" showCount maxLength={50} />
-            </Form.Item>
+
             {currentEvent.object && (
               <Form.Item
                 name="objectId"
@@ -285,6 +285,14 @@ const AddEditStepModal = ({
                 <Input name="parameter3" showCount maxLength={50} />
               </Form.Item>
             )}
+            <Form.Item name="comment" label="">
+              {/* <Input name="comment" showCount maxLength={50} /> */}
+              <ReactQuill
+                style={{ width: 450 }}
+                placeholder="Enter Comment"
+                name="comment"
+              />
+            </Form.Item>
 
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Button

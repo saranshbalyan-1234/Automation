@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
 import ViewObjectModal from "../Common/TestStep/ViewObjectModal";
 import { connect } from "react-redux";
-
+import ReactQuill from "react-quill";
 const AddEditObjectModal = ({
   visible,
   setVisible,
@@ -44,6 +44,7 @@ const AddEditObjectModal = ({
         onCancel={() => {
           setVisible(false);
         }}
+        width={500}
         closable={false}
       >
         <Spin spinning={loading}>
@@ -69,8 +70,13 @@ const AddEditObjectModal = ({
             >
               <Input name="name" />
             </Form.Item>
-            <Form.Item name="description" label="Description">
-              <Input.TextArea name="description" />
+            <Form.Item name="description" label="">
+              {/* <Input.TextArea name="description" /> */}
+              <ReactQuill
+                style={{ width: 450 }}
+                placeholder="Enter Description"
+                name="description"
+              />
             </Form.Item>
 
             <div style={{ display: "flex", justifyContent: "center" }}>

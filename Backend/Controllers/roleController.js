@@ -210,6 +210,7 @@ const updateUserRole = async (req, res) => {
     await UserRole.schema(req.database).destroy({
       where: { userId },
     });
+    await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
     await UserRole.schema(req.database).bulkCreate(req.body);
     return res.status(200).json({ message: "User role updated." });
   } catch (err) {

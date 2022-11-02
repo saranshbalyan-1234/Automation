@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Column } from "@ant-design/plots";
 const config = {
+  data: [],
   xField: "name",
   yField: "Total",
   label: {

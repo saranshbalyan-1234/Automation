@@ -5,7 +5,7 @@ import {
   addProjectValidation,
   memberProjectValidation,
 } from "../Utils/Validations/project.js";
-
+import moment from "moment";
 const UserProject = db.userProjects;
 const Project = db.projects;
 const User = db.users;
@@ -140,6 +140,8 @@ const addProject = async (req, res) => {
       endDate,
       createdByUser: req.user.id,
     });
+
+    await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
     await UserProject.schema(req.database).create({
       userId: req.user.id,
       projectId: project.id,
@@ -193,7 +195,7 @@ const addMember = async (req, res) => {
     const { projectId, userId } = req.body;
     const { error } = memberProjectValidation.validate({ projectId, userId });
     if (error) throw new Error(error.details[0].message);
-
+    await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
     const userProject = await UserProject.schema(req.database).findOne({
       where: { userId: req.user.id, projectId },
     });
