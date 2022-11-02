@@ -10,7 +10,6 @@ app.get("/execute/:testCaseId", async (req, res) => {
     const data = await getTestStepByTestCase(req, res);
     res.status(200).json({ message: "Started Execution" });
 
-    console.log(data[1].testSteps[0]);
     for (const process of data) {
       for (const step of process.testSteps) {
         let tempParameter = {};
@@ -23,9 +22,10 @@ app.get("/execute/:testCaseId", async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-  } finally {
-    await driver.quit();
   }
+  // finally {
+  //   await driver.quit();
+  // }
 });
 
 app.use((req, res) => {

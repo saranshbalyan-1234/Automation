@@ -184,6 +184,7 @@ const getTestStepByTestCase = async (req, res) => {
       order: [
         ["step", "ASC"],
         [TestStep, "step", "ASC"],
+        [ReusableFlow, TestStep, "step", "ASC"],
       ],
     });
 

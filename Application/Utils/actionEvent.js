@@ -1,3 +1,6 @@
+const chromeDriver = require("selenium-webdriver");
+
+//totalActionEvents = 4
 const handleStep = async (step, driver) => {
   switch (step.actionEvent) {
     case "Launch Website":
@@ -9,12 +12,17 @@ const handleStep = async (step, driver) => {
     case "Wait":
       await implicitWait(step, driver);
       break;
+    case "Close Browser":
+      await closeBrowser();
+    case "Wait Until Object Located":
+      await waitUntilObjectLocated(step, driver);
     default:
       return true;
   }
   return true;
 };
 const launchWebsite = async (step, driver) => {
+  console.log("Launching Website: " + step.testParameters.URL);
   try {
     if (step.testParameters.URL.includes("http"))
       return await driver.get(step.testParameters.URL);
@@ -29,6 +37,25 @@ const maximizeBrowser = async (driver) => {
 };
 const implicitWait = async (step, driver) => {
   const time = Number(step.testParameters.Time);
+  console.log("Waiting for " + time + " ms");
   return await driver.sleep(time);
+};
+const closeBrowser = async () => {
+  console.log("Browser Closed");
+  return await driver.quit();
+};
+
+const waitUntilObjectLocated = async (step, driver) => {
+  const timeout = Number(step.testParameters.Timeout);
+  console.log("Waiting for " + time + " ms");
+  try {
+    return await driver.wait(async function () {
+      chromeDriver.until.elementLocated(
+        chromeDriver.By.xpath("//input[@id='searchs']")
+      );
+    }, timeout);
+  } catch (err) {
+    console.log(err);
+  }
 };
 module.exports = { handleStep };

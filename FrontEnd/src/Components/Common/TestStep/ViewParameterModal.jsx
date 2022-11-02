@@ -5,7 +5,6 @@ export default function ViewParameterModal({
   visible,
   setVisible,
 }) {
-  console.log("saransh", parameters);
   return (
     <Modal
       centered

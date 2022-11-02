@@ -71,9 +71,8 @@ const TestStepTable = ({
             <Tag
               style={{ cursor: "pointer" }}
               color="red"
-              onClick={async () => {
-                await setParameters(text);
-                console.log("saransh", text);
+              onClick={() => {
+                setParameters(text);
                 setViewParameterModal(true);
               }}
             >
