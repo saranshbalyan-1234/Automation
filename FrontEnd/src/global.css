@@ -1,0 +1,14 @@
+.pointer {
+  cursor: pointer;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.space-between {
+  justify-content: space-between;
+}
+/* .ant-modal-content {
+  border-radius: 12px;
+} */

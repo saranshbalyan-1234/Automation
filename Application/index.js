@@ -2,7 +2,18 @@ const express = require("express");
 const { createDriver } = require("./Utils/driver");
 const { getTestStepByTestCase } = require("./Controllers/testCaseController");
 const { handleStep } = require("./Utils/actionEvent");
+const helmet = require("helmet");
+const cors = require("cors");
+const parser = require("body-parser");
 const app = express();
+app.use(parser.json());
+app.use(parser.urlencoded({ extended: false }));
+app.use(helmet());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 app.get("/execute/:testCaseId", async (req, res) => {
   let driver = await createDriver(req, res);

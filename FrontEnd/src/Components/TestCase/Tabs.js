@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlayCircleFilled } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -10,6 +10,7 @@ import {
 import Process from "./Process";
 import Details from "../Common/Details";
 import ActivityLog from "../Common/ActivityLog";
+import ExecuteModal from "./ExecuteModal";
 function TestCaseTabs({
   getTestCaseDetailsById,
   currentTestCase,
@@ -19,6 +20,7 @@ function TestCaseTabs({
   const { tab, testCaseId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
+  const [executeModal, setExecuteModal] = useState(false);
 
   const handleActiveTab = (value) => {
     navigate(`/TestCase/${testCaseId}/${value}`);
@@ -33,17 +35,22 @@ function TestCaseTabs({
   }, [testCaseId]);
 
   const renderButton = () => {
-    if (activeTab === "roles")
+    if (activeTab === "teststeps")
       return (
         <Button
           type="primary"
-          ghost
-          style={{ position: "absolute", right: 0, top: 10 }}
-          //   onClick={() => {
-          //     setAddRoleModal(true);
-          //   }}
+          style={{
+            position: "absolute",
+            right: 0,
+            top: 5,
+            width: 100,
+          }}
+          onClick={() => {
+            setExecuteModal(true);
+          }}
         >
-          <PlusOutlined /> Add Role
+          <PlayCircleFilled />
+          Execute
         </Button>
       );
   };
@@ -74,6 +81,9 @@ function TestCaseTabs({
         </Tabs>
         {renderButton()}
       </div>
+      {executeModal && (
+        <ExecuteModal setVisible={setExecuteModal} visible={executeModal} />
+      )}
     </>
   );
 }

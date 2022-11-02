@@ -16,7 +16,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
   useEffect(() => {
     let temp = location.pathname.split("/");
     location.pathname.length > 1
-      ? setSelectedMenu(temp[temp.length - 1])
+      ? setSelectedMenu(temp[1])
       : setSelectedMenu("Dashboard");
   }, [location.pathname]);
 

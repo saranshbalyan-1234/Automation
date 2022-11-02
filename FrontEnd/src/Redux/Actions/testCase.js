@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 import {
   TEST_CASE_REQUEST,
@@ -221,6 +222,19 @@ export const deleteStep = (testStepId, step, processId) => {
     } catch (err) {
       console.log(err);
       dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+export const executeTestCase = (testCaseId) => {
+  return async (dispatch) => {
+    try {
+      // dispatch({ type: TEST_CASE_REQUEST });
+      await axios.get(`http://localhost:3002/execute/${testCaseId}`);
+      return true;
+    } catch (err) {
+      message.error("Please Start Cloud Application");
+      // dispatch({ type: TEST_CASE_FAILURE });
       return false;
     }
   };

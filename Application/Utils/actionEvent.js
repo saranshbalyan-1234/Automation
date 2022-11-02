@@ -1,6 +1,6 @@
 const chromeDriver = require("selenium-webdriver");
 
-//totalActionEvents = 4
+//totalActionEvents = 5
 const handleStep = async (step, driver) => {
   switch (step.actionEvent) {
     case "Launch Website":
