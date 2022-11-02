@@ -108,8 +108,8 @@ const AddEditStepModal = ({
         result = await editStep({
           data: payload,
           stepId: editData.id,
-          processId,
           reusableFlowId,
+          processId,
         });
       }
       setEditData({});
@@ -121,12 +121,19 @@ const AddEditStepModal = ({
           step,
         });
       } else {
-        result = await addStep({
-          ...payload,
-          processId,
-          reusableFlowId,
-          step,
-        });
+        if (reusableFlowId && processId) {
+          result = await addStep({
+            ...payload,
+            reusableFlowId,
+            step,
+          });
+        } else {
+          result = await addStep({
+            ...payload,
+            processId,
+            step,
+          });
+        }
       }
     }
     if (step === 1 && edit === false) setEdit(true);
