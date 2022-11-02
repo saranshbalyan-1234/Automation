@@ -48,13 +48,22 @@ const TestCaseetails = ({ loading, details, name, onEdit = () => {} }) => {
                     }}
                   >
                     <Card>
-                      <Meta title="Total Process" description={1} />
+                      <Meta
+                        title="Total Process"
+                        description={details.totalProcess}
+                      />
                     </Card>
                     <Card>
-                      <Meta title="Total Steps" description={1} />
+                      <Meta
+                        title="Reusable Flows"
+                        description={details.totalReusableFlows}
+                      />
                     </Card>
                     <Card>
-                      <Meta title="Reusable Flows" description={1} />
+                      <Meta
+                        title="Total Steps"
+                        description={details.totalSteps}
+                      />
                     </Card>
                   </div>
                 </>
