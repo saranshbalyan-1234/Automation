@@ -7,8 +7,8 @@ export default function ViewParameterModal({
 }) {
   return (
     <Modal
+      title="Parameters"
       centered
-      closable={false}
       visible={visible}
       footer={false}
       onCancel={() => {

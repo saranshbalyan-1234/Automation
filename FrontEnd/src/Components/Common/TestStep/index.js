@@ -6,6 +6,7 @@ import AddEditStepModal from "./AddEditStepModal";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ViewObjectModal from "./ViewObjectModal";
 import ViewParameterModal from "./ViewParameterModal";
+import ViewCommentModal from "./ViewCommentModal";
 const TestStepTable = ({
   processId,
   testSteps,
@@ -19,6 +20,8 @@ const TestStepTable = ({
   const [editData, setEditData] = useState({});
   const [viewObjectModal, setViewObjectModal] = useState(false);
   const [object, setObject] = useState({});
+  const [viewCommentModal, setViewCommentModal] = useState(false);
+  const [comment, setComment] = useState("");
   const columns = [
     {
       title: "",
@@ -92,6 +95,23 @@ const TestStepTable = ({
       title: "Comment",
       // width: 100,
       dataIndex: "comment",
+      render: (text, record) =>
+        text.length ? (
+          <div>
+            <Tag
+              style={{ cursor: "pointer" }}
+              color="red"
+              onClick={() => {
+                setComment(text);
+                setViewCommentModal(true);
+              }}
+            >
+              View
+            </Tag>
+          </div>
+        ) : (
+          "N/A"
+        ),
     },
     {
       title: "",
@@ -174,6 +194,13 @@ const TestStepTable = ({
           visible={viewParameterModal}
           setVisible={setViewParameterModal}
           parameters={parameters}
+        />
+      )}
+      {viewCommentModal && (
+        <ViewCommentModal
+          visible={viewCommentModal}
+          setVisible={setViewCommentModal}
+          comment={comment}
         />
       )}
     </>
