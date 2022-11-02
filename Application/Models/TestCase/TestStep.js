@@ -25,6 +25,11 @@ module.exports = (sequelize, DataTypes) => {
         key: "id",
       },
     },
+    screenshot: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
+      values: [0, 1],
+    },
     processId: {
       type: DataTypes.INTEGER,
       // allowNull: false,

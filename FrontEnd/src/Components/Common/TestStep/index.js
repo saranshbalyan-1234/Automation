@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import StepMenu from "./StepMenu";
-import { Table, Tag, Popconfirm } from "antd";
+import { Table, Tag, Popconfirm, Button } from "antd";
 import AddEditStepModal from "./AddEditStepModal";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, CameraFilled } from "@ant-design/icons";
 import ViewObjectModal from "./ViewObjectModal";
 import ViewParameterModal from "./ViewParameterModal";
 import ViewCommentModal from "./ViewCommentModal";
@@ -90,6 +90,13 @@ const TestStepTable = ({
       title: "Options",
       // width: 100,
       dataIndex: "options",
+      render: (text, record) => (
+        <>
+          <Tag>
+            <CameraFilled style={{ fontSize: 15 }} />
+          </Tag>
+        </>
+      ),
     },
     {
       title: "Comment",

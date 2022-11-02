@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Modal, Button, Spin, Select } from "antd";
+import { Form, Input, Modal, Button, Spin, Select, Switch } from "antd";
 import { connect } from "react-redux";
 import { addProcess } from "../../../Redux/Actions/testCase";
 import { addStep, editStep } from "../../../Redux/Actions/testCase";
@@ -177,6 +177,7 @@ const AddEditStepModal = ({
               comment: edit ? editData.comment : "",
               actionEvent: edit ? editData.actionEvent : "Launch Website",
               objectId: edit ? editData.object?.id : "",
+              screenshot: edit ? editData.screenshot : false,
             }}
           >
             <Form.Item
@@ -285,6 +286,10 @@ const AddEditStepModal = ({
                 <Input name="parameter3" showCount maxLength={50} />
               </Form.Item>
             )}
+            <Form.Item name="screenshot" label="Screenshot">
+              {/* <Input name="screenshot" /> */}
+              <Switch checkedChildren="Yes" unCheckedChildren="No" />
+            </Form.Item>
             <Form.Item name="comment" label="">
               {/* <Input name="comment" showCount maxLength={50} /> */}
               <ReactQuill
