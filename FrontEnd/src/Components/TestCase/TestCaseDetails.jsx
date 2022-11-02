@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import { Typography, Card, Button, Spin, Popconfirm, Tag } from "antd";
 import moment from "moment";
 import { EditOutlined } from "@ant-design/icons";
-import UserAvatar from "./Avatar";
-import AddEditModal from "./AddEditModal";
+import UserAvatar from "../Common/Avatar";
+import AddEditModal from "../Common/AddEditModal";
 const { Title } = Typography;
 const { Meta } = Card;
-const Details = ({ loading, details, name, onEdit = () => {} }) => {
+const TestCaseetails = ({ loading, details, name, onEdit = () => {} }) => {
   const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
 
@@ -38,7 +37,28 @@ const Details = ({ loading, details, name, onEdit = () => {} }) => {
                   </div>
                 </div>
               }
-              description={<></>}
+              description={
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: 25,
+                      marginBottom: 10,
+                    }}
+                  >
+                    <Card>
+                      <Meta title="Total Process" description={1} />
+                    </Card>
+                    <Card>
+                      <Meta title="Total Steps" description={1} />
+                    </Card>
+                    <Card>
+                      <Meta title="Reusable Flows" description={1} />
+                    </Card>
+                  </div>
+                </>
+              }
             />
             <div
               style={{
@@ -97,4 +117,4 @@ const Details = ({ loading, details, name, onEdit = () => {} }) => {
   );
 };
 
-export default Details;
+export default TestCaseetails;

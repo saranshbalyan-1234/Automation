@@ -8,7 +8,7 @@ import {
   editTestCase,
 } from "../../Redux/Actions/testCase";
 import Process from "./Process";
-import Details from "../Common/Details";
+import Details from "./TestCaseDetails";
 import ActivityLog from "../Common/ActivityLog";
 import ExecuteModal from "./ExecuteModal";
 function TestCaseTabs({

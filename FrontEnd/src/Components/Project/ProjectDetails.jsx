@@ -151,19 +151,49 @@ export const ProjectDetails = ({
             >
               <Meta
                 title={
-                  <Title style={{ textTransform: "capitalize" }} level={3}>
-                    Project: {currentProject.name}
-                  </Title>
+                  <div style={{ display: "flex", gap: 20 }}>
+                    <Title style={{ textTransform: "capitalize" }} level={3}>
+                      Project: {currentProject.name}
+                    </Title>
+                    <div style={{ color: "black" }}>
+                      Created On
+                      {moment(currentProject.createdAt).format("DD/MM/YY")} By
+                      &nbsp;
+                      {currentProject.createdBy && (
+                        <UserAvatar name={currentProject.createdBy.name} />
+                      )}
+                    </div>
+                  </div>
                 }
                 description={
-                  <div style={{ color: "black" }}>
-                    Created On
-                    {moment(currentProject.createdAt).format("DD/MM/YY")} By
-                    &nbsp;
-                    {currentProject.createdBy && (
-                      <UserAvatar name={currentProject.createdBy.name} />
-                    )}
-                  </div>
+                  <>
+                    <div style={{ maxWidth: 300, marginBottom: 10 }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: 25,
+                        }}
+                      >
+                        <Card>
+                          <Meta
+                            title="Start Date"
+                            description={currentProject.startDate}
+                          />
+                        </Card>
+                        <Card>
+                          <Meta
+                            title="End Date"
+                            description={currentProject.endDate}
+                          />
+                        </Card>
+                      </div>
+                      {formatDates(
+                        currentProject.startDate,
+                        currentProject.endDate
+                      )}
+                    </div>
+                  </>
                 }
               />
               <div
@@ -184,50 +214,18 @@ export const ProjectDetails = ({
                 </Button>
               </div>
             </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginTop: 30,
-              }}
-            >
-              <Meta
-                title="Description"
-                description={
-                  <div
-                    style={{ marginTop: "5px" }}
-                    dangerouslySetInnerHTML={{
-                      __html: currentProject.description,
-                    }}
-                  ></div>
-                }
-              />
 
-              <div>
+            <Meta
+              title="Description"
+              description={
                 <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: 25,
-                    alignSelf: "end",
+                  style={{ marginTop: "5px" }}
+                  dangerouslySetInnerHTML={{
+                    __html: currentProject.description,
                   }}
-                >
-                  <Card>
-                    <Meta
-                      title="Start Date"
-                      description={currentProject.startDate}
-                    />
-                  </Card>
-                  <Card>
-                    <Meta
-                      title="End Date"
-                      description={currentProject.endDate}
-                    />
-                  </Card>
-                </div>
-                {formatDates(currentProject.startDate, currentProject.endDate)}
-              </div>
-            </div>
+                ></div>
+              }
+            />
           </Card>
           <Card style={{ boxShadow: "5px 10px #f6f6f6" }}>
             <ColumnGraph data={graphCount} />
