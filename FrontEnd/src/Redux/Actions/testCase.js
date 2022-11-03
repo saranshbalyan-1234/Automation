@@ -233,7 +233,7 @@ export const executeTestCase = (testCaseId) => {
       await axios.get(`http://localhost:3002/execute/${testCaseId}`);
       return true;
     } catch (err) {
-      message.error("Please Start Cloud Application");
+      // message.error("Please Start Cloud Application");
       // dispatch({ type: TEST_CASE_FAILURE });
       return false;
     }

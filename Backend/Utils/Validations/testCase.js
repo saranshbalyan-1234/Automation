@@ -2,7 +2,7 @@ import joi from "@hapi/joi";
 
 const saveTestCaseValidation = joi.object({
   name: joi.string().min(3).required(),
-  description: joi.string(),
+  description: joi.string().allow(null, ""),
   projectId: joi.number().integer().required(),
 });
 const updateTestCaseValidation = joi.object({

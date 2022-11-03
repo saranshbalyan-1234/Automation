@@ -76,6 +76,6 @@ db.customers.schema("Main").sync({ force: false, alter: true });
 db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
-// db.permissions.schema("saranshbalyan123gmailcom").sync();
+// db.objects.schema("saranshbalyan123gmailcom").sync();
 
 export default db;

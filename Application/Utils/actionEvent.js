@@ -22,7 +22,6 @@ const handleStep = async (step, driver) => {
   return true;
 };
 
-const findObject = (object) => {};
 const launchWebsite = async (step, driver) => {
   console.log("Launching Website: " + step.testParameters.URL);
   try {
@@ -53,11 +52,15 @@ const waitUntilObjectLocated = async (step, driver) => {
   try {
     return await driver.wait(async function () {
       chromeDriver.until.elementLocated(
-        chromeDriver.By.xpath("//input[@id='searchs']")
+        await findObject(step.object)
+        // chromeDriver.By.xpath("//input[@id='searchs']")
       );
     }, 2000);
   } catch (err) {
     console.log(err);
   }
+};
+const findObject = async (object) => {
+  return console.log(object.locators);
 };
 module.exports = { handleStep };

@@ -5,6 +5,7 @@ const Object = db.objects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const ReusableFlow = db.reusableFlows;
+const ObjectLocator = db.ObjectLocators;
 const getTestStepByTestCase = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
@@ -18,7 +19,15 @@ const getTestStepByTestCase = async (req, res) => {
         {
           model: TestStep.schema("saranshbalyan123gmailcom"),
           include: [
-            { model: Object.schema("saranshbalyan123gmailcom") },
+            {
+              model: Object.schema("saranshbalyan123gmailcom"),
+              include: [
+                {
+                  model: ObjectLocator.schema("saranshbalyan123gmailcom"),
+                  as: "locators",
+                },
+              ],
+            },
             { model: TestParameter.schema("saranshbalyan123gmailcom") },
           ],
         },
@@ -28,7 +37,15 @@ const getTestStepByTestCase = async (req, res) => {
             {
               model: TestStep.schema("saranshbalyan123gmailcom"),
               include: [
-                { model: Object.schema("saranshbalyan123gmailcom") },
+                {
+                  model: Object.schema("saranshbalyan123gmailcom"),
+                  include: [
+                    {
+                      model: ObjectLocator.schema("saranshbalyan123gmailcom"),
+                      as: "locators",
+                    },
+                  ],
+                },
                 { model: TestParameter.schema("saranshbalyan123gmailcom") },
               ],
             },

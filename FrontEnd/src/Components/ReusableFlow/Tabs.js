@@ -3,7 +3,7 @@ import { Tabs, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-// import ReusableFlowDetails from "./ReusableFlowDetails";
+import ReusableFlowDetails from "./ReusableFlowDetails";
 import {
   getReusableFlowDetailsById,
   deleteStep,
@@ -11,7 +11,7 @@ import {
   editReusableFlow,
 } from "../../Redux/Actions/reusableFlow";
 import TestStep from "../Common/TestStep";
-import Details from "../Common/Details";
+// import Details from "../Common/Details";
 import ActivityLog from "../Common/ActivityLog";
 function ReusableFlowTabs({
   getReusableFlowDetailsById,
@@ -68,7 +68,7 @@ function ReusableFlowTabs({
         >
           <Tabs.TabPane tab="Details" key="details">
             {activeTab === "details" && (
-              <Details
+              <ReusableFlowDetails
                 name="Reusable Flow"
                 details={currentReusableFlow}
                 loading={loading}

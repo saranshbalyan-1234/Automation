@@ -29,12 +29,12 @@ export default function Sidebar({ collapsed, setCollapsed }) {
     { label: "Dashboard", key: "Dashboard", icon: <DashboardOutlined /> }, // remember to pass the key prop
 
     { label: "Test Case", key: "TestCase", icon: <FileOutlined /> },
-    { label: " Object Bank", key: "ObjectBank", icon: <BankOutlined /> },
     {
       label: "Reusable Flow",
       key: "ReusableFlow",
       icon: <VscDebugRestart />,
     },
+    { label: " Object Bank", key: "ObjectBank", icon: <BankOutlined /> },
   ];
 
   return (

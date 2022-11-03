@@ -3,6 +3,7 @@ import { Form, Input, Modal, Button, Spin, Select } from "antd";
 import { connect } from "react-redux";
 import { addProcess, editProcess } from "../../../Redux/Actions/testCase";
 import { getReusableFlowByProject } from "../../../Redux/Actions/reusableFlow";
+import ReactQuill from "react-quill";
 const { Option } = Select;
 const AddEditProcessModal = ({
   visible,
@@ -55,6 +56,7 @@ const AddEditProcessModal = ({
         onCancel={() => {
           setVisible(false);
         }}
+        width={500}
         closable={false}
       >
         <Spin spinning={loading || reusableLoading}>
@@ -102,8 +104,13 @@ const AddEditProcessModal = ({
                 </Select>
               </Form.Item>
             )}
-            <Form.Item name="comment" label="Comment">
-              <Input name="comment" showCount maxLength={50} />
+            <Form.Item name="comment" label="">
+              {/* <Input name="comment" showCount maxLength={50} /> */}
+              <ReactQuill
+                style={{ width: 450 }}
+                placeholder="Enter Comment"
+                name="comment"
+              />
             </Form.Item>
 
             <div style={{ display: "flex", justifyContent: "center" }}>

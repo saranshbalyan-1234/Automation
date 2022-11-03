@@ -144,8 +144,11 @@ const getReusableFlowDetailsById = async (req, res) => {
         },
       ],
     });
+    const totalSteps = await TestStep.schema(req.database).count({
+      where: { reusableFlowId },
+    });
 
-    return res.status(200).json(reusableFlow);
+    return res.status(200).json({ ...reusableFlow.dataValues, totalSteps });
   } catch (err) {
     getError(err, res);
   }

@@ -6,7 +6,7 @@ import UserAvatar from "../Common/Avatar";
 import AddEditModal from "../Common/AddEditModal";
 const { Title } = Typography;
 const { Meta } = Card;
-const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
+const ReusableFlowDetails = ({ loading, details, name, onEdit = () => {} }) => {
   const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
 
@@ -47,18 +47,6 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
                       marginBottom: 10,
                     }}
                   >
-                    <Card>
-                      <Meta
-                        title="Total Process"
-                        description={details.totalProcess}
-                      />
-                    </Card>
-                    <Card>
-                      <Meta
-                        title="Reusable Flows"
-                        description={details.totalReusableFlows}
-                      />
-                    </Card>
                     <Card>
                       <Meta
                         title="Total Steps"
@@ -126,4 +114,4 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
   );
 };
 
-export default TestCasetails;
+export default ReusableFlowDetails;
