@@ -1,3 +1,5 @@
+const chromeDriver = require("selenium-webdriver");
+const { By } = chromeDriver;
 const findByLocator = async (locators) => {
   // ClassName
   // CSS

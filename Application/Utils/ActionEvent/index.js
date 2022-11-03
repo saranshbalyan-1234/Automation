@@ -1,12 +1,12 @@
-const chromeDriver = require("selenium-webdriver");
-const { findByLocator } = require("./utils");
+// const chromeDriver = require("selenium-webdriver");
+// const { findByLocator } = require("./utils");
 const {
   implicitWait,
   waitUntilObjectLocated,
   waitUntilObjectIsEnabled,
   waitUntilObjectIsDisabled,
 } = require("./wait");
-const { By, until } = chromeDriver;
+// const { By, until } = chromeDriver;
 //totalActionEvents = 7
 const handleStep = async (step, driver) => {
   switch (step.actionEvent) {
