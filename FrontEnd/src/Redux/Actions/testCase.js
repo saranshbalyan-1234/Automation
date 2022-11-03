@@ -175,9 +175,19 @@ export const deleteProcess = (processId, step) => {
 export const addStep = (payload) => {
   return async (dispatch) => {
     try {
+      let temp = { ...payload };
+      temp.reusableProcessId && delete temp.reusableProcessId;
       dispatch({ type: TEST_CASE_REQUEST });
-      const { data } = await axios.post(`/testStep`, payload);
-      dispatch({ type: ADD_STEP, payload: data });
+      const { data } = await axios.post(`/testStep`, temp);
+      let newPayload = { ...data };
+
+      if (payload.reusableProcessId)
+        newPayload.processId = payload.reusableProcessId;
+
+      dispatch({
+        type: ADD_STEP,
+        payload: newPayload,
+      });
       return true;
     } catch (err) {
       dispatch({ type: TEST_CASE_FAILURE });

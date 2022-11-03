@@ -126,6 +126,7 @@ const AddEditStepModal = ({
             ...payload,
             reusableFlowId,
             step,
+            reusableProcessId: processId,
           });
         } else {
           result = await addStep({

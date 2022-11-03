@@ -1,6 +1,13 @@
 const chromeDriver = require("selenium-webdriver");
-
-//totalActionEvents = 5
+const { findByLocator } = require("./utils");
+const {
+  implicitWait,
+  waitUntilObjectLocated,
+  waitUntilObjectIsEnabled,
+  waitUntilObjectIsDisabled,
+} = require("./wait");
+const { By, until } = chromeDriver;
+//totalActionEvents = 7
 const handleStep = async (step, driver) => {
   switch (step.actionEvent) {
     case "Launch Website":
@@ -9,15 +16,22 @@ const handleStep = async (step, driver) => {
     case "Maximize Browser":
       await maximizeBrowser(driver);
       break;
+    case "Close Browser":
+      await closeBrowser();
     case "Wait":
       await implicitWait(step, driver);
       break;
-    case "Close Browser":
-      await closeBrowser();
     case "Wait Until Object Located":
       await waitUntilObjectLocated(step, driver);
+      break;
+    case "Wait Until Object Enabled":
+      await waitUntilObjectIsEnabled(step, driver);
+      break;
+    case "Wait Until Object Disabled":
+      await waitUntilObjectIsDisabled(step, driver);
+      break;
     default:
-      return true;
+      break;
   }
   return true;
 };
@@ -36,31 +50,10 @@ const launchWebsite = async (step, driver) => {
 const maximizeBrowser = async (driver) => {
   return await driver.manage().window().maximize();
 };
-const implicitWait = async (step, driver) => {
-  const time = Number(step.testParameters.Time);
-  console.log("Waiting for " + time + " ms");
-  return await driver.sleep(time);
-};
+
 const closeBrowser = async () => {
   console.log("Browser Closed");
   return await driver.quit();
 };
 
-const waitUntilObjectLocated = async (step, driver) => {
-  const timeout = Number(step.testParameters.Timeout);
-  console.log("Waiting for " + timeout + " ms");
-  try {
-    return await driver.wait(async function () {
-      chromeDriver.until.elementLocated(
-        await findObject(step.object)
-        // chromeDriver.By.xpath("//input[@id='searchs']")
-      );
-    }, 2000);
-  } catch (err) {
-    console.log(err);
-  }
-};
-const findObject = async (object) => {
-  return console.log(object.locators);
-};
 module.exports = { handleStep };
