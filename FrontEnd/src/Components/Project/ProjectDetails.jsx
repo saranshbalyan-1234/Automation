@@ -160,7 +160,7 @@ export const ProjectDetails = ({
                       {moment(currentProject.createdAt).format("DD/MM/YY")} By
                       &nbsp;
                       {currentProject.createdBy && (
-                        <UserAvatar name={currentProject.createdBy.name} />
+                        <UserAvatar user={currentProject.createdBy} />
                       )}
                     </div>
                   </div>

@@ -27,9 +27,9 @@ export const List = ({
       render: (_, record) => (
         <div>
           {moment(record.createdAt).format("DD/MM/YY")} By &nbsp;
-          {record.createdBy && <UserAvatar name={record.createdBy.name} />}
+          {record.createdBy && <UserAvatar user={record.createdBy} />}
         </div>
-        // <div>{<UserAvatar name={record.createdBy.name} />}</div>
+        // <div>{<UserAvatar user={record.createdBy} />}</div>
       ),
     },
 
