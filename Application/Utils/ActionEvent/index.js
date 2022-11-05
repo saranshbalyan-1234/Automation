@@ -33,6 +33,12 @@ const handleStep = async (step, driver) => {
     case "Click":
       await click(step, driver);
       break;
+    case "Double Click":
+      await doubleClick(step, driver);
+      break;
+    case "Right Click":
+      await rightClick(step, driver);
+      break;
     case "Enter Text":
       await enterText(step, driver);
       break;
@@ -124,13 +130,37 @@ const launchWebsite = async (step, driver) => {
 };
 
 const click = async (step, driver) => {
+  console.log("Clicking");
   await driver
     .findElement(await findByLocator(step.object.dataValues.locators))
     .click();
 };
+const doubleClick = async (step, driver) => {
+  console.log("Double Clicking");
+  await driver
+    .actions()
+    .doubleClick(
+      await driver.findElement(
+        await findByLocator(step.object.dataValues.locators)
+      )
+    )
+    .perform();
+};
+const rightClick = async (step, driver) => {
+  console.log("Right Clicking");
+  await driver
+    .actions()
+    .contextClick(
+      await driver.findElement(
+        await findByLocator(step.object.dataValues.locators)
+      )
+    )
+    .perform();
+};
 
 const enterText = async (step, driver) => {
   const text = step.testParameters.Text;
+  console.log("Entering text " + text);
   await driver
     .findElement(await findByLocator(step.object.dataValues.locators))
     .sendKeys(text);
@@ -138,11 +168,13 @@ const enterText = async (step, driver) => {
 
 const pressButton = async (step, driver) => {
   const Button = step.testParameters.Button;
+  console.log("pressing button " + Button);
   await driver
     .findElement(await findByLocator(step.object.dataValues.locators))
     .sendKeys(Key[Button]);
 };
 const maximizeBrowser = async (driver) => {
+  console.log("Maximize Browser");
   return await driver.manage().window().maximize();
 };
 
