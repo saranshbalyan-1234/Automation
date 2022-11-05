@@ -199,6 +199,7 @@ const AddEditStepModal = ({
               ]}
             >
               <Select
+                showSearch
                 style={{ minWidth: "160px" }}
                 onChange={(e) =>
                   setCurrentEvent(
@@ -229,16 +230,7 @@ const AddEditStepModal = ({
                   },
                 ]}
               >
-                <Select
-                  style={{ minWidth: "160px" }}
-                  // onChange={(e) =>
-                  //   setCurrentEvent(
-                  //     actionEvent.find((el) => {
-                  //       return el.name == e;
-                  //     })
-                  //   )
-                  // }
-                >
+                <Select style={{ minWidth: "160px" }} showSearch>
                   {objectList.map((el, i) => {
                     return (
                       <Option value={el.id} key={i}>

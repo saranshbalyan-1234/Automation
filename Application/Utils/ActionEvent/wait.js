@@ -25,7 +25,6 @@ const waitUntilObjectLocated = async (step, driver) => {
   }
 };
 const waitUntilObjectsLocated = async (step, driver) => {
-  //need fix
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {

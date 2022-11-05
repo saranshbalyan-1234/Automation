@@ -83,7 +83,11 @@ const AddProjectMemberModal = ({
               },
             ]}
           >
-            <Select placeholder="Select an user" style={{ minWidth: "160px" }}>
+            <Select
+              placeholder="Select an user"
+              style={{ minWidth: "160px" }}
+              showSearch
+            >
               {availableMembers.map((el, i) => {
                 return (
                   <Option value={el.id} key={i}>
