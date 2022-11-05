@@ -8,6 +8,7 @@ import {
   addReusableStep,
   editReusableStep,
 } from "../../../Redux/Actions/reusableFlow";
+import KeyboardButtonList from "./KeyboardButtonList";
 import AddEditObjectModal from "../../ObjectBank/AddEditObjectModal";
 import axios from "axios";
 import { saveObject } from "../../../Redux/Actions/object";
@@ -253,7 +254,19 @@ const AddEditStepModal = ({
                   },
                 ]}
               >
-                <Input name="parameter1" showCount maxLength={50} />
+                {currentEvent.parameter1 == "Button" ? (
+                  <Select style={{ minWidth: "160px" }} showSearch>
+                    {KeyboardButtonList.map((el, i) => {
+                      return (
+                        <Option value={el} key={i}>
+                          {el}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                ) : (
+                  <Input name="parameter1" showCount maxLength={50} />
+                )}
               </Form.Item>
             )}
 

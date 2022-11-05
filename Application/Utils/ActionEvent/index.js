@@ -1,4 +1,4 @@
-// const chromeDriver = require("selenium-webdriver");
+const chromeDriver = require("selenium-webdriver");
 const { findByLocator } = require("./utils");
 const {
   implicitWait,
@@ -23,8 +23,8 @@ const {
   waitUntilAlertPresent,
   waitUntilAbleToSwitchToFrame,
 } = require("./wait");
-// const { By, until } = chromeDriver;
-//totalActionEvents = 7
+const { Key } = chromeDriver;
+
 const handleStep = async (step, driver) => {
   switch (step.actionEvent) {
     case "Launch Website":
@@ -35,6 +35,9 @@ const handleStep = async (step, driver) => {
       break;
     case "Enter Text":
       await enterText(step, driver);
+      break;
+    case "Press Button":
+      await pressButton(step, driver);
       break;
     case "Maximize Browser":
       await maximizeBrowser(driver);
@@ -131,6 +134,13 @@ const enterText = async (step, driver) => {
   await driver
     .findElement(await findByLocator(step.object.dataValues.locators))
     .sendKeys(text);
+};
+
+const pressButton = async (step, driver) => {
+  const Button = step.testParameters.Button;
+  await driver
+    .findElement(await findByLocator(step.object.dataValues.locators))
+    .sendKeys(Key[Button]);
 };
 const maximizeBrowser = async (driver) => {
   return await driver.manage().window().maximize();
