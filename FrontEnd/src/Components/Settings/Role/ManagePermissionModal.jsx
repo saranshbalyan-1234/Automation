@@ -104,6 +104,7 @@ const ManagePermissionModal = ({
               }}
             >
               <Select
+                showSearch
                 value={permission.name}
                 style={{ minWidth: "160px" }}
                 onChange={(e) => handleRowChange("name", e, index)}

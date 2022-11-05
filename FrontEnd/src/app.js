@@ -9,7 +9,7 @@ import { store, persister } from "./Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import SignIn from "./Auth/SignIn";
 import SendResetMail from "./Auth/PasswordReset/SendResetMail";
-import Agreement from "./Views/Agreement";
+// import Agreement from "./Views/Agreement";
 import VerifyEmail from "./Auth/VerifyEmail";
 import PasswordReset from "./Auth/PasswordReset/PasswordReset";
 
@@ -41,7 +41,7 @@ export default function App() {
               path="reset-password/:token"
               element={<PasswordReset />}
             />
-            <Route exact path="user-agreement" element={<Agreement />} />
+            {/* <Route exact path="user-agreement" element={<Agreement />} /> */}
             <Route path="/*" element={<Routess />} />
           </Routes>
         </PersistGate>

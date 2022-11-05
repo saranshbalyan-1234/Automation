@@ -107,6 +107,7 @@ function ManageUser({ visible, setVisible, userId, updateUserRole }) {
                 }}
               >
                 <Select
+                  showSearch
                   value={role.name}
                   style={{ minWidth: "160px" }}
                   onChange={(e) => handleRowChange("name", e, index)}

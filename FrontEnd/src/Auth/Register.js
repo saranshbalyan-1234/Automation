@@ -4,10 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { register } from "../Redux/Actions/auth";
 import { connect } from "react-redux";
 import { StyledWrapper } from "./style";
-
+import AgreementModal from "../Views/AgreementModal";
 const Register = ({ register }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showAgreementModal, setShowAgreementModal] = useState(false);
   const [details, setDetails] = useState({
     name: "",
     email: "",
@@ -156,7 +157,17 @@ const Register = ({ register }) => {
                 {...tailFormItemLayout}
               >
                 <Checkbox>
-                  I have read the <Link to="/user-agreement">agreement</Link>
+                  I have read the{" "}
+                  <span
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setShowAgreementModal(true);
+                    }}
+                    style={{ color: "#1890ff" }}
+                  >
+                    agreement
+                  </span>
                 </Checkbox>
               </Form.Item>
               <Form.Item {...tailFormItemLayout}>
@@ -173,6 +184,10 @@ const Register = ({ register }) => {
           </Card>
         </Spin>
       </div>
+      <AgreementModal
+        visible={showAgreementModal}
+        setVisible={setShowAgreementModal}
+      />
     </StyledWrapper>
   );
 };

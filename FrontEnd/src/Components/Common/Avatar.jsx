@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Avatar, Tooltip, Popover, Spin, Card, Tag } from "antd";
+import { Avatar, Tooltip, Popover, Spin, Card, Tag, Badge } from "antd";
 export const UserAvatar = ({ user, size = "small" }) => {
   const [popover, setPopover] = useState(false);
   const handleAvatarInitials = () => {
@@ -9,16 +9,21 @@ export const UserAvatar = ({ user, size = "small" }) => {
   };
   const getUserData = () => {
     return (
-      <Card.Meta
-        title={
-          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-            {user.name}
-            <Tag color="blue">{user.active ? "Active" : "Inactive"}</Tag>
-          </div>
-        }
-        description={user.email}
-      />
-
+      <Badge.Ribbon
+        text={user.active ? "Active" : "Inactive"}
+        style={{ marginTop: "-10px" }}
+      >
+        <Card>
+          <Card.Meta
+            title={
+              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                {user.name}
+              </div>
+            }
+            description={user.email}
+          />
+        </Card>
+      </Badge.Ribbon>
       // <div style={{ display: "flex", flexDirection: "column" }}>
       //   <div>Name: {user.name}</div>
       //   <div>Email: {user.email}</div>

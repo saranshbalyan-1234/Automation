@@ -25,7 +25,6 @@ const waitUntilObjectLocated = async (step, driver) => {
   }
 };
 const waitUntilObjectsLocated = async (step, driver) => {
-  //need fix
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
@@ -40,7 +39,7 @@ const waitUntilObjectsLocated = async (step, driver) => {
   }
 };
 
-const waitUntilObjectIsEnabled = async (step, driver) => {
+const waitUntilObjectEnabled = async (step, driver) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
@@ -54,7 +53,7 @@ const waitUntilObjectIsEnabled = async (step, driver) => {
     console.log(err);
   }
 };
-const waitUntilObjectIsDisabled = async (step, driver) => {
+const waitUntilObjectDisabled = async (step, driver) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
@@ -69,7 +68,7 @@ const waitUntilObjectIsDisabled = async (step, driver) => {
   }
 };
 
-const waitUntilObjectIsNotSelected = async (step, driver) => {
+const waitUntilObjectNotSelected = async (step, driver) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
@@ -84,7 +83,7 @@ const waitUntilObjectIsNotSelected = async (step, driver) => {
   }
 };
 
-const waitUntilObjectIsSelected = async (step, driver) => {
+const waitUntilObjectSelected = async (step, driver) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
@@ -99,7 +98,7 @@ const waitUntilObjectIsSelected = async (step, driver) => {
   }
 };
 
-const waitUntilObjectIsNotVisible = async (step, driver) => {
+const waitUntilObjectNotVisible = async (step, driver) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
@@ -114,7 +113,7 @@ const waitUntilObjectIsNotVisible = async (step, driver) => {
   }
 };
 
-const waitUntilObjectIsVisible = async (step, driver) => {
+const waitUntilObjectVisible = async (step, driver) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
@@ -129,14 +128,12 @@ const waitUntilObjectIsVisible = async (step, driver) => {
   }
 };
 const waitUntilObjectTextContains = async (step, driver) => {
+  const string = step.testParameters.string;
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
     return await driver.wait(async () => {
-      return until.elementTextContains(
-        await findByLocator(step.object.dataValues.locators),
-        timeout
-      );
+      return until.elementTextContains(string, timeout);
     });
   } catch (err) {
     console.log(err);
@@ -144,13 +141,11 @@ const waitUntilObjectTextContains = async (step, driver) => {
 };
 const waitUntilObjectTextIs = async (step, driver) => {
   const timeout = Number(step.testParameters.Timeout);
+  const string = step.testParameters.string;
   console.log("Waiting for " + timeout + " ms");
   try {
     return await driver.wait(async () => {
-      return until.elementTextIs(
-        await findByLocator(step.object.dataValues.locators),
-        timeout
-      );
+      return until.elementTextIs(string, timeout);
     });
   } catch (err) {
     console.log(err);
@@ -158,13 +153,11 @@ const waitUntilObjectTextIs = async (step, driver) => {
 };
 const waitUntilObjectTextMatches = async (step, driver) => {
   const timeout = Number(step.testParameters.Timeout);
+  const RegEx = new RegExp(step.testParameters.RegEx);
   console.log("Waiting for " + timeout + " ms");
   try {
     return await driver.wait(async () => {
-      return until.elementTextMatches(
-        await findByLocator(step.object.dataValues.locators),
-        timeout
-      );
+      return until.elementTextMatches(RegEx, timeout);
     });
   } catch (err) {
     console.log(err);
@@ -209,9 +202,8 @@ const waitUntilTitleIs = async (step, driver) => {
   }
 };
 const waitUntilTitleMatches = async (step, driver) => {
-  //need fix
   const timeout = Number(step.testParameters.Timeout);
-  const RegEx = step.testParameters.RegEx;
+  const RegEx = new RegExp(step.testParameters.RegEx);
   console.log("Waiting for " + timeout + " ms");
   try {
     return await driver.wait(async () => {
@@ -247,9 +239,8 @@ const waitUntilUrlIs = async (step, driver) => {
   }
 };
 const waitUntilUrlMatches = async (step, driver) => {
-  //need fix
   const timeout = Number(step.testParameters.Timeout);
-  const RegEx = step.testParameters.RegEx;
+  const RegEx = new RegExp(step.testParameters.RegEx);
   console.log("Waiting for " + timeout + " ms");
   try {
     return await driver.wait(async () => {
@@ -259,18 +250,19 @@ const waitUntilUrlMatches = async (step, driver) => {
     console.log(err);
   }
 };
-const waitUntilAlertIsPresent = async (step, driver) => {
-  //need fix
-  const timeout = Number(step.testParameters.Timeout);
-  const RegEx = step.testParameters.RegEx;
+const waitUntilAlertPresent = async (step, driver) => {
+  const temp = Number(step.testParameters.Timeout);
+  const timeout = temp > 1000 ? temp : 1000;
   console.log("Waiting for " + timeout + " ms");
-  try {
-    return await driver.wait(async () => {
-      return until.alertIsPresent(RegEx, timeout);
-    });
-  } catch (err) {
-    console.log(err);
+  for (var i = 0; i < timeout; i = i + 1000) {
+    try {
+      await driver.sleep(1000);
+      return await driver.wait(async () => {
+        return await driver.switchTo().alert();
+      });
+    } catch (err) {}
   }
+  console.log("Alter Not Found");
 };
 const waitUntilAbleToSwitchToFrame = async (step, driver) => {
   //need fix
@@ -290,12 +282,12 @@ module.exports = {
   implicitWait,
   waitUntilObjectLocated,
   waitUntilObjectsLocated,
-  waitUntilObjectIsEnabled,
-  waitUntilObjectIsDisabled,
-  waitUntilObjectIsNotSelected,
-  waitUntilObjectIsSelected,
-  waitUntilObjectIsNotVisible,
-  waitUntilObjectIsVisible,
+  waitUntilObjectEnabled,
+  waitUntilObjectDisabled,
+  waitUntilObjectNotSelected,
+  waitUntilObjectSelected,
+  waitUntilObjectNotVisible,
+  waitUntilObjectVisible,
   waitUntilObjectTextContains,
   waitUntilObjectTextIs,
   waitUntilObjectTextMatches,
@@ -306,6 +298,6 @@ module.exports = {
   waitUntilUrlContains,
   waitUntilUrlIs,
   waitUntilUrlMatches,
-  waitUntilAlertIsPresent,
+  waitUntilAlertPresent,
   waitUntilAbleToSwitchToFrame,
 };
