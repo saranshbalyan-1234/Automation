@@ -3,8 +3,25 @@
 const {
   implicitWait,
   waitUntilObjectLocated,
-  waitUntilObjectIsEnabled,
-  waitUntilObjectIsDisabled,
+  waitUntilObjectsLocated,
+  waitUntilObjectEnabled,
+  waitUntilObjectDisabled,
+  waitUntilObjectNotSelected,
+  waitUntilObjectSelected,
+  waitUntilObjectNotVisible,
+  waitUntilObjectVisible,
+  waitUntilObjectTextContains,
+  waitUntilObjectTextIs,
+  waitUntilObjectTextMatches,
+  waitUntilObjectStalenessOf,
+  waitUntilTitleContains,
+  waitUntilTitleIs,
+  waitUntilTitleMatches,
+  waitUntilUrlContains,
+  waitUntilUrlIs,
+  waitUntilUrlMatches,
+  waitUntilAlertPresent,
+  waitUntilAbleToSwitchToFrame,
 } = require("./wait");
 // const { By, until } = chromeDriver;
 //totalActionEvents = 7
@@ -24,12 +41,62 @@ const handleStep = async (step, driver) => {
     case "Wait Until Object Located":
       await waitUntilObjectLocated(step, driver);
       break;
+    case "Wait Until Objects Located":
+      await waitUntilObjectsLocated(step, driver);
+      break;
     case "Wait Until Object Enabled":
-      await waitUntilObjectIsEnabled(step, driver);
+      await waitUntilObjectEnabled(step, driver);
       break;
     case "Wait Until Object Disabled":
-      await waitUntilObjectIsDisabled(step, driver);
+      await waitUntilObjectDisabled(step, driver);
       break;
+    case "Wait Until Object Selected":
+      await waitUntilObjectSelected(step, driver);
+      break;
+    case "Wait Until Object Not Selected":
+      await waitUntilObjectNotSelected(step, driver);
+      break;
+    case "Wait Until Object Visible":
+      await waitUntilObjectVisible(step, driver);
+      break;
+    case "Wait Until Object Not Visible":
+      await waitUntilObjectNotVisible(step, driver);
+      break;
+    case "Wait Until Alert Present":
+      await waitUntilAlertPresent(step, driver);
+      break;
+    case "Wait Until Object Text Contains":
+      await waitUntilObjectTextContains(step, driver);
+      break;
+    case "Wait Until Object Text Is":
+      await waitUntilObjectTextIs(step, driver);
+      break;
+    case "Wait Until Object Text Matches":
+      await waitUntilObjectTextMatches(step, driver);
+      break;
+    case "Wait Until Title Contains":
+      await waitUntilTitleContains(step, driver);
+      break;
+    case "Wait Until Title Is":
+      await waitUntilTitleIs(step, driver);
+      break;
+    case "Wait Until Title Matches":
+      await waitUntilTitleMatches(step, driver);
+      break;
+    case "Wait Until Url Contains":
+      await waitUntilUrlContains(step, driver);
+      break;
+    case "Wait Until Url Is":
+      await waitUntilUrlIs(step, driver);
+      break;
+    case "Wait Until Url Matches":
+      await waitUntilUrlMatches(step, driver);
+      break;
+    case "Wait Until Object Staleness Of":
+      await waitUntilObjectStalenessOf(step, driver);
+      break;
+    case "Wait Until Able To Switch Frame":
+      await waitUntilAbleToSwitchToFrame(step, driver);
     default:
       break;
   }
