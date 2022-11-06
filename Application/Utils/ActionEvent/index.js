@@ -49,7 +49,7 @@ const handleStep = async (step, driver) => {
       await maximizeBrowser(driver);
       break;
     case "Close Browser":
-      await closeBrowser();
+      await closeBrowser(driver);
     case "Wait":
       await implicitWait(step, driver);
       break;
@@ -112,6 +112,10 @@ const handleStep = async (step, driver) => {
       break;
     case "Wait Until Able To Switch Frame":
       await waitUntilAbleToSwitchToFrame(step, driver);
+      break;
+    case "Refresh Page":
+      await refreshPage(driver);
+      break;
     default:
       break;
   }
@@ -178,9 +182,12 @@ const maximizeBrowser = async (driver) => {
   return await driver.manage().window().maximize();
 };
 
-const closeBrowser = async () => {
+const closeBrowser = async (driver) => {
   console.log("Browser Closed");
   return await driver.quit();
 };
 
+const refreshPage = async (driver) => {
+  await driver.navigate().refresh();
+};
 module.exports = { handleStep };
