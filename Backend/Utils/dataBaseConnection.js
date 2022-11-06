@@ -71,7 +71,7 @@ db.reusableFlows = ReusableFlow(sequelize, DataTypes);
 
 db.users = User(sequelize, DataTypes); //all associations
 
-db.tenants.schema("Main").sync({ force: false, alter: true });
+await db.tenants.schema("Main").sync({ force: false, alter: true });
 db.customers.schema("Main").sync({ force: false, alter: true });
 db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });

@@ -1,4 +1,4 @@
-// const chromeDriver = require("selenium-webdriver");
+const chromeDriver = require("selenium-webdriver");
 const { findByLocator } = require("./utils");
 const {
   implicitWait,
@@ -23,8 +23,8 @@ const {
   waitUntilAlertPresent,
   waitUntilAbleToSwitchToFrame,
 } = require("./wait");
-// const { By, until } = chromeDriver;
-//totalActionEvents = 7
+const { Key } = chromeDriver;
+
 const handleStep = async (step, driver) => {
   switch (step.actionEvent) {
     case "Launch Website":
@@ -33,14 +33,23 @@ const handleStep = async (step, driver) => {
     case "Click":
       await click(step, driver);
       break;
+    case "Double Click":
+      await doubleClick(step, driver);
+      break;
+    case "Right Click":
+      await rightClick(step, driver);
+      break;
     case "Enter Text":
       await enterText(step, driver);
+      break;
+    case "Press Button":
+      await pressButton(step, driver);
       break;
     case "Maximize Browser":
       await maximizeBrowser(driver);
       break;
     case "Close Browser":
-      await closeBrowser();
+      await closeBrowser(driver);
     case "Wait":
       await implicitWait(step, driver);
       break;
@@ -103,6 +112,10 @@ const handleStep = async (step, driver) => {
       break;
     case "Wait Until Able To Switch Frame":
       await waitUntilAbleToSwitchToFrame(step, driver);
+      break;
+    case "Refresh Page":
+      await refreshPage(driver);
+      break;
     default:
       break;
   }
@@ -121,24 +134,60 @@ const launchWebsite = async (step, driver) => {
 };
 
 const click = async (step, driver) => {
+  console.log("Clicking");
   await driver
     .findElement(await findByLocator(step.object.dataValues.locators))
     .click();
 };
+const doubleClick = async (step, driver) => {
+  console.log("Double Clicking");
+  await driver
+    .actions()
+    .doubleClick(
+      await driver.findElement(
+        await findByLocator(step.object.dataValues.locators)
+      )
+    )
+    .perform();
+};
+const rightClick = async (step, driver) => {
+  console.log("Right Clicking");
+  await driver
+    .actions()
+    .contextClick(
+      await driver.findElement(
+        await findByLocator(step.object.dataValues.locators)
+      )
+    )
+    .perform();
+};
 
 const enterText = async (step, driver) => {
   const text = step.testParameters.Text;
+  console.log("Entering text " + text);
   await driver
     .findElement(await findByLocator(step.object.dataValues.locators))
     .sendKeys(text);
 };
+
+const pressButton = async (step, driver) => {
+  const Button = step.testParameters.Button;
+  console.log("pressing button " + Button);
+  await driver
+    .findElement(await findByLocator(step.object.dataValues.locators))
+    .sendKeys(Key[Button]);
+};
 const maximizeBrowser = async (driver) => {
+  console.log("Maximize Browser");
   return await driver.manage().window().maximize();
 };
 
-const closeBrowser = async () => {
+const closeBrowser = async (driver) => {
   console.log("Browser Closed");
   return await driver.quit();
 };
 
+const refreshPage = async (driver) => {
+  await driver.navigate().refresh();
+};
 module.exports = { handleStep };
