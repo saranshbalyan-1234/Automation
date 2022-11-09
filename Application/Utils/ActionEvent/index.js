@@ -1,3 +1,4 @@
+const fs = require('fs');
 const chromeDriver = require("selenium-webdriver");
 const { findByLocator } = require("./utils");
 const {
@@ -119,6 +120,7 @@ const handleStep = async (step, driver) => {
     default:
       break;
   }
+  if (step.screenshot) takeScreenshot(driver);
   return true;
 };
 
@@ -190,4 +192,15 @@ const closeBrowser = async (driver) => {
 const refreshPage = async (driver) => {
   await driver.navigate().refresh();
 };
+
+const takeScreenshot = async(driver) => {
+  const filepath = 'Screenshot/';
+  await driver.takeScreenshot().then((image, err) => {
+          fs.writeFile(filepath + 'Screenshot-'+Date.now()+'.png', image, 'base64', (err) => {
+              console.log(err);
+          });
+      }
+  );
+}
+
 module.exports = { handleStep };
