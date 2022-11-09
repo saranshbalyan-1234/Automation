@@ -92,9 +92,11 @@ const TestStepTable = ({
       dataIndex: "options",
       render: (text, record) => (
         <>
-          <Tag>
-            <CameraFilled style={{ fontSize: 15 }} />
-          </Tag>
+          {record.screenshot && (
+            <Tag>
+              <CameraFilled style={{ fontSize: 15 }} />
+            </Tag>
+          )}
         </>
       ),
     },

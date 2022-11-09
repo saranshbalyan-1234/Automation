@@ -299,12 +299,14 @@ const AddEditStepModal = ({
                 <Input name="parameter3" showCount maxLength={50} />
               </Form.Item>
             )}
-            <Form.Item name="screenshot" label="Screenshot">
-              {/* <Input name="screenshot" /> */}
+            <Form.Item
+              name="screenshot"
+              label="Screenshot"
+              valuePropName="checked"
+            >
               <Switch checkedChildren="Yes" unCheckedChildren="No" />
             </Form.Item>
             <Form.Item name="comment" label="">
-              {/* <Input name="comment" showCount maxLength={50} /> */}
               <ReactQuill
                 style={{ width: 450 }}
                 placeholder="Enter Comment"
