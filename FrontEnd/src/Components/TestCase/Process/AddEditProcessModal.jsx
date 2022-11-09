@@ -93,7 +93,7 @@ const AddEditProcessModal = ({
                   },
                 ]}
               >
-                <Select style={{ minWidth: "160px" }} showSearch>
+                <Select style={{ minWidth: "160px" }}>
                   {reusableFlows.map((el, i) => {
                     return (
                       <Option value={el.id} key={i}>
