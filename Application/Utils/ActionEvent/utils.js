@@ -40,5 +40,20 @@ const findByLocator = async (locators) => {
     }
   }
 };
+const takeScreenshot = async (driver) => {
+  console.log("Taking screenshot");
+  // const filepath = "Screenshot/";
+  await driver.takeScreenshot().then((image, err) => {
+    console.log("image", image);
+    // fs.writeFile(
+    //   filepath + "Screenshot-" + Date.now() + ".png",
+    //   image,
+    //   "base64",
+    //   (err) => {
+    //     console.log(err);
+    //   }
+    // );
+  });
+};
 
-module.exports = { findByLocator };
+module.exports = { findByLocator, takeScreenshot };

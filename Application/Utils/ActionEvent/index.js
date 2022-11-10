@@ -1,6 +1,5 @@
-const fs = require("fs");
 const chromeDriver = require("selenium-webdriver");
-const { findByLocator } = require("./utils");
+const { findByLocator, takeScreenshot } = require("./utils");
 const {
   implicitWait,
   waitUntilObjectLocated,
@@ -26,7 +25,7 @@ const {
 } = require("./wait");
 const { Key } = chromeDriver;
 
-const handleStep = async (step, driver) => {
+const handleStep = async (step, driver, output) => {
   switch (step.actionEvent) {
     case "Launch Website":
       await launchWebsite(step, driver);
@@ -117,6 +116,12 @@ const handleStep = async (step, driver) => {
     case "Refresh Page":
       await refreshPage(driver);
       break;
+    case "Generate Random Number":
+      await generateRandomNumber(step, output);
+      break;
+    case "Console Log":
+      await console.log(step.testParameters.Value);
+      break;
     default:
       break;
   }
@@ -192,21 +197,12 @@ const closeBrowser = async (driver) => {
 const refreshPage = async (driver) => {
   await driver.navigate().refresh();
 };
-
-const takeScreenshot = async (driver) => {
-  console.log("Taking screenshot");
-  // const filepath = "Screenshot/";
-  await driver.takeScreenshot().then((image, err) => {
-    console.log("image", image);
-    // fs.writeFile(
-    //   filepath + "Screenshot-" + Date.now() + ".png",
-    //   image,
-    //   "base64",
-    //   (err) => {
-    //     console.log(err);
-    //   }
-    // );
-  });
+const generateRandomNumber = async (step, output) => {
+  console.log("generating random number");
+  const randomNumber = Math.floor(
+    Math.random() * Math.pow(10, step.testParameters.Length)
+  );
+  output[step.testParameters.Output] = randomNumber;
 };
 
 module.exports = { handleStep };
