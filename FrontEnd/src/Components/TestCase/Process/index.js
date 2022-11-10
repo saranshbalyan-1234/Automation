@@ -65,7 +65,7 @@ const Process = ({
                         Process: {item.name}
                       </div>
                       {item.reusableFlow && (
-                        <Tag color="red">
+                        <Tag color="blue">
                           ReusableFlow : {item.reusableFlow.name}
                         </Tag>
                       )}
