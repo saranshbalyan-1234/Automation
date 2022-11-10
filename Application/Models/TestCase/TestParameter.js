@@ -14,6 +14,13 @@ module.exports = (sequelize, DataTypes) => {
         notNull: true,
       },
     },
+    method: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
+    },
     testStepId: {
       type: DataTypes.INTEGER,
       allowNull: false,

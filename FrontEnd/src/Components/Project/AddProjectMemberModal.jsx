@@ -30,8 +30,6 @@ const AddProjectMemberModal = ({
   }, []);
 
   const onSubmit = async (data) => {
-    console.log(data);
-
     const addedUser = availableMembers.find((el) => {
       return el.id === data.userId;
     });

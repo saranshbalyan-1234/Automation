@@ -60,18 +60,33 @@ const AddEditStepModal = ({
   }, []);
 
   useEffect(() => {
-    edit &&
-      form.setFieldsValue({
-        parameter1: editData.testParameters.find((el) => {
-          return el.type === currentEvent.parameter1;
-        })?.property,
-        parameter2: editData.testParameters.find((el) => {
-          return el.type === currentEvent.parameter2;
-        })?.property,
-        parameter3: editData.testParameters.find((el) => {
-          return el.type === currentEvent.parameter3;
-        })?.property,
-      });
+    edit
+      ? form.setFieldsValue({
+          parameter1: editData.testParameters.find((el) => {
+            return el.type === currentEvent.parameter1;
+          })?.property,
+          parameter2: editData.testParameters.find((el) => {
+            return el.type === currentEvent.parameter2;
+          })?.property,
+          parameter3: editData.testParameters.find((el) => {
+            return el.type === currentEvent.parameter3;
+          })?.property,
+
+          type1: editData.testParameters.find((el) => {
+            return el.type === currentEvent.parameter1;
+          })?.method,
+          type2: editData.testParameters.find((el) => {
+            return el.type === currentEvent.parameter2;
+          })?.method,
+          type3: editData.testParameters.find((el) => {
+            return el.type === currentEvent.parameter3;
+          })?.method,
+        })
+      : form.setFieldsValue({
+          type1: "Static",
+          type2: "Static",
+          type3: "Static",
+        });
   }, [currentEvent, edit]);
 
   useEffect(() => {
@@ -86,17 +101,20 @@ const AddEditStepModal = ({
     if (currentEvent.parameter1) {
       const key = currentEvent.parameter1;
       const value = data.parameter1;
-      payload.parameters.push({ type: key, property: value });
+      const method = data.type1;
+      payload.parameters.push({ type: key, property: value, method });
     }
     if (currentEvent.parameter2) {
       const key = currentEvent.parameter2;
       const value = data.parameter2;
-      payload.parameters.push({ type: key, property: value });
+      const method = data.type2;
+      payload.parameters.push({ type: key, property: value, method });
     }
     if (currentEvent.parameter3) {
       const key = currentEvent.parameter3;
       const value = data.parameter3;
-      payload.parameters.push({ type: key, property: value });
+      const method = data.type3;
+      payload.parameters.push({ type: key, property: value, method });
     }
 
     if (edit) {
@@ -149,7 +167,7 @@ const AddEditStepModal = ({
       }}
     >
       <Modal
-        width={500}
+        width={700}
         centered
         title={
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -245,60 +263,159 @@ const AddEditStepModal = ({
 
             {currentEvent.parameter1 && (
               <Form.Item
-                name="parameter1"
-                label={currentEvent.parameter1}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input Parameter!",
-                  },
-                ]}
+                label={<div className="star">{currentEvent.parameter1}</div>}
               >
-                {currentEvent.parameter1 == "Button" ? (
-                  <Select style={{ minWidth: "160px" }} showSearch>
-                    {KeyboardButtonList.map((el, i) => {
-                      return (
-                        <Option value={el} key={i}>
-                          {el}
-                        </Option>
-                      );
-                    })}
+                <Form.Item
+                  name="type1"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Select Parameter Type",
+                    },
+                  ]}
+                  style={{
+                    display: "inline-block",
+                    width: "calc(30% - 8px)",
+                  }}
+                >
+                  <Select>
+                    <Option value="Static">Static</Option>
+                    <Option value="Dynamic">Dynamic</Option>
                   </Select>
-                ) : (
-                  <Input name="parameter1" showCount maxLength={50} />
-                )}
+                </Form.Item>
+                <Form.Item
+                  name="parameter1"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Parameter!",
+                    },
+                  ]}
+                  style={{
+                    display: "inline-block",
+                    width: "calc(70% - 8px)",
+                    margin: "0 8px",
+                  }}
+                >
+                  {currentEvent.parameter1 == "Button" ? (
+                    <Select style={{ minWidth: "160px" }} showSearch>
+                      {KeyboardButtonList.map((el, i) => {
+                        return (
+                          <Option value={el} key={i}>
+                            {el}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  ) : (
+                    <Input name="parameter1" showCount maxLength={50} />
+                  )}
+                </Form.Item>
               </Form.Item>
             )}
 
             {currentEvent.parameter2 && (
-              <Form.Item
-                name="parameter2"
-                label={currentEvent.parameter1}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input Parameter!",
-                  },
-                ]}
-              >
-                <Input name="parameter2" showCount maxLength={50} />
+              <Form.Item label={currentEvent.parameter2}>
+                <Form.Item
+                  name="type2"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Select Parameter Type",
+                    },
+                  ]}
+                  style={{
+                    display: "inline-block",
+                    width: "calc(30% - 8px)",
+                  }}
+                >
+                  <Select>
+                    <Option value="Static">Static</Option>
+                    <Option value="Dynamic">Dynamic</Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  name="parameter2"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Parameter!",
+                    },
+                  ]}
+                  style={{
+                    display: "inline-block",
+                    width: "calc(70% - 8px)",
+                    margin: "0 8px",
+                  }}
+                >
+                  {currentEvent.parameter2 == "Button" ? (
+                    <Select style={{ minWidth: "160px" }} showSearch>
+                      {KeyboardButtonList.map((el, i) => {
+                        return (
+                          <Option value={el} key={i}>
+                            {el}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  ) : (
+                    <Input name="parameter2" showCount maxLength={50} />
+                  )}
+                </Form.Item>
               </Form.Item>
             )}
 
             {currentEvent.parameter3 && (
-              <Form.Item
-                name="parameter3"
-                label={currentEvent.parameter3}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input Parameter!",
-                  },
-                ]}
-              >
-                <Input name="parameter3" showCount maxLength={50} />
+              <Form.Item label={currentEvent.parameter3}>
+                <Form.Item
+                  name="type3"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Select Parameter Type",
+                    },
+                  ]}
+                  style={{
+                    display: "inline-block",
+                    width: "calc(30% - 8px)",
+                  }}
+                >
+                  <Select>
+                    <Option value="Static">Static</Option>
+                    <Option value="Dynamic">Dynamic</Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  name="parameter3"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Parameter!",
+                    },
+                  ]}
+                  style={{
+                    display: "inline-block",
+                    width: "calc(70% - 8px)",
+                    margin: "0 8px",
+                  }}
+                >
+                  {currentEvent.parameter3 == "Button" ? (
+                    <Select style={{ minWidth: "160px" }} showSearch>
+                      {KeyboardButtonList.map((el, i) => {
+                        return (
+                          <Option value={el} key={i}>
+                            {el}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  ) : (
+                    <Input name="parameter3" showCount maxLength={50} />
+                  )}
+                </Form.Item>
               </Form.Item>
             )}
+
             <Form.Item
               name="screenshot"
               label="Screenshot"
@@ -308,7 +425,7 @@ const AddEditStepModal = ({
             </Form.Item>
             <Form.Item name="comment" label="">
               <ReactQuill
-                style={{ width: 450 }}
+                style={{ width: 650 }}
                 placeholder="Enter Comment"
                 name="comment"
               />
