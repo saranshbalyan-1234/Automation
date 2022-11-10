@@ -20,15 +20,20 @@ app.get("/execute/:testCaseId", async (req, res) => {
   try {
     const data = await getTestStepByTestCase(req, res);
     res.status(200).json({ message: "Started Execution" });
-
+    let output = {};
     for (const process of data) {
       for (const step of process.testSteps) {
         let tempParameter = {};
         step.testParameters.forEach((parameter) => {
-          tempParameter[parameter.type] = parameter.property;
+          if (parameter.method == "Static") {
+            tempParameter[parameter.type] = parameter.property;
+          } else if (parameter.method == "Dynamic") {
+            tempParameter[parameter.type] = output[parameter.property];
+          }
         });
+
         let tempStep = { ...step.dataValues, testParameters: tempParameter };
-        await handleStep(tempStep, driver);
+        await handleStep(tempStep, driver, output);
       }
     }
   } catch (err) {
