@@ -42,6 +42,12 @@ const handleStep = async (step, driver, output) => {
     case "Enter Text":
       await enterText(step, driver);
       break;
+    case "Clear Input":
+      await clearInput(step, driver);
+      break;
+    case "Enter Password":
+      await enterPassword(step, driver);
+      break;
     case "Press Button":
       await pressButton(step, driver);
       break;
@@ -119,6 +125,9 @@ const handleStep = async (step, driver, output) => {
     case "Generate Random Number":
       await generateRandomNumber(step, output);
       break;
+    case "Get Page Title":
+      await getPageTitle(step, driver, output);
+      break;
     case "Console Log":
       await console.log(step.testParameters.Value);
       break;
@@ -176,6 +185,13 @@ const enterText = async (step, driver) => {
     .findElement(await findByLocator(step.object.dataValues.locators))
     .sendKeys(text);
 };
+const enterPassword = async (step, driver) => {
+  const password = step.testParameters.Password;
+  console.log("Entering Password");
+  await driver
+    .findElement(await findByLocator(step.object.dataValues.locators))
+    .sendKeys(password);
+};
 
 const pressButton = async (step, driver) => {
   const Button = step.testParameters.Button;
@@ -204,5 +220,16 @@ const generateRandomNumber = async (step, output) => {
   );
   output[step.testParameters.Output] = randomNumber;
 };
+const getPageTitle = async (step, driver, output) => {
+  console.log("Getting Page Title");
+  const title = await driver.getTitle();
+  output[step.testParameters.Output] = title;
+};
 
+const clearInput = async (step, driver) => {
+  console.log("Clearning Input");
+  await driver
+    .findElement(await findByLocator(step.object.dataValues.locators))
+    .clear();
+};
 module.exports = { handleStep };

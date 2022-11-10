@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import TestStepTable from "../../Common/TestStep";
 import AddEditProcessModal from "./AddEditProcessModal";
+import ViewCommentModal from "../../Common/TestStep/ViewCommentModal";
 const { Panel } = Collapse;
 const Process = ({
   getTestCaseStepsById,
@@ -19,6 +20,7 @@ const Process = ({
   deleteStep,
 }) => {
   const [addEditProcessModal, setAddEditProcessModal] = useState(false);
+  const [comment, setComment] = useState(false);
   const [editProcessData, setEditProcessData] = useState({});
   const [edit, setEdit] = useState(true);
   const { testCaseId } = useParams();
@@ -63,7 +65,7 @@ const Process = ({
                         Process: {item.name}
                       </div>
                       {item.reusableFlow && (
-                        <Tag color="red">
+                        <Tag color="blue">
                           ReusableFlow : {item.reusableFlow.name}
                         </Tag>
                       )}
@@ -74,6 +76,16 @@ const Process = ({
                         e.stopPropagation();
                       }}
                     >
+                      {item.comment && (
+                        <Tag
+                          color="red"
+                          onClick={() => {
+                            setComment(item.comment);
+                          }}
+                        >
+                          View Comment
+                        </Tag>
+                      )}
                       <EditOutlined
                         onClick={() => {
                           setEditProcessData(item);
@@ -125,6 +137,13 @@ const Process = ({
           edit={edit}
           step={1}
           setEdit={setEdit}
+        />
+      )}
+      {comment && (
+        <ViewCommentModal
+          comment={comment}
+          visible={comment}
+          setVisible={setComment}
         />
       )}
     </>
