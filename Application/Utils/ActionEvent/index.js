@@ -131,6 +131,15 @@ const handleStep = async (step, driver, output) => {
     case "Console Log":
       await console.log(step.testParameters.Value);
       break;
+    case "Scroll To Object":
+      await scrollToObject(step, driver);
+      break;
+    case "Scroll To End":
+      await scrollToEnd(driver);
+      break;
+    case "Scroll To Top":
+      await scrollToTop(driver);
+      break;
     default:
       break;
   }
@@ -232,4 +241,21 @@ const clearInput = async (step, driver) => {
     .findElement(await findByLocator(step.object.dataValues.locators))
     .clear();
 };
+const scrollToObject = async (step, driver) => {
+  console.log("Scrolling To Object");
+  const element = await driver.findElement(
+    await findByLocator(step.object.dataValues.locators)
+  );
+  await driver.executeScript("arguments[0].scrollIntoView()", element);
+};
+
+const scrollToEnd = async (driver) => {
+  console.log("Scrolling To End");
+  await driver.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+};
+const scrollToTop = async (driver) => {
+  console.log("Scrolling To Top");
+  await driver.executeScript("window.scrollTo(0,0)");
+};
+
 module.exports = { handleStep };
