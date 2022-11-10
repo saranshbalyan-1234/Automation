@@ -211,7 +211,6 @@ const getTestStepByTestCase = async (req, res) => {
       let temp = { ...process.dataValues };
 
       if (temp.reusableFlow != null) {
-        console.log(temp.reusableFlow.dataValues);
         temp.testSteps = temp.reusableFlow.dataValues.testSteps;
         delete temp.reusableFlow.dataValues.testSteps;
       }

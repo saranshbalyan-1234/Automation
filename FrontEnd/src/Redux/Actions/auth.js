@@ -17,7 +17,6 @@ export const signIn = (payload) => {
       dispatch({ type: SIGNIN_SUCCESS, payload: data });
       return true;
     } catch (err) {
-      console.log("saransh");
       dispatch({ type: SIGNIN_FAILURE });
       return false;
     }
