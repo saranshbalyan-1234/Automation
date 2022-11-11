@@ -1,5 +1,6 @@
 const chromeDriver = require("selenium-webdriver");
 const { findByLocator, takeScreenshot } = require("./utils");
+const { By } = chromeDriver;
 const {
   implicitWait,
   waitUntilObjectLocated,
@@ -149,6 +150,15 @@ const handleStep = async (step, driver, output) => {
     case "Click Link By Partial Text":
       await clickLinkByPartialText(step, driver);
       break;
+    case "Hover Mouse":
+      await hoverMouse(step, driver);
+      break;
+    case "Copy Test":
+      await copyText(step, output);
+      break;
+    case "Copy Password":
+      await copyPassword(step, output);
+      break;
     default:
       break;
   }
@@ -183,6 +193,13 @@ const doubleClick = async (step, driver) => {
       )
     )
     .perform();
+};
+const hoverMouse = async (step, driver) => {
+  console.log("Hovering Mouse");
+  const el = await driver.findElement(
+    await findByLocator(step.object.dataValues.locators)
+  );
+  await driver.actions().move({ origin: el, x: 0, y: 0 }).perform();
 };
 const rightClick = async (step, driver) => {
   console.log("Right Clicking");
@@ -284,5 +301,15 @@ const clickLinkByPartialText = async (step, driver) => {
   await driver
     .findElement(By.partialLinkText(step.testParameters.Text))
     .click();
+};
+const copyText = async (step, output) => {
+  console.log("Copying Text");
+  const value = step.testParameters.Value;
+  output[step.testParameters.Output] = value;
+};
+const copyPassword = async (step, output) => {
+  console.log("Copying Password");
+  const value = step.testParameters.Password;
+  output[step.testParameters.Output] = value;
 };
 module.exports = { handleStep };
