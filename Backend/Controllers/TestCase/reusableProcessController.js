@@ -54,7 +54,7 @@ const updateReusableProcess = async (req, res) => {
       }
     );
 
-    if (ReusableProcess[0]) {
+    if (updatedReusableProcess[0]) {
       return res
         .status(200)
         .json({ message: "ReusableProcess updated successfully!" });

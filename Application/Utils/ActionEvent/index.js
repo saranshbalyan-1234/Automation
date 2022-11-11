@@ -1,5 +1,6 @@
 const chromeDriver = require("selenium-webdriver");
 const { findByLocator, takeScreenshot } = require("./utils");
+const { By } = chromeDriver;
 const {
   implicitWait,
   waitUntilObjectLocated,
@@ -140,6 +141,27 @@ const handleStep = async (step, driver, output) => {
     case "Scroll To Top":
       await scrollToTop(driver);
       break;
+    case "Click By Javascript":
+      await clickByJs(step, driver);
+      break;
+    case "Click Link By Text":
+      await clickLinkByText(step, driver);
+      break;
+    case "Click Link By Partial Text":
+      await clickLinkByPartialText(step, driver);
+      break;
+    case "Hover Mouse":
+      await hoverMouse(step, driver);
+      break;
+    case "Copy Test":
+      await copyText(step, output);
+      break;
+    case "Copy Password":
+      await copyPassword(step, output);
+      break;
+    case "Combine String":
+      await combineString(step, output);
+      break;
     default:
       break;
   }
@@ -174,6 +196,13 @@ const doubleClick = async (step, driver) => {
       )
     )
     .perform();
+};
+const hoverMouse = async (step, driver) => {
+  console.log("Hovering Mouse");
+  const el = await driver.findElement(
+    await findByLocator(step.object.dataValues.locators)
+  );
+  await driver.actions().move({ origin: el, x: 0, y: 0 }).perform();
 };
 const rightClick = async (step, driver) => {
   console.log("Right Clicking");
@@ -258,4 +287,38 @@ const scrollToTop = async (driver) => {
   await driver.executeScript("window.scrollTo(0,0)");
 };
 
+const clickByJs = async (step, driver) => {
+  console.log("Clicking By Javascript");
+  const element = await driver.findElement(
+    await findByLocator(step.object.dataValues.locators)
+  );
+  await driver.executeScript("arguments[0].click();", element);
+};
+
+const clickLinkByText = async (step, driver) => {
+  console.log("Clicking Link By Text");
+  await driver.findElement(By.linkText(step.testParameters.Text)).click();
+};
+const clickLinkByPartialText = async (step, driver) => {
+  console.log("Clicking Link By Partial Text");
+  await driver
+    .findElement(By.partialLinkText(step.testParameters.Text))
+    .click();
+};
+const copyText = async (step, output) => {
+  console.log("Copying Text");
+  const value = step.testParameters.Value;
+  output[step.testParameters.Output] = value;
+};
+const copyPassword = async (step, output) => {
+  console.log("Copying Password");
+  const value = step.testParameters.Password;
+  output[step.testParameters.Output] = value;
+};
+const combineString = async (step, output) => {
+  console.log("Combining String");
+  const value1 = step.testParameters.Value1;
+  const value2 = step.testParameters.Value2;
+  output[step.testParameters.Output] = value1 + value2;
+};
 module.exports = { handleStep };
