@@ -142,25 +142,33 @@ const getTestCaseDetailsById = async (req, res) => {
       ],
     });
 
-    const process = await Process.schema(req.database).findAll({
+    const totalProcess = await Process.schema(req.database).findAll({
       where: { testCaseId },
     });
-    const totalReusableFlows = await Process.schema(req.database).count({
+    const processCount = await Process.schema(req.database).count({
       where: { testCaseId, reusableFlowId: null },
     });
-    const totalProcess = process.length - totalReusableFlows;
+    const reusableFlowCount = totalProcess.length - processCount;
 
-    const allStepId = await process.map((el) => {
+    const allStepId = await totalProcess.map((el) => {
       return el.id;
     });
-    const totalSteps = await TestStep.schema(req.database).count({
-      where: { processId: allStepId },
+    const allReusableFlowId = await totalProcess.map((el) => {
+      return el.reusableFlowId;
+    });
+    const stepCount = await TestStep.schema(req.database).count({
+      where: {
+        [Op.or]: [
+          { processId: allStepId },
+          { reusableFlowId: allReusableFlowId },
+        ],
+      },
     });
     return res.status(200).json({
       ...testCase.dataValues,
-      totalReusableFlows,
-      totalProcess,
-      totalSteps,
+      reusableFlowCount,
+      processCount,
+      stepCount,
     });
   } catch (err) {
     getError(err, res);

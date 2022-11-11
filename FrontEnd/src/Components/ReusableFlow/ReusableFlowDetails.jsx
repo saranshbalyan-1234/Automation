@@ -50,7 +50,7 @@ const ReusableFlowDetails = ({ loading, details, name, onEdit = () => {} }) => {
                     <Card>
                       <Meta
                         title="Total Steps"
-                        description={details.totalSteps}
+                        description={details.totalSteps || "0"}
                       />
                     </Card>
                   </div>
