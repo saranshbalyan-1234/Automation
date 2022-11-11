@@ -10,6 +10,7 @@ import {
 import Process from "./Process";
 import Details from "./TestCaseDetails";
 import ActivityLog from "../Common/ActivityLog";
+import ComingSoon from "../../Views/ComingSoon";
 import ExecuteModal from "./ExecuteModal";
 function TestCaseTabs({
   getTestCaseDetailsById,
@@ -74,6 +75,9 @@ function TestCaseTabs({
           </Tabs.TabPane>
           <Tabs.TabPane tab="Test Steps" key="teststeps">
             {activeTab === "teststeps" && <Process />}
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Execution History" key="executionhistory">
+            <ComingSoon />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Activity Log" key="activitylog">
             <ActivityLog />
