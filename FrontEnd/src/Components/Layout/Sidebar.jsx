@@ -30,8 +30,8 @@ export default function Sidebar({ collapsed, setCollapsed }) {
 
     { label: "Test Case", key: "TestCase", icon: <FileOutlined /> },
     {
-      label: "Reusable Flow",
-      key: "ReusableFlow",
+      label: "Reusable Process",
+      key: "ReusableProcess",
       icon: <VscDebugRestart />,
     },
     { label: " Object Bank", key: "ObjectBank", icon: <BankOutlined /> },

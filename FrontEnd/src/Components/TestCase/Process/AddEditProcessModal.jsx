@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Form, Input, Modal, Button, Spin, Select } from "antd";
 import { connect } from "react-redux";
 import { addProcess, editProcess } from "../../../Redux/Actions/testCase";
-import { getReusableFlowByProject } from "../../../Redux/Actions/reusableFlow";
+import { getReusableProcessByProject } from "../../../Redux/Actions/reusableProcess";
 import ReactQuill from "react-quill";
 const { Option } = Select;
 const AddEditProcessModal = ({
@@ -18,12 +18,12 @@ const AddEditProcessModal = ({
   setEdit = () => {},
   step,
   addReusable = false,
-  getReusableFlowByProject,
+  getReusableProcessByProject,
   reusableLoading,
-  reusableFlows,
+  reusableProcesses,
 }) => {
   useEffect(() => {
-    addReusable && getReusableFlowByProject();
+    addReusable && getReusableProcessByProject();
   }, []);
 
   const onSubmit = async (data) => {
@@ -84,17 +84,17 @@ const AddEditProcessModal = ({
             </Form.Item>
             {addReusable && (
               <Form.Item
-                name="reusableFlowId"
-                label="Reusable Flow"
+                name="reusableProcessId"
+                label="Reusable Process"
                 rules={[
                   {
                     required: true,
-                    message: "Please select Reusable Flow!",
+                    message: "Please select Reusable Process!",
                   },
                 ]}
               >
                 <Select style={{ minWidth: "160px" }}>
-                  {reusableFlows.map((el, i) => {
+                  {reusableProcesses.map((el, i) => {
                     return (
                       <Option value={el.id} key={i}>
                         {el.name}
@@ -139,13 +139,13 @@ const AddEditProcessModal = ({
 const mapStateToProps = (state) => ({
   currentTestCaseId: state.testCase.currentTestCase.id,
   loading: state.testCase.loading,
-  reusableFlows: state.reusableFlow.data,
-  reusableLoading: state.reusableFlow.loading,
+  reusableProcesses: state.reusableProcess.data,
+  reusableLoading: state.reusableProcess.loading,
 });
 const mapDispatchToProps = {
   addProcess,
   editProcess,
-  getReusableFlowByProject,
+  getReusableProcessByProject,
 };
 
 export default connect(

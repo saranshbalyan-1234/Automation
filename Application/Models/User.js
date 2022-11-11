@@ -53,9 +53,9 @@ module.exports = (sequelize, DataTypes) => {
     constraints: false,
   });
 
-  sequelize.models.reusableFlows.hasMany(sequelize.models.testSteps, {
+  sequelize.models.reusableProcesses.hasMany(sequelize.models.testSteps, {
     sourceKey: "id",
-    foreignKey: "reusableFlowId",
+    foreignKey: "reusableProcessId",
     constraints: false,
   });
 
@@ -65,8 +65,8 @@ module.exports = (sequelize, DataTypes) => {
     constraints: false,
   });
 
-  sequelize.models.processes.hasOne(sequelize.models.reusableFlows, {
-    sourceKey: "reusableFlowId",
+  sequelize.models.processes.hasOne(sequelize.models.reusableProcesses, {
+    sourceKey: "reusableProcessId",
     foreignKey: "id",
     constraints: false,
   });

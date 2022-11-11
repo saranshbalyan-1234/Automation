@@ -4,7 +4,7 @@ import teamReducer from "./teamReducer";
 import roleReducer from "./roleReducer";
 import projectReducer from "./projectReducer";
 import testCaseReducer from "./testCaseReducer";
-import reusableFlowReducer from "./reusableFlowReducer";
+import reusableProcessReducer from "./reusableProcessReducer";
 import objectBankReducer from "./objectBankReducer";
 export default combineReducers({
   auth: authReducer,
@@ -12,6 +12,6 @@ export default combineReducers({
   roles: roleReducer,
   projects: projectReducer,
   testCase: testCaseReducer,
-  reusableFlow: reusableFlowReducer,
+  reusableProcess: reusableProcessReducer,
   objectBank: objectBankReducer,
 });

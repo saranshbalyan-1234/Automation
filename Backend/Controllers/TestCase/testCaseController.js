@@ -13,7 +13,7 @@ const Process = db.process;
 const Object = db.objects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
-const ReusableFlow = db.reusableFlows;
+const ReusableProcess = db.reusableProcess;
 const saveTestCase = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
@@ -146,27 +146,27 @@ const getTestCaseDetailsById = async (req, res) => {
       where: { testCaseId },
     });
     const processCount = await Process.schema(req.database).count({
-      where: { testCaseId, reusableFlowId: null },
+      where: { testCaseId, reusableProcessId: null },
     });
-    const reusableFlowCount = totalProcess.length - processCount;
+    const reusableProcessCount = totalProcess.length - processCount;
 
     const allStepId = await totalProcess.map((el) => {
       return el.id;
     });
-    const allReusableFlowId = await totalProcess.map((el) => {
-      return el.reusableFlowId;
+    const allReusableProcessId = await totalProcess.map((el) => {
+      return el.reusableProcessId;
     });
     const stepCount = await TestStep.schema(req.database).count({
       where: {
         [Op.or]: [
           { processId: allStepId },
-          { reusableFlowId: allReusableFlowId },
+          { reusableProcessId: allReusableProcessId },
         ],
       },
     });
     return res.status(200).json({
       ...testCase.dataValues,
-      reusableFlowCount,
+      reusableProcessCount,
       processCount,
       stepCount,
     });
@@ -196,7 +196,7 @@ const getTestStepByTestCase = async (req, res) => {
           ],
         },
         {
-          model: ReusableFlow.schema(req.database),
+          model: ReusableProcess.schema(req.database),
           include: [
             {
               model: TestStep.schema(req.database),
@@ -211,16 +211,16 @@ const getTestStepByTestCase = async (req, res) => {
       order: [
         ["step", "ASC"],
         [TestStep, "step", "ASC"],
-        [ReusableFlow, TestStep, "step", "ASC"],
+        [ReusableProcess, TestStep, "step", "ASC"],
       ],
     });
 
     const updatedTestCase = data.map((process) => {
       let temp = { ...process.dataValues };
 
-      if (temp.reusableFlow != null) {
-        temp.testSteps = temp.reusableFlow.dataValues.testSteps;
-        delete temp.reusableFlow.dataValues.testSteps;
+      if (temp.reusableProcess != null) {
+        temp.testSteps = temp.reusableProcess.dataValues.testSteps;
+        delete temp.reusableProcess.dataValues.testSteps;
       }
       return temp;
     });

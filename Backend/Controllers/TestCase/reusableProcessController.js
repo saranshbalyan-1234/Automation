@@ -1,13 +1,18 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-import { projectByIdValidation } from "../Utils/Validations/project.js";
+import { projectByIdValidation } from "../../Utils/Validations/project.js";
+import {
+  saveTestCaseValidation,
+  updateTestCaseValidation,
+  testCaseIdValidation,
+} from "../../Utils/Validations/testCase.js";
 
 const User = db.users;
 const Object = db.objects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
-const ReusableFlow = db.reusableFlows;
-const saveReusableFlow = async (req, res) => {
+const ReusableProcess = db.reusableProcess;
+const saveReusableProcess = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
@@ -17,40 +22,42 @@ const saveReusableFlow = async (req, res) => {
     // if (error) throw new Error(error.details[0].message);
     const payload = { ...req.body };
     payload.createdByUser = req.user.id;
-    const data = await ReusableFlow.schema(req.database).create(payload);
+    const data = await ReusableProcess.schema(req.database).create(payload);
     return res.status(200).json({
       ...data.dataValues,
-      message: "ReusableFlow created successfully!",
+      message: "ReusableProcess created successfully!",
     });
   } catch (err) {
     getError(err, res);
   }
 };
 
-const updateReusableFlow = async (req, res) => {
+const updateReusableProcess = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
   try {
     const name = req.body.name;
-    const reusableFlowId = req.params.reusableFlowId;
-    // const { error } = updateTestCaseValidation.validate({ name, reusableFlowId });
+    const reusableProcessId = req.params.reusableProcessId;
+    // const { error } = updateTestCaseValidation.validate({ name, reusableProcessId });
     // if (error) throw new Error(error.details[0].message);
 
-    const updatedReusableFlow = await ReusableFlow.schema(req.database).update(
+    const updatedReusableProcess = await ReusableProcess.schema(
+      req.database
+    ).update(
       { name },
       {
         where: {
-          id: reusableFlowId,
+          id: reusableProcessId,
         },
       }
     );
 
-    if (updatedReusableFlow[0]) {
+    if (ReusableProcess[0]) {
       return res
         .status(200)
-        .json({ message: "ReusableFlow updated successfully!" });
+        .json({ message: "ReusableProcess updated successfully!" });
     } else {
       return res.status(400).json({ error: "Record not found" });
     }
@@ -59,7 +66,7 @@ const updateReusableFlow = async (req, res) => {
   }
 };
 
-const getAllReusableFlow = async (req, res) => {
+const getAllReusableProcess = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
@@ -69,7 +76,9 @@ const getAllReusableFlow = async (req, res) => {
     const { error } = projectByIdValidation.validate({ projectId });
     if (error) throw new Error(error.details[0].message);
 
-    const reusableFlows = await ReusableFlow.schema(req.database).findAll({
+    const reusableProcesses = await ReusableProcess.schema(
+      req.database
+    ).findAll({
       where: {
         projectId,
       },
@@ -83,32 +92,32 @@ const getAllReusableFlow = async (req, res) => {
       ],
     });
 
-    return res.status(200).json(reusableFlows);
+    return res.status(200).json(reusableProcesses);
   } catch (err) {
     getError(err, res);
   }
 };
 
-const deleteReusableFlow = async (req, res) => {
+const deleteReusableProcess = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
   try {
-    const reusableFlowId = req.params.reusableFlowId;
-    // const { error } = testCaseIdValidation.validate({ reusableFlowId });
+    const reusableProcessId = req.params.reusableProcessId;
+    // const { error } = testCaseIdValidation.validate({ reusableProcessId });
     // if (error) throw new Error(error.details[0].message);
 
-    const deletedReusableFlow = await ReusableFlow.schema(req.database).destroy(
-      {
-        where: { id: reusableFlowId },
-      }
-    );
+    const deletedReusableProcess = await ReusableProcess.schema(
+      req.database
+    ).destroy({
+      where: { id: reusableProcessId },
+    });
 
-    if (deletedReusableFlow > 0) {
+    if (deletedReusableProcess > 0) {
       return res
         .status(200)
-        .json({ message: "ReusableFlow deleted successfully" });
+        .json({ message: "ReusableProcess deleted successfully" });
     } else {
       return res.status(400).json({ error: "Record not found" });
     }
@@ -116,19 +125,19 @@ const deleteReusableFlow = async (req, res) => {
     getError(err, res);
   }
 };
-const getReusableFlowDetailsById = async (req, res) => {
+const getReusableProcessDetailsById = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
   try {
-    const reusableFlowId = req.params.reusableFlowId;
+    const reusableProcessId = req.params.reusableProcessId;
     // const { error } = projectByIdValidation.validate({ projectId });
     // if (error) throw new Error(error.details[0].message);
 
-    const reusableFlow = await ReusableFlow.schema(req.database).findOne({
+    const reusableProcess = await ReusableProcess.schema(req.database).findOne({
       where: {
-        id: reusableFlowId,
+        id: reusableProcessId,
       },
       attributes: ["id", "name", "createdAt", "updatedAt", "description"],
       include: [
@@ -139,14 +148,17 @@ const getReusableFlowDetailsById = async (req, res) => {
         },
       ],
     });
+    const totalSteps = await TestStep.schema(req.database).count({
+      where: { reusableProcessId },
+    });
 
-    return res.status(200).json(reusableFlow);
+    return res.status(200).json({ ...reusableProcess.dataValues, totalSteps });
   } catch (err) {
     getError(err, res);
   }
 };
 
-const getTestStepByReusableFlow = async (req, res) => {
+const getTestStepByReusableProcess = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
@@ -155,9 +167,9 @@ const getTestStepByReusableFlow = async (req, res) => {
     // const { error } = nameValidation.validate(req.body);
     // if (error) throw new Error(error.details[0].message);
 
-    const reusableFlowId = req.params.reusableFlowId;
+    const reusableProcessId = req.params.reusableProcessId;
     const data = await TestStep.schema(req.database).findAll({
-      where: { reusableFlowId },
+      where: { reusableProcessId },
 
       include: [
         { model: Object.schema(req.database) },
@@ -173,10 +185,10 @@ const getTestStepByReusableFlow = async (req, res) => {
 };
 
 export {
-  saveReusableFlow,
-  updateReusableFlow,
-  getAllReusableFlow,
-  deleteReusableFlow,
-  getReusableFlowDetailsById,
-  getTestStepByReusableFlow,
+  saveReusableProcess,
+  updateReusableProcess,
+  getAllReusableProcess,
+  deleteReusableProcess,
+  getReusableProcessDetailsById,
+  getTestStepByReusableProcess,
 };

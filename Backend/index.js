@@ -14,7 +14,7 @@ import testCaseRoutes from "./Routes/TestCase/testCaseRoutes.js";
 import objectRoutes from "./Routes/TestCase/objectRoutes.js";
 import testStepRoutes from "./Routes/TestCase/testStepRoutes.js";
 import testParameterRoutes from "./Routes/TestCase/testParameterRoutes.js";
-import reusableFlowRoutes from "./Routes/TestCase/reusableFlowRoutes.js";
+import reusableProcessRoutes from "./Routes/TestCase/reusableProcessRoutes.js";
 import dashboardRoutes from "./Routes/dashboardRoutes.js";
 
 import { createRequire } from "module";
@@ -53,7 +53,7 @@ app.use("/testcase", testCaseRoutes);
 app.use("/object", objectRoutes);
 app.use("/teststep", testStepRoutes);
 app.use("/testparameter", testParameterRoutes);
-app.use("/reusableFlow", reusableFlowRoutes);
+app.use("/reusableProcess", reusableProcessRoutes);
 app.use("/dashboard", dashboardRoutes);
 
 app.use((req, res) => {

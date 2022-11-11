@@ -20,7 +20,7 @@ export default function Support() {
         </Panel>
       </Collapse>
       <Collapse collapsible="header">
-        <Panel header="What is Reusable Flow?" key="1">
+        <Panel header="What is Reusable Process?" key="1">
           <p>{text}</p>
         </Panel>
       </Collapse>

@@ -42,8 +42,8 @@ export default function ProcessMenu({ process }) {
         {
           label: (
             <>
-              <PlusOutlined style={{ marginRight: "5px" }} /> Add ReusableFlow
-              Before
+              <PlusOutlined style={{ marginRight: "5px" }} /> Add Reusable
+              Process Before
             </>
           ),
           key: "3",
@@ -57,8 +57,8 @@ export default function ProcessMenu({ process }) {
         {
           label: (
             <>
-              <PlusOutlined style={{ marginRight: "5px" }} /> Add ReusableFlow
-              After
+              <PlusOutlined style={{ marginRight: "5px" }} /> Add Reusable
+              Process After
             </>
           ),
           key: "4",

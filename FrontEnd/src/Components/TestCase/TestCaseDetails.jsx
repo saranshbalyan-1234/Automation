@@ -55,8 +55,8 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
                     </Card>
                     <Card>
                       <Meta
-                        title="Reusable Flows"
-                        description={details.reusableFlowCount || "0"}
+                        title="Reusable Process"
+                        description={details.reusableProcessCount || "0"}
                       />
                     </Card>
                     <Card>

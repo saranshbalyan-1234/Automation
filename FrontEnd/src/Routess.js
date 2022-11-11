@@ -10,7 +10,7 @@ import Dashboard from "./Components/Dashboard";
 import Support from "./Views/Support";
 import Project from "./Components/Project";
 import TestCase from "./Components/TestCase";
-import ReusableFlow from "./Components/ReusableFlow";
+import ReusableProcess from "./Components/ReusableProcess";
 import ObjectBank from "./Components/ObjectBank";
 function Routess({ user }) {
   const location = useLocation();
@@ -22,7 +22,11 @@ function Routess({ user }) {
         <Route exact path="/settings/:tab" element={<Setting />}></Route>
         <Route exact path="/project/*" element={<Project />}></Route>
         <Route exact path="/testCase/*" element={<TestCase />}></Route>
-        <Route exact path="/reusableFlow/*" element={<ReusableFlow />}></Route>
+        <Route
+          exact
+          path="/reusableProcess/*"
+          element={<ReusableProcess />}
+        ></Route>
         <Route exact path="/objectBank/*" element={<ObjectBank />}></Route>
         <Route
           exact

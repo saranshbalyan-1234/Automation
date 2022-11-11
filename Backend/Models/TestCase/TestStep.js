@@ -42,14 +42,14 @@ export default (sequelize, DataTypes) => {
       },
       onDelete: "CASCADE",
     },
-    reusableFlowId: {
+    reusableProcessId: {
       type: DataTypes.INTEGER,
       // allowNull: false,
       // validate: {
       //   notNull: true,
       // },
       references: {
-        model: "reusableFlows",
+        model: "reusableProcesses",
         key: "id",
       },
       onDelete: "CASCADE",

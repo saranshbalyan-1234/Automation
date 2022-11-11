@@ -7,7 +7,7 @@ import { getObjectByProject } from "../../../Redux/Actions/object";
 import {
   addReusableStep,
   editReusableStep,
-} from "../../../Redux/Actions/reusableFlow";
+} from "../../../Redux/Actions/reusableProcess";
 import KeyboardButtonList from "./KeyboardButtonList";
 import AddEditObjectModal from "../../ObjectBank/AddEditObjectModal";
 import axios from "axios";
@@ -27,7 +27,7 @@ const AddEditStepModal = ({
   addStep,
   addReusableStep,
   processId,
-  reusableFlowId,
+  reusableProcessId,
   currentProjectId,
   objectList,
   getObjectByProject,
@@ -118,7 +118,7 @@ const AddEditStepModal = ({
     }
 
     if (edit) {
-      if (reusableFlowId && !processId) {
+      if (reusableProcessId && !processId) {
         result = await editReusableStep({
           data: payload,
           stepId: editData.id,
@@ -127,25 +127,25 @@ const AddEditStepModal = ({
         result = await editStep({
           data: payload,
           stepId: editData.id,
-          reusableFlowId,
+          reusableProcessId,
           processId,
         });
       }
       setEditData({});
     } else {
-      if (reusableFlowId && !processId) {
+      if (reusableProcessId && !processId) {
         result = await addReusableStep({
           ...payload,
-          reusableFlowId,
+          reusableProcessId,
           step,
         });
       } else {
-        if (reusableFlowId && processId) {
+        if (reusableProcessId && processId) {
           result = await addStep({
             ...payload,
-            reusableFlowId,
+            reusableProcessId,
             step,
-            reusableProcessId: processId,
+            reusableId: processId,
           });
         } else {
           result = await addStep({

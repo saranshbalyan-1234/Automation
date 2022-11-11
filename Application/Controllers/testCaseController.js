@@ -4,7 +4,7 @@ const Process = db.process;
 const Object = db.objects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
-const ReusableFlow = db.reusableFlows;
+const ReusableProcess = db.reusableProcess;
 const ObjectLocator = db.ObjectLocators;
 const getTestStepByTestCase = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
@@ -32,7 +32,7 @@ const getTestStepByTestCase = async (req, res) => {
           ],
         },
         {
-          model: ReusableFlow.schema("saranshbalyan123gmailcom"),
+          model: ReusableProcess.schema("saranshbalyan123gmailcom"),
           include: [
             {
               model: TestStep.schema("saranshbalyan123gmailcom"),
@@ -55,16 +55,16 @@ const getTestStepByTestCase = async (req, res) => {
       order: [
         ["step", "ASC"],
         [TestStep, "step", "ASC"],
-        [ReusableFlow, TestStep, "step", "ASC"],
+        [ReusableProcess, TestStep, "step", "ASC"],
       ],
     });
 
     const updatedTestCase = data.map((process) => {
       let temp = { ...process.dataValues };
 
-      if (temp.reusableFlow != null) {
-        temp.testSteps = temp.reusableFlow.dataValues.testSteps;
-        delete temp.reusableFlow.dataValues.testSteps;
+      if (temp.reusableProcess != null) {
+        temp.testSteps = temp.reusableProcess.dataValues.testSteps;
+        delete temp.reusableProcess.dataValues.testSteps;
       }
       return temp;
     });

@@ -29,10 +29,10 @@ module.exports = (sequelize, DataTypes) => {
         key: "id",
       },
     },
-    reusableFlowId: {
+    reusableProcessId: {
       type: DataTypes.INTEGER,
       references: {
-        model: "reusableFlows",
+        model: "reusableProcesses",
         key: "id",
       },
     },

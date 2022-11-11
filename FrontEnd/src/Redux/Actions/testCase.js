@@ -176,13 +176,12 @@ export const addStep = (payload) => {
   return async (dispatch) => {
     try {
       let temp = { ...payload };
-      temp.reusableProcessId && delete temp.reusableProcessId;
+      temp.reusableId && delete temp.reusableId;
       dispatch({ type: TEST_CASE_REQUEST });
       const { data } = await axios.post(`/testStep`, temp);
       let newPayload = { ...data };
 
-      if (payload.reusableProcessId)
-        newPayload.processId = payload.reusableProcessId;
+      if (payload.reusableId) newPayload.processId = payload.reusableId;
 
       dispatch({
         type: ADD_STEP,

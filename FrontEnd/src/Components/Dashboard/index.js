@@ -22,7 +22,7 @@ export const Dashboard = ({ user }) => {
         .filter((el) => {
           return (
             el[0] === "testCase" ||
-            el[0] === "reusableFlow" ||
+            el[0] === "reusableProcess" ||
             el[0] === "object" ||
             el[0] === "Project"
           );
@@ -31,8 +31,8 @@ export const Dashboard = ({ user }) => {
           let key = el[0];
           if (el[0] === "testCase") {
             key = "Test Case";
-          } else if (el[0] === "reusableFlow") {
-            key = "Reusable Flow";
+          } else if (el[0] === "reusableProcess") {
+            key = "Reusable Process";
           } else if (el[0] === "object") {
             key = "Test Object";
           }
@@ -149,10 +149,10 @@ export const Dashboard = ({ user }) => {
                 title={
                   <div className="title">
                     <VscDebugRestart className="icon" />
-                    <Title level={5}>Reusable Flow</Title>
+                    <Title level={5}>Reusable Process</Title>
                   </div>
                 }
-                value={data.reusableFlow}
+                value={data.reusableProcess}
               />
             </Card>
           </Col>

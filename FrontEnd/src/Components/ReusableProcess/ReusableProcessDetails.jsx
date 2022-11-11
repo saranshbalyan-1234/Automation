@@ -6,7 +6,12 @@ import UserAvatar from "../Common/Avatar";
 import AddEditModal from "../Common/AddEditModal";
 const { Title } = Typography;
 const { Meta } = Card;
-const ReusableFlowDetails = ({ loading, details, name, onEdit = () => {} }) => {
+const ReusableProcessDetails = ({
+  loading,
+  details,
+  name,
+  onEdit = () => {},
+}) => {
   const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
 
@@ -114,4 +119,4 @@ const ReusableFlowDetails = ({ loading, details, name, onEdit = () => {} }) => {
   );
 };
 
-export default ReusableFlowDetails;
+export default ReusableProcessDetails;
