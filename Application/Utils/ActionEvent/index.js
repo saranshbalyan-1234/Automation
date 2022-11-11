@@ -159,6 +159,9 @@ const handleStep = async (step, driver, output) => {
     case "Copy Password":
       await copyPassword(step, output);
       break;
+    case "Combine String":
+      await combineString(step, output);
+      break;
     default:
       break;
   }
@@ -311,5 +314,11 @@ const copyPassword = async (step, output) => {
   console.log("Copying Password");
   const value = step.testParameters.Password;
   output[step.testParameters.Output] = value;
+};
+const combineString = async (step, output) => {
+  console.log("Combining String");
+  const value1 = step.testParameters.Value1;
+  const value2 = step.testParameters.Value2;
+  output[step.testParameters.Output] = value1 + value2;
 };
 module.exports = { handleStep };
