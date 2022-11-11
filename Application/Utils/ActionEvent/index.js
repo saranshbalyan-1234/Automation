@@ -140,6 +140,15 @@ const handleStep = async (step, driver, output) => {
     case "Scroll To Top":
       await scrollToTop(driver);
       break;
+    case "Click By Javascript":
+      await clickByJs(step, driver);
+      break;
+    case "Click Link By Text":
+      await clickLinkByText(step, driver);
+      break;
+    case "Click Link By Partial Text":
+      await clickLinkByPartialText(step, driver);
+      break;
     default:
       break;
   }
@@ -258,4 +267,22 @@ const scrollToTop = async (driver) => {
   await driver.executeScript("window.scrollTo(0,0)");
 };
 
+const clickByJs = async (step, driver) => {
+  console.log("Clicking By Javascript");
+  const element = await driver.findElement(
+    await findByLocator(step.object.dataValues.locators)
+  );
+  await driver.executeScript("arguments[0].click();", element);
+};
+
+const clickLinkByText = async (step, driver) => {
+  console.log("Clicking Link By Text");
+  await driver.findElement(By.linkText(step.testParameters.Text)).click();
+};
+const clickLinkByPartialText = async (step, driver) => {
+  console.log("Clicking Link By Partial Text");
+  await driver
+    .findElement(By.partialLinkText(step.testParameters.Text))
+    .click();
+};
 module.exports = { handleStep };
