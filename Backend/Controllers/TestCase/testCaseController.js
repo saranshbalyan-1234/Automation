@@ -252,8 +252,15 @@ const saveProcess = async (req, res) => {
     });
 
     const data = await Process.schema(req.database).create(req.body);
+    const process = await Process.schema(req.database).findByPk(data.id, {
+      include: [
+        {
+          model: ReusableProcess.schema(req.database),
+        },
+      ],
+    });
 
-    return res.status(200).json(data);
+    return res.status(200).json(process);
   } catch (err) {
     getError(err, res);
   }

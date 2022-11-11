@@ -66,7 +66,7 @@ const Process = ({
                       </div>
                       {item.reusableProcess && (
                         <Tag color="blue">
-                          ReusableProcess : {item.reusableProcess.name}
+                          Reusable Process : {item.reusableProcess.name}
                         </Tag>
                       )}
                     </div>
