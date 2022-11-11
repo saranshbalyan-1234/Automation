@@ -7,7 +7,7 @@ const ObjectLocator = require("../Models/TestCase/Object/ObjectLocator");
 const TestParameter = require("../Models/TestCase/TestParameter");
 const TestStep = require("../Models/TestCase/TestStep");
 const Process = require("../Models/TestCase/Process");
-const ReusableFlow = require("../Models/TestCase/ReusableFlow");
+const ReusableProcess = require("../Models/TestCase/ReusableProcess");
 
 dotenv.config();
 
@@ -43,7 +43,7 @@ db.ObjectLocators = ObjectLocator(sequelize, DataTypes);
 db.testSteps = TestStep(sequelize, DataTypes);
 db.testCases = TestCase(sequelize, DataTypes);
 db.process = Process(sequelize, DataTypes);
-db.reusableFlows = ReusableFlow(sequelize, DataTypes);
+db.reusableProcess = ReusableProcess(sequelize, DataTypes);
 
 db.users = User(sequelize, DataTypes); //all associations
 

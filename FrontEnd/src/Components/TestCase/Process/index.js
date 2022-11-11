@@ -64,9 +64,9 @@ const Process = ({
                       >
                         Process: {item.name}
                       </div>
-                      {item.reusableFlow && (
+                      {item.reusableProcess && (
                         <Tag color="blue">
-                          ReusableFlow : {item.reusableFlow.name}
+                          Reusable Process : {item.reusableProcess.name}
                         </Tag>
                       )}
                     </div>
@@ -109,7 +109,7 @@ const Process = ({
                 <TestStepTable
                   testSteps={item.testSteps}
                   processId={item.id}
-                  reusableFlowId={item.reusableFlow?.id}
+                  reusableProcessId={item.reusableProcess?.id}
                   deleteStep={deleteStep}
                 />
               </Panel>

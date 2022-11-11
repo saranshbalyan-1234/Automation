@@ -10,7 +10,7 @@ const UserProject = db.userProjects;
 const Project = db.projects;
 const User = db.users;
 const TestCase = db.testCases;
-const ReusableFlow = db.reusableFlows;
+const ReusableProcess = db.reusableProcess;
 const Object = db.objects;
 const getMyProject = async (req, res) => {
   /*  #swagger.tags = ["Project"] 
@@ -108,7 +108,7 @@ const getProjectById = async (req, res) => {
     const testCase = await TestCase.schema(req.database).count({
       where: { projectId },
     });
-    const reusableFlow = await ReusableFlow.schema(req.database).count({
+    const reusableProcess = await ReusableProcess.schema(req.database).count({
       where: { projectId },
     });
     const object = await Object.schema(req.database).count({
@@ -117,7 +117,7 @@ const getProjectById = async (req, res) => {
 
     return res
       .status(200)
-      .json({ ...temp, count: { testCase, reusableFlow, object } });
+      .json({ ...temp, count: { testCase, reusableProcess, object } });
   } catch (error) {
     getError(error, res);
   }

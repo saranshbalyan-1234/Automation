@@ -24,7 +24,7 @@ const Object = db.objects;
 const TestStep = db.testSteps;
 const Process = db.process;
 const TestParameter = db.testParameters;
-const ReusableFlow = db.reusableFlows;
+const ReusableProcess = db.reusableProcess;
 const ObjectLocator = db.ObjectLocators;
 
 const register = async (req, res) => {
@@ -171,7 +171,10 @@ const verifyCustomer = async (req, res) => {
         await Project.schema(database).sync({ force: true, alter: true });
         await Object.schema(database).sync({ force: true, alter: true });
         await TestStep.schema(database).sync({ force: true, alter: true });
-        await ReusableFlow.schema(database).sync({ force: true, alter: true });
+        await ReusableProcess.schema(database).sync({
+          force: true,
+          alter: true,
+        });
         await ObjectLocator.schema(database).sync({
           force: true,
           alter: true,

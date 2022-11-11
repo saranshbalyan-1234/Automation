@@ -18,7 +18,7 @@ import ObjectLocator from "../Models/TestCase/Object/ObjectLocator.js";
 import TestParameter from "../Models/TestCase/TestParameter.js";
 import TestStep from "../Models/TestCase/TestStep.js";
 import Process from "../Models/TestCase/Process.js";
-import ReusableFlow from "../Models/TestCase/ReusableFlow.js";
+import ReusableProcess from "../Models/TestCase/ReusableProcess.js";
 
 dotenv.config();
 
@@ -67,7 +67,7 @@ db.ObjectLocators = ObjectLocator(sequelize, DataTypes);
 db.testSteps = TestStep(sequelize, DataTypes);
 db.testCases = TestCase(sequelize, DataTypes);
 db.process = Process(sequelize, DataTypes);
-db.reusableFlows = ReusableFlow(sequelize, DataTypes);
+db.reusableProcess = ReusableProcess(sequelize, DataTypes);
 
 db.users = User(sequelize, DataTypes); //all associations
 

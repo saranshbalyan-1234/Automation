@@ -45,7 +45,7 @@ export const ProjectDetails = ({
         .filter((el) => {
           return (
             el[0] === "testCase" ||
-            el[0] === "reusableFlow" ||
+            el[0] === "reusableProcess" ||
             el[0] === "object"
           );
         })
@@ -53,8 +53,8 @@ export const ProjectDetails = ({
           let key = "";
           if (el[0] === "testCase") {
             key = "Test Case";
-          } else if (el[0] === "reusableFlow") {
-            key = "Reusable Flow";
+          } else if (el[0] === "reusableProcess") {
+            key = "Reusable Process";
           } else if (el[0] === "object") {
             key = "Test Object";
           }

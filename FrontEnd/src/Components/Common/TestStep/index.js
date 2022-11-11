@@ -11,7 +11,7 @@ const TestStepTable = ({
   processId,
   testSteps,
   deleteStep,
-  reusableFlowId,
+  reusableProcessId,
 }) => {
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [viewParameterModal, setViewParameterModal] = useState(false);
@@ -31,7 +31,7 @@ const TestStepTable = ({
         <div style={{ cursor: "pointer" }}>
           <StepMenu
             processId={processId}
-            reusableFlowId={reusableFlowId}
+            reusableProcessId={reusableProcessId}
             testStep={record}
           />
         </div>
@@ -181,7 +181,7 @@ const TestStepTable = ({
           visible={addEditStepModal}
           setVisible={setAddEditStepModal}
           processId={processId}
-          reusableFlowId={reusableFlowId}
+          reusableProcessId={reusableProcessId}
           step={1}
           edit={edit}
           editData={editData}

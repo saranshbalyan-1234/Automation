@@ -1,5 +1,5 @@
-module.exports = (sequelize, DataTypes) => {
-  const ReusableFlow = sequelize.define("reusableFlows", {
+export default (sequelize, DataTypes) => {
+  const ReusableProcess = sequelize.define("reusableProcesses", {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -35,5 +35,5 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  return ReusableFlow;
+  return ReusableProcess;
 };

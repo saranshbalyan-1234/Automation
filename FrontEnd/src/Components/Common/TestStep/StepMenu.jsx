@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Dropdown, Menu } from "antd";
 import { PlusOutlined, SettingOutlined } from "@ant-design/icons";
 import AddEditStepModal from "./AddEditStepModal";
-export default function StepMenu({ processId, testStep, reusableFlowId }) {
+export default function StepMenu({ processId, testStep, reusableProcessId }) {
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [step, setStep] = useState(0);
   const menu = (
@@ -55,7 +55,7 @@ export default function StepMenu({ processId, testStep, reusableFlowId }) {
           visible={addEditStepModal}
           setVisible={setAddEditStepModal}
           processId={processId}
-          reusableFlowId={reusableFlowId}
+          reusableProcessId={reusableProcessId}
           step={step}
         />
       )}

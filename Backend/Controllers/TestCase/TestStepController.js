@@ -13,7 +13,7 @@ const saveTestStep = async (req, res) => {
     // const { error } = nameValidation.validate(req.body);
     // if (error) throw new Error(error.details[0].message);
 
-    const { processId, reusableFlowId, step } = req.body;
+    const { processId, reusableProcessId, step } = req.body;
 
     if (processId) {
       await TestStep.schema(req.database).increment("step", {
@@ -29,7 +29,7 @@ const saveTestStep = async (req, res) => {
       await TestStep.schema(req.database).increment("step", {
         by: 1,
         where: {
-          reusableFlowId: { [Op.eq]: reusableFlowId },
+          reusableProcessId: { [Op.eq]: reusableProcessId },
           step: {
             [Op.gte]: step,
           },
@@ -136,7 +136,7 @@ const deleteTestStep = async (req, res) => {
         await TestStep.schema(req.database).decrement("step", {
           by: 1,
           where: {
-            reusableFlowId: { [Op.eq]: deletingTestStep.reusableFlowId },
+            reusableProcessId: { [Op.eq]: deletingTestStep.reusableProcessId },
             step: {
               [Op.gt]: deletingTestStep.step,
             },

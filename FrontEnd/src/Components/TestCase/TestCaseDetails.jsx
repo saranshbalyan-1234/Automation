@@ -50,19 +50,19 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
                     <Card>
                       <Meta
                         title="Total Process"
-                        description={details.totalProcess}
+                        description={details.processCount || "0"}
                       />
                     </Card>
                     <Card>
                       <Meta
-                        title="Reusable Flows"
-                        description={details.totalReusableFlows}
+                        title="Reusable Process"
+                        description={details.reusableProcessCount || "0"}
                       />
                     </Card>
                     <Card>
                       <Meta
                         title="Total Steps"
-                        description={details.totalSteps}
+                        description={details.stepCount || "0"}
                       />
                     </Card>
                   </div>
