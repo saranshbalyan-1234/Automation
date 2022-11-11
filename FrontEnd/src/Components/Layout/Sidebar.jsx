@@ -44,7 +44,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
       defaultCollapsed={true}
       collapsed={collapsed}
       breakpoint="lg"
-      collapsedWidth={window.innerWidth < 720 ? 0 : 80}
+      // collapsedWidth={window.innerWidth < 720 ? 0 : 80}
       onBreakpoint={(broken) => {}}
       onMouseEnter={() => {
         setCollapsed(false);
