@@ -2,6 +2,7 @@ const express = require("express");
 const { createDriver } = require("./Utils/driver");
 const { getTestStepByTestCase } = require("./Controllers/testCaseController");
 const { handleStep } = require("./Utils/actionEvent");
+const { validateToken } = require("./Utils/Middlewares/jwt");
 const helmet = require("helmet");
 const cors = require("cors");
 const parser = require("body-parser");
@@ -14,12 +15,12 @@ app.use(
     origin: "*",
   })
 );
-
-app.get("/execute/:testCaseId", async (req, res) => {
+app.use(validateToken());
+app.post("/execute/:testCaseId", async (req, res) => {
   let driver = await createDriver(req, res);
   try {
     const data = await getTestStepByTestCase(req, res);
-    res.status(200).json({ message: "Started Execution" });
+
     let output = {};
     for (const process of data) {
       for (const step of process.testSteps) {

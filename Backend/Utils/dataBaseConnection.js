@@ -19,7 +19,7 @@ import TestParameter from "../Models/TestCase/TestParameter.js";
 import TestStep from "../Models/TestCase/TestStep.js";
 import Process from "../Models/TestCase/Process.js";
 import ReusableProcess from "../Models/TestCase/ReusableProcess.js";
-
+import ExecutionHistory from "../Models/TestCase/ExecutionHistory/ExecutionHistory.js";
 dotenv.config();
 
 const sequelize = new Sequelize(
@@ -69,6 +69,9 @@ db.testCases = TestCase(sequelize, DataTypes);
 db.process = Process(sequelize, DataTypes);
 db.reusableProcess = ReusableProcess(sequelize, DataTypes);
 
+//executionHistory
+db.executionHistory = ExecutionHistory(sequelize, DataTypes);
+
 db.users = User(sequelize, DataTypes); //all associations
 
 await db.tenants.schema("Main").sync({ force: false, alter: true });
@@ -76,6 +79,6 @@ db.customers.schema("Main").sync({ force: false, alter: true });
 db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
-// db.testParameters.schema("saranshbalyan123gmailcom").sync({ force: true });
+db.executionHistory.schema("saranshbalyan123gmailcom").sync({ force: true });
 
 export default db;

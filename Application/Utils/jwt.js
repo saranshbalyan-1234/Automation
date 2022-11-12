@@ -1,4 +1,4 @@
-import pkg from "jsonwebtoken";
+const pkg = require("jsonwebtoken");
 const { sign, verify } = pkg;
 
 const createToken = async (data, secret, expiration) => {
@@ -24,4 +24,4 @@ const extractToken = (req) => {
   } else return null;
 };
 
-export { createToken, getTokenError, extractToken };
+module.exports = { createToken, getTokenError, extractToken };

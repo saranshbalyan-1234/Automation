@@ -1,19 +1,19 @@
 const db = require("../Utils/dataBaseConnection");
 const getError = require("../Utils/sequelizeError");
+const { createExecutionHistory } = require("./executionHistoryController");
 const Process = db.process;
 const Object = db.objects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const ReusableProcess = db.reusableProcess;
 const ObjectLocator = db.ObjectLocators;
-const getTestStepByTestCase = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
-     #swagger.security = [{"apiKeyAuth": []}]
-  */
 
+const getTestStepByTestCase = async (req, res) => {
   try {
     const testCaseId = req.params.testCaseId;
-    const data = await Process.schema("saranshbalyan123gmailcom").findAll({
+    const testCaseData = await Process.schema(
+      "saranshbalyan123gmailcom"
+    ).findAll({
       where: { testCaseId },
       include: [
         {
@@ -59,17 +59,18 @@ const getTestStepByTestCase = async (req, res) => {
       ],
     });
 
-    const updatedTestCase = data.map((process) => {
-      let temp = { ...process.dataValues };
+    const updatedTestCase = testCaseData.map((process) => {
+      let tempTestCaseData = { ...process.dataValues };
 
-      if (temp.reusableProcess != null) {
-        temp.testSteps = temp.reusableProcess.dataValues.testSteps;
-        delete temp.reusableProcess.dataValues.testSteps;
+      if (tempTestCaseData.reusableProcess != null) {
+        tempTestCaseData.testSteps =
+          tempTestCaseData.reusableProcess.dataValues.testSteps;
+        delete tempTestCaseData.reusableProcess.dataValues.testSteps;
       }
-      return temp;
+      return tempTestCaseData;
     });
 
-    // return res.status(200).json(data);
+    await createExecutionHistory(req, res);
     return updatedTestCase;
   } catch (err) {
     getError(err, res);

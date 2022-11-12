@@ -8,7 +8,7 @@ const TestParameter = require("../Models/TestCase/TestParameter");
 const TestStep = require("../Models/TestCase/TestStep");
 const Process = require("../Models/TestCase/Process");
 const ReusableProcess = require("../Models/TestCase/ReusableProcess");
-
+const ExecutionHistory = require("../Models/TestCase/ExecutionHistory/ExecutionHistory");
 dotenv.config();
 
 const sequelize = new Sequelize("Main", "root", "ysoserious", {
@@ -38,6 +38,9 @@ db.testSteps = TestStep(sequelize, DataTypes);
 db.testCases = TestCase(sequelize, DataTypes);
 db.process = Process(sequelize, DataTypes);
 db.reusableProcess = ReusableProcess(sequelize, DataTypes);
+
+//executionHistory
+db.executionHistory = ExecutionHistory(sequelize, DataTypes);
 
 db.users = User(sequelize, DataTypes); //all associations
 
