@@ -24,11 +24,11 @@ dotenv.config();
 
 const sequelize = new Sequelize(
   process.env.DATABASE_NAME,
-  process.env.DATABASE_USER,
-  process.env.DATABASE_PASS,
+  process.env.DATABASE_USER || "root",
+  process.env.DATABASE_PASS || "ysoserious",
 
   {
-    host: process.env.DATABASE_HOST,
+    host: process.env.DATABASE_HOST || "localhost",
     dialect: "mysql",
     logging: false,
   }
