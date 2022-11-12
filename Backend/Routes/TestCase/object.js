@@ -8,7 +8,7 @@ import {
   saveObjectLocator,
   getObjectLocatorsByObjectId,
   deleteObjectLocator,
-} from "../../Controllers/TestCase/objectController.js";
+} from "../../Controllers/TestCase/object.js";
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
