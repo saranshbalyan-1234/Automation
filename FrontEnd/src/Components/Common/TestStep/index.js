@@ -3,7 +3,12 @@ import { connect } from "react-redux";
 import StepMenu from "./StepMenu";
 import { Table, Tag, Popconfirm } from "antd";
 import AddEditStepModal from "./AddEditStepModal";
-import { DeleteOutlined, EditOutlined, CameraFilled } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  CameraFilled,
+  EyeOutlined,
+} from "@ant-design/icons";
 import ViewObjectModal from "./ViewObjectModal";
 import ViewParameterModal from "./ViewParameterModal";
 import ViewCommentModal from "./ViewCommentModal";
@@ -50,7 +55,9 @@ const TestStepTable = ({
         text?.name ? (
           <div>
             <Tag
-              style={{ cursor: "pointer" }}
+              style={{
+                cursor: "pointer",
+              }}
               color="blue"
               onClick={() => {
                 setObject(text);
@@ -79,7 +86,7 @@ const TestStepTable = ({
                 setViewParameterModal(true);
               }}
             >
-              View
+              <EyeOutlined /> View
             </Tag>
           </div>
         ) : (
@@ -101,7 +108,7 @@ const TestStepTable = ({
                 setViewCommentModal(true);
               }}
             >
-              View
+              <EyeOutlined /> View
             </Tag>
           </div>
         ) : (
