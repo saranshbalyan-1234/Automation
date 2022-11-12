@@ -60,33 +60,33 @@ const AddEditStepModal = ({
   }, []);
 
   useEffect(() => {
-    edit
-      ? form.setFieldsValue({
-          parameter1: editData.testParameters.find((el) => {
-            return el.type === currentEvent.parameter1;
-          })?.property,
-          parameter2: editData.testParameters.find((el) => {
-            return el.type === currentEvent.parameter2;
-          })?.property,
-          parameter3: editData.testParameters.find((el) => {
-            return el.type === currentEvent.parameter3;
-          })?.property,
+    edit &&
+      form.setFieldsValue({
+        parameter1: editData.testParameters.find((el) => {
+          return el.type === currentEvent.parameter1;
+        })?.property,
+        parameter2: editData.testParameters.find((el) => {
+          return el.type === currentEvent.parameter2;
+        })?.property,
+        parameter3: editData.testParameters.find((el) => {
+          return el.type === currentEvent.parameter3;
+        })?.property,
+      });
 
-          type1: editData.testParameters.find((el) => {
-            return el.type === currentEvent.parameter1;
-          })?.method,
-          type2: editData.testParameters.find((el) => {
-            return el.type === currentEvent.parameter2;
-          })?.method,
-          type3: editData.testParameters.find((el) => {
-            return el.type === currentEvent.parameter3;
-          })?.method,
-        })
-      : form.setFieldsValue({
-          type1: "Static",
-          type2: "Static",
-          type3: "Static",
-        });
+    form.setFieldsValue({
+      type1:
+        editData?.testParameters.find((el) => {
+          return el.type === currentEvent.parameter1;
+        })?.method || "Static",
+      type2:
+        editData?.testParameters.find((el) => {
+          return el.type === currentEvent.parameter2;
+        })?.method || "Static",
+      type3:
+        editData?.testParameters.find((el) => {
+          return el.type === currentEvent.parameter3;
+        })?.method || "Static",
+    });
   }, [currentEvent, edit]);
 
   useEffect(() => {
@@ -315,7 +315,9 @@ const AddEditStepModal = ({
             )}
 
             {currentEvent.parameter2 && (
-              <Form.Item label={currentEvent.parameter2}>
+              <Form.Item
+                label={<div className="star">{currentEvent.parameter2}</div>}
+              >
                 <Form.Item
                   name="type2"
                   rules={[
@@ -366,7 +368,9 @@ const AddEditStepModal = ({
             )}
 
             {currentEvent.parameter3 && (
-              <Form.Item label={currentEvent.parameter3}>
+              <Form.Item
+                label={<div className="star">{currentEvent.parameter3}</div>}
+              >
                 <Form.Item
                   name="type3"
                   rules={[

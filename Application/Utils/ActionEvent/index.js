@@ -1,6 +1,7 @@
 const chromeDriver = require("selenium-webdriver");
 const { findByLocator, takeScreenshot } = require("./utils");
 const { By } = chromeDriver;
+const moment = require("moment");
 const {
   implicitWait,
   waitUntilObjectLocated,
@@ -162,6 +163,9 @@ const handleStep = async (step, driver, output) => {
     case "Combine String":
       await combineString(step, output);
       break;
+    case "Get Current Date Time":
+      await getCurrentDateTime(step, output);
+      break;
     default:
       break;
   }
@@ -320,5 +324,11 @@ const combineString = async (step, output) => {
   const value1 = step.testParameters.Value1;
   const value2 = step.testParameters.Value2;
   output[step.testParameters.Output] = value1 + value2;
+};
+const getCurrentDateTime = async (step, output) => {
+  console.log("Getting Current Time");
+  const format = step.testParameters.Format;
+  const dateTime = moment(new Date()).format(format);
+  output[step.testParameters.Output] = dateTime;
 };
 module.exports = { handleStep };

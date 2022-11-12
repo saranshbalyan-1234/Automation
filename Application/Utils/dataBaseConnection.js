@@ -11,17 +11,11 @@ const ReusableProcess = require("../Models/TestCase/ReusableProcess");
 
 dotenv.config();
 
-const sequelize = new Sequelize(
-  "Main",
-  "root",
-  "ysoserious",
-
-  {
-    host: "localhost",
-    dialect: "mysql",
-    logging: false,
-  }
-);
+const sequelize = new Sequelize("Main", "root", "ysoserious", {
+  host: "localhost",
+  dialect: "mysql",
+  logging: false,
+});
 
 sequelize
   .authenticate()

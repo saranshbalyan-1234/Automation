@@ -1,3 +1,5 @@
+Action Keyword
+
 Add DateTime
 AddDaysToDate
 AddNumbersAndStore
@@ -5,9 +7,7 @@ AlertSuccess
 CollectBackgroundColor
 CollectCellValueFromTable
 CollectObjectAttributeValue
-CollectPageTitle
 CollectText
-CombineString
 CompareText
 ConvertToDateTime
 ConvertToHex
@@ -15,33 +15,23 @@ ConvertToInteger
 ConvertToNumber
 ConvertToString
 CopySubString
-CopyText
 DivideNumbersAndStore
 Else
 ElseIf
-EmptyTextField
 EndIf
-EndLoop
-EnterPassword
+EndLoopf
 ExcelConfigure
 ExitForLoop
 ForLoop
-GenerateRandomNumber
-GetCurrentTime
 GetValueFromList
 IF
 IfElementVisible
-MaximizeBrowser
-MouseHover
 MultiplyNumbersAndStore
-RefreshBrowser
 RemoveCharacter
 SaveValueToList
-ScrollToObject
 SelectOptionByPosition
 SelectOptionByValue
 SkipIteration
-SleepForTime
 Subtract DateTime
 SubtractNumbersAndStore
 SwitchToDefaultFrame

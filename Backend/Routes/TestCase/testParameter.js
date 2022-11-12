@@ -3,7 +3,7 @@ import {
   saveTestParameter,
   updateTestParameter,
   deleteTestParameter,
-} from "../../Controllers/TestCase/TestParameterController.js";
+} from "../../Controllers/TestCase/testParameter.js";
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 

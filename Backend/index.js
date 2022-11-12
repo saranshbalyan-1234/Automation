@@ -10,11 +10,11 @@ import mailRoutes from "./Routes/mailRoutes.js";
 import roleRoutes from "./Routes/roleRoutes.js";
 import globalRoutes from "./Routes/globalRoutes.js";
 import projectRoutes from "./Routes/projectRoutes.js";
-import testCaseRoutes from "./Routes/TestCase/testCaseRoutes.js";
-import objectRoutes from "./Routes/TestCase/objectRoutes.js";
-import testStepRoutes from "./Routes/TestCase/testStepRoutes.js";
-import testParameterRoutes from "./Routes/TestCase/testParameterRoutes.js";
-import reusableProcessRoutes from "./Routes/TestCase/reusableProcessRoutes.js";
+import testCaseRoutes from "./Routes/TestCase/testCase.js";
+import objectRoutes from "./Routes/TestCase/object.js";
+import testStepRoutes from "./Routes/TestCase/testStep.js";
+import testParameterRoutes from "./Routes/TestCase/testParameter.js";
+import reusableProcessRoutes from "./Routes/TestCase/reusableProcess.js";
 import dashboardRoutes from "./Routes/dashboardRoutes.js";
 
 import { createRequire } from "module";
