@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Modal, Spin, Card, Typography } from "antd";
+import { Modal, Spin, Card, Typography, Table } from "antd";
 import { getExecutionHistoryById } from "../../../Redux/Actions/executionHistory";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -13,14 +13,20 @@ const ViewExecutionHistoryModal = ({
   getExecutionHistoryById,
   loading,
 }) => {
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+    },
+  ];
+
   useEffect(() => {
     getExecutionHistoryById(visible);
   }, []);
 
   return (
     <Modal
-      title={`ExecutionHistory Name: ${currentExecutionHistory.name}`}
-      width={1000}
+      width={1200}
       centered
       visible={visible}
       footer={false}
@@ -44,38 +50,75 @@ const ViewExecutionHistoryModal = ({
                     {`Execution History: ${currentExecutionHistory.name}`}
                   </Title>
                   <div style={{ color: "black" }}>
-                    Executed On &nbsp;
-                    {moment(currentExecutionHistory.createdAt).format(
-                      "DD/MM/YY"
-                    )}{" "}
-                    By &nbsp;
+                    Executed By &nbsp;
                     {currentExecutionHistory.executedBy && (
                       <UserAvatar user={currentExecutionHistory.executedBy} />
                     )}
                   </div>
                 </div>
               }
-            />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: 30,
-            }}
-          >
-            <Meta
-              title="Description"
               description={
-                <div
-                  style={{ marginTop: "5px" }}
-                  dangerouslySetInnerHTML={{
-                    __html: currentExecutionHistory.description,
-                  }}
-                ></div>
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: 25,
+                      marginBottom: 10,
+                    }}
+                  >
+                    <Card>
+                      <Meta
+                        title="Start Time"
+                        description={moment(
+                          currentExecutionHistory.createdAt
+                        ).format("DD/MM/YY hh:mm A")}
+                      />
+                    </Card>
+                    <Card>
+                      <Meta
+                        title="Finishing Time"
+                        description={
+                          currentExecutionHistory.finishedAt
+                            ? moment(currentExecutionHistory.finishedAt).format(
+                                "DD/MM/YY hh:mm A"
+                              )
+                            : "Execution Incomplete"
+                        }
+                      />
+                    </Card>
+                  </div>
+                </>
               }
             />
           </div>
+          {currentExecutionHistory.description && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: 30,
+              }}
+            >
+              <Meta
+                title="Description"
+                description={
+                  <div
+                    style={{ marginTop: "5px" }}
+                    dangerouslySetInnerHTML={{
+                      __html: currentExecutionHistory.description,
+                    }}
+                  ></div>
+                }
+              />
+            </div>
+          )}
+        </Card>
+        <Card style={{ marginTop: 20 }}>
+          <Table
+            columns={columns}
+            dataSource={currentExecutionHistory.testSteps}
+          />
         </Card>
       </Spin>
     </Modal>

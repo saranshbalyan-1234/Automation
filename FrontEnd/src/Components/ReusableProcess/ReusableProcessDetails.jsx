@@ -82,25 +82,27 @@ const ReusableProcessDetails = ({
               </Button>
             </div>
           </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: 30,
-            }}
-          >
-            <Meta
-              title="Description"
-              description={
-                <div
-                  style={{ marginTop: "5px" }}
-                  dangerouslySetInnerHTML={{
-                    __html: details.description,
-                  }}
-                ></div>
-              }
-            />
-          </div>
+          {details.description && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: 30,
+              }}
+            >
+              <Meta
+                title="Description"
+                description={
+                  <div
+                    style={{ marginTop: "5px" }}
+                    dangerouslySetInnerHTML={{
+                      __html: details.description,
+                    }}
+                  ></div>
+                }
+              />
+            </div>
+          )}
         </Card>
       </Spin>
       {addEditModal && (

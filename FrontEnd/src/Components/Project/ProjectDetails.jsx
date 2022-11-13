@@ -214,18 +214,19 @@ export const ProjectDetails = ({
                 </Button>
               </div>
             </div>
-
-            <Meta
-              title="Description"
-              description={
-                <div
-                  style={{ marginTop: "5px" }}
-                  dangerouslySetInnerHTML={{
-                    __html: currentProject.description,
-                  }}
-                ></div>
-              }
-            />
+            {currentProject.description && (
+              <Meta
+                title="Description"
+                description={
+                  <div
+                    style={{ marginTop: "5px" }}
+                    dangerouslySetInnerHTML={{
+                      __html: currentProject.description,
+                    }}
+                  ></div>
+                }
+              />
+            )}
           </Card>
           <Card style={{ boxShadow: "5px 10px #f6f6f6" }}>
             <ColumnGraph data={graphCount} />

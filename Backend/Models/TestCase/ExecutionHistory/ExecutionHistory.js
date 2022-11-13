@@ -33,6 +33,10 @@ export default (sequelize, DataTypes) => {
         key: "id",
       },
     },
+    finishedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   });
 
   return ExecutionHistory;
