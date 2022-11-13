@@ -1,25 +1,34 @@
 import { Sequelize, DataTypes } from "sequelize";
 import dotenv from "dotenv";
 
+//Main
 import Tenant from "../Models/CustomerAdmin/Tenant.js";
 import Customer from "../Models/CustomerAdmin/Customer.js";
 import Unverified from "../Models/CustomerAdmin/Unverified.js";
+import PermissionList from "../Models/Global/PermissionList.js";
+import ActionEvent from "../Models/Global/ActionEvent.js";
+
+//Tenant
 import Role from "../Models/RolePermission/Role.js";
 import Permission from "../Models/RolePermission/Permission.js";
 import User from "../Models/User.js";
 import UserRole from "../Models/RolePermission/UserRole.js";
-import PermissionList from "../Models/Global/PermissionList.js";
 import Project from "../Models/Project/Project.js";
 import UserProject from "../Models/Project/UserProject.js";
 import TestCase from "../Models/TestCase/TestCase.js";
-import ActionEvent from "../Models/Global/ActionEvent.js";
 import Object from "../Models/TestCase/Object/Object.js";
 import ObjectLocator from "../Models/TestCase/Object/ObjectLocator.js";
 import TestParameter from "../Models/TestCase/TestParameter.js";
 import TestStep from "../Models/TestCase/TestStep.js";
 import Process from "../Models/TestCase/Process.js";
 import ReusableProcess from "../Models/TestCase/ReusableProcess.js";
+
+//Execution History
 import ExecutionHistory from "../Models/TestCase/ExecutionHistory/ExecutionHistory.js";
+import ProcessHistory from "../Models/TestCase/ExecutionHistory/ProcessHistory.js";
+import ReusableProcessHistory from "../Models/TestCase/ExecutionHistory/ReusableProcessHistory.js";
+import TestStepHistory from "../Models/TestCase/ExecutionHistory/TestStepHistory.js";
+
 dotenv.config();
 
 const sequelize = new Sequelize(
@@ -71,6 +80,9 @@ db.reusableProcess = ReusableProcess(sequelize, DataTypes);
 
 //executionHistory
 db.executionHistory = ExecutionHistory(sequelize, DataTypes);
+db.processHistory = ProcessHistory(sequelize, DataTypes);
+db.reusableProcessHistory = ReusableProcessHistory(sequelize, DataTypes);
+db.testStepHistory = TestStepHistory(sequelize, DataTypes);
 
 db.users = User(sequelize, DataTypes); //all associations
 
@@ -79,6 +91,10 @@ db.customers.schema("Main").sync({ force: false, alter: true });
 db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
-// db.executionHistory.schema("saranshbalyan123gmailcom").sync({ force: true });
+// db.reusableProcessHistory
+//   .schema("saranshbalyan123gmailcom")
+//   .sync({ force: true });
+// db.processHistory.schema("saranshbalyan123gmailcom").sync({ force: true });
+// db.testStepHistory.schema("saranshbalyan123gmailcom").sync({ force: true });
 
 export default db;

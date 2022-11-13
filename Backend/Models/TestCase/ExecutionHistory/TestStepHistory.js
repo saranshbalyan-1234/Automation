@@ -1,5 +1,16 @@
 export default (sequelize, DataTypes) => {
-  const TestStep = sequelize.define("testSteps", {
+  const TestStepHistory = sequelize.define("testStepHistories", {
+    testStepId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
+      references: {
+        model: "testSteps",
+        key: "id",
+      },
+    },
     actionEvent: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -18,35 +29,33 @@ export default (sequelize, DataTypes) => {
         notNull: true,
       },
     },
-    objectId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "objects",
-        key: "id",
-      },
+    object: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
+    testParameters: {
+      type: DataTypes.JSON,
+      allowNull: true,
     },
     screenshot: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.STRING,
       defaultValue: 0,
       values: [0, 1],
     },
     processId: {
       type: DataTypes.INTEGER,
       references: {
-        model: "processes",
+        model: "processHistories",
         key: "id",
       },
-      onDelete: "CASCADE",
     },
     reusableProcessId: {
       type: DataTypes.INTEGER,
       references: {
-        model: "reusableProcesses",
+        model: "reusableProcessHistories",
         key: "id",
       },
-      onDelete: "CASCADE",
     },
   });
-
-  return TestStep;
+  return TestStepHistory;
 };
