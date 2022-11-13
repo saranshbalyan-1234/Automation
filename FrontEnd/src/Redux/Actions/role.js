@@ -9,11 +9,11 @@ import {
   UPDATE_ROLE_PERMISSION_SUCCESS,
 } from "./action-types";
 
-export const getAllRole = (payload) => {
+export const getAllRole = () => {
   return async (dispatch) => {
     try {
       dispatch({ type: ROLE_REQUEST });
-      const { data } = await axios.get(`/role`, payload);
+      const { data } = await axios.get(`/role`);
       dispatch({ type: ROLE_SUCCESS, payload: data });
       return true;
     } catch (err) {

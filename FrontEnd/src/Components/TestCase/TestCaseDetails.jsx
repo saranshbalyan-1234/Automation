@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Typography, Card, Button, Spin, Popconfirm, Tag } from "antd";
+import { Typography, Card, Button, Spin } from "antd";
 import moment from "moment";
 import { EditOutlined } from "@ant-design/icons";
 import UserAvatar from "../Common/Avatar";

@@ -73,6 +73,12 @@ export default (sequelize, DataTypes) => {
     foreignKey: "id",
     constraints: false,
   });
+  sequelize.models.executionHistory.hasOne(sequelize.models.users, {
+    as: "executedBy",
+    sourceKey: "executedByUser",
+    foreignKey: "id",
+    constraints: false,
+  });
 
   sequelize.models.objects.hasMany(sequelize.models.objectLocators, {
     foreignKey: "objectId",
