@@ -851,35 +851,6 @@
             "apiKeyAuth": []
           }
         ]
-      }
-    },
-    "/project/{projectId}": {
-      "get": {
-        "tags": [
-          "Project"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
       },
       "delete": {
         "tags": [
@@ -888,9 +859,8 @@
         "description": "",
         "parameters": [
           {
-            "name": "projectId",
-            "in": "path",
-            "required": true,
+            "name": "x-project-id",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -918,9 +888,8 @@
         "description": "",
         "parameters": [
           {
-            "name": "projectId",
-            "in": "path",
-            "required": true,
+            "name": "x-project-id",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -930,6 +899,35 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/project/{projectId}": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -1025,6 +1023,32 @@
         ],
         "description": "",
         "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Test Case"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-project-id",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1243,35 +1267,6 @@
         ]
       }
     },
-    "/testcase/project/{projectId}": {
-      "get": {
-        "tags": [
-          "Test Case"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
     "/testcase/{testCaseId}/teststeps": {
       "get": {
         "tags": [
@@ -1301,7 +1296,7 @@
         ]
       }
     },
-    "/testobject/": {
+    "/object/": {
       "post": {
         "tags": [
           "Test Object"
@@ -1321,9 +1316,35 @@
             "apiKeyAuth": []
           }
         ]
+      },
+      "get": {
+        "tags": [
+          "Test Object"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-project-id",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
-    "/testobject/{testObjectId}": {
+    "/object/{objectId}": {
       "put": {
         "tags": [
           "Test Object"
@@ -1331,7 +1352,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "testObjectId",
+            "name": "objectId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1361,7 +1382,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "testObjectId",
+            "name": "objectId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1385,7 +1406,7 @@
         ]
       }
     },
-    "/testobject/locator/{locatorId}": {
+    "/object/locator/{locatorId}": {
       "delete": {
         "tags": [
           "Test Object"
@@ -1417,7 +1438,7 @@
         ]
       }
     },
-    "/testobject/project/{projectId}": {
+    "/object/{objectId}/details": {
       "get": {
         "tags": [
           "Test Object"
@@ -1425,7 +1446,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "projectId",
+            "name": "objectId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1446,7 +1467,7 @@
         ]
       }
     },
-    "/testobject/{testObjectId}/details": {
+    "/object/{objectId}/locator": {
       "get": {
         "tags": [
           "Test Object"
@@ -1454,7 +1475,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "testObjectId",
+            "name": "objectId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1475,36 +1496,7 @@
         ]
       }
     },
-    "/testobject/{testObjectId}/locator": {
-      "get": {
-        "tags": [
-          "Test Object"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "testObjectId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/testobject/locator": {
+    "/object/locator": {
       "post": {
         "tags": [
           "Test Object"
@@ -1539,10 +1531,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "testProcessId": {
+                "parameters": {
                   "example": "any"
                 },
-                "reusableFlowId": {
+                "processId": {
+                  "example": "any"
+                },
+                "reusableProcessId": {
                   "example": "any"
                 },
                 "step": {
@@ -1579,6 +1574,18 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "parameters": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -1713,10 +1720,10 @@
         ]
       }
     },
-    "/reusableFlow/": {
+    "/reusableProcess/": {
       "post": {
         "tags": [
-          "Reusable Flow"
+          "Reusable Process"
         ],
         "description": "",
         "parameters": [],
@@ -1733,17 +1740,43 @@
             "apiKeyAuth": []
           }
         ]
-      }
-    },
-    "/reusableFlow/{reusableFlowId}": {
-      "put": {
+      },
+      "get": {
         "tags": [
-          "Reusable Flow"
+          "Reusable Process"
         ],
         "description": "",
         "parameters": [
           {
-            "name": "reusableFlowId",
+            "name": "x-project-id",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/reusableProcess/{reusableProcessId}": {
+      "put": {
+        "tags": [
+          "Reusable Process"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "reusableProcessId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1780,12 +1813,12 @@
       },
       "delete": {
         "tags": [
-          "Reusable Flow"
+          "Reusable Process"
         ],
         "description": "",
         "parameters": [
           {
-            "name": "reusableFlowId",
+            "name": "reusableProcessId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1809,15 +1842,15 @@
         ]
       }
     },
-    "/reusableFlow/{reusableFlowId}/details": {
+    "/reusableProcess/{reusableProcessId}/details": {
       "get": {
         "tags": [
-          "Reusable Flow"
+          "Reusable Process"
         ],
         "description": "",
         "parameters": [
           {
-            "name": "reusableFlowId",
+            "name": "reusableProcessId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1838,15 +1871,15 @@
         ]
       }
     },
-    "/reusableFlow/project/{projectId}": {
+    "/reusableProcess/{reusableProcessId}/teststeps": {
       "get": {
         "tags": [
-          "Reusable Flow"
+          "Reusable Process"
         ],
         "description": "",
         "parameters": [
           {
-            "name": "projectId",
+            "name": "reusableProcessId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1867,15 +1900,66 @@
         ]
       }
     },
-    "/reusableFlow/{reusableFlowId}/teststeps": {
-      "get": {
+    "/executionHistory/{executionHistoryId}": {
+      "delete": {
         "tags": [
-          "Reusable Flow"
+          "Execution History"
         ],
         "description": "",
         "parameters": [
           {
-            "name": "reusableFlowId",
+            "name": "executionHistoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "executionHistoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/executionHistory/testCase/{testCaseId}": {
+      "get": {
+        "tags": [
+          "Execution History"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "testCaseId",
             "in": "path",
             "required": true,
             "type": "string"
