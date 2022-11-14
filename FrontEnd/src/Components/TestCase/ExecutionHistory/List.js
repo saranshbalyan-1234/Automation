@@ -26,6 +26,7 @@ export const List = ({
     {
       title: "Name",
       dataIndex: "name",
+      width: 600,
     },
     {
       title: "Executed At",
@@ -36,14 +37,7 @@ export const List = ({
           {record.executedBy && <UserAvatar user={record.executedBy} />}
         </div>
       ),
-    },
-
-    {
-      title: "Last Updated",
-      key: "updatedAt",
-      render: (_, record) => (
-        <div>{moment(record.updatedAt).format("DD-MM-YYYY h:mm:ss a")}</div>
-      ),
+      width: 200,
     },
 
     {
@@ -67,6 +61,7 @@ export const List = ({
           </Popconfirm>
         </div>
       ),
+      width: 100,
     },
   ];
 

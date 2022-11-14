@@ -6,10 +6,6 @@ export default (sequelize, DataTypes) => {
       validate: {
         notNull: true,
       },
-      references: {
-        model: "processes",
-        key: "id",
-      },
     },
     name: {
       type: DataTypes.STRING,
@@ -31,6 +27,7 @@ export default (sequelize, DataTypes) => {
     },
     reusableProcess: {
       type: DataTypes.JSON,
+      defaultValue: null,
     },
     executionHistoryId: {
       type: DataTypes.INTEGER,

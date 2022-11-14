@@ -70,8 +70,8 @@ const getTestStepByTestCase = async (req, res) => {
       return tempTestCaseData;
     });
 
-    await createExecutionHistory(req, res);
-    return updatedTestCase;
+    const executionHistory = await createExecutionHistory(req, res);
+    return { executionHistory, data: updatedTestCase };
   } catch (err) {
     getError(err, res);
   }

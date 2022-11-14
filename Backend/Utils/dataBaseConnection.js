@@ -92,7 +92,9 @@ db.actionEvent.schema("Main").sync({ force: false, alter: true });
 // db.reusableProcessHistory
 //   .schema("saranshbalyan123gmailcom")
 //   .sync({ force: true });
-// db.processHistory.schema("saranshbalyan123gmailcom").sync({ force: true });
+// await db.processHistory
+//   .schema("saranshbalyan123gmailcom")
+//   .sync({ force: true });
 // db.testStepHistory.schema("saranshbalyan123gmailcom").sync({ force: true });
 
 export default db;

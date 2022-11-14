@@ -3,6 +3,10 @@ const { createDriver } = require("./Utils/driver");
 const { getTestStepByTestCase } = require("./Controllers/testCaseController");
 const { handleStep } = require("./Utils/actionEvent");
 const { validateToken } = require("./Utils/Middlewares/jwt");
+const {
+  createProcessHistory,
+  createStepHistory,
+} = require("./Controllers/executionHistoryController");
 const helmet = require("helmet");
 const cors = require("cors");
 const parser = require("body-parser");
@@ -22,7 +26,8 @@ app.post("/execute/:testCaseId", async (req, res) => {
     const data = await getTestStepByTestCase(req, res);
 
     let output = {};
-    for (const process of data) {
+    for (const process of data.data) {
+      await createProcessHistory(req, process, data.executionHistory);
       for (const step of process.testSteps) {
         let tempParameter = {};
         step.testParameters.forEach((parameter) => {
@@ -34,6 +39,8 @@ app.post("/execute/:testCaseId", async (req, res) => {
         });
 
         let tempStep = { ...step.dataValues, testParameters: tempParameter };
+
+        await createStepHistory(req, tempStep);
         await handleStep(tempStep, driver, output);
       }
     }

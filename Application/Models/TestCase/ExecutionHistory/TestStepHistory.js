@@ -6,10 +6,6 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: true,
       },
-      references: {
-        model: "testSteps",
-        key: "id",
-      },
     },
     actionEvent: {
       type: DataTypes.STRING,
@@ -49,12 +45,8 @@ module.exports = (sequelize, DataTypes) => {
         key: "id",
       },
     },
-    reusableProcessId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "reusableProcessHistories",
-        key: "id",
-      },
+    reusableProcess: {
+      type: DataTypes.JSON,
     },
   });
   return TestStepHistory;

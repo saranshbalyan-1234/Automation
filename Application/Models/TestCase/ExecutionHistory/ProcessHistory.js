@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     reusableProcess: {
       type: DataTypes.JSON,
+      defaultValue: null,
     },
     executionHistoryId: {
       type: DataTypes.INTEGER,
