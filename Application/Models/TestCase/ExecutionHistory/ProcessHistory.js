@@ -1,13 +1,13 @@
-export default (sequelize, DataTypes) => {
-  const ReusableProcessHistory = sequelize.define("reusableProcessHistories", {
-    reusableProcessId: {
+module.exports = (sequelize, DataTypes) => {
+  const ProcessHistory = sequelize.define("processHistories", {
+    processId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: true,
       },
       references: {
-        model: "reusableProcesses",
+        model: "processes",
         key: "id",
       },
     },
@@ -18,33 +18,32 @@ export default (sequelize, DataTypes) => {
         notNull: true,
       },
     },
-    description: {
+    comment: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    projectId: {
+    step: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: true,
-      },
-      references: {
-        model: "projects",
-        key: "id",
       },
     },
-    createdByUser: {
+    reusableProcess: {
+      type: DataTypes.JSON,
+    },
+    executionHistoryId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: true,
       },
       references: {
-        model: "users",
+        model: "executionHistories",
         key: "id",
       },
     },
   });
 
-  return ReusableProcessHistory;
+  return ProcessHistory;
 };

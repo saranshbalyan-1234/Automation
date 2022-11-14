@@ -29,14 +29,10 @@ export default (sequelize, DataTypes) => {
         notNull: true,
       },
     },
-    reusableProcessId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "reusableProcessHistories",
-        key: "id",
-      },
+    reusableProcess: {
+      type: DataTypes.JSON,
     },
-    executionHIstoryId: {
+    executionHistoryId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {

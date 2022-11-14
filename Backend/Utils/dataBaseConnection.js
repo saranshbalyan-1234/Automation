@@ -26,7 +26,6 @@ import ReusableProcess from "../Models/TestCase/ReusableProcess.js";
 //Execution History
 import ExecutionHistory from "../Models/TestCase/ExecutionHistory/ExecutionHistory.js";
 import ProcessHistory from "../Models/TestCase/ExecutionHistory/ProcessHistory.js";
-import ReusableProcessHistory from "../Models/TestCase/ExecutionHistory/ReusableProcessHistory.js";
 import TestStepHistory from "../Models/TestCase/ExecutionHistory/TestStepHistory.js";
 
 dotenv.config();
@@ -81,7 +80,6 @@ db.reusableProcess = ReusableProcess(sequelize, DataTypes);
 //executionHistory
 db.executionHistory = ExecutionHistory(sequelize, DataTypes);
 db.processHistory = ProcessHistory(sequelize, DataTypes);
-db.reusableProcessHistory = ReusableProcessHistory(sequelize, DataTypes);
 db.testStepHistory = TestStepHistory(sequelize, DataTypes);
 
 db.users = User(sequelize, DataTypes); //all associations
