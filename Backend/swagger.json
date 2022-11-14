@@ -1932,6 +1932,9 @@
         ]
       },
       "get": {
+        "tags": [
+          "Execution History"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1948,7 +1951,12 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/executionHistory/testCase/{testCaseId}": {

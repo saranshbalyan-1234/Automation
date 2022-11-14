@@ -58,6 +58,9 @@ const deleteExecutionHistory = async (req, res) => {
 };
 
 const getExecutionHistoryById = async (req, res) => {
+  /*  #swagger.tags = ["Execution History"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   const executionHistoryId = req.params.executionHistoryId;
   const executionHistory = await ExecutionHistory.schema(req.database).findByPk(
     executionHistoryId,
