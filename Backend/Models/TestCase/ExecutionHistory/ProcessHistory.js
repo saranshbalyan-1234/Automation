@@ -38,6 +38,7 @@ export default (sequelize, DataTypes) => {
       references: {
         model: "executionHistories",
         key: "id",
+        onDelete: "CASCADE",
       },
     },
     result: {

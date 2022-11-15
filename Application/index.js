@@ -47,9 +47,6 @@ app.post("/execute/:testCaseId", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-  // finally {
-  //   await driver.quit();
-  // }
 });
 
 app.use((req, res) => {

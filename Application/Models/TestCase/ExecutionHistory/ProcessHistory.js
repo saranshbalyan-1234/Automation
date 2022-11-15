@@ -6,10 +6,6 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: true,
       },
-      references: {
-        model: "processes",
-        key: "id",
-      },
     },
     name: {
       type: DataTypes.STRING,
@@ -42,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: "executionHistories",
         key: "id",
+        onDelete: "CASCADE",
       },
     },
     result: {

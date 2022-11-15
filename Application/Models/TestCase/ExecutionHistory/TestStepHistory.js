@@ -40,6 +40,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     processId: {
       type: DataTypes.INTEGER,
+      references: {
+        model: "processHistories",
+        key: "processId",
+        onDelete: "CASCADE",
+      },
     },
     result: {
       type: DataTypes.BOOLEAN,

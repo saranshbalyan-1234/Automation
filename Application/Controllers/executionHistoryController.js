@@ -24,7 +24,7 @@ const createProcessHistory = async (req, process, executionHistory) => {
   payload.processId = process.id;
   payload.step = process.step;
   payload.name = process.name;
-  payload.reusableFlow = process.reusableFlow;
+  payload.reusableProcess = process.reusableProcess;
   payload.comment = process.comment;
 
   return await ProcessHistory.schema(req.database).create(payload);
@@ -38,9 +38,8 @@ const createStepHistory = async (req, step) => {
   payload.object = step.object;
   payload.testParameters = step.testParameters;
   payload.processId = step.processId;
-  payload.reusableProcessId = step.reusableProcessId;
   payload.screenshot = null;
-
+  await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
   return await TestStepHistory.schema(req.database).create(payload);
 };
 

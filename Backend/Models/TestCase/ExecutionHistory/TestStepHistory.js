@@ -40,6 +40,10 @@ export default (sequelize, DataTypes) => {
     },
     processId: {
       type: DataTypes.INTEGER,
+      references: {
+        model: "processHistories",
+        onDelete: "CASCADE",
+      },
     },
     result: {
       type: DataTypes.BOOLEAN,
