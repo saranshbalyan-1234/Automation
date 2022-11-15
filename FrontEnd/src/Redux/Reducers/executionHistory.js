@@ -9,7 +9,7 @@ import {
 const initState = {
   loading: false,
   data: [],
-  currentExecutionHistory: {},
+  currentExecutionHistory: { process: [] },
 };
 
 const executionHistoryReducer = (state = initState, { type, payload }) => {

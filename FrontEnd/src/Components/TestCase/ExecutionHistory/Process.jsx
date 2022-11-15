@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Popconfirm, Spin, Collapse, Tag } from "antd";
+import { Spin, Collapse, Tag } from "antd";
 import { connect } from "react-redux";
 import { EyeOutlined } from "@ant-design/icons";
 // import TestStepTable from "../../Common/TestStep";
@@ -11,7 +11,7 @@ const Process = ({ process }) => {
   return (
     <>
       <Spin spinning={false}>
-        {process?.map((item, index) => {
+        {process.map((item, index) => {
           return (
             <Collapse style={{ marginTop: "10px" }} key={index}>
               <Panel
