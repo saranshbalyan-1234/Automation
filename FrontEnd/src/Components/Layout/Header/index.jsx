@@ -56,57 +56,7 @@ const Headers = ({
           alignItems: "center",
         }}
       >
-        <div>
-          {collapsed ? (
-            <img
-              alt="logo"
-              src="/Logo/iconlogo.svg"
-              className="logo"
-              style={{
-                height: "20px",
-                width: "50px",
-                marginTop: collapsed && "26px",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                navigate("/");
-              }}
-            />
-          ) : (
-            <img
-              alt="logo"
-              src="/Logo/logo.svg"
-              className="logo"
-              style={{
-                height: "35px",
-                width: "150px",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                navigate("/");
-              }}
-            />
-          )}
-
-          {/* {collapsed ? (
-            <MenuUnfoldOutlined
-              style={{
-                color: "white",
-                cursor: "pointer",
-              }}
-              onClick={() => setCollapsed(!collapsed)}
-            />
-          ) : (
-            <MenuFoldOutlined
-              style={{
-                color: "white",
-                cursor: "pointer",
-                marginLeft: "20px",
-              }}
-              onClick={() => setCollapsed(!collapsed)}
-            />
-          )} */}
-        </div>
+        <div></div>
 
         <Dropdown overlay={ProjectMenu} arrow trigger={"click"}>
           <div style={{ color: "white", cursor: "pointer" }}>

@@ -53,6 +53,38 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         setCollapsed(true);
       }}
     >
+      <div>
+        {collapsed ? (
+          <img
+            alt="logo"
+            src="/Logo/iconlogo.svg"
+            className="logo"
+            style={{
+              height: "25px",
+              width: "50px",
+              marginTop: collapsed && "26px",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate("/");
+            }}
+          />
+        ) : (
+          <img
+            alt="logo"
+            src="/Logo/logo.svg"
+            className="logo"
+            style={{
+              height: "38px",
+              width: "150px",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate("/");
+            }}
+          />
+        )}
+      </div>
       <Menu
         theme="dark"
         mode="inline"

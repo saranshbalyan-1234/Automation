@@ -14,13 +14,25 @@ export default function LayOut({ children }) {
   return (
     <StyledLayout>
       <Layout>
-        <Header setCollapsed={setCollapsed} collapsed={collapsed} />
         <Layout>
           <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-          <Content style={{ margin: "16px 16px 0" }}>
-            <Container children={children} />
-            <Footer />
-          </Content>
+          <div
+            style={{
+              width: "100%",
+              maxHeight: "100vh",
+              overflow: "scroll",
+            }}
+          >
+            <Header setCollapsed={setCollapsed} collapsed={collapsed} />
+            <Content
+              style={{
+                margin: "16px 16px 0",
+              }}
+            >
+              <Container children={children} />
+              <Footer />
+            </Content>
+          </div>
         </Layout>
       </Layout>
     </StyledLayout>
