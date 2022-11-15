@@ -20,6 +20,7 @@ const Process = ({
   deleteStep,
 }) => {
   const [addEditProcessModal, setAddEditProcessModal] = useState(false);
+  const [addReusable, setAddReusable] = useState(false);
   const [comment, setComment] = useState(false);
   const [editProcessData, setEditProcessData] = useState({});
   const [edit, setEdit] = useState(true);
@@ -121,10 +122,23 @@ const Process = ({
             style={{ cursor: "pointer" }}
             onClick={() => {
               setEdit(false);
+              setAddReusable(false);
               setAddEditProcessModal(true);
             }}
           >
             Add First Process
+          </Tag>
+        )}
+        {process.length === 0 && (
+          <Tag
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setEdit(false);
+              setAddReusable(true);
+              setAddEditProcessModal(true);
+            }}
+          >
+            Add First Reusable Process
           </Tag>
         )}
       </Spin>
@@ -137,6 +151,7 @@ const Process = ({
           edit={edit}
           step={1}
           setEdit={setEdit}
+          addReusable={addReusable}
         />
       )}
       {comment && (

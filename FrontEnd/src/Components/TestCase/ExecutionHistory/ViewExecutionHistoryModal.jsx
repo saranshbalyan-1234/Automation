@@ -4,6 +4,7 @@ import { getExecutionHistoryById } from "../../../Redux/Actions/executionHistory
 import { connect } from "react-redux";
 import moment from "moment";
 import UserAvatar from "../../Common/Avatar";
+import Process from "./Process";
 const { Meta } = Card;
 const { Title } = Typography;
 const ViewExecutionHistoryModal = ({
@@ -13,13 +14,6 @@ const ViewExecutionHistoryModal = ({
   getExecutionHistoryById,
   loading,
 }) => {
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-    },
-  ];
-
   useEffect(() => {
     getExecutionHistoryById(visible);
   }, []);
@@ -114,12 +108,13 @@ const ViewExecutionHistoryModal = ({
             </div>
           )}
         </Card>
-        <Card style={{ marginTop: 20 }}>
-          <Table
+        <div style={{ marginTop: 20 }}>
+          {/* <Table
             columns={columns}
             dataSource={currentExecutionHistory.testSteps}
-          />
-        </Card>
+          /> */}
+          <Process />
+        </div>
       </Spin>
     </Modal>
   );

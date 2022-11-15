@@ -56,7 +56,7 @@ const AddEditProcessModal = ({
         onCancel={() => {
           setVisible(false);
         }}
-        width={500}
+        width={600}
         closable={false}
       >
         <Spin spinning={loading || reusableLoading}>
@@ -107,7 +107,7 @@ const AddEditProcessModal = ({
             <Form.Item name="comment" label="">
               {/* <Input name="comment" showCount maxLength={50} /> */}
               <ReactQuill
-                style={{ width: 450 }}
+                style={{ width: 550 }}
                 placeholder="Enter Comment"
                 name="comment"
               />

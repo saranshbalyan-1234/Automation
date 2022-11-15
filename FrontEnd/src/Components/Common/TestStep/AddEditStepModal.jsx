@@ -75,15 +75,15 @@ const AddEditStepModal = ({
 
     form.setFieldsValue({
       type1:
-        editData?.testParameters.find((el) => {
+        editData?.testParameters?.find((el) => {
           return el.type === currentEvent.parameter1;
         })?.method || "Static",
       type2:
-        editData?.testParameters.find((el) => {
+        editData?.testParameters?.find((el) => {
           return el.type === currentEvent.parameter2;
         })?.method || "Static",
       type3:
-        editData?.testParameters.find((el) => {
+        editData?.testParameters?.find((el) => {
           return el.type === currentEvent.parameter3;
         })?.method || "Static",
     });
