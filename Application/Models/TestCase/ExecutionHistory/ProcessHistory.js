@@ -44,6 +44,11 @@ module.exports = (sequelize, DataTypes) => {
         key: "id",
       },
     },
+    result: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
+      values: [0, 1],
+    },
   });
 
   return ProcessHistory;

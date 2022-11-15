@@ -3,6 +3,8 @@ import getError from "../../Utils/sequelizeError.js";
 
 const ExecutionHistory = db.executionHistory;
 const User = db.users;
+const ProcessHistory = db.processHistory;
+const TestStepHistory = db.testStepHistory;
 
 const getAllExecutionHistoryByTestCase = async (req, res) => {
   /*  #swagger.tags = ["Execution History"] 
@@ -70,6 +72,17 @@ const getExecutionHistoryById = async (req, res) => {
           model: User.schema(req.database),
           as: "executedBy",
           attributes: ["id", "name", "email", "active"],
+        },
+
+        {
+          model: ProcessHistory.schema(req.database),
+          as: "process",
+          include: [
+            {
+              model: TestStepHistory.schema(req.database),
+              as: "testStep",
+            },
+          ],
         },
       ],
     }

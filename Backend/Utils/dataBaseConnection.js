@@ -89,9 +89,7 @@ db.customers.schema("Main").sync({ force: false, alter: true });
 db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
-// db.reusableProcessHistory
-//   .schema("saranshbalyan123gmailcom")
-//   .sync({ force: true });
+
 // await db.processHistory
 //   .schema("saranshbalyan123gmailcom")
 //   .sync({ force: true });

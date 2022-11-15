@@ -40,13 +40,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     processId: {
       type: DataTypes.INTEGER,
-      references: {
-        model: "processHistories",
-        key: "id",
-      },
     },
-    reusableProcess: {
-      type: DataTypes.JSON,
+    result: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
+      values: [0, 1],
     },
   });
   return TestStepHistory;

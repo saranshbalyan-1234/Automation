@@ -150,6 +150,21 @@ export default (sequelize, DataTypes) => {
     foreignKey: "id",
     constraints: false,
   });
+  sequelize.models.executionHistory.hasMany(sequelize.models.processHistories, {
+    as: "process",
+    sourceKey: "id",
+    foreignKey: "executionHistoryId",
+    constraints: false,
+  });
 
+  sequelize.models.processHistories.hasMany(
+    sequelize.models.testStepHistories,
+    {
+      as: "testStep",
+      sourceKey: "processId",
+      foreignKey: "processId",
+      constraints: false,
+    }
+  );
   return User;
 };
