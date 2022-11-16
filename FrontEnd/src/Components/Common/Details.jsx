@@ -7,13 +7,7 @@ import UserAvatar from "./Avatar";
 import AddEditModal from "./AddEditModal";
 const { Title } = Typography;
 const { Meta } = Card;
-const Details = ({
-  loading,
-  details,
-  name,
-  history = false,
-  onEdit = () => {},
-}) => {
+const Details = ({ loading, details, name, onEdit = () => {} }) => {
   const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
 
@@ -46,48 +40,39 @@ const Details = ({
               }
               description={<></>}
             />
-            {!history && (
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 25,
-                }}
-              >
-                <Button
-                  type="primary"
-                  ghost
-                  onClick={() => {
-                    setEditData(details);
-                    setAddEditModal(true);
-                  }}
-                >
-                  <EditOutlined />
-                  Edit {name} Details
-                </Button>
-              </div>
-            )}
-          </div>
-          {details.description && (
+
             <div
               style={{
                 display: "flex",
-                justifyContent: "space-between",
-                marginTop: 30,
+                flexWrap: "wrap",
+                gap: 25,
               }}
             >
-              <Meta
-                title="Description"
-                description={
-                  <div
-                    style={{ marginTop: "5px" }}
-                    dangerouslySetInnerHTML={{
-                      __html: details.description,
-                    }}
-                  ></div>
-                }
-              />
+              <Button
+                type="primary"
+                ghost
+                onClick={() => {
+                  setEditData(details);
+                  setAddEditModal(true);
+                }}
+              >
+                <EditOutlined />
+                Edit {name} Details
+              </Button>
             </div>
+          </div>
+          {details.description && (
+            <Meta
+              title="Description"
+              description={
+                <div
+                  style={{ marginTop: "5px" }}
+                  dangerouslySetInnerHTML={{
+                    __html: details.description,
+                  }}
+                ></div>
+              }
+            />
           )}
         </Card>
       </Spin>

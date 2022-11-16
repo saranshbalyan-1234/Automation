@@ -3,10 +3,14 @@ import { connect } from "react-redux";
 import Locators from "./Locators";
 import Details from "../Common/Details";
 import { useParams } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Card, Typography } from "antd";
 import { getObjectDetailsById, editObject } from "../../Redux/Actions/object";
 import { PlusOutlined } from "@ant-design/icons";
 import AddLocatorsModal from "./AddLocatorsModal";
+import UserAvatar from "../Common/Avatar";
+import moment from "moment";
+const { Meta } = Card;
+const { Title } = Typography;
 const ObjectDetails = ({
   loading,
   object,
@@ -34,13 +38,37 @@ const ObjectDetails = ({
     <div>
       {currentObject && (
         <>
-          <Details
-            loading={loading}
-            details={currentObject}
-            name={name}
-            onEdit={editObject}
-            history={history}
+          <Meta
+            title={
+              <div style={{ display: "flex", gap: 20 }}>
+                <Title style={{ textTransform: "capitalize" }} level={3}>
+                  {`Object: ${currentObject.name}`}
+                </Title>
+                <div style={{ color: "black" }}>
+                  Created On &nbsp;
+                  {moment(currentObject.createdAt).format("DD/MM/YY")} By &nbsp;
+                  {currentObject.createdBy && (
+                    <UserAvatar user={currentObject.createdBy} />
+                  )}
+                </div>
+              </div>
+            }
+            description={<></>}
           />
+          {currentObject.description && (
+            <Meta
+              title="Description"
+              description={
+                <div
+                  style={{ marginTop: "5px" }}
+                  dangerouslySetInnerHTML={{
+                    __html: currentObject.description,
+                  }}
+                ></div>
+              }
+            />
+          )}
+
           <div style={{ display: "flex", flexDirection: "column" }}>
             {!history && (
               <Button

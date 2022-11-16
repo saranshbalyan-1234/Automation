@@ -7,6 +7,7 @@ const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const ReusableProcess = db.reusableProcess;
 const ObjectLocator = db.ObjectLocators;
+const User = db.users;
 
 const getTestStepByTestCase = async (req, res) => {
   try {
@@ -25,6 +26,12 @@ const getTestStepByTestCase = async (req, res) => {
                 {
                   model: ObjectLocator.schema("saranshbalyan123gmailcom"),
                   as: "locators",
+                },
+
+                {
+                  model: User.schema(req.database),
+                  as: "createdBy",
+                  attributes: ["id", "name", "email", "active"],
                 },
               ],
             },
