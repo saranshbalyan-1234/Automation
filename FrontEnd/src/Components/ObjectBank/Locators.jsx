@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Table, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { deleteLocator } from "../../Redux/Actions/object";
-export const Locators = ({ locators, deleteLocator }) => {
+export const Locators = ({ locators, deleteLocator, history = false }) => {
   const columns = [
     {
       title: "Type",
@@ -15,20 +15,21 @@ export const Locators = ({ locators, deleteLocator }) => {
     },
 
     {
-      title: "Delete",
+      title: "",
       key: "delete",
-      render: (_, record) => (
-        <Popconfirm
-          title="Are you sure to remove this locator?"
-          onConfirm={async () => {
-            await deleteLocator(record.id);
-          }}
-          okText="Yes, Remove"
-          cancelText="No"
-        >
-          <DeleteOutlined style={{ fontSize: 17 }} onClick={() => {}} />
-        </Popconfirm>
-      ),
+      render: (_, record) =>
+        !history && (
+          <Popconfirm
+            title="Are you sure to remove this locator?"
+            onConfirm={async () => {
+              await deleteLocator(record.id);
+            }}
+            okText="Yes, Remove"
+            cancelText="No"
+          >
+            <DeleteOutlined style={{ fontSize: 17 }} onClick={() => {}} />
+          </Popconfirm>
+        ),
     },
   ];
 

@@ -7,7 +7,13 @@ import UserAvatar from "./Avatar";
 import AddEditModal from "./AddEditModal";
 const { Title } = Typography;
 const { Meta } = Card;
-const Details = ({ loading, details, name, onEdit = () => {} }) => {
+const Details = ({
+  loading,
+  details,
+  name,
+  history = false,
+  onEdit = () => {},
+}) => {
   const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
 
@@ -40,25 +46,27 @@ const Details = ({ loading, details, name, onEdit = () => {} }) => {
               }
               description={<></>}
             />
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 25,
-              }}
-            >
-              <Button
-                type="primary"
-                ghost
-                onClick={() => {
-                  setEditData(details);
-                  setAddEditModal(true);
+            {!history && (
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 25,
                 }}
               >
-                <EditOutlined />
-                Edit {name} Details
-              </Button>
-            </div>
+                <Button
+                  type="primary"
+                  ghost
+                  onClick={() => {
+                    setEditData(details);
+                    setAddEditModal(true);
+                  }}
+                >
+                  <EditOutlined />
+                  Edit {name} Details
+                </Button>
+              </div>
+            )}
           </div>
           {details.description && (
             <div

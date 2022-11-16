@@ -80,7 +80,7 @@ const getExecutionHistoryById = async (req, res) => {
           include: [
             {
               model: TestStepHistory.schema(req.database),
-              as: "testStep",
+              as: "testSteps",
             },
           ],
         },

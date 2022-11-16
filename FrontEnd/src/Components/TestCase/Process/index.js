@@ -79,7 +79,7 @@ const Process = ({
                     >
                       {item.comment && (
                         <Tag
-                          color="red"
+                          color="#108ee9"
                           onClick={() => {
                             setComment(item.comment);
                           }}
@@ -87,6 +87,9 @@ const Process = ({
                           <EyeOutlined /> View Comment
                         </Tag>
                       )}
+                      <Tag color="blue" style={{ cursor: "default" }}>
+                        Step Count : {item.testSteps.length}
+                      </Tag>
                       <EditOutlined
                         onClick={() => {
                           setEditProcessData(item);

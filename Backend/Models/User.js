@@ -160,7 +160,7 @@ export default (sequelize, DataTypes) => {
   sequelize.models.processHistories.hasMany(
     sequelize.models.testStepHistories,
     {
-      as: "testStep",
+      as: "testSteps",
       sourceKey: "processId",
       foreignKey: "processId",
       constraints: false,

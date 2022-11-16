@@ -2,12 +2,12 @@ import React from "react";
 import { Modal, Spin } from "antd";
 import { connect } from "react-redux";
 import Details from "../../ObjectBank/Details";
-const ViewObjectModal = ({ visible, setVisible, object }) => {
+const ViewObjectModal = ({ visible, setVisible, object, history }) => {
   return (
     <Modal
       centered
       width={1000}
-      title={"Object Details"}
+      // title={"Object Details"}
       visible={visible}
       footer={false}
       onCancel={() => {
@@ -15,7 +15,7 @@ const ViewObjectModal = ({ visible, setVisible, object }) => {
       }}
     >
       <Spin spinning={false}>
-        <Details newObjectId={object.id} />
+        <Details newObject={object} history={history} />
       </Spin>
     </Modal>
   );

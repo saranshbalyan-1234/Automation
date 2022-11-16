@@ -9,20 +9,26 @@ import { PlusOutlined } from "@ant-design/icons";
 import AddLocatorsModal from "./AddLocatorsModal";
 const ObjectDetails = ({
   loading,
-  currentObject,
+  object,
   name = "Object",
   editObject,
   getObjectDetailsById,
-  newObjectId,
+  newObject,
+  history = false,
 }) => {
   const { objectId } = useParams();
-
+  const [currentObject, setCurrentObject] = useState({});
   const [addLocatorModal, setAddLocatorModal] = useState(false);
 
   useEffect(() => {
-    objectId && getObjectDetailsById(objectId);
-    newObjectId && getObjectDetailsById(newObjectId);
-  }, [objectId, newObjectId]);
+    if (history) {
+      setCurrentObject(newObject);
+    } else {
+      objectId && getObjectDetailsById(objectId);
+      newObject.id && getObjectDetailsById(newObject.id);
+      setCurrentObject(object);
+    }
+  }, [objectId, newObject.id, object.id]);
 
   return (
     <div>
@@ -33,24 +39,27 @@ const ObjectDetails = ({
             details={currentObject}
             name={name}
             onEdit={editObject}
+            history={history}
           />
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <Button
-              type="primary"
-              ghost
-              style={{
-                alignSelf: "end",
-                maxWidth: 150,
-                marginTop: 30,
-                marginBottom: 10,
-              }}
-              onClick={() => {
-                setAddLocatorModal(true);
-              }}
-            >
-              <PlusOutlined /> Add Locator
-            </Button>
-            <Locators locators={currentObject.locators} />
+            {!history && (
+              <Button
+                type="primary"
+                ghost
+                style={{
+                  alignSelf: "end",
+                  maxWidth: 150,
+                  marginTop: 30,
+                  marginBottom: 10,
+                }}
+                onClick={() => {
+                  setAddLocatorModal(true);
+                }}
+              >
+                <PlusOutlined /> Add Locator
+              </Button>
+            )}
+            <Locators locators={currentObject.locators} history={history} />
           </div>
         </>
       )}
@@ -65,7 +74,7 @@ const ObjectDetails = ({
 };
 
 const mapStateToProps = (state) => ({
-  currentObject: state.objectBank.currentObject,
+  object: state.objectBank.currentObject,
   loading: state.objectBank.loading,
 });
 

@@ -1,55 +1,29 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import StepMenu from "./StepMenu";
-import { Table, Tag, Popconfirm } from "antd";
-import AddEditStepModal from "./AddEditStepModal";
+import { Table, Tag } from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
   CameraFilled,
   EyeOutlined,
 } from "@ant-design/icons";
-import ViewObjectModal from "./ViewObjectModal";
-import ViewParameterModal from "./ViewParameterModal";
-import ViewCommentModal from "./ViewCommentModal";
-const TestStepTable = ({
-  processId,
-  testSteps,
-  deleteStep,
-  reusableProcessId,
-}) => {
-  const [addEditStepModal, setAddEditStepModal] = useState(false);
+import ViewObjectModal from "../../Common/TestStep/ViewObjectModal";
+// import ViewParameterModal from "./ViewParameterModal";
+import ViewCommentModal from "../../Common/TestStep/ViewCommentModal";
+const TestStepTable = ({ testSteps }) => {
   const [viewParameterModal, setViewParameterModal] = useState(false);
   const [parameters, setParameters] = useState([]);
-  const [edit, setEdit] = useState(true);
-  const [editData, setEditData] = useState({});
   const [viewObjectModal, setViewObjectModal] = useState(false);
   const [object, setObject] = useState({});
   const [viewCommentModal, setViewCommentModal] = useState(false);
   const [comment, setComment] = useState("");
   const columns = [
     {
-      title: "",
-      width: 30,
-      dataIndex: "action",
-      render: (text, record) => (
-        <div style={{ cursor: "pointer" }}>
-          <StepMenu
-            processId={processId}
-            reusableProcessId={reusableProcessId}
-            testStep={record}
-          />
-        </div>
-      ),
-    },
-    {
       title: "Action Event",
-      // width: 100,
       dataIndex: "actionEvent",
     },
     {
       title: "Test Object",
-      // width: 100,
       dataIndex: "object",
       render: (text, record) =>
         text?.name ? (
@@ -73,7 +47,6 @@ const TestStepTable = ({
     },
     {
       title: "Test Parameters",
-      // width: 100,
       dataIndex: "testParameters",
       render: (text, record) =>
         text?.length ? (
@@ -130,81 +103,44 @@ const TestStepTable = ({
       ),
     },
     {
-      title: "Actions",
+      title: "Result",
       width: 100,
-      dataIndex: "editDelete",
-      render: (text, record) => (
-        <div style={{ display: "flex", gap: 10, cursor: "pointer" }}>
-          <EditOutlined
-            onClick={() => {
-              setEditData(record);
-              setAddEditStepModal(true);
+      dataIndex: "result",
+      render: (text, record) =>
+        text ? (
+          <div
+            style={{
+              color: "green",
+              fontWeight: 600,
+              width: 40,
             }}
-          />
-          <Popconfirm
-            title="Are you sure to remove this step?"
-            onConfirm={async () => {
-              if (processId)
-                await deleteStep(record.id, record.step, processId);
-              else deleteStep(record.id, record.step);
-            }}
-            okText="Yes, Remove"
-            cancelText="No"
           >
-            <DeleteOutlined />
-          </Popconfirm>
-        </div>
-      ),
+            PASS
+          </div>
+        ) : (
+          <div style={{ color: "red", fontWeight: 600, width: 40 }}>FAIL</div>
+        ),
     },
   ];
 
   return (
     <>
       <Table
-        locale={{
-          emptyText: (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "start",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                setEdit(false);
-                setAddEditStepModal(true);
-              }}
-            >
-              <Tag> Add First Step</Tag>
-            </div>
-          ),
-        }}
         columns={columns}
         dataSource={testSteps}
         pagination={false}
         sticky
       />
-      {addEditStepModal && (
-        <AddEditStepModal
-          visible={addEditStepModal}
-          setVisible={setAddEditStepModal}
-          processId={processId}
-          reusableProcessId={reusableProcessId}
-          step={1}
-          edit={edit}
-          editData={editData}
-          setEdit={setEdit}
-          setEditData={setEditData}
-        />
-      )}
       {viewObjectModal && (
         <ViewObjectModal
           visible={viewObjectModal}
           setVisible={setViewObjectModal}
           object={object}
+          history={true}
           setObject={setObject}
         />
       )}
-
+      {/* 
       {viewParameterModal && (
         <ViewParameterModal
           visible={viewParameterModal}
@@ -212,6 +148,7 @@ const TestStepTable = ({
           parameters={parameters}
         />
       )}
+      */}
       {viewCommentModal && (
         <ViewCommentModal
           visible={viewCommentModal}

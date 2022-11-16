@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Spin, Collapse, Tag } from "antd";
 import { connect } from "react-redux";
 import { EyeOutlined } from "@ant-design/icons";
-// import TestStepTable from "../../Common/TestStep";
+import TestStepTable from "./TestStepTable";
 import ViewCommentModal from "../../Common/TestStep/ViewCommentModal";
 const { Panel } = Collapse;
 const Process = ({ process }) => {
@@ -47,7 +47,7 @@ const Process = ({ process }) => {
                     >
                       {item.comment && (
                         <Tag
-                          color="red"
+                          color="#108ee9"
                           onClick={() => {
                             setComment(item.comment);
                           }}
@@ -55,16 +55,33 @@ const Process = ({ process }) => {
                           <EyeOutlined /> View Comment
                         </Tag>
                       )}
+
+                      <Tag color="blue" style={{ cursor: "default" }}>
+                        Step Count : {item.testSteps.length}
+                      </Tag>
+
+                      {item.result ? (
+                        <div
+                          style={{
+                            color: "green",
+                            fontWeight: 600,
+                            width: 40,
+                          }}
+                        >
+                          PASS
+                        </div>
+                      ) : (
+                        <div
+                          style={{ color: "red", fontWeight: 600, width: 40 }}
+                        >
+                          FAIL
+                        </div>
+                      )}
                     </div>
                   </div>
                 }
               >
-                {/* <TestStepTable
-                  testSteps={item.testSteps}
-                  processId={item.id}
-                  reusableProcessId={item.reusableProcess?.id}
-                  deleteStep={deleteStep}
-                /> */}
+                <TestStepTable testSteps={item.testSteps} />
               </Panel>
             </Collapse>
           );
