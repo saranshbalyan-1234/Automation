@@ -11,20 +11,20 @@ const User = db.users;
 
 const getTestStepByTestCase = async (req, res) => {
   try {
+    const executionHistory = await createExecutionHistory(req, res);
+
     const testCaseId = req.params.testCaseId;
-    const testCaseData = await Process.schema(
-      "saranshbalyan123gmailcom"
-    ).findAll({
+    const testCaseData = await Process.schema(req.database).findAll({
       where: { testCaseId },
       include: [
         {
-          model: TestStep.schema("saranshbalyan123gmailcom"),
+          model: TestStep.schema(req.database),
           include: [
             {
-              model: Object.schema("saranshbalyan123gmailcom"),
+              model: Object.schema(req.database),
               include: [
                 {
-                  model: ObjectLocator.schema("saranshbalyan123gmailcom"),
+                  model: ObjectLocator.schema(req.database),
                   as: "locators",
                 },
 
@@ -35,25 +35,25 @@ const getTestStepByTestCase = async (req, res) => {
                 },
               ],
             },
-            { model: TestParameter.schema("saranshbalyan123gmailcom") },
+            { model: TestParameter.schema(req.database) },
           ],
         },
         {
-          model: ReusableProcess.schema("saranshbalyan123gmailcom"),
+          model: ReusableProcess.schema(req.database),
           include: [
             {
-              model: TestStep.schema("saranshbalyan123gmailcom"),
+              model: TestStep.schema(req.database),
               include: [
                 {
-                  model: Object.schema("saranshbalyan123gmailcom"),
+                  model: Object.schema(req.database),
                   include: [
                     {
-                      model: ObjectLocator.schema("saranshbalyan123gmailcom"),
+                      model: ObjectLocator.schema(req.database),
                       as: "locators",
                     },
                   ],
                 },
-                { model: TestParameter.schema("saranshbalyan123gmailcom") },
+                { model: TestParameter.schema(req.database) },
               ],
             },
           ],
@@ -77,7 +77,6 @@ const getTestStepByTestCase = async (req, res) => {
       return tempTestCaseData;
     });
 
-    const executionHistory = await createExecutionHistory(req, res);
     return { executionHistory, data: updatedTestCase };
   } catch (err) {
     getError(err, res);

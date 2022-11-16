@@ -73,14 +73,15 @@ const getExecutionHistoryById = async (req, res) => {
           as: "executedBy",
           attributes: ["id", "name", "email", "active"],
         },
-
         {
           model: ProcessHistory.schema(req.database),
           as: "process",
+          where: { executionHistoryId },
           include: [
             {
               model: TestStepHistory.schema(req.database),
               as: "testSteps",
+              where: { executionHistoryId },
             },
           ],
         },

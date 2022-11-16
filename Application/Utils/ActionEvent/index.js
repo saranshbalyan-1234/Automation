@@ -25,12 +25,15 @@ const {
   waitUntilAlertPresent,
   waitUntilAbleToSwitchToFrame,
 } = require("./wait");
+const {
+  updateStepResult,
+} = require("../../Controllers/executionHistoryController");
 const { Key } = chromeDriver;
 
-const handleStep = async (step, driver, output) => {
+const handleStep = async (step, driver, output, req, stepHistory) => {
   switch (step.actionEvent) {
     case "Launch Website":
-      await launchWebsite(step, driver);
+      await launchWebsite(step, driver, req, stepHistory);
       break;
     case "Click":
       await click(step, driver);
@@ -173,12 +176,13 @@ const handleStep = async (step, driver, output) => {
   return true;
 };
 
-const launchWebsite = async (step, driver) => {
+const launchWebsite = async (step, driver, req, stepHistory) => {
   console.log("Launching Website: " + step.testParameters.URL);
   try {
     if (step.testParameters.URL.includes("http"))
-      return await driver.get(step.testParameters.URL);
-    else return await driver.get("http://" + step.testParameters.URL);
+      await driver.get(step.testParameters.URL);
+    else await driver.get("http://" + step.testParameters.URL);
+    return await updateStepResult(req, stepHistory.dataValues.id, true);
   } catch (err) {
     console.log(err);
   }

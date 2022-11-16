@@ -45,6 +45,18 @@ export default (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       },
     },
+    executionHistoryId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
+      references: {
+        model: "executionHistories",
+        key: "id",
+        onDelete: "CASCADE",
+      },
+    },
     result: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0,

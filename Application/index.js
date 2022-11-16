@@ -40,8 +40,12 @@ app.post("/execute/:testCaseId", async (req, res) => {
 
         let tempStep = { ...step.dataValues, testParameters: tempParameter };
 
-        await createStepHistory(req, tempStep);
-        await handleStep(tempStep, driver, output);
+        const stepHistory = await createStepHistory(
+          req,
+          tempStep,
+          data.executionHistory
+        );
+        await handleStep(tempStep, driver, output, req, stepHistory);
       }
     }
   } catch (err) {
