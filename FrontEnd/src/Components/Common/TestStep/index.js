@@ -182,6 +182,7 @@ const TestStepTable = ({
         dataSource={testSteps}
         pagination={false}
         sticky
+        size="small"
       />
       {addEditStepModal && (
         <AddEditStepModal

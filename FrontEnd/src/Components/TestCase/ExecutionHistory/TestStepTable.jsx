@@ -126,6 +126,7 @@ const TestStepTable = ({ testSteps }) => {
   return (
     <>
       <Table
+        size="small"
         columns={columns}
         dataSource={testSteps}
         pagination={false}
