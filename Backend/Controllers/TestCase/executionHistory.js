@@ -25,6 +25,7 @@ const getAllExecutionHistoryByTestCase = async (req, res) => {
           attributes: ["id", "name", "email", "active"],
         },
       ],
+      order: [["createdAt", "DESC"]],
     });
 
     return res.status(200).json(executionHistories);
@@ -81,7 +82,7 @@ const getExecutionHistoryById = async (req, res) => {
             {
               model: TestStepHistory.schema(req.database),
               as: "testSteps",
-              where: { executionHistoryId },
+              where: { executionHistoryId: executionHistoryId },
             },
           ],
         },

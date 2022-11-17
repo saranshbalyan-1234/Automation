@@ -27,7 +27,11 @@ app.post("/execute/:testCaseId", async (req, res) => {
 
     let output = {};
     for (const process of data.data) {
-      await createProcessHistory(req, process, data.executionHistory);
+      const processHistory = await createProcessHistory(
+        req,
+        process,
+        data.executionHistory
+      );
       for (const step of process.testSteps) {
         let tempParameter = {};
         step.testParameters.forEach((parameter) => {
@@ -43,7 +47,8 @@ app.post("/execute/:testCaseId", async (req, res) => {
         const stepHistory = await createStepHistory(
           req,
           tempStep,
-          data.executionHistory
+          data.executionHistory,
+          processHistory
         );
         await handleStep(tempStep, driver, output, req, stepHistory);
       }

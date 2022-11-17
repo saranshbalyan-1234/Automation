@@ -29,7 +29,12 @@ const createProcessHistory = async (req, process, executionHistory) => {
 
   return await ProcessHistory.schema(req.database).create(payload);
 };
-const createStepHistory = async (req, step, executionHistory) => {
+const createStepHistory = async (
+  req,
+  step,
+  executionHistory,
+  processHistory
+) => {
   const payload = {};
   payload.testStepId = step.id;
   payload.comment = step.comment;
@@ -37,7 +42,7 @@ const createStepHistory = async (req, step, executionHistory) => {
   payload.step = step.step;
   payload.object = step.object;
   payload.testParameters = step.testParameters;
-  payload.processId = step.processId;
+  payload.processId = processHistory.dataValues.processId;
   payload.screenshot = null;
   payload.executionHistoryId = executionHistory.id;
   await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
