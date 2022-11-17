@@ -6,6 +6,7 @@ const { validateToken } = require("./Utils/Middlewares/jwt");
 const {
   createProcessHistory,
   createStepHistory,
+  updateProcessResult,
 } = require("./Controllers/executionHistoryController");
 const helmet = require("helmet");
 const cors = require("cors");
@@ -27,6 +28,7 @@ app.post("/execute/:testCaseId", async (req, res) => {
 
     let output = {};
     for (const process of data.data) {
+      let processResult = true;
       const processHistory = await createProcessHistory(
         req,
         process,
@@ -46,12 +48,20 @@ app.post("/execute/:testCaseId", async (req, res) => {
 
         const stepHistory = await createStepHistory(
           req,
-          tempStep,
+          step.dataValues,
           data.executionHistory,
           processHistory
         );
-        await handleStep(tempStep, driver, output, req, stepHistory);
+        await handleStep(
+          tempStep,
+          driver,
+          output,
+          req,
+          stepHistory,
+          processResult
+        );
       }
+      await updateProcessResult(req, processHistory.dataValues.id, true);
     }
   } catch (err) {
     console.log(err);

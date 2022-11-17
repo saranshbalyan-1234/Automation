@@ -8,7 +8,7 @@ import {
   EyeOutlined,
 } from "@ant-design/icons";
 import ViewObjectModal from "../../Common/TestStep/ViewObjectModal";
-// import ViewParameterModal from "./ViewParameterModal";
+import ViewParameterModal from "../../Common/TestStep/ViewParameterModal";
 import ViewCommentModal from "../../Common/TestStep/ViewCommentModal";
 const TestStepTable = ({ testSteps }) => {
   const [viewParameterModal, setViewParameterModal] = useState(false);
@@ -140,7 +140,7 @@ const TestStepTable = ({ testSteps }) => {
           setObject={setObject}
         />
       )}
-      {/* 
+
       {viewParameterModal && (
         <ViewParameterModal
           visible={viewParameterModal}
@@ -148,7 +148,7 @@ const TestStepTable = ({ testSteps }) => {
           parameters={parameters}
         />
       )}
-      */}
+
       {viewCommentModal && (
         <ViewCommentModal
           visible={viewCommentModal}

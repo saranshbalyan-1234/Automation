@@ -58,10 +58,21 @@ const updateStepResult = async (req, id, result) => {
     }
   );
 };
+const updateProcessResult = async (req, id, result) => {
+  return await ProcessHistory.schema(req.database).update(
+    { result },
+    {
+      where: {
+        id,
+      },
+    }
+  );
+};
 
 module.exports = {
   createExecutionHistory,
   createProcessHistory,
   createStepHistory,
   updateStepResult,
+  updateProcessResult,
 };
