@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { addProcess, editProcess } from "../../../Redux/Actions/testCase";
 import { getReusableProcessByProject } from "../../../Redux/Actions/reusableProcess";
 import ReactQuill from "react-quill";
+import { LoadingOutlined } from "@ant-design/icons";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { Option } = Select;
 const AddEditProcessModal = ({
   visible,
@@ -59,7 +61,7 @@ const AddEditProcessModal = ({
         width={600}
         closable={false}
       >
-        <Spin spinning={loading || reusableLoading}>
+        <Spin spinning={loading || reusableLoading} indicator={loadingIcon}>
           <Form
             name="process"
             onFinish={onSubmit}

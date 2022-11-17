@@ -25,9 +25,12 @@ import {
   HeartOutlined,
   HeartFilled,
   EyeOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
+
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { Title } = Typography;
 export const AllProject = ({
   getAllProject,
@@ -112,7 +115,7 @@ export const AllProject = ({
 
           scrollableTarget="scrollableDiv"
         >
-          <Spin spinning={projects.loading}>
+          <Spin spinning={projects.loading} indicator={loadingIcon}>
             <List
               dataSource={projects.data}
               renderItem={(item) => (

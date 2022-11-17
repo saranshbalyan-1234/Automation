@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Table, Popconfirm, Button, Spin } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
 import moment from "moment";
 import AddEditObjectModal from "./AddEditObjectModal";
 import UserAvatar from "../Common/Avatar";
 import { useNavigate } from "react-router-dom";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 export const ObjectList = ({
   onDelete,
   onSave = () => {},
@@ -67,7 +68,7 @@ export const ObjectList = ({
 
   return (
     <>
-      <Spin spinning={loading}>
+      <Spin spinning={loading} indicator={loadingIcon}>
         {" "}
         <div
           style={{

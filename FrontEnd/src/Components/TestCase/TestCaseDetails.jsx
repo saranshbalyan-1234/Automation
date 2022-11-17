@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { Typography, Card, Button, Spin } from "antd";
 import moment from "moment";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, LoadingOutlined } from "@ant-design/icons";
 import UserAvatar from "../Common/Avatar";
 import AddEditModal from "../Common/AddEditModal";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { Title } = Typography;
 const { Meta } = Card;
 const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
   const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
 
-  if (loading) return <Spin />;
+  if (loading) return <Spin indicator={loadingIcon} />;
   return (
     <div style={{ paddingTop: 20 }}>
-      <Spin spinning={loading}>
+      <Spin spinning={loading} indicator={loadingIcon}>
         <Card>
           <div
             style={{

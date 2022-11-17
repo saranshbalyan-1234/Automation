@@ -13,10 +13,12 @@ import {
   DeleteOutlined,
   EditOutlined,
   SettingOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 import { deleteRole, getAllRole } from "../../../Redux/Actions/role";
 import AddEditRoleModal from "./AddEditRoleModal";
 import ManagePermissionModal from "./ManagePermissionModal";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { Panel } = Collapse;
 export const Role = ({
   data,
@@ -82,7 +84,7 @@ export const Role = ({
   };
   return (
     <>
-      <Spin spinning={loading}>
+      <Spin spinning={loading} indicator={loadingIcon}>
         {data.map((item, index) => {
           return (
             <Collapse style={{ marginTop: "10px" }} key={index}>

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Checkbox, Card, Spin } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { UserOutlined, LockOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { StyledWrapper } from "./style";
 import { connect } from "react-redux";
 import { signIn, logout } from "../Redux/Actions/auth";
-
-const SignIn = ({ loading, signIn, logout }) => {
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+const SignIn = ({ loading, signIn }) => {
   const navigate = useNavigate();
   const [details, setDetails] = useState({
     email: "",
@@ -32,7 +32,7 @@ const SignIn = ({ loading, signIn, logout }) => {
   return (
     <StyledWrapper>
       <div className="outsideApp">
-        <Spin spinning={loading}>
+        <Spin spinning={loading} indicator={loadingIcon}>
           <Card title="Login" bordered>
             <img
               alt="logo"

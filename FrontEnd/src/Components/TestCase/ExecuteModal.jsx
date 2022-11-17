@@ -3,6 +3,8 @@ import { Form, Input, Modal, Button, Spin } from "antd";
 import { connect } from "react-redux";
 import { executeTestCase } from "../../Redux/Actions/testCase";
 import ReactQuill from "react-quill";
+import { LoadingOutlined } from "@ant-design/icons";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const ExecuteModal = ({
   visible,
   setVisible,
@@ -25,7 +27,7 @@ const ExecuteModal = ({
       }}
       closable={false}
     >
-      <Spin spinning={loading}>
+      <Spin spinning={loading} indicator={loadingIcon}>
         <Form
           name="execute"
           onFinish={handleExecute}

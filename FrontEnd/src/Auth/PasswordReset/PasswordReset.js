@@ -6,7 +6,8 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { StyledWrapper } from "../style";
 import { getError } from "../../Utils/error";
-
+import { LoadingOutlined } from "@ant-design/icons";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const PasswordReset = ({ resetPassword }) => {
   const location = useLocation();
   const { token } = useParams();
@@ -48,7 +49,7 @@ const PasswordReset = ({ resetPassword }) => {
   return (
     <StyledWrapper>
       <div className="outsideApp">
-        <Spin spinning={loading}>
+        <Spin spinning={loading} indicator={loadingIcon}>
           <Card title="Register" bordered>
             <center>
               <img

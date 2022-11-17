@@ -5,6 +5,8 @@ import { register } from "../Redux/Actions/auth";
 import { connect } from "react-redux";
 import { StyledWrapper } from "./style";
 import AgreementModal from "../Views/AgreementModal";
+import { LoadingOutlined } from "@ant-design/icons";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const Register = ({ register }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -43,7 +45,7 @@ const Register = ({ register }) => {
   return (
     <StyledWrapper>
       <div className="outsideApp">
-        <Spin spinning={loading}>
+        <Spin spinning={loading} indicator={loadingIcon}>
           <Card title="Register" bordered>
             <center>
               {" "}

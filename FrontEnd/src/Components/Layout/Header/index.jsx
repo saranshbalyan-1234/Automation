@@ -1,20 +1,20 @@
 import React, { useEffect } from "react";
 import { Layout, Dropdown, Menu, Spin, message } from "antd";
 import ProfileMenu from "./ProfileMenu";
-import { useNavigate, Link } from "react-router-dom";
-import { CaretDownOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { CaretDownOutlined, LoadingOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { getAllProject, getProjectById } from "../../../Redux/Actions/project";
+
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { Header } = Layout;
 
 const Headers = ({
-  collapsed,
   getAllProject,
   projects,
   defaultProjectId,
   getProjectById,
 }) => {
-  const navigate = useNavigate();
   useEffect(() => {
     getProject();
   }, []);
@@ -34,7 +34,7 @@ const Headers = ({
   };
 
   const ProjectMenu = (
-    <Spin spinning={projects.loading}>
+    <Spin spinning={projects.loading} indicator={loadingIcon}>
       <Menu
         style={{ marginTop: "-10px" }}
         items={[

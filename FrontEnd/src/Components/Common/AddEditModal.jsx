@@ -2,7 +2,8 @@ import React from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
 import ReactQuill from "react-quill";
 import { connect } from "react-redux";
-
+import { LoadingOutlined } from "@ant-design/icons";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const AddEditModal = ({
   visible,
   setVisible,
@@ -41,7 +42,7 @@ const AddEditModal = ({
       }}
       closable={false}
     >
-      <Spin spinning={loading}>
+      <Spin spinning={loading} indicator={loadingIcon}>
         <Form
           name={name}
           onFinish={onSubmit}

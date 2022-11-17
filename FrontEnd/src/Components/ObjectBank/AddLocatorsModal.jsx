@@ -3,6 +3,8 @@ import { Modal, Button, Spin, Select, Input, Form } from "antd";
 import { addObjectLocator } from "../../Redux/Actions/object";
 import { connect } from "react-redux";
 import locatorTypes from "./locatorTypes";
+import { LoadingOutlined } from "@ant-design/icons";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { Option } = Select;
 const AddLocatorsModal = ({
   visible,
@@ -29,7 +31,7 @@ const AddLocatorsModal = ({
       closable={false}
       width={550}
     >
-      <Spin spinning={loading}>
+      <Spin spinning={loading} indicator={loadingIcon}>
         <Form
           onFinish={onSubmit}
           labelCol={{ span: 7 }}

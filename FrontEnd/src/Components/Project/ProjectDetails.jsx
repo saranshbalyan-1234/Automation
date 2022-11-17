@@ -13,13 +13,19 @@ import {
 } from "antd";
 import UserAvatar from "../Common/Avatar";
 import moment from "moment";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { getProjectById, removeMember } from "../../Redux/Actions/project";
 import AddEditProjectModal from "./AddEditProjectModal";
 import AddProjectMemberModal from "./AddProjectMemberModal";
 import MemberBadge from "../Common/MemberBadge";
 import ColumnGraph from "../Common/ColumnGraph";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { Title } = Typography;
 const { Meta } = Card;
 export const ProjectDetails = ({
@@ -135,7 +141,7 @@ export const ProjectDetails = ({
   if (loading) return null;
   return (
     <div style={{ paddingTop: 20 }}>
-      <Spin spinning={loading}>
+      <Spin spinning={loading} indicator={loadingIcon}>
         <div className="row ">
           <Card
             style={{

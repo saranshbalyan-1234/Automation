@@ -17,9 +17,13 @@ import {
   toggleUserActiveInactive,
   resendVerificationMail,
 } from "../../../Redux/Actions/team";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import ManageUserModal from "./ManageUserModal";
-
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 export const Team = ({
   team,
   loading,
@@ -58,7 +62,7 @@ export const Team = ({
 
           scrollableTarget="scrollableDiv"
         >
-          <Spin spinning={loading}>
+          <Spin spinning={loading} indicator={loadingIcon}>
             <List
               dataSource={team}
               renderItem={(item) => (

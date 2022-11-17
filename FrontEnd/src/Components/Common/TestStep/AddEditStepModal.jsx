@@ -13,6 +13,8 @@ import AddEditObjectModal from "../../ObjectBank/AddEditObjectModal";
 import axios from "axios";
 import { saveObject } from "../../../Redux/Actions/object";
 import ReactQuill from "react-quill";
+import { LoadingOutlined } from "@ant-design/icons";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const Option = { Select };
 const AddEditStepModal = ({
   visible,
@@ -192,7 +194,7 @@ const AddEditStepModal = ({
         }}
         closable={false}
       >
-        <Spin spinning={loading}>
+        <Spin spinning={loading} indicator={loadingIcon}>
           <Form
             form={form}
             name="testStep"

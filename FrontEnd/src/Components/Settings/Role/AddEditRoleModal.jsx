@@ -2,7 +2,8 @@ import React from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
 import { addRole, editRole } from "../../../Redux/Actions/role";
 import { connect } from "react-redux";
-
+import { LoadingOutlined } from "@ant-design/icons";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const AddEditRoleModal = ({
   visible,
   setVisible,
@@ -39,7 +40,7 @@ const AddEditRoleModal = ({
       }}
       closable={false}
     >
-      <Spin spinning={roles.loading}>
+      <Spin spinning={roles.loading} indicator={loadingIcon}>
         <Form
           name="role"
           onFinish={onSubmit}

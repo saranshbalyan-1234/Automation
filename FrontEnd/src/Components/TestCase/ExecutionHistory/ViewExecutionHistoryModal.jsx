@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import moment from "moment";
 import UserAvatar from "../../Common/Avatar";
 import Process from "./Process";
+import { LoadingOutlined } from "@ant-design/icons";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { Meta } = Card;
 const { Title } = Typography;
 const ViewExecutionHistoryModal = ({
@@ -28,7 +30,7 @@ const ViewExecutionHistoryModal = ({
         setVisible(false);
       }}
     >
-      <Spin spinning={loading}>
+      <Spin spinning={loading} indicator={loadingIcon}>
         <div style={{ maxHeight: "80vh", overflow: "auto" }}>
           <div
             style={{

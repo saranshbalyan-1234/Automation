@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Form, Input, Modal, Button, Spin } from "antd";
 import { addTeamMember } from "../../../Redux/Actions/team";
 import { connect } from "react-redux";
-
+import { LoadingOutlined } from "@ant-design/icons";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const AddUserModal = ({
   addUserModal,
   setAddUserModal,
@@ -46,7 +47,7 @@ const AddUserModal = ({
       }}
       closable={false}
     >
-      <Spin spinning={loading}>
+      <Spin spinning={loading} indicator={loadingIcon}>
         <Form
           name="register"
           onFinish={onSubmit}

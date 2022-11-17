@@ -4,7 +4,8 @@ import { addProject, editProject } from "../../Redux/Actions/project";
 import { connect } from "react-redux";
 import ReactQuill from "react-quill";
 import moment from "moment";
-const { TextArea } = Input;
+import { LoadingOutlined } from "@ant-design/icons";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { RangePicker } = DatePicker;
 const AddEditProjectModal = ({
   visible,
@@ -40,7 +41,7 @@ const AddEditProjectModal = ({
       closable={false}
       width={500}
     >
-      <Spin spinning={projects.loading}>
+      <Spin spinning={projects.loading} indicator={loadingIcon}>
         <Form
           name="project"
           onFinish={onSubmit}

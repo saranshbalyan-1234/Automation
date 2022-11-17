@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { Spin, Collapse, Tag } from "antd";
 import { connect } from "react-redux";
-import { EyeOutlined } from "@ant-design/icons";
+import { EyeOutlined, LoadingOutlined } from "@ant-design/icons";
 import TestStepTable from "./TestStepTable";
 import ViewCommentModal from "../../Common/TestStep/ViewCommentModal";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { Panel } = Collapse;
-const Process = ({ process }) => {
+const Process = ({ process, loading }) => {
   const [comment, setComment] = useState(false);
 
   return (
     <>
-      <Spin spinning={false}>
+      <Spin spinning={loading} indicator={loadingIcon}>
         {process.map((item, index) => {
           return (
             <Collapse style={{ marginTop: "10px" }} key={index}>
@@ -101,6 +102,7 @@ const Process = ({ process }) => {
 
 const mapStateToProps = (state) => ({
   process: state.executionHistory.currentExecutionHistory.process,
+  loading: state.executionHistory.loading,
 });
 
 const mapDispatchToProps = {};

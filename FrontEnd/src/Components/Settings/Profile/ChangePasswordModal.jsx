@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Button, Form, Input, Modal, Spin } from "antd";
 import { changePassword } from "../../../Redux/Actions/user";
-
+import { LoadingOutlined } from "@ant-design/icons";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const ChangePasswordModal = ({
   setChangePasswordModal,
   changePasswordModal,
@@ -26,7 +27,7 @@ const ChangePasswordModal = ({
       footer={false}
       closable={false}
     >
-      <Spin spinning={loading}>
+      <Spin spinning={loading} indicator={loadingIcon}>
         <Form
           name="basic"
           labelCol={{ span: 8 }}

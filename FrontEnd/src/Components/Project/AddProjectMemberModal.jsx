@@ -3,6 +3,8 @@ import { Form, Modal, Button, Spin, Select } from "antd";
 import { addMember } from "../../Redux/Actions/project";
 import axios from "axios";
 import { connect } from "react-redux";
+import { LoadingOutlined } from "@ant-design/icons";
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { Option } = Select;
 const AddProjectMemberModal = ({
   visible,
@@ -63,7 +65,7 @@ const AddProjectMemberModal = ({
       }}
       closable={false}
     >
-      <Spin spinning={loading}>
+      <Spin spinning={loading} indicator={loadingIcon}>
         <Form
           name="role"
           onFinish={onSubmit}

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Card, Spin } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { StyledWrapper } from "../style";
 import { connect } from "react-redux";
 import { sendResetPasswordMail } from "../../Redux/Actions/auth";
-
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const SendResetMail = ({ sendResetPasswordMail }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -20,7 +20,7 @@ const SendResetMail = ({ sendResetPasswordMail }) => {
   return (
     <StyledWrapper>
       <div className="outsideApp">
-        <Spin spinning={loading}>
+        <Spin spinning={loading} indicator={loadingIcon}>
           <Card title="Reset Your Password" bordered>
             <img
               alt="logo"
