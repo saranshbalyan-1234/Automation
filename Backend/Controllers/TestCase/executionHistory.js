@@ -1,6 +1,6 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-
+import moment from "moment";
 const ExecutionHistory = db.executionHistory;
 const User = db.users;
 const ProcessHistory = db.processHistory;
@@ -89,7 +89,19 @@ const getExecutionHistoryById = async (req, res) => {
       ],
     }
   );
-  return res.status(200).json(executionHistory);
+  let executionTime = "";
+  if (executionHistory.dataValues.finishedAt) {
+    let startingTime = moment(executionHistory.dataValues.createdAt);
+    let timeTaken = moment(executionHistory.dataValues.finishedAt).diff(
+      moment(startingTime),
+      "seconds"
+    );
+    executionTime = moment.utc(timeTaken * 1000).format("HH:mm:ss");
+  }
+
+  return res
+    .status(200)
+    .json({ ...executionHistory.dataValues, executionTime });
 };
 
 export {

@@ -62,7 +62,7 @@ const ViewExecutionHistoryModal = ({
                 >
                   <Card>
                     <Meta
-                      title="Start Time"
+                      title="Starting Time"
                       description={moment(
                         currentExecutionHistory.createdAt
                       ).format("DD/MM/YY hh:mm A")}
@@ -78,6 +78,12 @@ const ViewExecutionHistoryModal = ({
                             )
                           : "Execution Incomplete"
                       }
+                    />
+                  </Card>
+                  <Card>
+                    <Meta
+                      title="Execution Time"
+                      description={currentExecutionHistory.executionTime}
                     />
                   </Card>
                 </div>

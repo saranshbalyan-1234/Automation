@@ -69,10 +69,22 @@ const updateProcessResult = async (req, id, result) => {
   );
 };
 
+const updateExecutionFinishTime = async (req, id, time) => {
+  return await ExecutionHistory.schema(req.database).update(
+    { finishedAt: time },
+    {
+      where: {
+        id,
+      },
+    }
+  );
+};
+
 module.exports = {
   createExecutionHistory,
   createProcessHistory,
   createStepHistory,
   updateStepResult,
   updateProcessResult,
+  updateExecutionFinishTime,
 };

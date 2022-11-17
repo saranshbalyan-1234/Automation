@@ -7,7 +7,9 @@ const {
   createProcessHistory,
   createStepHistory,
   updateProcessResult,
+  updateExecutionFinishTime,
 } = require("./Controllers/executionHistoryController");
+const moment = require("moment");
 const helmet = require("helmet");
 const cors = require("cors");
 const parser = require("body-parser");
@@ -63,6 +65,7 @@ app.post("/execute/:testCaseId", async (req, res) => {
       }
       await updateProcessResult(req, processHistory.dataValues.id, true);
     }
+    await updateExecutionFinishTime(req, data.executionHistory.id, moment());
   } catch (err) {
     console.log(err);
   }
