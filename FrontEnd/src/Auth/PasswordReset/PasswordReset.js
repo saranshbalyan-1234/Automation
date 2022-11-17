@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Card, Spin } from "antd";
+import { Form, Input, Button, Card } from "antd";
 import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import { resetPassword } from "../../Redux/Actions/auth";
 import axios from "axios";
 import { connect } from "react-redux";
 import { StyledWrapper } from "../style";
 import { getError } from "../../Utils/error";
-import { LoadingOutlined } from "@ant-design/icons";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../../Components/Common/Loading";
 const PasswordReset = ({ resetPassword }) => {
   const location = useLocation();
   const { token } = useParams();
@@ -49,7 +48,7 @@ const PasswordReset = ({ resetPassword }) => {
   return (
     <StyledWrapper>
       <div className="outsideApp">
-        <Spin spinning={loading} indicator={loadingIcon}>
+        <Loading loading={loading}>
           <Card title="Register" bordered>
             <center>
               <img
@@ -142,7 +141,7 @@ const PasswordReset = ({ resetPassword }) => {
               </Form>
             )}
           </Card>
-        </Spin>
+        </Loading>
       </div>
     </StyledWrapper>
   );

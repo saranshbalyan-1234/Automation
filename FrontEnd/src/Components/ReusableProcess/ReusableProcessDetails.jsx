@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Typography, Card, Button, Spin, Popconfirm, Tag } from "antd";
+import { Typography, Card, Button } from "antd";
 import moment from "moment";
-import { EditOutlined, LoadingOutlined } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 import UserAvatar from "../Common/Avatar";
 import AddEditModal from "../Common/AddEditModal";
-
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../Common/Loading";
 const { Title } = Typography;
 const { Meta } = Card;
 const ReusableProcessDetails = ({
@@ -17,10 +16,10 @@ const ReusableProcessDetails = ({
   const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
 
-  if (loading) return <Spin indicator={loadingIcon} />;
+  if (loading) return <Loading />;
   return (
     <div style={{ paddingTop: 20 }}>
-      <Spin spinning={loading} indicator={loadingIcon}>
+      <Loading loading={loading}>
         <Card>
           <div
             style={{
@@ -106,7 +105,7 @@ const ReusableProcessDetails = ({
             </div>
           )}
         </Card>
-      </Spin>
+      </Loading>
       {addEditModal && (
         <AddEditModal
           visible={addEditModal}

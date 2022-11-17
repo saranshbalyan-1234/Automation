@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Typography, Statistic, Row, Col, Card, Spin } from "antd";
+import { Typography, Statistic, Row, Col, Card } from "antd";
 import axios from "axios";
-import {
-  EditOutlined,
-  UserOutlined,
-  ProjectOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, UserOutlined, ProjectOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import ColumnGraph from "../Common/ColumnGraph";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../Common/Loading";
 const { Title } = Typography;
 
 export const Dashboard = ({ user }) => {
@@ -54,7 +49,7 @@ export const Dashboard = ({ user }) => {
   }, []);
 
   return (
-    <Spin spinning={loading} indicator={loadingIcon}>
+    <Loading loading={loading}>
       <StyledContainer>
         {/* <Title level={3}>Hi, {user.name}</Title> */}
 
@@ -176,7 +171,7 @@ export const Dashboard = ({ user }) => {
           </Col>*/}
         </Row>
       </StyledContainer>
-    </Spin>
+    </Loading>
   );
 };
 

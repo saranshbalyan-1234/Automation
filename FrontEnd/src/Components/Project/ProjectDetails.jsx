@@ -7,25 +7,19 @@ import {
   Card,
   Table,
   Button,
-  Spin,
   Popconfirm,
   Tag,
 } from "antd";
 import UserAvatar from "../Common/Avatar";
 import moment from "moment";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { getProjectById, removeMember } from "../../Redux/Actions/project";
 import AddEditProjectModal from "./AddEditProjectModal";
 import AddProjectMemberModal from "./AddProjectMemberModal";
 import MemberBadge from "../Common/MemberBadge";
 import ColumnGraph from "../Common/ColumnGraph";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../Common/Loading";
 const { Title } = Typography;
 const { Meta } = Card;
 export const ProjectDetails = ({
@@ -141,7 +135,7 @@ export const ProjectDetails = ({
   if (loading) return null;
   return (
     <div style={{ paddingTop: 20 }}>
-      <Spin spinning={loading} indicator={loadingIcon}>
+      <Loading loading={loading}>
         <div className="row ">
           <Card
             style={{
@@ -273,7 +267,7 @@ export const ProjectDetails = ({
             size="small"
           />
         </Card>
-      </Spin>
+      </Loading>
       {addProjectMemberModal && (
         <AddProjectMemberModal
           visible={addProjectMemberModal}

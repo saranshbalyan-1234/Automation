@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Spin, Checkbox, Select } from "antd";
+import { Modal, Button, Checkbox, Select } from "antd";
 import { updateRolePermission } from "../../../Redux/Actions/role";
 import { connect } from "react-redux";
-import {
-  PlusOutlined,
-  DeleteOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../../Common/Loading";
 const { Option } = Select;
 const ManagePermissionModal = ({
   visible,
@@ -96,7 +92,7 @@ const ManagePermissionModal = ({
       closable={false}
       width={550}
     >
-      <Spin spinning={roles.loading || loading} indicator={loadingIcon}>
+      <Loading loading={roles.loading || loading}>
         {addedPermission.map((permission, index) => {
           return (
             <div
@@ -204,7 +200,7 @@ const ManagePermissionModal = ({
             Cancel
           </Button>
         </div>
-      </Spin>
+      </Loading>
     </Modal>
   );
 };

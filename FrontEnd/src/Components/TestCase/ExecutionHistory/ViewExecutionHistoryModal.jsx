@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
-import { Modal, Spin, Card, Typography, Table } from "antd";
+import { Modal, Card, Typography, Table } from "antd";
 import { getExecutionHistoryById } from "../../../Redux/Actions/executionHistory";
 import { connect } from "react-redux";
 import moment from "moment";
 import UserAvatar from "../../Common/Avatar";
 import Process from "./Process";
-import { LoadingOutlined } from "@ant-design/icons";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../../Common/Loading";
 const { Meta } = Card;
 const { Title } = Typography;
 const ViewExecutionHistoryModal = ({
@@ -30,13 +29,14 @@ const ViewExecutionHistoryModal = ({
         setVisible(false);
       }}
     >
-      <Spin spinning={loading} indicator={loadingIcon}>
+      <Loading loading={loading}>
         <div style={{ maxHeight: "80vh", overflow: "auto" }}>
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
               flexWrap: "wrap",
+              marginTop: 2,
             }}
           >
             <Meta
@@ -127,7 +127,7 @@ const ViewExecutionHistoryModal = ({
             <Process />
           </div>
         </div>
-      </Spin>
+      </Loading>
     </Modal>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Table, Popconfirm, Spin } from "antd";
-import { DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Table, Popconfirm } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
 import UserAvatar from "../../Common/Avatar";
 import { useParams } from "react-router-dom";
@@ -10,8 +10,8 @@ import {
   getAllExecutionHistoryByTestCase,
 } from "../../../Redux/Actions/executionHistory";
 import ViewExecutionHistoryModal from "./ViewExecutionHistoryModal";
+import Loading from "../../Common/Loading";
 
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 export const List = ({
   getAllExecutionHistoryByTestCase,
   deleteExecutionHistory,
@@ -69,7 +69,7 @@ export const List = ({
 
   return (
     <>
-      <Spin spinning={loading} indicator={loadingIcon}>
+      <Loading loading={loading}>
         <Table
           columns={columns}
           dataSource={data}
@@ -82,7 +82,7 @@ export const List = ({
             };
           }}
         />
-      </Spin>
+      </Loading>
       {executionHistoryId > 0 && (
         <ViewExecutionHistoryModal
           visible={executionHistoryId}

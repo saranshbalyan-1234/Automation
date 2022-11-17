@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
-import { Layout, Dropdown, Menu, Spin, message } from "antd";
+import { Layout, Dropdown, Menu, message } from "antd";
 import ProfileMenu from "./ProfileMenu";
 import { Link } from "react-router-dom";
-import { CaretDownOutlined, LoadingOutlined } from "@ant-design/icons";
+import { CaretDownOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { getAllProject, getProjectById } from "../../../Redux/Actions/project";
-
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../../Common/Loading";
 const { Header } = Layout;
 
 const Headers = ({
@@ -34,7 +33,7 @@ const Headers = ({
   };
 
   const ProjectMenu = (
-    <Spin spinning={projects.loading} indicator={loadingIcon}>
+    <Loading loading={projects.loading}>
       <Menu
         style={{ marginTop: "-10px" }}
         items={[
@@ -44,7 +43,7 @@ const Headers = ({
           },
         ]}
       />
-    </Spin>
+    </Loading>
   );
 
   return (

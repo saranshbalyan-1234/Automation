@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-import { Form, Input, Modal, Button, Spin, Select } from "antd";
+import { Form, Input, Modal, Button, Select } from "antd";
 import { connect } from "react-redux";
 import { addProcess, editProcess } from "../../../Redux/Actions/testCase";
 import { getReusableProcessByProject } from "../../../Redux/Actions/reusableProcess";
 import ReactQuill from "react-quill";
-import { LoadingOutlined } from "@ant-design/icons";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../../Common/Loading";
 const { Option } = Select;
 const AddEditProcessModal = ({
   visible,
@@ -61,7 +60,7 @@ const AddEditProcessModal = ({
         width={600}
         closable={false}
       >
-        <Spin spinning={loading || reusableLoading} indicator={loadingIcon}>
+        <Loading loading={loading || reusableLoading}>
           <Form
             name="process"
             onFinish={onSubmit}
@@ -133,7 +132,7 @@ const AddEditProcessModal = ({
               </Button>
             </div>
           </Form>
-        </Spin>
+        </Loading>
       </Modal>
     </div>
   );

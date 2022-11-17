@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Button, Spin, Select, Modal } from "antd";
+import { Button, Select, Modal } from "antd";
 import { updateUserRole } from "../../../Redux/Actions/role";
-import {
-  PlusOutlined,
-  DeleteOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import axios from "axios";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../../Common/Loading";
 const { Option } = Select;
 function ManageUser({ visible, setVisible, userId, updateUserRole }) {
   const [loading, setLoading] = useState(false);
@@ -91,7 +87,7 @@ function ManageUser({ visible, setVisible, userId, updateUserRole }) {
       }}
       closable={false}
     >
-      <Spin spinning={loading} indicator={loadingIcon}>
+      <Loading loading={loading}>
         <div
           style={{
             display: "flex",
@@ -169,7 +165,7 @@ function ManageUser({ visible, setVisible, userId, updateUserRole }) {
             Cancel
           </Button>
         </div>
-      </Spin>
+      </Loading>
     </Modal>
   );
 }

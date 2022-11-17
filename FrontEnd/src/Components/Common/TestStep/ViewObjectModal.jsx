@@ -1,9 +1,8 @@
 import React from "react";
-import { Modal, Spin } from "antd";
+import { Modal } from "antd";
 import { connect } from "react-redux";
 import Details from "../../ObjectBank/Details";
-import { LoadingOutlined } from "@ant-design/icons";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../Loading";
 const ViewObjectModal = ({ visible, setVisible, object, history }) => {
   return (
     <Modal
@@ -16,9 +15,9 @@ const ViewObjectModal = ({ visible, setVisible, object, history }) => {
         setVisible(false);
       }}
     >
-      <Spin spinning={false} indicator={loadingIcon}>
+      <Loading loading={false}>
         <Details newObject={object} history={history} />
-      </Spin>
+      </Loading>
     </Modal>
   );
 };

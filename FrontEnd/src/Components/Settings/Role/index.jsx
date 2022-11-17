@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import {
-  List,
-  Spin,
-  Popconfirm,
-  Checkbox,
-  Collapse,
-  Button,
-  Empty,
-} from "antd";
+import { List, Popconfirm, Checkbox, Collapse, Button, Empty } from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
   SettingOutlined,
-  LoadingOutlined,
 } from "@ant-design/icons";
 import { deleteRole, getAllRole } from "../../../Redux/Actions/role";
 import AddEditRoleModal from "./AddEditRoleModal";
 import ManagePermissionModal from "./ManagePermissionModal";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../../Common/Loading";
 const { Panel } = Collapse;
 export const Role = ({
   data,
@@ -84,7 +75,7 @@ export const Role = ({
   };
   return (
     <>
-      <Spin spinning={loading} indicator={loadingIcon}>
+      <Loading loading={loading}>
         {data.map((item, index) => {
           return (
             <Collapse style={{ marginTop: "10px" }} key={index}>
@@ -166,7 +157,7 @@ export const Role = ({
           );
         })}
         {data.length === 0 && <Empty description="No Data Found." />}
-      </Spin>
+      </Loading>
       {addEditRoleModal && (
         <AddEditRoleModal
           visible={addEditRoleModal}

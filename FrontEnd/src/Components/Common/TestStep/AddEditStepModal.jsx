@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Modal, Button, Spin, Select, Switch } from "antd";
+import { Form, Input, Modal, Button, Select, Switch } from "antd";
 import { connect } from "react-redux";
 import { addProcess } from "../../../Redux/Actions/testCase";
 import { addStep, editStep } from "../../../Redux/Actions/testCase";
@@ -13,8 +13,7 @@ import AddEditObjectModal from "../../ObjectBank/AddEditObjectModal";
 import axios from "axios";
 import { saveObject } from "../../../Redux/Actions/object";
 import ReactQuill from "react-quill";
-import { LoadingOutlined } from "@ant-design/icons";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../Loading";
 const Option = { Select };
 const AddEditStepModal = ({
   visible,
@@ -194,7 +193,7 @@ const AddEditStepModal = ({
         }}
         closable={false}
       >
-        <Spin spinning={loading} indicator={loadingIcon}>
+        <Loading loading={loading}>
           <Form
             form={form}
             name="testStep"
@@ -455,7 +454,7 @@ const AddEditStepModal = ({
               </Button>
             </div>
           </Form>
-        </Spin>
+        </Loading>
       </Modal>
 
       <AddEditObjectModal

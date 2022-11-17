@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Popconfirm, Spin, Collapse, Tag } from "antd";
+import { Popconfirm, Collapse, Tag } from "antd";
 import {
   getTestCaseStepsById,
   deleteProcess,
@@ -8,16 +8,11 @@ import {
 import { connect } from "react-redux";
 import ProcessMenu from "./ProcessMenu";
 import { useParams } from "react-router-dom";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  EyeOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import TestStepTable from "../../Common/TestStep";
 import AddEditProcessModal from "./AddEditProcessModal";
 import ViewCommentModal from "../../Common/TestStep/ViewCommentModal";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../../Common/Loading";
 const { Panel } = Collapse;
 const Process = ({
   getTestCaseStepsById,
@@ -38,7 +33,7 @@ const Process = ({
 
   return (
     <>
-      <Spin spinning={false} indicator={loadingIcon}>
+      <Loading loading={false}>
         {process.map((item, index) => {
           return (
             <Collapse style={{ marginTop: "10px" }} key={index}>
@@ -150,7 +145,7 @@ const Process = ({
             Add First Reusable Process
           </Tag>
         )}
-      </Spin>
+      </Loading>
       {addEditProcessModal && (
         <AddEditProcessModal
           visible={addEditProcessModal}

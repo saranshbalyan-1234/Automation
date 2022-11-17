@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Form, Input, Checkbox, Button, Card, Spin } from "antd";
+import { Form, Input, Checkbox, Button, Card } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../Redux/Actions/auth";
 import { connect } from "react-redux";
 import { StyledWrapper } from "./style";
 import AgreementModal from "../Views/AgreementModal";
-import { LoadingOutlined } from "@ant-design/icons";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../Components/Common/Loading";
 const Register = ({ register }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -45,7 +44,7 @@ const Register = ({ register }) => {
   return (
     <StyledWrapper>
       <div className="outsideApp">
-        <Spin spinning={loading} indicator={loadingIcon}>
+        <Loading loading={loading}>
           <Card title="Register" bordered>
             <center>
               {" "}
@@ -184,7 +183,7 @@ const Register = ({ register }) => {
               </Form.Item>
             </Form>
           </Card>
-        </Spin>
+        </Loading>
       </div>
       <AgreementModal
         visible={showAgreementModal}

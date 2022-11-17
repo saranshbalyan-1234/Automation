@@ -1,9 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Button, Form, Input, Modal, Spin } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 import { editDetails } from "../../../Redux/Actions/user";
-import { LoadingOutlined } from "@ant-design/icons";
-const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loading from "../../Common/Loading";
 const EditDetailsModal = ({
   setEditDetailsModal,
   editDetailsModal,
@@ -26,7 +25,7 @@ const EditDetailsModal = ({
       footer={false}
       closable={false}
     >
-      <Spin spinning={loading} indicator={loadingIcon}>
+      <Loading loading={loading}>
         <Form
           name="basic"
           labelCol={{ span: 5 }}
@@ -62,7 +61,7 @@ const EditDetailsModal = ({
             </Button>
           </Form.Item>
         </Form>
-      </Spin>
+      </Loading>
     </Modal>
   );
 };
