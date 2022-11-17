@@ -38,8 +38,8 @@ export default (sequelize, DataTypes) => {
       references: {
         model: "executionHistories",
         key: "id",
-        onDelete: "CASCADE",
       },
+      onDelete: "CASCADE",
     },
     result: {
       type: DataTypes.BOOLEAN,

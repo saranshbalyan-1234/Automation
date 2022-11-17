@@ -21,16 +21,13 @@ export default (sequelize, DataTypes) => {
         model: "testCases",
         key: "id",
       },
+      onDelete: "CASCADE",
     },
     executedByUser: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: true,
-      },
-      references: {
-        model: "users",
-        key: "id",
       },
     },
     finishedAt: {

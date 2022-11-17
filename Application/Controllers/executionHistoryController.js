@@ -45,7 +45,6 @@ const createStepHistory = async (
   payload.processId = processHistory.dataValues.processId;
   payload.screenshot = null;
   payload.executionHistoryId = executionHistory.id;
-  await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
   return await TestStepHistory.schema(req.database).create(payload);
 };
 const updateStepResult = async (req, id, result) => {

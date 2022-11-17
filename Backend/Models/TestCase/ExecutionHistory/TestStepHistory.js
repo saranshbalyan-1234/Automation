@@ -40,10 +40,6 @@ export default (sequelize, DataTypes) => {
     },
     processId: {
       type: DataTypes.INTEGER,
-      references: {
-        model: "processHistories",
-        onDelete: "CASCADE",
-      },
     },
     executionHistoryId: {
       type: DataTypes.INTEGER,
@@ -54,8 +50,8 @@ export default (sequelize, DataTypes) => {
       references: {
         model: "executionHistories",
         key: "id",
-        onDelete: "CASCADE",
       },
+      onDelete: "CASCADE",
     },
     result: {
       type: DataTypes.BOOLEAN,
