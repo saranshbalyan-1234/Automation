@@ -83,7 +83,10 @@ const ViewExecutionHistoryModal = ({
                   <Card>
                     <Meta
                       title="Execution Time"
-                      description={currentExecutionHistory.executionTime}
+                      description={
+                        currentExecutionHistory.executionTime ||
+                        "Execution Incomplete"
+                      }
                     />
                   </Card>
                 </div>
