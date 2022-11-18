@@ -57,7 +57,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         {collapsed ? (
           <img
             alt="logo"
-            src="/Logo/iconlogo.svg"
+            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/iconlogo.svg"
             className="logo"
             style={{
               height: "25px",
@@ -72,7 +72,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         ) : (
           <img
             alt="logo"
-            src="/Logo/logo.svg"
+            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/logo.svg"
             className="logo"
             style={{
               height: "38px",
