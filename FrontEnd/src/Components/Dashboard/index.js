@@ -31,7 +31,7 @@ export const Dashboard = ({ user }) => {
           if (el[0] === "testCase") {
             key = "Test Case";
           } else if (el[0] === "reusableProcess") {
-            key = "Reusable Process";
+            key = "Reusable";
           } else if (el[0] === "object") {
             key = "Test Object";
           }
