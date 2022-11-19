@@ -1,6 +1,7 @@
 import React from "react";
 import { Avatar, Popover, Card, Badge } from "antd";
 export const UserAvatar = ({ user, size = "small" }) => {
+  console.log("saransh", user);
   const handleAvatarInitials = () => {
     const temp = user.name?.split(" ");
     if (temp.length > 1) return temp[0][0] + temp[1][0];

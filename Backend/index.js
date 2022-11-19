@@ -1,6 +1,7 @@
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
+import fileupload from "express-fileupload";
 import swaggerUi from "swagger-ui-express";
 import parser from "body-parser";
 import { validateToken } from "./Utils/Middlewares/jwt.js";
@@ -16,6 +17,7 @@ import testStepRoutes from "./Routes/TestCase/testStep.js";
 import testParameterRoutes from "./Routes/TestCase/testParameter.js";
 import reusableProcessRoutes from "./Routes/TestCase/reusableProcess.js";
 import executionHistoryRoutes from "./Routes/TestCase/executionHistory.js";
+import awsRoutes from "./Routes/awsRoutes.js";
 
 import dashboardRoutes from "./Routes/dashboardRoutes.js";
 
@@ -32,6 +34,7 @@ app.use(
     origin: "*",
   })
 );
+app.use(fileupload());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
@@ -43,6 +46,7 @@ app.get("/", (req, res) => {
   return res.json("Server is working");
 });
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use("/aws", awsRoutes);
 app.use("/auth", authRoutes);
 
 app.use(validateToken());

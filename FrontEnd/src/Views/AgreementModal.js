@@ -37,9 +37,6 @@ const AgreementModal = ({ visible, setVisible }) => {
       width={1000}
     >
       <StyledWrapper>
-        {/* <div className="outsideApp"> */}
-
-        {/* <img alt="logo" src="/Logo/logo2.svg" style={{ height: "50px" }} /> */}
         <List
           itemLayout="vertical"
           size="large"

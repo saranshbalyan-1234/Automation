@@ -50,7 +50,7 @@ const Register = ({ register }) => {
               {" "}
               <img
                 alt="logo"
-                src="/Logo/logo2.svg"
+                src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/whiteBackgroundLogo.svg"
                 style={{
                   height: "50px",
                   marginBottom: "10px",

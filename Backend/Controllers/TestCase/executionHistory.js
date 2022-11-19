@@ -22,7 +22,7 @@ const getAllExecutionHistoryByTestCase = async (req, res) => {
         {
           model: User.schema(req.database),
           as: "executedBy",
-          attributes: ["id", "name", "email", "active"],
+          attributes: ["id", "name", "email", "active", "profileImage"],
         },
       ],
       order: [["createdAt", "DESC"]],
@@ -72,7 +72,7 @@ const getExecutionHistoryById = async (req, res) => {
         {
           model: User.schema(req.database),
           as: "executedBy",
-          attributes: ["id", "name", "email", "active"],
+          attributes: ["id", "name", "email", "active", "profileImage"],
         },
         {
           model: ProcessHistory.schema(req.database),

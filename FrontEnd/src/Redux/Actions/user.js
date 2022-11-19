@@ -28,3 +28,18 @@ export const editDetails = (payload) => {
     }
   };
 };
+
+export const uploadProfilePic = async (formData) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: UPDATE_USER_DETAIL_REQUEST });
+      await axios.put(`/user/uploadProfileImage`, formData);
+      let payload = { profileImage: true };
+      dispatch({ type: UPDATE_USER_DETAIL_SUCCESS, payload });
+      return true;
+    } catch (err) {
+      dispatch({ type: UPDATE_USER_DETAIL_FAILURE });
+      return false;
+    }
+  };
+};

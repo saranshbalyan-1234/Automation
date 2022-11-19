@@ -24,7 +24,11 @@ export default (sequelize, DataTypes) => {
         notNull: true,
       },
     },
-
+    profileImage: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 1,
+      values: [0, 1],
+    },
     verifiedAt: {
       type: DataTypes.DATE,
       allowNull: true,

@@ -42,7 +42,7 @@ const getObjectDetailsById = async (req, res) => {
         {
           model: User.schema(req.database),
           as: "createdBy",
-          attributes: ["id", "name", "email", "active"],
+          attributes: ["id", "name", "email", "active", "profileImage"],
         },
         {
           model: ObjectLocator.schema(req.database),
@@ -126,7 +126,7 @@ const getAllObject = async (req, res) => {
         {
           model: User.schema(req.database),
           as: "createdBy",
-          attributes: ["id", "name", "email", "active"],
+          attributes: ["id", "name", "email", "active", "profileImage"],
         },
       ],
     });

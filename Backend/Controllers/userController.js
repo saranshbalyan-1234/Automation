@@ -9,9 +9,9 @@ import {
   resendVerificationMailValidation,
   userIdValidation,
 } from "../Utils/Validations/user.js";
-
+import { deleteBucket } from "./awsController.js";
 import { registerValidation } from "../Utils/Validations/auth.js";
-
+import { uploadFile } from "./awsController.js";
 const User = db.users;
 const Customer = db.customers;
 const Tenant = db.tenants;
@@ -141,7 +141,7 @@ const deleteCustomerUser = async (req, res) => {
 
     const database = req.database;
     await db.sequelize.query(`drop database ${database}`);
-
+    deleteBucket(database);
     await Customer.schema("Main").destroy({ tenant: req.user.tenant });
     const deletedTenant = await Tenant.schema("Main").destroy({
       where: {
@@ -207,6 +207,33 @@ const changeDetails = async (req, res) => {
     getError(error, res);
   }
 };
+const uploadProfileImage = async (req, res) => {
+  /*  #swagger.tags = ["User"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+  try {
+    const file = req.files.image;
+    // const { error } = changeDetailsValidation.validate(req.body);
+    // if (error) throw new Error(error.details[0].message);
+    const bucketName = req.database;
+    // const file = req.body.file;
+    const fileName = req.user.email.replace(/[^a-zA-Z0-9 ]/g, "");
+    const result = await uploadFile(file, bucketName, fileName);
+    if (result) {
+      await User.schema(req.database).update(
+        { profileImage: true },
+        {
+          where: {
+            id: req.user.id,
+          },
+        }
+      );
+      return res.status(200).json({ message: "Profile Image Updated" });
+    } else throw new Error("Unable to upload profile image!");
+  } catch (error) {
+    getError(error, res);
+  }
+};
 
 const toggleUserActiveInactive = async (req, res) => {
   /*  #swagger.tags = ["User"] 
@@ -258,4 +285,5 @@ export {
   resentVerificationEmail,
   deleteCustomerUser,
   getAllUser,
+  uploadProfileImage,
 };

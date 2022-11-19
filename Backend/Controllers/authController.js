@@ -8,6 +8,7 @@ import {
   registerValidation,
   loginValidation,
 } from "../Utils/Validations/auth.js";
+import { createBucket } from "./awsController.js";
 import getError from "../Utils/sequelizeError.js";
 import moment from "moment";
 const User = db.users;
@@ -96,7 +97,7 @@ const login = async (req, res) => {
     const isAuthenticated = await bcrypt.compare(password, user.password);
     if (!isAuthenticated) throw new Error("Incorrect Password");
 
-    const { id, name, verifiedAt, defaultProjectId } = user;
+    const { id, name, verifiedAt, defaultProjectId, profileImage } = user;
     if (!verifiedAt) throw new Error("Email Not Verified");
 
     let allPermissions = [];
@@ -129,6 +130,7 @@ const login = async (req, res) => {
       id,
       name,
       email,
+      profileImage,
       customerAdmin,
       defaultProjectId,
       roles: newRoles,
@@ -163,6 +165,7 @@ const verifyCustomer = async (req, res) => {
           throw new Error("CustomerDatabase already exist");
         });
 
+        createBucket(database);
         await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
         await UserRole.schema(database).sync({ force: true, alter: true });
         await Permission.schema(database).sync({ force: true, alter: true });
