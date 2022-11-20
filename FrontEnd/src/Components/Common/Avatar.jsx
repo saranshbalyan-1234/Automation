@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Avatar, Popover, Card, Badge, Image } from "antd";
 import axios from "axios";
 import { connect } from "react-redux";
-import { fetchProfileImage } from "../../Redux/Actions/image";
+import { fetchAwsObject } from "../../Redux/Actions/image";
 export const UserAvatar = ({
   user,
   size = "small",
   images,
-  fetchProfileImage,
+  fetchAwsObject,
 }) => {
   const imageName = user.email.replace(/[^a-zA-Z0-9 ]/g, "");
   useEffect(() => {
     console.log("saransh", images[imageName]);
     if (user.profileImage && !images[imageName]) {
-      fetchProfileImage(imageName);
+      fetchAwsObject(imageName);
     }
   }, []);
 
@@ -82,6 +82,6 @@ export const handleAvatarInitials = (user) => {
 
 const mapStateToProps = (state) => ({ images: state.image });
 
-const mapDispatchToProps = { fetchProfileImage };
+const mapDispatchToProps = { fetchAwsObject };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserAvatar);

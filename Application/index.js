@@ -60,7 +60,8 @@ app.post("/execute/:testCaseId", async (req, res) => {
           output,
           req,
           stepHistory,
-          processResult
+          processResult,
+          data.executionHistory
         );
       }
       await updateProcessResult(req, processHistory.dataValues.id, true);

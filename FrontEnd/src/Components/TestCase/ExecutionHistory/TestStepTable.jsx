@@ -1,22 +1,19 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Table, Tag } from "antd";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  CameraFilled,
-  EyeOutlined,
-} from "@ant-design/icons";
+import { CameraFilled, EyeOutlined } from "@ant-design/icons";
 import ViewObjectModal from "../../Common/TestStep/ViewObjectModal";
 import ViewParameterModal from "../../Common/TestStep/ViewParameterModal";
 import ViewCommentModal from "../../Common/TestStep/ViewCommentModal";
-const TestStepTable = ({ testSteps }) => {
+import ViewScreenShotModal from "./ViewScreenShotModal";
+const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
   const [viewParameterModal, setViewParameterModal] = useState(false);
   const [parameters, setParameters] = useState([]);
   const [viewObjectModal, setViewObjectModal] = useState(false);
   const [object, setObject] = useState({});
   const [viewCommentModal, setViewCommentModal] = useState(false);
   const [comment, setComment] = useState("");
+  const [screenShotKey, setScreenshotKey] = useState("");
   const columns = [
     {
       title: "Action Event",
@@ -95,7 +92,14 @@ const TestStepTable = ({ testSteps }) => {
       render: (text, record) => (
         <>
           {record.screenshot && (
-            <div style={{ cursor: "not-allowed" }}>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setScreenshotKey(
+                  `screenshot_${currentExecutionHistory.id}_${record.testStepId}`
+                );
+              }}
+            >
               <CameraFilled style={{ fontSize: 15 }} />
             </div>
           )}
@@ -157,11 +161,19 @@ const TestStepTable = ({ testSteps }) => {
           comment={comment}
         />
       )}
+      {screenShotKey && (
+        <ViewScreenShotModal
+          visible={screenShotKey}
+          setVisible={setScreenshotKey}
+        />
+      )}
     </>
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  currentExecutionHistory: state.executionHistory.currentExecutionHistory,
+});
 
 const mapDispatchToProps = {};
 

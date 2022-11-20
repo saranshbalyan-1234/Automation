@@ -12,15 +12,14 @@ import { Avatar, Dropdown, Menu, Badge, Card } from "antd";
 import { logout } from "../../../Redux/Actions/auth";
 import { Link } from "react-router-dom";
 import { handleAvatarInitials } from "../../Common/Avatar";
-import { fetchProfileImage } from "../../../Redux/Actions/image";
+import { fetchAwsObject } from "../../../Redux/Actions/image";
 const { Meta } = Card;
-const ProfileMenu = ({ logout, user, images, fetchProfileImage }) => {
+const ProfileMenu = ({ logout, user, images, fetchAwsObject }) => {
   const imageName = user.email.replace(/[^a-zA-Z0-9 ]/g, "");
 
   useEffect(() => {
-    console.log("saransh", images[imageName]);
     if (user.profileImage && !images[imageName]) {
-      fetchProfileImage(imageName);
+      fetchAwsObject(imageName);
     }
   }, []);
   const profileMenu = (
@@ -175,6 +174,7 @@ const ProfileMenu = ({ logout, user, images, fetchProfileImage }) => {
       <Dropdown overlay={profileMenu} trigger={["hover"]}>
         {images[imageName] ? (
           <Avatar
+            key={images[imageName]}
             src={"data:image/jpeg;base64," + images[imageName]}
             size={32}
             style={{
@@ -211,6 +211,6 @@ const mapStateToProps = (state) => ({
   images: state.image,
 });
 
-const mapDispatchToProps = { logout, fetchProfileImage };
+const mapDispatchToProps = { logout, fetchAwsObject };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileMenu);

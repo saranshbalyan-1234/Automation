@@ -46,14 +46,16 @@ export const uploadFile = async (file, bucketName, keyName) => {
     Key: keyName, // Name by which you want to save it
     Body: file.data,
   };
-  return s3.upload(uploadParams, function (err, data) {
-    if (err) {
-      console.log(err);
-      return false;
-    } else {
-      return true;
-    }
-  });
+  return await s3
+    .upload(uploadParams, function (err, data) {
+      if (err) {
+        console.log(err);
+        return false;
+      } else {
+        return true;
+      }
+    })
+    .promise();
 };
 
 export const listBuckets = () => {
@@ -62,8 +64,8 @@ export const listBuckets = () => {
   });
 };
 
-export const deleteObject = (bucketNamemkey) => {
-  s3.deleteObject({ Bucket: bucketName, Key }, (err, data) => {
+export const deleteObject = (bucketName, key) => {
+  s3.deleteObject({ Bucket: bucketName, key }, (err, data) => {
     if (err) return false;
     else return true;
   });
@@ -82,16 +84,20 @@ export const listObjectsInBucket = (bucketName) => {
 };
 
 export const getObject = async (req, res) => {
-  console.log(req.database);
   var getParams = {
-    Bucket: req.database, // your bucket name,
-    Key: req.body.fileName, // path to the object you're looking for
+    Bucket: req.database,
+    Key: req.body.fileName,
   };
 
   s3.getObject(getParams, function (err, data) {
     // Handle any error and exit
     if (err) return err;
-    let temp = data.Body.toString("base64");
+    let temp = "";
+    if (data.Body) {
+      temp = data.Body.toString("base64");
+    } else {
+      temp = data;
+    }
 
     return res.status(200).json(temp);
   });

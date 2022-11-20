@@ -36,7 +36,8 @@ const handleStep = async (
   output,
   req,
   stepHistory,
-  processResult
+  processResult,
+  executionHistory
 ) => {
   switch (step.actionEvent) {
     case "Launch Website":
@@ -179,7 +180,8 @@ const handleStep = async (
     default:
       break;
   }
-  if (step.screenshot) await takeScreenshot(driver);
+  if (step.screenshot)
+    await takeScreenshot(driver, req, step, executionHistory);
   return true;
 };
 

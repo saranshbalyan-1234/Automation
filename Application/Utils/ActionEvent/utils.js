@@ -1,5 +1,6 @@
 const chromeDriver = require("selenium-webdriver");
 const { By } = chromeDriver;
+const { uploadFile } = require("../../Controllers/awsController");
 const findByLocator = async (locators) => {
   // ClassName
   // CSS
@@ -40,19 +41,11 @@ const findByLocator = async (locators) => {
     }
   }
 };
-const takeScreenshot = async (driver) => {
+const takeScreenshot = async (driver, req, step, executionHistory) => {
   console.log("Taking screenshot");
-  // const filepath = "Screenshot/";
-  await driver.takeScreenshot().then((image, err) => {
-    console.log("image", image);
-    // fs.writeFile(
-    //   filepath + "Screenshot-" + Date.now() + ".png",
-    //   image,
-    //   "base64",
-    //   (err) => {
-    //     console.log(err);
-    //   }
-    // );
+  await driver.takeScreenshot().then(async (image, err) => {
+    const fileName = `screenshot_${executionHistory.id}_${step.id}`;
+    await uploadFile(image, req.database, fileName);
   });
 };
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Modal, Card, Typography, Table } from "antd";
+import { Modal, Card, Typography } from "antd";
 import { getExecutionHistoryById } from "../../../Redux/Actions/executionHistory";
 import { connect } from "react-redux";
 import moment from "moment";

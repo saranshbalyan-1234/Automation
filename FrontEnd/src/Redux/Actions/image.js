@@ -1,7 +1,7 @@
 import axios from "axios";
 import { FETCH_IMAGE_SUCCESS } from "./action-types";
 
-export const fetchProfileImage = (key) => {
+export const fetchAwsObject = (key) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.post("/aws/object", {
@@ -10,6 +10,7 @@ export const fetchProfileImage = (key) => {
       let payload = {};
       payload[key] = data;
       dispatch({ type: FETCH_IMAGE_SUCCESS, payload });
+
       return true;
     } catch (err) {
       return false;
