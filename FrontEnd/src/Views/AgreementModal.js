@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Avatar, List, Modal } from "antd";
+import { Avatar, List, Modal } from "antd";
 
 import { StyledWrapper } from "../Auth/style";
 

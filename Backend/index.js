@@ -46,7 +46,6 @@ app.get("/", (req, res) => {
   return res.json("Server is working");
 });
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
-app.use("/aws", awsRoutes);
 app.use("/auth", authRoutes);
 
 app.use(validateToken());
@@ -62,6 +61,7 @@ app.use("/testparameter", testParameterRoutes);
 app.use("/reusableProcess", reusableProcessRoutes);
 app.use("/executionHistory", executionHistoryRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/aws", awsRoutes);
 
 app.use((req, res) => {
   return res.status(404).json({ error: "Endpoint Not Found" });

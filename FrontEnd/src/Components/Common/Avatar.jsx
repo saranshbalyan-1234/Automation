@@ -1,12 +1,22 @@
-import React from "react";
-import { Avatar, Popover, Card, Badge } from "antd";
-export const UserAvatar = ({ user, size = "small" }) => {
-  console.log("saransh", user);
-  const handleAvatarInitials = () => {
-    const temp = user.name?.split(" ");
-    if (temp.length > 1) return temp[0][0] + temp[1][0];
-    else return temp[0][0];
-  };
+import React, { useEffect, useState } from "react";
+import { Avatar, Popover, Card, Badge, Image } from "antd";
+import axios from "axios";
+import { connect } from "react-redux";
+import { fetchProfileImage } from "../../Redux/Actions/image";
+export const UserAvatar = ({
+  user,
+  size = "small",
+  images,
+  fetchProfileImage,
+}) => {
+  const imageName = user.email.replace(/[^a-zA-Z0-9 ]/g, "");
+  useEffect(() => {
+    console.log("saransh", images[imageName]);
+    if (user.profileImage && !images[imageName]) {
+      fetchProfileImage(imageName);
+    }
+  }, []);
+
   const getUserData = () => {
     return (
       <Badge.Ribbon
@@ -35,19 +45,43 @@ export const UserAvatar = ({ user, size = "small" }) => {
   };
   return (
     <Popover content={getUserData}>
-      <Avatar
-        size={size}
-        style={{
-          backgroundColor: "#f56a00",
-          cursor: "pointer",
-        }}
-      >
-        <div style={{ marginTop: "-1px", textTransform: "uppercase" }}>
-          {handleAvatarInitials()}
-        </div>
-      </Avatar>
+      {images[imageName] ? (
+        <Avatar
+          src={"data:image/jpeg;base64," + images[imageName]}
+          size={size}
+          style={{
+            backgroundColor: "#f56a00",
+            cursor: "pointer",
+          }}
+        >
+          <div style={{ marginTop: "-1px", textTransform: "uppercase" }}>
+            {handleAvatarInitials(user)}
+          </div>
+        </Avatar>
+      ) : (
+        <Avatar
+          size={size}
+          style={{
+            backgroundColor: "#f56a00",
+            cursor: "pointer",
+          }}
+        >
+          <div style={{ marginTop: "-1px", textTransform: "uppercase" }}>
+            {handleAvatarInitials(user)}
+          </div>
+        </Avatar>
+      )}
     </Popover>
   );
 };
+export const handleAvatarInitials = (user) => {
+  const temp = user.name?.split(" ");
+  if (temp.length > 1) return temp[0][0] + temp[1][0];
+  else return temp[0][0];
+};
 
-export default UserAvatar;
+const mapStateToProps = (state) => ({ images: state.image });
+
+const mapDispatchToProps = { fetchProfileImage };
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserAvatar);

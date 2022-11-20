@@ -80,3 +80,19 @@ export const listObjectsInBucket = (bucketName) => {
     return data;
   });
 };
+
+export const getObject = async (req, res) => {
+  console.log(req.database);
+  var getParams = {
+    Bucket: req.database, // your bucket name,
+    Key: req.body.fileName, // path to the object you're looking for
+  };
+
+  s3.getObject(getParams, function (err, data) {
+    // Handle any error and exit
+    if (err) return err;
+    let temp = data.Body.toString("base64");
+
+    return res.status(200).json(temp);
+  });
+};

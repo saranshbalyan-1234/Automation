@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import {
-  UserOutlined,
   LogoutOutlined,
   EditOutlined,
   DownloadOutlined,
@@ -12,8 +11,18 @@ import { TbApps } from "react-icons/tb";
 import { Avatar, Dropdown, Menu, Badge, Card } from "antd";
 import { logout } from "../../../Redux/Actions/auth";
 import { Link } from "react-router-dom";
+import { handleAvatarInitials } from "../../Common/Avatar";
+import { fetchProfileImage } from "../../../Redux/Actions/image";
 const { Meta } = Card;
-const ProfileMenu = ({ logout }) => {
+const ProfileMenu = ({ logout, user, images, fetchProfileImage }) => {
+  const imageName = user.email.replace(/[^a-zA-Z0-9 ]/g, "");
+
+  useEffect(() => {
+    console.log("saransh", images[imageName]);
+    if (user.profileImage && !images[imageName]) {
+      fetchProfileImage(imageName);
+    }
+  }, []);
   const profileMenu = (
     <Menu
       items={[
@@ -164,23 +173,44 @@ const ProfileMenu = ({ logout }) => {
         </Dropdown>
       </div>
       <Dropdown overlay={profileMenu} trigger={["hover"]}>
-        <Avatar
-          style={{
-            // marginRight: "30px",
-            backgroundColor: "white",
-            color: "#001529",
-            cursor: "pointer",
-          }}
-          size={32}
-          icon={<UserOutlined />}
-        />
+        {images[imageName] ? (
+          <Avatar
+            src={"data:image/jpeg;base64," + images[imageName]}
+            size={32}
+            style={{
+              backgroundColor: "white",
+              color: "#001529",
+              cursor: "pointer",
+            }}
+          >
+            <div style={{ marginTop: "-1px", textTransform: "uppercase" }}>
+              {handleAvatarInitials(user)}
+            </div>
+          </Avatar>
+        ) : (
+          <Avatar
+            size={32}
+            style={{
+              backgroundColor: "white",
+              color: "#001529",
+              cursor: "pointer",
+            }}
+          >
+            <div style={{ marginTop: "-1px", textTransform: "uppercase" }}>
+              {handleAvatarInitials(user)}
+            </div>
+          </Avatar>
+        )}
       </Dropdown>
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+  images: state.image,
+});
 
-const mapDispatchToProps = { logout };
+const mapDispatchToProps = { logout, fetchProfileImage };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileMenu);

@@ -6,10 +6,10 @@ import { InboxOutlined } from "@ant-design/icons";
 import { Upload } from "antd";
 import { uploadProfilePic } from "../../../Redux/Actions/user";
 const { Dragger } = Upload;
-const UploadProfileImage = ({ visible, setVisible }) => {
+const UploadProfileImage = ({ visible, setVisible, uploadProfilePic }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormdata] = useState(new FormData());
-  const onFinish = async (data) => {
+  const onFinish = async () => {
     setLoading(true);
     const result = await uploadProfilePic(formData);
     result && setVisible(false);
@@ -77,6 +77,6 @@ const UploadProfileImage = ({ visible, setVisible }) => {
 
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { uploadProfilePic };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadProfileImage);
