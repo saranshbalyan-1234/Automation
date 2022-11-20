@@ -88,17 +88,19 @@ export const getObject = async (req, res) => {
     Bucket: req.database,
     Key: req.body.fileName,
   };
+  try {
+    s3.getObject(getParams, function (err, data) {
+      // Handle any error and exit
+      let temp = "";
+      if (data.Body) {
+        temp = data.Body.toString("base64");
+      } else {
+        temp = data;
+      }
 
-  s3.getObject(getParams, function (err, data) {
-    // Handle any error and exit
-    if (err) return err;
-    let temp = "";
-    if (data.Body) {
-      temp = data.Body.toString("base64");
-    } else {
-      temp = data;
-    }
-
-    return res.status(200).json(temp);
-  });
+      return res.status(200).json(temp);
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };

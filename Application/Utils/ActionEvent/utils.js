@@ -43,9 +43,17 @@ const findByLocator = async (locators) => {
 };
 const takeScreenshot = async (driver, req, step, executionHistory) => {
   console.log("Taking screenshot");
-  await driver.takeScreenshot().then(async (image, err) => {
+  await driver.takeScreenshot().then(async (data, err) => {
+    if (err) return console.log("error in taking screenshot", err);
+
+    var buf = Buffer.from(
+      data.replace(/^data:image\/\w+;base64,/, ""),
+      "base64"
+    );
+
+    // console.log(data);
     const fileName = `screenshot_${executionHistory.id}_${step.id}`;
-    await uploadFile(image, req.database, fileName);
+    await uploadFile(buf, req.database, fileName);
   });
 };
 

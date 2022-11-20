@@ -67,6 +67,7 @@ app.post("/execute/:testCaseId", async (req, res) => {
       await updateProcessResult(req, processHistory.dataValues.id, true);
     }
     await updateExecutionFinishTime(req, data.executionHistory.id, moment());
+    console.log("Execution Finished");
   } catch (err) {
     console.log(err);
   }

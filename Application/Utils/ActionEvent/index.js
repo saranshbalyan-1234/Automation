@@ -44,138 +44,138 @@ const handleStep = async (
       await launchWebsite(step, driver, req, stepHistory, processResult);
       break;
     case "Click":
-      await click(step, driver, processResult);
+      await click(step, driver, processResult, req);
       break;
     case "Double Click":
-      await doubleClick(step, driver, processResult);
+      await doubleClick(step, driver, processResult, req);
       break;
     case "Right Click":
-      await rightClick(step, driver, processResult);
+      await rightClick(step, driver, processResult), req;
       break;
     case "Enter Text":
-      await enterText(step, driver, processResult);
+      await enterText(step, driver, processResult, req);
       break;
     case "Clear Input":
-      await clearInput(step, driver, processResult);
+      await clearInput(step, driver, processResult, req);
       break;
     case "Enter Password":
-      await enterPassword(step, driver, processResult);
+      await enterPassword(step, driver, processResult, req);
       break;
     case "Press Button":
-      await pressButton(step, driver, processResult);
+      await pressButton(step, driver, processResult, req);
       break;
     case "Maximize Browser":
-      await maximizeBrowser(driver, processResult);
+      await maximizeBrowser(driver, processResult, req);
       break;
     case "Close Browser":
-      await closeBrowser(driver, processResult);
+      await closeBrowser(driver, processResult, req);
     case "Wait":
-      await implicitWait(step, driver, processResult);
+      await implicitWait(step, driver, processResult, req);
       break;
     case "Wait Until Object Located":
-      await waitUntilObjectLocated(step, driver, processResult);
+      await waitUntilObjectLocated(step, driver, processResult, req);
       break;
     case "Wait Until Objects Located":
-      await waitUntilObjectsLocated(step, driver, processResult);
+      await waitUntilObjectsLocated(step, driver, processResult, req);
       break;
     case "Wait Until Object Enabled":
-      await waitUntilObjectEnabled(step, driver, processResult);
+      await waitUntilObjectEnabled(step, driver, processResult, req);
       break;
     case "Wait Until Object Disabled":
-      await waitUntilObjectDisabled(step, driver, processResult);
+      await waitUntilObjectDisabled(step, driver, processResult, req);
       break;
     case "Wait Until Object Selected":
-      await waitUntilObjectSelected(step, driver, processResult);
+      await waitUntilObjectSelected(step, driver, processResult, req);
       break;
     case "Wait Until Object Not Selected":
-      await waitUntilObjectNotSelected(step, driver, processResult);
+      await waitUntilObjectNotSelected(step, driver, processResult), req;
       break;
     case "Wait Until Object Visible":
-      await waitUntilObjectVisible(step, driver, processResult);
+      await waitUntilObjectVisible(step, driver, processResult, req);
       break;
     case "Wait Until Object Not Visible":
-      await waitUntilObjectNotVisible(step, driver, processResult);
+      await waitUntilObjectNotVisible(step, driver, processResult, req);
       break;
     case "Wait Until Alert Present":
-      await waitUntilAlertPresent(step, driver, processResult);
+      await waitUntilAlertPresent(step, driver, processResult, req);
       break;
     case "Wait Until Object Text Contains":
-      await waitUntilObjectTextContains(step, driver, processResult);
+      await waitUntilObjectTextContains(step, driver, processResult, req);
       break;
     case "Wait Until Object Text Is":
-      await waitUntilObjectTextIs(step, driver, processResult);
+      await waitUntilObjectTextIs(step, driver, processResult, req);
       break;
     case "Wait Until Object Text Matches":
-      await waitUntilObjectTextMatches(step, driver, processResult);
+      await waitUntilObjectTextMatches(step, driver, processResult, req);
       break;
     case "Wait Until Title Contains":
-      await waitUntilTitleContains(step, driver, processResult);
+      await waitUntilTitleContains(step, driver, processResult, req);
       break;
     case "Wait Until Title Is":
-      await waitUntilTitleIs(step, driver, processResult);
+      await waitUntilTitleIs(step, driver, processResult, req);
       break;
     case "Wait Until Title Matches":
-      await waitUntilTitleMatches(step, driver, processResult);
+      await waitUntilTitleMatches(step, driver, processResult, req);
       break;
     case "Wait Until Url Contains":
-      await waitUntilUrlContains(step, driver, processResult);
+      await waitUntilUrlContains(step, driver, processResult, req);
       break;
     case "Wait Until Url Is":
-      await waitUntilUrlIs(step, driver, processResult);
+      await waitUntilUrlIs(step, driver, processResult, req);
       break;
     case "Wait Until Url Matches":
-      await waitUntilUrlMatches(step, driver, processResult);
+      await waitUntilUrlMatches(step, driver, processResult, req);
       break;
     case "Wait Until Object Staleness Of":
-      await waitUntilObjectStalenessOf(step, driver, processResult);
+      await waitUntilObjectStalenessOf(step, driver, processResult, req);
       break;
     case "Wait Until Able To Switch Frame":
-      await waitUntilAbleToSwitchToFrame(step, driver, processResult);
+      await waitUntilAbleToSwitchToFrame(step, driver, processResult, req);
       break;
     case "Refresh Page":
-      await refreshPage(driver, processResult);
+      await refreshPage(driver, processResult, req);
       break;
     case "Generate Random Number":
-      await generateRandomNumber(step, output, processResult);
+      await generateRandomNumber(step, output, processResult, req);
       break;
     case "Get Page Title":
-      await getPageTitle(step, driver, output, processResult);
+      await getPageTitle(step, driver, output, processResult, req);
       break;
     case "Console Log":
-      await console.log(step.testParameters.Value, processResult);
+      await console.log(step.testParameters.Value, processResult, req);
       break;
     case "Scroll To Object":
-      await scrollToObject(step, driver, processResult);
+      await scrollToObject(step, driver, processResult, req);
       break;
     case "Scroll To End":
-      await scrollToEnd(driver, processResult);
+      await scrollToEnd(driver, processResult, req);
       break;
     case "Scroll To Top":
-      await scrollToTop(driver, processResult);
+      await scrollToTop(driver, processResult, req);
       break;
     case "Click By Javascript":
-      await clickByJs(step, driver, processResult);
+      await clickByJs(step, driver, processResult, req);
       break;
     case "Click Link By Text":
-      await clickLinkByText(step, driver, processResult);
+      await clickLinkByText(step, driver, processResult, req);
       break;
     case "Click Link By Partial Text":
-      await clickLinkByPartialText(step, driver, processResult);
+      await clickLinkByPartialText(step, driver, processResult, req);
       break;
     case "Hover Mouse":
-      await hoverMouse(step, driver, processResult);
+      await hoverMouse(step, driver, processResult, req);
       break;
     case "Copy Test":
-      await copyText(step, output, processResult);
+      await copyText(step, output, processResult, req);
       break;
     case "Copy Password":
-      await copyPassword(step, output, processResult);
+      await copyPassword(step, output, processResult, req);
       break;
     case "Combine String":
-      await combineString(step, output, processResult);
+      await combineString(step, output, processResult, req);
       break;
     case "Get Current Date Time":
-      await getCurrentDateTime(step, output, processResult);
+      await getCurrentDateTime(step, output, processResult, req);
       break;
     default:
       break;
@@ -198,7 +198,7 @@ const launchWebsite = async (step, driver, req, stepHistory, processResult) => {
   }
 };
 
-const click = async (step, driver, processResult) => {
+const click = async (step, driver, processResult, req) => {
   console.log("Clicking");
   try {
     await driver
@@ -210,7 +210,7 @@ const click = async (step, driver, processResult) => {
     if (processResult) processResult = false;
   }
 };
-const doubleClick = async (step, driver, processResult) => {
+const doubleClick = async (step, driver, processResult, req) => {
   console.log("Double Clicking");
   try {
     await driver
@@ -227,7 +227,7 @@ const doubleClick = async (step, driver, processResult) => {
     if (processResult) processResult = false;
   }
 };
-const hoverMouse = async (step, driver, processResult) => {
+const hoverMouse = async (step, driver, processResult, req) => {
   console.log("Hovering Mouse");
   try {
     const el = await driver.findElement(
@@ -240,7 +240,7 @@ const hoverMouse = async (step, driver, processResult) => {
     if (processResult) processResult = false;
   }
 };
-const rightClick = async (step, driver, processResult) => {
+const rightClick = async (step, driver, processResult, req) => {
   console.log("Right Clicking");
   try {
     await driver
@@ -258,7 +258,7 @@ const rightClick = async (step, driver, processResult) => {
   }
 };
 
-const enterText = async (step, driver, processResult) => {
+const enterText = async (step, driver, processResult, req) => {
   console.log("Entering text " + text);
   try {
     const text = step.testParameters.Text;
@@ -285,7 +285,7 @@ const enterPassword = async (step, driver, processResult) => {
   }
 };
 
-const pressButton = async (step, driver, processResult) => {
+const pressButton = async (step, driver, processResult, req) => {
   console.log("pressing button " + Button);
   try {
     const Button = step.testParameters.Button;
@@ -298,7 +298,7 @@ const pressButton = async (step, driver, processResult) => {
     if (processResult) processResult = false;
   }
 };
-const maximizeBrowser = async (driver, processResult) => {
+const maximizeBrowser = async (driver, processResult, req) => {
   console.log("Maximize Browser");
   try {
     await driver.manage().window().maximize();
@@ -309,7 +309,7 @@ const maximizeBrowser = async (driver, processResult) => {
   }
 };
 
-const closeBrowser = async (driver, processResult) => {
+const closeBrowser = async (driver, processResult, req) => {
   console.log("Browser Closed");
   try {
     await driver.quit();
@@ -320,7 +320,7 @@ const closeBrowser = async (driver, processResult) => {
   }
 };
 
-const refreshPage = async (driver, processResult) => {
+const refreshPage = async (driver, processResult, req) => {
   try {
     await driver.navigate().refresh();
     return await updateStepResult(req, stepHistory.dataValues.id, true);
@@ -329,7 +329,7 @@ const refreshPage = async (driver, processResult) => {
     if (processResult) processResult = false;
   }
 };
-const generateRandomNumber = async (step, output, processResult) => {
+const generateRandomNumber = async (step, output, processResult, req) => {
   console.log("generating random number");
   try {
     const randomNumber = Math.floor(
@@ -342,7 +342,7 @@ const generateRandomNumber = async (step, output, processResult) => {
     if (processResult) processResult = false;
   }
 };
-const getPageTitle = async (step, driver, output, processResult) => {
+const getPageTitle = async (step, driver, output, processResult, req) => {
   console.log("Getting Page Title");
   try {
     const title = await driver.getTitle();
@@ -354,7 +354,7 @@ const getPageTitle = async (step, driver, output, processResult) => {
   }
 };
 
-const clearInput = async (step, driver, processResult) => {
+const clearInput = async (step, driver, processResult, req) => {
   console.log("Clearning Input");
   try {
     await driver
@@ -366,7 +366,7 @@ const clearInput = async (step, driver, processResult) => {
     if (processResult) processResult = false;
   }
 };
-const scrollToObject = async (step, driver, processResult) => {
+const scrollToObject = async (step, driver, processResult, req) => {
   console.log("Scrolling To Object");
   try {
     const element = await driver.findElement(
@@ -380,7 +380,7 @@ const scrollToObject = async (step, driver, processResult) => {
   }
 };
 
-const scrollToEnd = async (driver, processResult) => {
+const scrollToEnd = async (driver, processResult, req) => {
   console.log("Scrolling To End");
   try {
     await driver.executeScript("window.scrollBy(0,document.body.scrollHeight)");
@@ -390,7 +390,7 @@ const scrollToEnd = async (driver, processResult) => {
     if (processResult) processResult = false;
   }
 };
-const scrollToTop = async (driver, processResult) => {
+const scrollToTop = async (driver, processResult, req) => {
   console.log("Scrolling To Top");
   try {
     await driver.executeScript("window.scrollTo(0,0)");
@@ -401,7 +401,7 @@ const scrollToTop = async (driver, processResult) => {
   }
 };
 
-const clickByJs = async (step, driver, processResult) => {
+const clickByJs = async (step, driver, processResult, req) => {
   console.log("Clicking By Javascript");
   try {
     const element = await driver.findElement(
@@ -415,7 +415,7 @@ const clickByJs = async (step, driver, processResult) => {
   }
 };
 
-const clickLinkByText = async (step, driver, processResult) => {
+const clickLinkByText = async (step, driver, processResult, req) => {
   console.log("Clicking Link By Text");
   try {
     await driver.findElement(By.linkText(step.testParameters.Text)).click();
@@ -425,7 +425,7 @@ const clickLinkByText = async (step, driver, processResult) => {
     if (processResult) processResult = false;
   }
 };
-const clickLinkByPartialText = async (step, driver, processResult) => {
+const clickLinkByPartialText = async (step, driver, processResult, req) => {
   console.log("Clicking Link By Partial Text");
   try {
     await driver
@@ -437,7 +437,7 @@ const clickLinkByPartialText = async (step, driver, processResult) => {
     if (processResult) processResult = false;
   }
 };
-const copyText = async (step, output, processResult) => {
+const copyText = async (step, output, processResult, req) => {
   console.log("Copying Text");
   try {
     const value = step.testParameters.Value;
@@ -448,7 +448,7 @@ const copyText = async (step, output, processResult) => {
     if (processResult) processResult = false;
   }
 };
-const copyPassword = async (step, output, processResult) => {
+const copyPassword = async (step, output, processResult, req) => {
   console.log("Copying Password");
   try {
     const value = step.testParameters.Password;
@@ -459,7 +459,7 @@ const copyPassword = async (step, output, processResult) => {
     if (processResult) processResult = false;
   }
 };
-const combineString = async (step, output, processResult) => {
+const combineString = async (step, output, processResult, req) => {
   console.log("Combining String");
   try {
     const value1 = step.testParameters.Value1;
@@ -471,7 +471,7 @@ const combineString = async (step, output, processResult) => {
     if (processResult) processResult = false;
   }
 };
-const getCurrentDateTime = async (step, output, processResult) => {
+const getCurrentDateTime = async (step, output, processResult, req) => {
   console.log("Getting Current Time");
   try {
     const format = step.testParameters.Format;

@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Image } from "antd";
-import { fetchAwsObject } from "../../../Redux/Actions/image";
+
 import { connect } from "react-redux";
 import Loading from "../../Common/Loading";
-
-const ViewScreenShotModal = ({
-  visible,
-  setVisible,
-  fetchAwsObject,
-  images,
-}) => {
-  const [loading, setLoading] = useState(false);
+import axios from "axios";
+const ViewScreenShotModal = ({ visible, setVisible }) => {
+  const [loading, setLoading] = useState(true);
+  const [imgData, setImgData] = useState("");
   useEffect(() => {
     fetchScreenShot();
   }, []);
 
   const fetchScreenShot = async () => {
-    if (!images[visible]) {
-      setLoading(true);
-      await fetchAwsObject(visible);
-      setLoading(false);
-    }
+    setLoading(true);
+    const { data } = await axios.post("/aws/object", {
+      fileName: visible,
+    });
+    setImgData(data);
+    setLoading(false);
   };
 
   return (
@@ -34,18 +31,27 @@ const ViewScreenShotModal = ({
       }}
     >
       <Loading loading={loading}>
-        <Image src={"data:image/jpeg;base64," + images[visible]} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {!loading && (
+            <img
+              src={"data:image/jpeg;base64," + imgData}
+              style={{ maxWidth: "75vw" }}
+            />
+          )}
+        </div>
       </Loading>
     </Modal>
   );
 };
-const mapStateToProps = (state) => ({
-  images: state.image,
-});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {
-  fetchAwsObject,
-};
+const mapDispatchToProps = {};
 
 export default connect(
   mapStateToProps,
