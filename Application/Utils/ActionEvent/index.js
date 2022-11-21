@@ -2,6 +2,7 @@ const chromeDriver = require("selenium-webdriver");
 const { findByLocator, takeScreenshot } = require("./utils");
 const { By } = chromeDriver;
 const moment = require("moment");
+const { createFolder } = require("../../Controllers/awsController");
 const {
   implicitWait,
   waitUntilObjectLocated,
@@ -37,7 +38,8 @@ const handleStep = async (
   req,
   stepHistory,
   processResult,
-  executionHistory
+  executionHistory,
+  canCreateS3Folder
 ) => {
   switch (step.actionEvent) {
     case "Launch Website":
@@ -180,8 +182,11 @@ const handleStep = async (
     default:
       break;
   }
-  if (step.screenshot)
+  if (step.screenshot) {
+    await createFolder(req.database, executionHistory.id);
+    canCreateS3Folder = false;
     await takeScreenshot(driver, req, step, executionHistory);
+  }
   return true;
 };
 

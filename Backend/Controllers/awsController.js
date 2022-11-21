@@ -91,6 +91,7 @@ export const getObject = async (req, res) => {
   try {
     s3.getObject(getParams, function (err, data) {
       // Handle any error and exit
+      if (!data || err) throw new Error("Object Not Found");
       let temp = "";
       if (data.Body) {
         temp = data.Body.toString("base64");

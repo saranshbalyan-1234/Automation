@@ -20,5 +20,13 @@ const uploadFile = async (file, bucketName, keyName) => {
     }
   });
 };
+const createFolder = async (bucketName, folderName) => {
+  // Setting up S3 upload parameters
+  const uploadParams = {
+    Bucket: bucketName, // Bucket into which you want to upload file
+    Key: folderName + "/", // Name by which you want to save it
+  };
+  return s3.putObject(uploadParams).promise();
+};
 
-module.exports = { uploadFile };
+module.exports = { uploadFile, createFolder };

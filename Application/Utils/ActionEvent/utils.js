@@ -52,7 +52,7 @@ const takeScreenshot = async (driver, req, step, executionHistory) => {
     );
 
     // console.log(data);
-    const fileName = `screenshot_${executionHistory.id}_${step.id}`;
+    const fileName = `${executionHistory.id}/${step.id}`;
     await uploadFile(buf, req.database, fileName);
   });
 };

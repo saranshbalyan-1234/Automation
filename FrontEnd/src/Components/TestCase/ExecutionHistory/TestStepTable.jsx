@@ -96,7 +96,7 @@ const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
               style={{ cursor: "pointer" }}
               onClick={() => {
                 setScreenshotKey(
-                  `screenshot_${currentExecutionHistory.id}_${record.testStepId}`
+                  `${currentExecutionHistory.id}/${record.testStepId}`
                 );
               }}
             >

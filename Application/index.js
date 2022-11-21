@@ -27,7 +27,7 @@ app.post("/execute/:testCaseId", async (req, res) => {
   let driver = await createDriver(req, res);
   try {
     const data = await getTestStepByTestCase(req, res);
-
+    let canCreateS3Folder = true;
     let output = {};
     for (const process of data.data) {
       let processResult = true;
@@ -61,7 +61,8 @@ app.post("/execute/:testCaseId", async (req, res) => {
           req,
           stepHistory,
           processResult,
-          data.executionHistory
+          data.executionHistory,
+          canCreateS3Folder
         );
       }
       await updateProcessResult(req, processHistory.dataValues.id, true);
