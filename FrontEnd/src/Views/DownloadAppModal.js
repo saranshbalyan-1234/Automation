@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal, Card, Tag } from "antd";
 const { Meta } = Card;
 const DownloadAppModal = ({ visible, setVisible }) => {

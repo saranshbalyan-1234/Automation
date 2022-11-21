@@ -58,7 +58,8 @@ const AddEditStepModal = ({
           })
         );
     });
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [edit]);
 
   useEffect(() => {
     edit &&
@@ -88,10 +89,12 @@ const AddEditStepModal = ({
           return el.type === currentEvent.parameter3;
         })?.method || "Static",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentEvent, edit]);
 
   useEffect(() => {
     currentProjectId && getObjectByProject();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentProjectId]);
 
   const onSubmit = async (data) => {
@@ -298,7 +301,7 @@ const AddEditStepModal = ({
                     margin: "0 8px",
                   }}
                 >
-                  {currentEvent.parameter1 == "Button" ? (
+                  {currentEvent.parameter1 === "Button" ? (
                     <Select style={{ minWidth: "160px" }} showSearch>
                       {KeyboardButtonList.map((el, i) => {
                         return (
@@ -351,7 +354,7 @@ const AddEditStepModal = ({
                     margin: "0 8px",
                   }}
                 >
-                  {currentEvent.parameter2 == "Button" ? (
+                  {currentEvent.parameter2 === "Button" ? (
                     <Select style={{ minWidth: "160px" }} showSearch>
                       {KeyboardButtonList.map((el, i) => {
                         return (
@@ -404,7 +407,7 @@ const AddEditStepModal = ({
                     margin: "0 8px",
                   }}
                 >
-                  {currentEvent.parameter3 == "Button" ? (
+                  {currentEvent.parameter3 === "Button" ? (
                     <Select style={{ minWidth: "160px" }} showSearch>
                       {KeyboardButtonList.map((el, i) => {
                         return (

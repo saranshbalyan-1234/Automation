@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Image } from "antd";
+import { Modal } from "antd";
 
 import { connect } from "react-redux";
 import Loading from "../../Common/Loading";
@@ -9,6 +9,7 @@ const ViewScreenShotModal = ({ visible, setVisible }) => {
   const [imgData, setImgData] = useState("");
   useEffect(() => {
     fetchScreenShot();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchScreenShot = async () => {
@@ -40,6 +41,7 @@ const ViewScreenShotModal = ({ visible, setVisible }) => {
         >
           {!loading && (
             <img
+              alt="screenshot"
               src={"data:image/jpeg;base64," + imgData}
               style={{ maxWidth: "75vw" }}
             />

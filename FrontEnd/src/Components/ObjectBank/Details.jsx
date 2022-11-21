@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Locators from "./Locators";
-import Details from "../Common/Details";
 import { useParams } from "react-router-dom";
 import { Button, Card, Typography } from "antd";
 import { getObjectDetailsById, editObject } from "../../Redux/Actions/object";
@@ -12,10 +11,7 @@ import moment from "moment";
 const { Meta } = Card;
 const { Title } = Typography;
 const ObjectDetails = ({
-  loading,
   object,
-  name = "Object",
-  editObject,
   getObjectDetailsById,
   newObject,
   history = false,
@@ -32,7 +28,8 @@ const ObjectDetails = ({
       newObject.id && getObjectDetailsById(newObject.id);
       setCurrentObject(object);
     }
-  }, [objectId, newObject.id, object.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [objectId, newObject.id, object.id, history]);
 
   return (
     <div>

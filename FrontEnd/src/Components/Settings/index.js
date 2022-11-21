@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, Button, Badge } from "antd";
+import { Tabs, Button } from "antd";
 import Profile from "./Profile";
 import ComingSoon from "../../Views/ComingSoon";
 import Team from "./Team";

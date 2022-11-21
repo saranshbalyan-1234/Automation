@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Avatar, Popover, Card, Badge, Image } from "antd";
-import axios from "axios";
+import React, { useEffect } from "react";
+import { Avatar, Popover, Card, Badge } from "antd";
 import { connect } from "react-redux";
 import { fetchAwsObject } from "../../Redux/Actions/image";
 export const UserAvatar = ({
@@ -11,10 +10,10 @@ export const UserAvatar = ({
 }) => {
   const imageName = user.email.replace(/[^a-zA-Z0-9 ]/g, "");
   useEffect(() => {
-    console.log("saransh", images[imageName]);
     if (user.profileImage && !images[imageName]) {
       fetchAwsObject(imageName);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getUserData = () => {

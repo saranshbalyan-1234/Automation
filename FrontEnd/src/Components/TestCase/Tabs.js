@@ -9,7 +9,6 @@ import {
 } from "../../Redux/Actions/testCase";
 import Process from "./Process";
 import Details from "./TestCaseDetails";
-import ActivityLog from "../Common/ActivityLog";
 import ComingSoon from "../../Views/ComingSoon";
 import ExecuteModal from "./ExecuteModal";
 import ExecutionHistory from "./ExecutionHistory/List";
