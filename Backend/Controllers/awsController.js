@@ -105,3 +105,34 @@ export const getObject = async (req, res) => {
     console.log(error);
   }
 };
+
+export const deleteS3Folder = (bucketName, folderName) => {
+  var params = {
+    Bucket: bucketName,
+    Prefix: folderName + "/",
+  };
+  try {
+    s3.listObjects(params, function (err, data) {
+      if (err) return console.log(err);
+
+      if (data.Contents.length == 0) return;
+
+      params = { Bucket: bucketName };
+      params.Delete = { Objects: [] };
+
+      data.Contents.forEach(function (content) {
+        params.Delete.Objects.push({ Key: content.Key });
+      });
+      console.log(data);
+      s3.deleteObjects(params, function (err, data) {
+        if (err) return console.log(err);
+        if (data.IsTruncated) {
+          emptyBucket(bucketName, folderName);
+        }
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    console.log("something went wrong to delete s3 folder");
+  }
+};

@@ -59,7 +59,7 @@ app.post("/execute/:testCaseId", async (req, res) => {
           driver,
           output,
           req,
-          stepHistory,
+          stepHistory.dataValues.id,
           processResult,
           data.executionHistory,
           canCreateS3Folder

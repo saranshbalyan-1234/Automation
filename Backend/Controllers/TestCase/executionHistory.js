@@ -1,6 +1,7 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
 import moment from "moment";
+import { deleteS3Folder } from "../awsController.js";
 const ExecutionHistory = db.executionHistory;
 const User = db.users;
 const ProcessHistory = db.processHistory;
@@ -49,6 +50,7 @@ const deleteExecutionHistory = async (req, res) => {
     });
 
     if (deletedExecutionHistory > 0) {
+      deleteS3Folder(req.database, req.params.executionHistoryId);
       return res
         .status(200)
         .json({ message: "ExecutionHistory deleted successfully" });
