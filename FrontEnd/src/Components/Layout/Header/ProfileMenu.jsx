@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
   LogoutOutlined,
@@ -13,8 +13,10 @@ import { logout } from "../../../Redux/Actions/auth";
 import { Link } from "react-router-dom";
 import { handleAvatarInitials } from "../../Common/Avatar";
 import { fetchAwsObject } from "../../../Redux/Actions/image";
+import DownloadAppModal from "../../../Views/DownloadAppModal";
 const { Meta } = Card;
 const ProfileMenu = ({ logout, user, images, fetchAwsObject }) => {
+  const [downloadAppModal, setDownloadAppModal] = useState(false);
   const imageName = user.email.replace(/[^a-zA-Z0-9 ]/g, "");
 
   useEffect(() => {
@@ -27,9 +29,13 @@ const ProfileMenu = ({ logout, user, images, fetchAwsObject }) => {
       items={[
         {
           label: (
-            <>
+            <div
+              onClick={() => {
+                setDownloadAppModal(true);
+              }}
+            >
               <DownloadOutlined style={{ marginRight: "5px" }} /> Download App
-            </>
+            </div>
           ),
           key: "1",
           // onClick: logout,
@@ -202,6 +208,12 @@ const ProfileMenu = ({ logout, user, images, fetchAwsObject }) => {
           </Avatar>
         )}
       </Dropdown>
+      {downloadAppModal && (
+        <DownloadAppModal
+          visible={downloadAppModal}
+          setVisible={setDownloadAppModal}
+        />
+      )}
     </div>
   );
 };
