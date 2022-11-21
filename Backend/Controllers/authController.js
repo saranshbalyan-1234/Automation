@@ -27,7 +27,9 @@ const Process = db.process;
 const TestParameter = db.testParameters;
 const ReusableProcess = db.reusableProcess;
 const ObjectLocator = db.ObjectLocators;
-
+const ExecutionHistory = db.executionHistory;
+const ProcessHistory = db.processHistory;
+const TestStepHistory = db.testStepHistory;
 const register = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
   try {
@@ -197,6 +199,20 @@ const verifyCustomer = async (req, res) => {
         });
 
         await User.schema(database).sync({ force: true, alter: true });
+
+        await ExecutionHistory.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+        await ProcessHistory.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+        await TestStepHistory.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+
         await User.schema(database).create({
           name,
           email,
