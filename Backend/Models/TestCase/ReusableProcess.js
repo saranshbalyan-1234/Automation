@@ -21,6 +21,7 @@ export default (sequelize, DataTypes) => {
         model: "projects",
         key: "id",
       },
+      onDelete: "CASCADE",
     },
     createdByUser: {
       type: DataTypes.INTEGER,
