@@ -40,7 +40,6 @@ app.post("/execute/:testCaseId", async (req, res) => {
         data.executionHistory
       );
       for (let j = 0; j < process.testSteps.length; j++) {
-        console.log("saransh");
         let step = process.testSteps[j];
 
         let tempParameter = {};

@@ -91,7 +91,6 @@ const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
       dataIndex: "options",
       render: (text, record) => (
         <>
-          {console.log("saransh", record.screenshot)}
           {record.screenshot && (
             <div
               style={{ cursor: "pointer" }}
