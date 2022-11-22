@@ -14,18 +14,18 @@ const PasswordReset = () => {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get("/auth" + location.pathname)
-      .then((res) => {
-        setEmail(res.data.email);
-      })
-      .catch((err) => {
-        getError(err);
-      });
-    setLoading(false);
-  }, [location.pathname]);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   axios
+  //     .post("/auth" + location.pathname)
+  //     .then((res) => {
+  //       setEmail(res.data.email);
+  //     })
+  //     .catch((err) => {
+  //       getError(err);
+  //     });
+  //   setLoading(false);
+  // }, [location.pathname]);
 
   const onRegister = async () => {
     setLoading(true);
@@ -61,85 +61,68 @@ const PasswordReset = () => {
                 src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDWhiteBackground.svg"
                 style={{ height: 100, marginBottom: 30 }}
               />
-              {email && (
-                <Form
-                  initialValues={{ email }}
-                  name="reset-password"
-                  onFinish={onRegister}
-                  labelCol={{ span: 10 }}
-                  wrapperCol={{ span: 16 }}
-                >
-                  <Form.Item
-                    name="email"
-                    label="E-mail"
-                    rules={[
-                      {
-                        type: "email",
-                        message: "The input is not valid E-mail!",
-                      },
-                      {
-                        required: true,
-                        message: "User Not Found!",
-                      },
-                    ]}
-                  >
-                    <Input name="email" disabled />
-                  </Form.Item>
-                  <Form.Item
-                    name="password"
-                    label="Password"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your password!",
-                      },
-                    ]}
-                    hasFeedback
-                  >
-                    <Input.Password
-                      name="password"
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                      }}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    name="confirm"
-                    label="Confirm Password"
-                    dependencies={["password"]}
-                    hasFeedback
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please confirm your password!",
-                      },
-                      ({ getFieldValue }) => ({
-                        validator(_, value) {
-                          if (!value || getFieldValue("password") === value) {
-                            return Promise.resolve();
-                          }
-                          return Promise.reject(
-                            new Error("Passwords do not match!")
-                          );
-                        },
-                      }),
-                    ]}
-                  >
-                    <Input.Password />
-                  </Form.Item>
 
-                  <Form.Item {...tailFormItemLayout}>
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      style={{ marginRight: "20px" }}
-                    >
-                      Reset Password
-                    </Button>
-                    Or <Link to="/login">Login now!</Link>
-                  </Form.Item>
-                </Form>
-              )}{" "}
+              <Form
+                // initialValues={{ email }}
+                name="reset-password"
+                onFinish={onRegister}
+                labelCol={{ span: 10 }}
+                wrapperCol={{ span: 16 }}
+              >
+                <Form.Item
+                  name="password"
+                  label="Password"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your password!",
+                    },
+                  ]}
+                  hasFeedback
+                >
+                  <Input.Password
+                    name="password"
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="confirm"
+                  label="Confirm Password"
+                  dependencies={["password"]}
+                  hasFeedback
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please confirm your password!",
+                    },
+                    ({ getFieldValue }) => ({
+                      validator(_, value) {
+                        if (!value || getFieldValue("password") === value) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          new Error("Passwords do not match!")
+                        );
+                      },
+                    }),
+                  ]}
+                >
+                  <Input.Password />
+                </Form.Item>
+
+                <Form.Item {...tailFormItemLayout}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{ marginRight: "20px" }}
+                  >
+                    Reset Password
+                  </Button>
+                  Or <Link to="/login">Login now!</Link>
+                </Form.Item>
+              </Form>
             </center>
           </Card>
         </Loading>

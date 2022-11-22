@@ -62,7 +62,7 @@ const sendMail = async (data, type) => {
         process.env.JWT_RESET_SECRET,
         process.env.JWT_RESET_EXPIRATION
       );
-      link = `${process.env.WEBSITE_HOME}/auth/reset-password/${token}`;
+      link = `${process.env.WEBSITE_HOME}/reset-password/${token}`;
       mailOption = {
         to: data.email,
         subject: "Password Reset",
