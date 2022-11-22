@@ -33,65 +33,77 @@ const SignIn = ({ loading, signIn }) => {
     <StyledWrapper>
       <div className="outsideApp">
         <Loading loading={loading}>
-          <Card title="Login" bordered>
-            <img
-              alt="logo"
-              src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/whiteBackgroundLogo.svg"
-              style={{ height: "50px", marginBottom: "10px" }}
-            />
-            <Form initialValues={{ remember: false }} onFinish={handleSignIn}>
-              <Form.Item
-                name="email"
-                rules={[
-                  { required: true, message: "Please input your Email!" },
-                ]}
+          <Card
+            // title="Login"
+            bordered
+            style={{
+              minWidth: 400,
+            }}
+          >
+            <center>
+              <img
+                alt="logo"
+                src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDWhiteBackground.svg"
+                style={{ height: 100, marginBottom: 30 }}
+              />
+
+              <Form
+                style={{ minWidth: 350 }}
+                initialValues={{ remember: false }}
+                onFinish={handleSignIn}
               >
-                <Input
-                  type="email"
-                  prefix={<UserOutlined />}
-                  placeholder="Email"
+                <Form.Item
                   name="email"
-                  onChange={(e) => {
-                    handleDetails(e);
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                name="password"
-                rules={[
-                  { required: true, message: "Please input your Password!" },
-                ]}
-              >
-                <Input.Password
-                  prefix={<LockOutlined />}
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  onChange={(e) => {
-                    handleDetails(e);
-                  }}
-                  autoComplete="on"
-                />
-              </Form.Item>
-              <Form.Item>
-                <Form.Item name="remember" valuePropName="checked" noStyle>
-                  <Checkbox onChange={handleRememberMe}>Remember me</Checkbox>
-                </Form.Item>
-
-                <Link to="/reset-password/send-mail">Forgot password!</Link>
-              </Form.Item>
-
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  style={{ marginRight: "20px" }}
+                  rules={[
+                    { required: true, message: "Please input your Email!" },
+                  ]}
                 >
-                  Log in
-                </Button>
-                Or <Link to="/register">Register now!</Link>
-              </Form.Item>
-            </Form>
+                  <Input
+                    type="email"
+                    prefix={<UserOutlined />}
+                    placeholder="Email"
+                    name="email"
+                    onChange={(e) => {
+                      handleDetails(e);
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="password"
+                  rules={[
+                    { required: true, message: "Please input your Password!" },
+                  ]}
+                >
+                  <Input.Password
+                    prefix={<LockOutlined />}
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    onChange={(e) => {
+                      handleDetails(e);
+                    }}
+                    autoComplete="on"
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Form.Item name="remember" valuePropName="checked" noStyle>
+                    <Checkbox onChange={handleRememberMe}>Remember me</Checkbox>
+                  </Form.Item>
+
+                  <Link to="/reset-password/send-mail">Forgot password!</Link>
+                </Form.Item>
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{ marginRight: "20px" }}
+                  >
+                    Log in
+                  </Button>
+                  Or <Link to="/register">Register now!</Link>
+                </Form.Item>
+              </Form>
+            </center>
           </Card>
         </Loading>
       </div>

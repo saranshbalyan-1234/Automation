@@ -293,7 +293,8 @@ const sendResetPasswordMail = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
   try {
     const { email } = req.body;
-    const customer = await Customer.findOne({
+
+    const customer = await Customer.schema("Main").findOne({
       where: { email },
     });
     if (!customer) throw new Error("User Not Registered");

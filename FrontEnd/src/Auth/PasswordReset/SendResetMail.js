@@ -21,54 +21,62 @@ const SendResetMail = ({ sendResetPasswordMail }) => {
     <StyledWrapper>
       <div className="outsideApp">
         <Loading loading={loading}>
-          <Card title="Reset Your Password" bordered>
-            <img
-              alt="logo"
-              src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/whiteBackgroundLogo.svg"
-              style={{ height: "50px", marginBottom: "10px" }}
-            />
-            <Form
-              name="normal_login"
-              initialValues={{ remember: true }}
-              onFinish={handleReset}
-            >
-              <Form.Item
-                name="email"
-                rules={[
-                  { required: true, message: "Please input your Email!" },
-                ]}
-              >
-                <Input
-                  type="email"
-                  prefix={<UserOutlined />}
-                  placeholder="Email"
-                  name="email"
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                />
-              </Form.Item>
+          <Card
+            bordered
+            style={{
+              minWidth: 400,
+            }}
+          >
+            <center>
+              <img
+                alt="logo"
+                src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDWhiteBackground.svg"
+                style={{ height: 100, marginBottom: 30 }}
+              />
 
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  style={{ marginRight: "10px" }}
+              <Form
+                name="normal_login"
+                initialValues={{ remember: true }}
+                onFinish={handleReset}
+              >
+                <Form.Item
+                  name="email"
+                  rules={[
+                    { required: true, message: "Please input your Email!" },
+                  ]}
                 >
-                  Reset
-                </Button>{" "}
-                Or
-                <Button
-                  onClick={() => {
-                    navigate("/signin");
-                  }}
-                  htmlType="button"
-                  style={{ marginLeft: "10px" }}
-                >
-                  Login
-                </Button>
-              </Form.Item>
-            </Form>
+                  <Input
+                    type="email"
+                    prefix={<UserOutlined />}
+                    placeholder="Email"
+                    name="email"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
+                  />
+                </Form.Item>
+
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{ marginRight: "10px" }}
+                  >
+                    Reset Password
+                  </Button>{" "}
+                  Or
+                  <Button
+                    onClick={() => {
+                      navigate("/signin");
+                    }}
+                    htmlType="button"
+                    style={{ marginLeft: "10px" }}
+                  >
+                    Login
+                  </Button>
+                </Form.Item>
+              </Form>
+            </center>
           </Card>
         </Loading>
       </div>

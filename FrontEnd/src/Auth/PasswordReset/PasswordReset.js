@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { StyledWrapper } from "../style";
 import { getError } from "../../Utils/error";
 import Loading from "../../Components/Common/Loading";
-const PasswordReset = ({ resetPassword }) => {
+const PasswordReset = () => {
   const location = useLocation();
   const { token } = useParams();
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const PasswordReset = ({ resetPassword }) => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("/auth/" + location.pathname)
+      .get("/auth" + location.pathname)
       .then((res) => {
         setEmail(res.data.email);
       })
@@ -49,97 +49,98 @@ const PasswordReset = ({ resetPassword }) => {
     <StyledWrapper>
       <div className="outsideApp">
         <Loading loading={loading}>
-          <Card title="Register" bordered>
+          <Card
+            bordered
+            style={{
+              minWidth: 400,
+            }}
+          >
             <center>
               <img
                 alt="logo"
-                src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/whiteBackgroundLogo.svg"
-                style={{
-                  height: "50px",
-                  marginBottom: "10px",
-                  justifySelf: "center",
-                }}
+                src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDWhiteBackground.svg"
+                style={{ height: 100, marginBottom: 30 }}
               />
-            </center>
-            {email && (
-              <Form
-                initialValues={{ email }}
-                name="reset-password"
-                onFinish={onRegister}
-                labelCol={{ span: 10 }}
-                wrapperCol={{ span: 16 }}
-              >
-                <Form.Item
-                  name="email"
-                  label="E-mail"
-                  rules={[
-                    {
-                      type: "email",
-                      message: "The input is not valid E-mail!",
-                    },
-                    {
-                      required: true,
-                      message: "User Not Found!",
-                    },
-                  ]}
+              {email && (
+                <Form
+                  initialValues={{ email }}
+                  name="reset-password"
+                  onFinish={onRegister}
+                  labelCol={{ span: 10 }}
+                  wrapperCol={{ span: 16 }}
                 >
-                  <Input name="email" disabled />
-                </Form.Item>
-                <Form.Item
-                  name="password"
-                  label="Password"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your password!",
-                    },
-                  ]}
-                  hasFeedback
-                >
-                  <Input.Password
-                    name="password"
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="confirm"
-                  label="Confirm Password"
-                  dependencies={["password"]}
-                  hasFeedback
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please confirm your password!",
-                    },
-                    ({ getFieldValue }) => ({
-                      validator(_, value) {
-                        if (!value || getFieldValue("password") === value) {
-                          return Promise.resolve();
-                        }
-                        return Promise.reject(
-                          new Error("Passwords do not match!")
-                        );
+                  <Form.Item
+                    name="email"
+                    label="E-mail"
+                    rules={[
+                      {
+                        type: "email",
+                        message: "The input is not valid E-mail!",
                       },
-                    }),
-                  ]}
-                >
-                  <Input.Password />
-                </Form.Item>
-
-                <Form.Item {...tailFormItemLayout}>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    style={{ marginRight: "20px" }}
+                      {
+                        required: true,
+                        message: "User Not Found!",
+                      },
+                    ]}
                   >
-                    Reset Password
-                  </Button>
-                  Or <Link to="/login">Login now!</Link>
-                </Form.Item>
-              </Form>
-            )}
+                    <Input name="email" disabled />
+                  </Form.Item>
+                  <Form.Item
+                    name="password"
+                    label="Password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your password!",
+                      },
+                    ]}
+                    hasFeedback
+                  >
+                    <Input.Password
+                      name="password"
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                      }}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="confirm"
+                    label="Confirm Password"
+                    dependencies={["password"]}
+                    hasFeedback
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please confirm your password!",
+                      },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (!value || getFieldValue("password") === value) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject(
+                            new Error("Passwords do not match!")
+                          );
+                        },
+                      }),
+                    ]}
+                  >
+                    <Input.Password />
+                  </Form.Item>
+
+                  <Form.Item {...tailFormItemLayout}>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      style={{ marginRight: "20px" }}
+                    >
+                      Reset Password
+                    </Button>
+                    Or <Link to="/login">Login now!</Link>
+                  </Form.Item>
+                </Form>
+              )}{" "}
+            </center>
           </Card>
         </Loading>
       </div>
@@ -147,6 +148,6 @@ const PasswordReset = ({ resetPassword }) => {
   );
 };
 
-const mapDispatchToProps = { resetPassword };
+const mapDispatchToProps = {};
 
 export default connect(null, mapDispatchToProps)(PasswordReset);

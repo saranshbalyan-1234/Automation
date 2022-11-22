@@ -35,153 +35,151 @@ const Register = ({ register }) => {
         span: 28,
         offset: 0,
       },
-      sm: {
-        span: 20,
-        offset: 5,
-      },
     },
   };
   return (
     <StyledWrapper>
       <div className="outsideApp">
         <Loading loading={loading}>
-          <Card title="Register" bordered>
+          <Card
+            bordered
+            style={{
+              minWidth: 500,
+            }}
+          >
             <center>
-              {" "}
               <img
                 alt="logo"
-                src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/whiteBackgroundLogo.svg"
-                style={{
-                  height: "50px",
-                  marginBottom: "10px",
-                  justifySelf: "center",
-                }}
+                src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDWhiteBackground.svg"
+                style={{ height: 100, marginBottom: 30 }}
               />
-            </center>
-            <Form
-              name="register"
-              onFinish={onRegister}
-              labelCol={{ span: 10 }}
-              wrapperCol={{ span: 16 }}
-            >
-              <Form.Item
-                name="name"
-                label="Name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Name!",
-                  },
-                ]}
+              <Form
+                name="register"
+                onFinish={onRegister}
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 16 }}
               >
-                <Input
+                <Form.Item
                   name="name"
-                  onChange={(e) => {
-                    handleDetails(e);
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                name="email"
-                label="E-mail"
-                rules={[
-                  {
-                    type: "email",
-                    message: "The input is not valid E-mail!",
-                  },
-                  {
-                    required: true,
-                    message: "Please input your E-mail!",
-                  },
-                ]}
-              >
-                <Input
-                  name="email"
-                  onChange={(e) => {
-                    handleDetails(e);
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                name="password"
-                label="Password"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your password!",
-                  },
-                ]}
-                hasFeedback
-              >
-                <Input.Password
-                  name="password"
-                  onChange={(e) => {
-                    handleDetails(e);
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                name="confirm"
-                label="Confirm Password"
-                dependencies={["password"]}
-                hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: "Please confirm your password!",
-                  },
-                  ({ getFieldValue }) => ({
-                    validator(_, value) {
-                      if (!value || getFieldValue("password") === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        new Error("Passwords do not match!")
-                      );
+                  label="Name"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Name!",
                     },
-                  }),
-                ]}
-              >
-                <Input.Password />
-              </Form.Item>
-              <Form.Item
-                name="agreement"
-                valuePropName="checked"
-                rules={[
-                  {
-                    validator: (_, value) =>
-                      value
-                        ? Promise.resolve()
-                        : Promise.reject(new Error("Should accept agreement")),
-                  },
-                ]}
-                {...tailFormItemLayout}
-              >
-                <Checkbox>
-                  I have read the{" "}
-                  <span
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setShowAgreementModal(true);
-                    }}
-                    style={{ color: "#1890ff" }}
-                  >
-                    agreement
-                  </span>
-                </Checkbox>
-              </Form.Item>
-              <Form.Item {...tailFormItemLayout}>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  style={{ marginRight: "20px" }}
+                  ]}
                 >
-                  Register
-                </Button>
-                Or <Link to="/login">Login now!</Link>
-              </Form.Item>
-            </Form>
+                  <Input
+                    name="name"
+                    onChange={(e) => {
+                      handleDetails(e);
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="email"
+                  label="E-mail"
+                  rules={[
+                    {
+                      type: "email",
+                      message: "The input is not valid E-mail!",
+                    },
+                    {
+                      required: true,
+                      message: "Please input your E-mail!",
+                    },
+                  ]}
+                >
+                  <Input
+                    name="email"
+                    onChange={(e) => {
+                      handleDetails(e);
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="password"
+                  label="Password"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your password!",
+                    },
+                  ]}
+                  hasFeedback
+                >
+                  <Input.Password
+                    name="password"
+                    onChange={(e) => {
+                      handleDetails(e);
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="confirm"
+                  label="Confirm Password"
+                  dependencies={["password"]}
+                  hasFeedback
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please confirm your password!",
+                    },
+                    ({ getFieldValue }) => ({
+                      validator(_, value) {
+                        if (!value || getFieldValue("password") === value) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          new Error("Passwords do not match!")
+                        );
+                      },
+                    }),
+                  ]}
+                >
+                  <Input.Password />
+                </Form.Item>
+                <Form.Item
+                  name="agreement"
+                  valuePropName="checked"
+                  rules={[
+                    {
+                      validator: (_, value) =>
+                        value
+                          ? Promise.resolve()
+                          : Promise.reject(
+                              new Error("Should accept agreement")
+                            ),
+                    },
+                  ]}
+                  {...tailFormItemLayout}
+                >
+                  <Checkbox>
+                    I have read the{" "}
+                    <span
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setShowAgreementModal(true);
+                      }}
+                      style={{ color: "#1890ff" }}
+                    >
+                      agreement
+                    </span>
+                  </Checkbox>
+                </Form.Item>
+                <Form.Item {...tailFormItemLayout}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{ marginRight: "20px" }}
+                  >
+                    Register
+                  </Button>
+                  Or <Link to="/login">Login now!</Link>
+                </Form.Item>
+              </Form>
+            </center>
           </Card>
         </Loading>
       </div>
