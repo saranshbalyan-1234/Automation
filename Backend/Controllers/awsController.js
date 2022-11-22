@@ -90,21 +90,18 @@ export const getObject = async (req, res) => {
     Key: req.body.fileName,
   };
   try {
-    s3.getObject(getParams, function (err, data) {
-      // Handle any error and exit
-      if (!data || err) throw new Error("Object Not Found");
-      let temp = "";
-      if (data.Body) {
-        temp = data.Body.toString("base64");
-      } else {
-        temp = data;
-      }
-
-      return res.status(200).json(temp);
-    });
+    const data = await s3.getObject(getParams).promise();
+    if (!data) throw new Error("Object Not Found");
+    let temp = "";
+    if (data.Body) {
+      temp = data.Body.toString("base64");
+    } else {
+      temp = data;
+    }
+    return res.status(200).json(temp);
   } catch (error) {
-    return res.status(400).json({ error: error.message });
     console.log(error);
+    return res.status(400).json({ error: error.message });
   }
 };
 

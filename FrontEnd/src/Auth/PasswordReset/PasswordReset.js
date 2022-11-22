@@ -1,31 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Card } from "antd";
-import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { resetPassword } from "../../Redux/Actions/auth";
-import axios from "axios";
 import { connect } from "react-redux";
 import { StyledWrapper } from "../style";
-import { getError } from "../../Utils/error";
 import Loading from "../../Components/Common/Loading";
 const PasswordReset = () => {
-  const location = useLocation();
   const { token } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  // useEffect(() => {
-  //   setLoading(true);
-  //   axios
-  //     .post("/auth" + location.pathname)
-  //     .then((res) => {
-  //       setEmail(res.data.email);
-  //     })
-  //     .catch((err) => {
-  //       getError(err);
-  //     });
-  //   setLoading(false);
-  // }, [location.pathname]);
 
   const onRegister = async () => {
     setLoading(true);

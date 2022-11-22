@@ -14,9 +14,13 @@ const ViewScreenShotModal = ({ visible, setVisible }) => {
 
   const fetchScreenShot = async () => {
     setLoading(true);
-    const { data } = await axios.post("/aws/object", {
-      fileName: visible,
-    });
+    const { data } = await axios
+      .post("/aws/object", {
+        fileName: visible,
+      })
+      .catch(() => {
+        setVisible(false);
+      });
     setImgData(data);
     setLoading(false);
   };
