@@ -29,14 +29,20 @@ app.post("/execute/:testCaseId", async (req, res) => {
     const data = await getTestStepByTestCase(req, res);
     let canCreateS3Folder = true;
     let output = {};
-    for (const process of data.data) {
+
+    for (let i = 0; i < data.data.length; i++) {
+      let process = data.data[i];
       let processResult = true;
+
       const processHistory = await createProcessHistory(
         req,
         process,
         data.executionHistory
       );
-      for (const step of process.testSteps) {
+      for (let j = 0; j < process.testSteps.length; j++) {
+        console.log("saransh");
+        let step = process.testSteps[j];
+
         let tempParameter = {};
         step.testParameters.forEach((parameter) => {
           if (parameter.method == "Static") {
@@ -54,6 +60,7 @@ app.post("/execute/:testCaseId", async (req, res) => {
           data.executionHistory,
           processHistory
         );
+
         await handleStep(
           tempStep,
           driver,

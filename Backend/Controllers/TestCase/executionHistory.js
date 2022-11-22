@@ -66,10 +66,11 @@ const getExecutionHistoryById = async (req, res) => {
   /*  #swagger.tags = ["Execution History"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
-  const executionHistoryId = req.params.executionHistoryId;
-  const executionHistory = await ExecutionHistory.schema(req.database).findByPk(
-    executionHistoryId,
-    {
+  try {
+    const executionHistoryId = req.params.executionHistoryId;
+    const executionHistory = await ExecutionHistory.schema(
+      req.database
+    ).findByPk(executionHistoryId, {
       include: [
         {
           model: User.schema(req.database),
@@ -89,21 +90,23 @@ const getExecutionHistoryById = async (req, res) => {
           ],
         },
       ],
+    });
+    let executionTime = "";
+    if (executionHistory.dataValues.finishedAt) {
+      let startingTime = moment(executionHistory.dataValues.createdAt);
+      let timeTaken = moment(executionHistory.dataValues.finishedAt).diff(
+        moment(startingTime),
+        "seconds"
+      );
+      executionTime = moment.utc(timeTaken * 1000).format("HH:mm:ss");
     }
-  );
-  let executionTime = "";
-  if (executionHistory.dataValues.finishedAt) {
-    let startingTime = moment(executionHistory.dataValues.createdAt);
-    let timeTaken = moment(executionHistory.dataValues.finishedAt).diff(
-      moment(startingTime),
-      "seconds"
-    );
-    executionTime = moment.utc(timeTaken * 1000).format("HH:mm:ss");
-  }
 
-  return res
-    .status(200)
-    .json({ ...executionHistory.dataValues, executionTime });
+    return res
+      .status(200)
+      .json({ ...executionHistory.dataValues, executionTime });
+  } catch (error) {
+    getError(error, res);
+  }
 };
 
 export {

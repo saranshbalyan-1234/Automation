@@ -34,7 +34,7 @@ export default (sequelize, DataTypes) => {
       allowNull: true,
     },
     screenshot: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
       defaultValue: 0,
       values: [0, 1],
     },
