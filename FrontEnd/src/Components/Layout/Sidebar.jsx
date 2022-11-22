@@ -57,12 +57,11 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         {collapsed ? (
           <img
             alt="logo"
-            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/iconlogo.svg"
+            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDIconWhite.svg"
             className="logo"
             style={{
-              height: "25px",
+              height: "38px",
               width: "50px",
-              marginTop: collapsed && "26px",
               cursor: "pointer",
             }}
             onClick={() => {
@@ -72,7 +71,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         ) : (
           <img
             alt="logo"
-            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/logo.svg"
+            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDColorBackground.svg"
             className="logo"
             style={{
               height: "38px",
@@ -89,11 +88,9 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         theme="dark"
         mode="inline"
         selectedKeys={selectedMenu}
-        // defaultSelectedKeys={["dashboard"]}
         style={{ marginTop: "-4px" }}
         onClick={handleMenuClick}
         items={items}
-        // onOpenChange={handleSubMenu}
       />
       ;
     </Sider>
