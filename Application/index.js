@@ -23,6 +23,7 @@ app.use(
   })
 );
 app.use(validateToken());
+
 app.post("/execute/:testCaseId", async (req, res) => {
   let driver = await createDriver(req, res);
   try {
@@ -32,7 +33,7 @@ app.post("/execute/:testCaseId", async (req, res) => {
 
     for (let i = 0; i < data.data.length; i++) {
       let process = data.data[i];
-      let processResult = true;
+      let processResult = { result: false };
 
       const processHistory = await createProcessHistory(
         req,
@@ -71,7 +72,9 @@ app.post("/execute/:testCaseId", async (req, res) => {
           canCreateS3Folder
         );
       }
-      await updateProcessResult(req, processHistory.dataValues.id, true);
+      if (processResult.result) {
+        await updateProcessResult(req, processHistory.dataValues.id, true);
+      }
     }
     await updateExecutionFinishTime(req, data.executionHistory.id, moment());
     console.log("Execution Finished");

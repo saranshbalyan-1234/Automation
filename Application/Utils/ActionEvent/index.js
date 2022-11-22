@@ -311,6 +311,12 @@ const handleStep = async (
     case "Get Current Date Time":
       await getCurrentDateTime(step, output, processResult, req, stepHistoryId);
       break;
+    case "If":
+      await If(step, processResult, req, stepHistoryId);
+      break;
+    case "Else If":
+      await ElseIf(step, processResult, req, stepHistoryId);
+      break;
     default:
       break;
   }
@@ -337,7 +343,7 @@ const launchWebsite = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -350,7 +356,7 @@ const click = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const doubleClick = async (step, driver, processResult, req, stepHistoryId) => {
@@ -367,7 +373,7 @@ const doubleClick = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const hoverMouse = async (step, driver, processResult, req, stepHistoryId) => {
@@ -380,7 +386,7 @@ const hoverMouse = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const rightClick = async (step, driver, processResult, req, stepHistoryId) => {
@@ -397,7 +403,7 @@ const rightClick = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -411,7 +417,7 @@ const enterText = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const enterPassword = async (step, driver, processResult, stepHistoryId) => {
@@ -424,7 +430,7 @@ const enterPassword = async (step, driver, processResult, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -438,7 +444,7 @@ const pressButton = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const maximizeBrowser = async (driver, processResult, req, stepHistoryId) => {
@@ -448,7 +454,7 @@ const maximizeBrowser = async (driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -459,7 +465,7 @@ const closeBrowser = async (driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -469,7 +475,7 @@ const refreshPage = async (driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const generateRandomNumber = async (
@@ -488,7 +494,7 @@ const generateRandomNumber = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const getPageTitle = async (
@@ -506,7 +512,7 @@ const getPageTitle = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -519,7 +525,7 @@ const clearInput = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const scrollToObject = async (
@@ -538,7 +544,7 @@ const scrollToObject = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -549,7 +555,7 @@ const scrollToEnd = async (driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const scrollToTop = async (driver, processResult, req, stepHistoryId) => {
@@ -559,7 +565,7 @@ const scrollToTop = async (driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -573,7 +579,7 @@ const clickByJs = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -590,7 +596,7 @@ const clickLinkByText = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const clickLinkByPartialText = async (
@@ -608,7 +614,7 @@ const clickLinkByPartialText = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const copyText = async (step, output, processResult, req, stepHistoryId) => {
@@ -619,7 +625,7 @@ const copyText = async (step, output, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const copyPassword = async (
@@ -636,7 +642,7 @@ const copyPassword = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const combineString = async (
@@ -654,7 +660,7 @@ const combineString = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const getCurrentDateTime = async (
@@ -672,7 +678,45 @@ const getCurrentDateTime = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
+  }
+};
+const If = async (step, processResult, req, stepHistoryId) => {
+  console.log("If");
+  try {
+    const value1 = step.testParameters.Value1;
+    const value2 = step.testParameters.Value2;
+    const condition = step.testParameters.Condition;
+
+    if (eval(value1 + condition + value2)) {
+      return await updateStepResult(req, stepHistoryId, true);
+    } else {
+      if (processResult.result) {
+        return (processResult.result = false);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    if (processResult.result) processResult.result = false;
+  }
+};
+const ElseIf = async (step, processResult, req, stepHistoryId) => {
+  console.log("Else If");
+  try {
+    const value1 = step.testParameters.Value1;
+    const value2 = step.testParameters.Value2;
+    const condition = step.testParameters.Condition;
+
+    if (eval(value1 + condition + value2)) {
+      return await updateStepResult(req, stepHistoryId, true);
+    } else {
+      if (processResult.result) {
+        return (processResult.result = false);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    if (processResult.result) processResult.result = false;
   }
 };
 module.exports = { handleStep };

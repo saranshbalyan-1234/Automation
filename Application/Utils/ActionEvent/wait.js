@@ -20,7 +20,7 @@ const implicitWait = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -43,7 +43,7 @@ const waitUntilObjectLocated = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const waitUntilObjectsLocated = async (
@@ -65,7 +65,7 @@ const waitUntilObjectsLocated = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -88,7 +88,7 @@ const waitUntilObjectEnabled = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const waitUntilObjectDisabled = async (
@@ -110,7 +110,7 @@ const waitUntilObjectDisabled = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -133,7 +133,7 @@ const waitUntilObjectNotSelected = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -156,7 +156,7 @@ const waitUntilObjectSelected = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -179,7 +179,7 @@ const waitUntilObjectNotVisible = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -202,7 +202,7 @@ const waitUntilObjectVisible = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const waitUntilObjectTextContains = async (
@@ -222,7 +222,7 @@ const waitUntilObjectTextContains = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const waitUntilObjectTextIs = async (
@@ -242,7 +242,7 @@ const waitUntilObjectTextIs = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const waitUntilObjectTextMatches = async (
@@ -262,7 +262,7 @@ const waitUntilObjectTextMatches = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const waitUntilObjectStalenessOf = async (
@@ -284,7 +284,7 @@ const waitUntilObjectStalenessOf = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const waitUntilTitleContains = async (
@@ -304,7 +304,7 @@ const waitUntilTitleContains = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const waitUntilTitleIs = async (
@@ -324,7 +324,7 @@ const waitUntilTitleIs = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const waitUntilTitleMatches = async (
@@ -344,7 +344,7 @@ const waitUntilTitleMatches = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
@@ -365,7 +365,7 @@ const waitUntilUrlContains = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const waitUntilUrlIs = async (
@@ -385,7 +385,7 @@ const waitUntilUrlIs = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const waitUntilUrlMatches = async (
@@ -405,7 +405,7 @@ const waitUntilUrlMatches = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 const waitUntilAlertPresent = async (
@@ -426,7 +426,7 @@ const waitUntilAlertPresent = async (
       });
       return await updateStepResult(req, stepHistoryId, true);
     } catch (err) {
-      if (processResult) processResult = false;
+      if (processResult.result) processResult.result = false;
     }
   }
   console.log("Alter Not Found");
@@ -449,7 +449,7 @@ const waitUntilAbleToSwitchToFrame = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    if (processResult) processResult = false;
+    if (processResult.result) processResult.result = false;
   }
 };
 
