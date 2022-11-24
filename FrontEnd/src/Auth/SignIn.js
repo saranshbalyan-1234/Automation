@@ -43,7 +43,7 @@ const SignIn = ({ loading, signIn }) => {
             <center>
               <img
                 alt="logo"
-                src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDFullColored.svg"
+                src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDFullColoredTagline.svg"
                 style={{ height: 100, marginBottom: 30 }}
               />
 
