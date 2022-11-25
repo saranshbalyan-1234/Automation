@@ -5,12 +5,10 @@ WORKDIR /FrontEnd/app
 ENV PATH /FrontEnd/app/node_modules/.bin:$PATH
 ENV REACT_APP_BASE_URL https://automationbackend.onrender.com
 
-COPY . ./
-RUN npm install
-RUN npm run build
-
-# RUN npm ci --silent
+# Install app dependencies
+COPY ./package*.json ./
 RUN npm install --silent
+COPY . .
 RUN npm run build
 
 # production environment
