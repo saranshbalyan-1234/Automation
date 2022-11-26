@@ -39,12 +39,32 @@ export const List = ({
           {record.executedBy && <UserAvatar user={record.executedBy} />}
         </div>
       ),
-      width: 200,
+      width: 130,
+    },
+    {
+      title: "Result",
+      width: 100,
+      dataIndex: "finishedAt",
+      render: (text, record) =>
+        text ? (
+          <div
+            style={{
+              color: "green",
+              fontWeight: 600,
+              width: 40,
+            }}
+          >
+            PASS
+          </div>
+        ) : (
+          <div style={{ color: "red", fontWeight: 600, width: 40 }}>FAIL</div>
+        ),
     },
 
     {
       title: "Actions",
       key: "actions",
+      width: 100,
       render: (_, record) => (
         <div style={{ display: "flex", gap: 10 }}>
           <Popconfirm
@@ -63,7 +83,6 @@ export const List = ({
           </Popconfirm>
         </div>
       ),
-      width: 100,
     },
   ];
 

@@ -8,7 +8,9 @@ const {
   createStepHistory,
   updateProcessResult,
   updateExecutionFinishTime,
+  updateStepResult,
 } = require("./Controllers/executionHistoryController");
+
 const moment = require("moment");
 const helmet = require("helmet");
 const cors = require("cors");
@@ -33,8 +35,12 @@ app.post("/execute/:testCaseId", async (req, res) => {
 
     for (let i = 0; i < data.data.length; i++) {
       let process = data.data[i];
-      let processResult = { result: false };
-      let stepExtra = { conditional: false, conditionalResult: false };
+      let processResult = { result: true };
+      let stepExtra = {
+        conditional: false,
+        conditionalType: "",
+        conditionalResult: false,
+      };
       const processHistory = await createProcessHistory(
         req,
         process,
@@ -61,14 +67,19 @@ app.post("/execute/:testCaseId", async (req, res) => {
           data.executionHistory,
           processHistory
         );
-        console.log(stepExtra.conditionalResult, stepExtra.conditional);
+        // console.log(stepExtra.conditionalResult, stepExtra.conditional);
         if (
           stepExtra.conditional == false ||
+          tempStep.actionEvent == "End Condition" ||
           (stepExtra.conditional == true &&
+            stepExtra.conditionalType == "if" &&
             stepExtra.conditionalResult == true) ||
-          tempStep.actionEvent == "Else" ||
-          tempStep.actionEvent == "ElseIf" ||
-          tempStep.actionEvent == "EndIf"
+          (stepExtra.conditional == true &&
+            stepExtra.conditionalType == "else" &&
+            stepExtra.conditionalResult == false) ||
+          (stepExtra.conditional == true &&
+            stepExtra.conditionalType == "Else If" &&
+            stepExtra.conditionalResult == false)
         ) {
           await handleStep(
             tempStep,
@@ -81,9 +92,13 @@ app.post("/execute/:testCaseId", async (req, res) => {
             canCreateS3Folder,
             stepExtra
           );
+        } else {
+          await updateStepResult(req, stepHistory.dataValues.id, null);
         }
       }
+
       if (processResult.result) {
+        console.log("processResult");
         await updateProcessResult(req, processHistory.dataValues.id, true);
       }
     }

@@ -26,7 +26,7 @@ const {
   waitUntilAlertPresent,
   waitUntilAbleToSwitchToFrame,
 } = require("./wait");
-const { If, ElseIf, Else, EndIf } = require("./ifElse");
+const { If, Else, EndCondition } = require("./ifElse");
 
 const {
   updateStepResult,
@@ -318,13 +318,13 @@ const handleStep = async (
       await If(step, processResult, req, stepHistoryId, stepExtra);
       break;
     case "Else If":
-      await ElseIf(step, processResult, req, stepHistoryId, stepExtra);
+      await If(step, processResult, req, stepHistoryId, stepExtra);
       break;
     case "Else":
       await Else(step, processResult, req, stepHistoryId, stepExtra);
       break;
-    case "End If":
-      await EndIf(step, processResult, req, stepHistoryId, stepExtra);
+    case "End Condition":
+      await EndCondition(step, processResult, req, stepHistoryId, stepExtra);
       break;
     default:
       break;

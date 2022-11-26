@@ -49,14 +49,18 @@ const createStepHistory = async (
 };
 const updateStepResult = async (req, id, result) => {
   if (!id) return console.log("Unable to update step result");
-  return await TestStepHistory.schema(req.database).update(
-    { result },
-    {
-      where: {
-        id,
-      },
-    }
-  );
+  try {
+    return await TestStepHistory.schema(req.database).update(
+      { result },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
 };
 const updateProcessResult = async (req, id, result) => {
   return await ProcessHistory.schema(req.database).update(
