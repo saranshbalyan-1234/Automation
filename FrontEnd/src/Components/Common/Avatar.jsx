@@ -44,7 +44,7 @@ export const UserAvatar = ({
   };
   return (
     <Popover content={getUserData}>
-      {images[imageName] ? (
+      {images[imageName] && false ? (
         <Avatar
           src={"data:image/jpeg;base64," + images[imageName]}
           size={size}
