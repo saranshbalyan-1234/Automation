@@ -71,7 +71,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         ) : (
           <img
             alt="logo"
-            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDFullWhite.svg.svg"
+            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDFullWhite.svg"
             className="logo"
             style={{
               height: "38px",

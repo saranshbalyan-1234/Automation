@@ -26,6 +26,8 @@ const {
   waitUntilAlertPresent,
   waitUntilAbleToSwitchToFrame,
 } = require("./wait");
+const { If, ElseIf, Else, EndIf } = require("./ifElse");
+
 const {
   updateStepResult,
 } = require("../../Controllers/executionHistoryController");
@@ -39,7 +41,8 @@ const handleStep = async (
   stepHistoryId,
   processResult,
   executionHistory,
-  canCreateS3Folder
+  canCreateS3Folder,
+  stepExtra
 ) => {
   switch (step.actionEvent) {
     case "Launch Website":
@@ -312,10 +315,16 @@ const handleStep = async (
       await getCurrentDateTime(step, output, processResult, req, stepHistoryId);
       break;
     case "If":
-      await If(step, processResult, req, stepHistoryId);
+      await If(step, processResult, req, stepHistoryId, stepExtra);
       break;
     case "Else If":
-      await ElseIf(step, processResult, req, stepHistoryId);
+      await ElseIf(step, processResult, req, stepHistoryId, stepExtra);
+      break;
+    case "Else":
+      await Else(step, processResult, req, stepHistoryId, stepExtra);
+      break;
+    case "End If":
+      await EndIf(step, processResult, req, stepHistoryId, stepExtra);
       break;
     default:
       break;
@@ -681,42 +690,5 @@ const getCurrentDateTime = async (
     if (processResult.result) processResult.result = false;
   }
 };
-const If = async (step, processResult, req, stepHistoryId) => {
-  console.log("If");
-  try {
-    const value1 = step.testParameters.Value1;
-    const value2 = step.testParameters.Value2;
-    const condition = step.testParameters.Condition;
 
-    if (eval(value1 + condition + value2)) {
-      return await updateStepResult(req, stepHistoryId, true);
-    } else {
-      if (processResult.result) {
-        return (processResult.result = false);
-      }
-    }
-  } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
-  }
-};
-const ElseIf = async (step, processResult, req, stepHistoryId) => {
-  console.log("Else If");
-  try {
-    const value1 = step.testParameters.Value1;
-    const value2 = step.testParameters.Value2;
-    const condition = step.testParameters.Condition;
-
-    if (eval(value1 + condition + value2)) {
-      return await updateStepResult(req, stepHistoryId, true);
-    } else {
-      if (processResult.result) {
-        return (processResult.result = false);
-      }
-    }
-  } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
-  }
-};
 module.exports = { handleStep };

@@ -34,7 +34,7 @@ app.post("/execute/:testCaseId", async (req, res) => {
     for (let i = 0; i < data.data.length; i++) {
       let process = data.data[i];
       let processResult = { result: false };
-
+      let stepExtra = { conditional: false, conditionalResult: false };
       const processHistory = await createProcessHistory(
         req,
         process,
@@ -44,6 +44,7 @@ app.post("/execute/:testCaseId", async (req, res) => {
         let step = process.testSteps[j];
 
         let tempParameter = {};
+
         step.testParameters.forEach((parameter) => {
           if (parameter.method == "Static") {
             tempParameter[parameter.type] = parameter.property;
@@ -60,17 +61,27 @@ app.post("/execute/:testCaseId", async (req, res) => {
           data.executionHistory,
           processHistory
         );
-
-        await handleStep(
-          tempStep,
-          driver,
-          output,
-          req,
-          stepHistory.dataValues.id,
-          processResult,
-          data.executionHistory,
-          canCreateS3Folder
-        );
+        console.log(stepExtra.conditionalResult, stepExtra.conditional);
+        if (
+          stepExtra.conditional == false ||
+          (stepExtra.conditional == true &&
+            stepExtra.conditionalResult == true) ||
+          tempStep.actionEvent == "Else" ||
+          tempStep.actionEvent == "ElseIf" ||
+          tempStep.actionEvent == "EndIf"
+        ) {
+          await handleStep(
+            tempStep,
+            driver,
+            output,
+            req,
+            stepHistory.dataValues.id,
+            processResult,
+            data.executionHistory,
+            canCreateS3Folder,
+            stepExtra
+          );
+        }
       }
       if (processResult.result) {
         await updateProcessResult(req, processHistory.dataValues.id, true);
