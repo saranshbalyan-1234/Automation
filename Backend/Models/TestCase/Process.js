@@ -28,6 +28,7 @@ export default (sequelize, DataTypes) => {
         model: "testcases",
         key: "id",
       },
+      onDelete: "CASCADE",
     },
     reusableProcessId: {
       type: DataTypes.INTEGER,
@@ -35,6 +36,7 @@ export default (sequelize, DataTypes) => {
         model: "reusableProcesses",
         key: "id",
       },
+      onDelete: "CASCADE",
     },
   });
 

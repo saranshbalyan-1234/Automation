@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Form, Input, Modal, Button, Spin } from "antd";
+import { Form, Input, Modal, Button } from "antd";
 import { addTeamMember } from "../../../Redux/Actions/team";
 import { connect } from "react-redux";
-
+import Loading from "../../Common/Loading";
 const AddUserModal = ({
   addUserModal,
   setAddUserModal,
@@ -46,7 +46,7 @@ const AddUserModal = ({
       }}
       closable={false}
     >
-      <Spin spinning={loading}>
+      <Loading loading={loading}>
         <Form
           name="register"
           onFinish={onSubmit}
@@ -150,7 +150,7 @@ const AddUserModal = ({
             </Button>
           </div>
         </Form>
-      </Spin>
+      </Loading>
     </Modal>
   );
 };

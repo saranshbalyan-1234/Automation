@@ -1,56 +1,90 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Locators from "./Locators";
-import Details from "../Common/Details";
 import { useParams } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Card, Typography } from "antd";
 import { getObjectDetailsById, editObject } from "../../Redux/Actions/object";
 import { PlusOutlined } from "@ant-design/icons";
 import AddLocatorsModal from "./AddLocatorsModal";
+import UserAvatar from "../Common/Avatar";
+import moment from "moment";
+const { Meta } = Card;
+const { Title } = Typography;
 const ObjectDetails = ({
-  loading,
-  currentObject,
-  name = "Object",
-  editObject,
+  object,
   getObjectDetailsById,
-  newObjectId,
+  newObject,
+  history = false,
 }) => {
   const { objectId } = useParams();
-
+  const [currentObject, setCurrentObject] = useState({});
   const [addLocatorModal, setAddLocatorModal] = useState(false);
 
   useEffect(() => {
-    objectId && getObjectDetailsById(objectId);
-    newObjectId && getObjectDetailsById(newObjectId);
-  }, [objectId, newObjectId]);
+    if (history) {
+      setCurrentObject(newObject);
+    } else {
+      objectId && getObjectDetailsById(objectId);
+      newObject.id && getObjectDetailsById(newObject.id);
+      setCurrentObject(object);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [objectId, newObject.id, object.id, history]);
 
   return (
     <div>
       {currentObject && (
         <>
-          <Details
-            loading={loading}
-            details={currentObject}
-            name={name}
-            onEdit={editObject}
+          <Meta
+            title={
+              <div style={{ display: "flex", gap: 20 }}>
+                <Title style={{ textTransform: "capitalize" }} level={3}>
+                  {`Object: ${currentObject.name}`}
+                </Title>
+                <div style={{ color: "black" }}>
+                  Created On &nbsp;
+                  {moment(currentObject.createdAt).format("DD/MM/YY")} By &nbsp;
+                  {currentObject.createdBy && (
+                    <UserAvatar user={currentObject.createdBy} />
+                  )}
+                </div>
+              </div>
+            }
+            description={<></>}
           />
+          {currentObject.description && (
+            <Meta
+              title="Description"
+              description={
+                <div
+                  style={{ marginTop: "5px" }}
+                  dangerouslySetInnerHTML={{
+                    __html: currentObject.description,
+                  }}
+                ></div>
+              }
+            />
+          )}
+
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <Button
-              type="primary"
-              ghost
-              style={{
-                alignSelf: "end",
-                maxWidth: 150,
-                marginTop: 30,
-                marginBottom: 10,
-              }}
-              onClick={() => {
-                setAddLocatorModal(true);
-              }}
-            >
-              <PlusOutlined /> Add Locator
-            </Button>
-            <Locators locators={currentObject.locators} />
+            {!history && (
+              <Button
+                type="primary"
+                ghost
+                style={{
+                  alignSelf: "end",
+                  maxWidth: 150,
+                  marginTop: 30,
+                  marginBottom: 10,
+                }}
+                onClick={() => {
+                  setAddLocatorModal(true);
+                }}
+              >
+                <PlusOutlined /> Add Locator
+              </Button>
+            )}
+            <Locators locators={currentObject.locators} history={history} />
           </div>
         </>
       )}
@@ -65,7 +99,7 @@ const ObjectDetails = ({
 };
 
 const mapStateToProps = (state) => ({
-  currentObject: state.objectBank.currentObject,
+  object: state.objectBank.currentObject,
   loading: state.objectBank.loading,
 });
 

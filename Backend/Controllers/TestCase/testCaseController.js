@@ -84,7 +84,7 @@ const getAllTestCase = async (req, res) => {
         {
           model: User.schema(req.database),
           as: "createdBy",
-          attributes: ["id", "name", "email", "active"],
+          attributes: ["id", "name", "email", "active", "profileImage"],
         },
       ],
     });
@@ -137,7 +137,7 @@ const getTestCaseDetailsById = async (req, res) => {
         {
           model: User.schema(req.database),
           as: "createdBy",
-          attributes: ["id", "name", "email", "active"],
+          attributes: ["id", "name", "email", "active", "profileImage"],
         },
       ],
     });

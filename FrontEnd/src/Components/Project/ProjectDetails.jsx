@@ -7,7 +7,6 @@ import {
   Card,
   Table,
   Button,
-  Spin,
   Popconfirm,
   Tag,
 } from "antd";
@@ -20,6 +19,7 @@ import AddEditProjectModal from "./AddEditProjectModal";
 import AddProjectMemberModal from "./AddProjectMemberModal";
 import MemberBadge from "../Common/MemberBadge";
 import ColumnGraph from "../Common/ColumnGraph";
+import Loading from "../Common/Loading";
 const { Title } = Typography;
 const { Meta } = Card;
 export const ProjectDetails = ({
@@ -135,7 +135,7 @@ export const ProjectDetails = ({
   if (loading) return null;
   return (
     <div style={{ paddingTop: 20 }}>
-      <Spin spinning={loading}>
+      <Loading loading={loading}>
         <div className="row ">
           <Card
             style={{
@@ -214,18 +214,19 @@ export const ProjectDetails = ({
                 </Button>
               </div>
             </div>
-
-            <Meta
-              title="Description"
-              description={
-                <div
-                  style={{ marginTop: "5px" }}
-                  dangerouslySetInnerHTML={{
-                    __html: currentProject.description,
-                  }}
-                ></div>
-              }
-            />
+            {currentProject.description && (
+              <Meta
+                title="Description"
+                description={
+                  <div
+                    style={{ marginTop: "5px" }}
+                    dangerouslySetInnerHTML={{
+                      __html: currentProject.description,
+                    }}
+                  ></div>
+                }
+              />
+            )}
           </Card>
           <Card style={{ boxShadow: "5px 10px #f6f6f6" }}>
             <ColumnGraph data={graphCount} />
@@ -266,7 +267,7 @@ export const ProjectDetails = ({
             size="small"
           />
         </Card>
-      </Spin>
+      </Loading>
       {addProjectMemberModal && (
         <AddProjectMemberModal
           visible={addProjectMemberModal}

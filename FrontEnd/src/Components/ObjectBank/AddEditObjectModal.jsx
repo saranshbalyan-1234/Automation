@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Form, Input, Modal, Button, Spin } from "antd";
+import { Form, Input, Modal, Button } from "antd";
 import ViewObjectModal from "../Common/TestStep/ViewObjectModal";
 import { connect } from "react-redux";
 import ReactQuill from "react-quill";
+import Loading from "../Common/Loading";
 const AddEditObjectModal = ({
   visible,
   setVisible,
@@ -47,7 +48,7 @@ const AddEditObjectModal = ({
         width={500}
         closable={false}
       >
-        <Spin spinning={loading}>
+        <Loading loading={loading}>
           <Form
             name={name}
             onFinish={onSubmit}
@@ -97,7 +98,7 @@ const AddEditObjectModal = ({
               </Button>
             </div>
           </Form>
-        </Spin>
+        </Loading>
       </Modal>
       {viewObjectModal && (
         <ViewObjectModal

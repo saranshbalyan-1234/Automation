@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Typography, Card, Button, Spin, Popconfirm, Tag } from "antd";
+import { Typography, Card, Button } from "antd";
 import moment from "moment";
 import { EditOutlined } from "@ant-design/icons";
 import UserAvatar from "../Common/Avatar";
 import AddEditModal from "../Common/AddEditModal";
+import Loading from "../Common/Loading";
 const { Title } = Typography;
 const { Meta } = Card;
 const ReusableProcessDetails = ({
@@ -15,10 +16,10 @@ const ReusableProcessDetails = ({
   const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
 
-  if (loading) return <Spin />;
+  if (loading) return <Loading />;
   return (
     <div style={{ paddingTop: 20 }}>
-      <Spin spinning={loading}>
+      <Loading loading={loading}>
         <Card>
           <div
             style={{
@@ -82,27 +83,29 @@ const ReusableProcessDetails = ({
               </Button>
             </div>
           </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: 30,
-            }}
-          >
-            <Meta
-              title="Description"
-              description={
-                <div
-                  style={{ marginTop: "5px" }}
-                  dangerouslySetInnerHTML={{
-                    __html: details.description,
-                  }}
-                ></div>
-              }
-            />
-          </div>
+          {details.description && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: 30,
+              }}
+            >
+              <Meta
+                title="Description"
+                description={
+                  <div
+                    style={{ marginTop: "5px" }}
+                    dangerouslySetInnerHTML={{
+                      __html: details.description,
+                    }}
+                  ></div>
+                }
+              />
+            </div>
+          )}
         </Card>
-      </Spin>
+      </Loading>
       {addEditModal && (
         <AddEditModal
           visible={addEditModal}

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Card, Spin } from "antd";
+import { Form, Input, Button, Card } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { StyledWrapper } from "../style";
 import { connect } from "react-redux";
 import { sendResetPasswordMail } from "../../Redux/Actions/auth";
-
+import Loading from "../../Components/Common/Loading";
 const SendResetMail = ({ sendResetPasswordMail }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -20,57 +20,65 @@ const SendResetMail = ({ sendResetPasswordMail }) => {
   return (
     <StyledWrapper>
       <div className="outsideApp">
-        <Spin spinning={loading}>
-          <Card title="Reset Your Password" bordered>
-            <img
-              alt="logo"
-              src="/Logo/logo2.svg"
-              style={{ height: "50px", marginBottom: "10px" }}
-            />
-            <Form
-              name="normal_login"
-              initialValues={{ remember: true }}
-              onFinish={handleReset}
-            >
-              <Form.Item
-                name="email"
-                rules={[
-                  { required: true, message: "Please input your Email!" },
-                ]}
-              >
-                <Input
-                  type="email"
-                  prefix={<UserOutlined />}
-                  placeholder="Email"
-                  name="email"
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                />
-              </Form.Item>
+        <Loading loading={loading}>
+          <Card
+            bordered
+            style={{
+              minWidth: 400,
+            }}
+          >
+            <center>
+              <img
+                alt="logo"
+                src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDFullColoredTagline.svg"
+                style={{ height: 100, marginBottom: 30 }}
+              />
 
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  style={{ marginRight: "10px" }}
+              <Form
+                name="normal_login"
+                initialValues={{ remember: true }}
+                onFinish={handleReset}
+              >
+                <Form.Item
+                  name="email"
+                  rules={[
+                    { required: true, message: "Please input your Email!" },
+                  ]}
                 >
-                  Reset
-                </Button>{" "}
-                Or
-                <Button
-                  onClick={() => {
-                    navigate("/signin");
-                  }}
-                  htmlType="button"
-                  style={{ marginLeft: "10px" }}
-                >
-                  Login
-                </Button>
-              </Form.Item>
-            </Form>
+                  <Input
+                    type="email"
+                    prefix={<UserOutlined />}
+                    placeholder="Email"
+                    name="email"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
+                  />
+                </Form.Item>
+
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{ marginRight: "10px" }}
+                  >
+                    Reset Password
+                  </Button>{" "}
+                  Or
+                  <Button
+                    onClick={() => {
+                      navigate("/signin");
+                    }}
+                    htmlType="button"
+                    style={{ marginLeft: "10px" }}
+                  >
+                    Login
+                  </Button>
+                </Form.Item>
+              </Form>
+            </center>
           </Card>
-        </Spin>
+        </Loading>
       </div>
     </StyledWrapper>
   );

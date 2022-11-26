@@ -1,31 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Card, Spin } from "antd";
-import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { Form, Input, Button, Card } from "antd";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { resetPassword } from "../../Redux/Actions/auth";
-import axios from "axios";
 import { connect } from "react-redux";
 import { StyledWrapper } from "../style";
-import { getError } from "../../Utils/error";
-
-const PasswordReset = ({ resetPassword }) => {
-  const location = useLocation();
+import Loading from "../../Components/Common/Loading";
+const PasswordReset = () => {
   const { token } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get("/auth/" + location.pathname)
-      .then((res) => {
-        setEmail(res.data.email);
-      })
-      .catch((err) => {
-        getError(err);
-      });
-    setLoading(false);
-  }, [location.pathname]);
 
   const onRegister = async () => {
     setLoading(true);
@@ -48,43 +32,27 @@ const PasswordReset = ({ resetPassword }) => {
   return (
     <StyledWrapper>
       <div className="outsideApp">
-        <Spin spinning={loading}>
-          <Card title="Register" bordered>
+        <Loading loading={loading}>
+          <Card
+            bordered
+            style={{
+              minWidth: 400,
+            }}
+          >
             <center>
               <img
                 alt="logo"
-                src="/Logo/logo2.svg"
-                style={{
-                  height: "50px",
-                  marginBottom: "10px",
-                  justifySelf: "center",
-                }}
+                src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDFullColoredTagline.svg"
+                style={{ height: 100, marginBottom: 30 }}
               />
-            </center>
-            {email && (
+
               <Form
-                initialValues={{ email }}
+                // initialValues={{ email }}
                 name="reset-password"
                 onFinish={onRegister}
                 labelCol={{ span: 10 }}
                 wrapperCol={{ span: 16 }}
               >
-                <Form.Item
-                  name="email"
-                  label="E-mail"
-                  rules={[
-                    {
-                      type: "email",
-                      message: "The input is not valid E-mail!",
-                    },
-                    {
-                      required: true,
-                      message: "User Not Found!",
-                    },
-                  ]}
-                >
-                  <Input name="email" disabled />
-                </Form.Item>
                 <Form.Item
                   name="password"
                   label="Password"
@@ -139,14 +107,14 @@ const PasswordReset = ({ resetPassword }) => {
                   Or <Link to="/login">Login now!</Link>
                 </Form.Item>
               </Form>
-            )}
+            </center>
           </Card>
-        </Spin>
+        </Loading>
       </div>
     </StyledWrapper>
   );
 };
 
-const mapDispatchToProps = { resetPassword };
+const mapDispatchToProps = {};
 
 export default connect(null, mapDispatchToProps)(PasswordReset);

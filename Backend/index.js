@@ -1,6 +1,7 @@
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
+import fileupload from "express-fileupload";
 import swaggerUi from "swagger-ui-express";
 import parser from "body-parser";
 import { validateToken } from "./Utils/Middlewares/jwt.js";
@@ -15,6 +16,9 @@ import objectRoutes from "./Routes/TestCase/object.js";
 import testStepRoutes from "./Routes/TestCase/testStep.js";
 import testParameterRoutes from "./Routes/TestCase/testParameter.js";
 import reusableProcessRoutes from "./Routes/TestCase/reusableProcess.js";
+import executionHistoryRoutes from "./Routes/TestCase/executionHistory.js";
+import awsRoutes from "./Routes/awsRoutes.js";
+
 import dashboardRoutes from "./Routes/dashboardRoutes.js";
 
 import { createRequire } from "module";
@@ -30,6 +34,7 @@ app.use(
     origin: "*",
   })
 );
+app.use(fileupload());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
@@ -54,7 +59,9 @@ app.use("/object", objectRoutes);
 app.use("/teststep", testStepRoutes);
 app.use("/testparameter", testParameterRoutes);
 app.use("/reusableProcess", reusableProcessRoutes);
+app.use("/executionHistory", executionHistoryRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/aws", awsRoutes);
 
 app.use((req, res) => {
   return res.status(404).json({ error: "Endpoint Not Found" });

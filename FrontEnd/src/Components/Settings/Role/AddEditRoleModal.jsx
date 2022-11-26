@@ -1,8 +1,8 @@
 import React from "react";
-import { Form, Input, Modal, Button, Spin } from "antd";
+import { Form, Input, Modal, Button } from "antd";
 import { addRole, editRole } from "../../../Redux/Actions/role";
 import { connect } from "react-redux";
-
+import Loading from "../../Common/Loading";
 const AddEditRoleModal = ({
   visible,
   setVisible,
@@ -39,7 +39,7 @@ const AddEditRoleModal = ({
       }}
       closable={false}
     >
-      <Spin spinning={roles.loading}>
+      <Loading loading={roles.loading}>
         <Form
           name="role"
           onFinish={onSubmit}
@@ -78,7 +78,7 @@ const AddEditRoleModal = ({
             </Button>
           </div>
         </Form>
-      </Spin>
+      </Loading>
     </Modal>
   );
 };

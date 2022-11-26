@@ -9,6 +9,7 @@ import {
   resentVerificationEmail,
   deleteCustomerUser,
   getAllUser,
+  uploadProfileImage,
 } from "../Controllers/userController.js";
 import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
@@ -21,6 +22,11 @@ Router.post(
   resentVerificationEmail
 );
 Router.post("/add", validatePermission("Team & Role", "add"), addUser);
+Router.put(
+  "/uploadProfileImage",
+  validatePermission("Team & Role", "add"),
+  uploadProfileImage
+);
 Router.put("/details", changeDetails);
 Router.put("/change-password", changePassword);
 Router.delete(

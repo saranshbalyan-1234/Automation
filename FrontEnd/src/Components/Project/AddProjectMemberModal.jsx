@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Form, Modal, Button, Spin, Select } from "antd";
+import { Form, Modal, Button, Select } from "antd";
 import { addMember } from "../../Redux/Actions/project";
 import axios from "axios";
 import { connect } from "react-redux";
+import Loading from "../Common/Loading";
 const { Option } = Select;
 const AddProjectMemberModal = ({
   visible,
@@ -63,7 +64,7 @@ const AddProjectMemberModal = ({
       }}
       closable={false}
     >
-      <Spin spinning={loading}>
+      <Loading loading={loading}>
         <Form
           name="role"
           onFinish={onSubmit}
@@ -114,7 +115,7 @@ const AddProjectMemberModal = ({
             </Button>
           </div>
         </Form>
-      </Spin>
+      </Loading>
     </Modal>
   );
 };

@@ -24,7 +24,11 @@ export default (sequelize, DataTypes) => {
         notNull: true,
       },
     },
-
+    profileImage: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 1,
+      values: [0, 1],
+    },
     verifiedAt: {
       type: DataTypes.DATE,
       allowNull: true,
@@ -70,6 +74,12 @@ export default (sequelize, DataTypes) => {
   sequelize.models.objects.hasOne(sequelize.models.users, {
     as: "createdBy",
     sourceKey: "createdByUser",
+    foreignKey: "id",
+    constraints: false,
+  });
+  sequelize.models.executionHistory.hasOne(sequelize.models.users, {
+    as: "executedBy",
+    sourceKey: "executedByUser",
     foreignKey: "id",
     constraints: false,
   });
@@ -144,6 +154,21 @@ export default (sequelize, DataTypes) => {
     foreignKey: "id",
     constraints: false,
   });
+  sequelize.models.executionHistory.hasMany(sequelize.models.processHistories, {
+    as: "process",
+    sourceKey: "id",
+    foreignKey: "executionHistoryId",
+    constraints: false,
+  });
 
+  sequelize.models.processHistories.hasMany(
+    sequelize.models.testStepHistories,
+    {
+      as: "testSteps",
+      sourceKey: "processId",
+      foreignKey: "processId",
+      constraints: false,
+    }
+  );
   return User;
 };

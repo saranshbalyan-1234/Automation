@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Avatar, Card, Tag, Badge, Empty, Button, Popconfirm } from "antd";
+import { Card, Tag, Badge, Empty, Button, Popconfirm } from "antd";
 import { deleteCustomer } from "../../../Redux/Actions/team";
 import Role from "../Role";
+import UploadProfileImage from "./UploadProfileImage";
+import UserAvatar from "../../Common/Avatar";
+const { Meta } = Card;
 function Profile({ user, deleteCustomer }) {
-  const { Meta } = Card;
+  const [editProfileImage, setEditProfileImage] = useState(false);
   const handleDeleteCustomer = async () => {
     await deleteCustomer();
   };
@@ -13,7 +16,16 @@ function Profile({ user, deleteCustomer }) {
       <Badge.Ribbon text="Personal Details">
         <Card>
           <Meta
-            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+            avatar={
+              <div
+                onClick={() => {
+                  setEditProfileImage(true);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                <UserAvatar user={user} />
+              </div>
+            }
             title={
               <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                 {user.name}
@@ -57,6 +69,12 @@ function Profile({ user, deleteCustomer }) {
           </Badge.Ribbon>
         )
       }
+      {editProfileImage && (
+        <UploadProfileImage
+          visible={editProfileImage}
+          setVisible={setEditProfileImage}
+        />
+      )}
     </>
   );
 }

@@ -13,7 +13,7 @@ const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const ReusableProcess = db.reusableProcess;
 const saveReusableProcess = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
+  /*  #swagger.tags = ["Reusable Process"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -33,7 +33,7 @@ const saveReusableProcess = async (req, res) => {
 };
 
 const updateReusableProcess = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
+  /*  #swagger.tags = ["Reusable Process"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -67,7 +67,7 @@ const updateReusableProcess = async (req, res) => {
 };
 
 const getAllReusableProcess = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
+  /*  #swagger.tags = ["Reusable Process"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -87,7 +87,7 @@ const getAllReusableProcess = async (req, res) => {
         {
           model: User.schema(req.database),
           as: "createdBy",
-          attributes: ["id", "name", "email", "active"],
+          attributes: ["id", "name", "email", "active", "profileImage"],
         },
       ],
     });
@@ -99,7 +99,7 @@ const getAllReusableProcess = async (req, res) => {
 };
 
 const deleteReusableProcess = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
+  /*  #swagger.tags = ["Reusable Process"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -126,7 +126,7 @@ const deleteReusableProcess = async (req, res) => {
   }
 };
 const getReusableProcessDetailsById = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
+  /*  #swagger.tags = ["Reusable Process"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -144,7 +144,7 @@ const getReusableProcessDetailsById = async (req, res) => {
         {
           model: User.schema(req.database),
           as: "createdBy",
-          attributes: ["id", "name", "email", "active"],
+          attributes: ["id", "name", "email", "active", "profileImage"],
         },
       ],
     });
@@ -159,7 +159,7 @@ const getReusableProcessDetailsById = async (req, res) => {
 };
 
 const getTestStepByReusableProcess = async (req, res) => {
-  /*  #swagger.tags = ["Test Case"] 
+  /*  #swagger.tags = ["Reusable Process"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 

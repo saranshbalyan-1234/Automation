@@ -1,10 +1,10 @@
 import React from "react";
-import { Form, Input, Modal, Button, Spin, DatePicker } from "antd";
+import { Form, Input, Modal, Button, DatePicker } from "antd";
 import { addProject, editProject } from "../../Redux/Actions/project";
 import { connect } from "react-redux";
 import ReactQuill from "react-quill";
 import moment from "moment";
-const { TextArea } = Input;
+import Loading from "../Common/Loading";
 const { RangePicker } = DatePicker;
 const AddEditProjectModal = ({
   visible,
@@ -40,7 +40,7 @@ const AddEditProjectModal = ({
       closable={false}
       width={500}
     >
-      <Spin spinning={projects.loading}>
+      <Loading loading={projects.loading}>
         <Form
           name="project"
           onFinish={onSubmit}
@@ -109,7 +109,7 @@ const AddEditProjectModal = ({
             </Button>
           </div>
         </Form>
-      </Spin>
+      </Loading>
     </Modal>
   );
 };

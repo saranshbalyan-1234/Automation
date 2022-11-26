@@ -1,8 +1,8 @@
 import React from "react";
-import { Form, Input, Modal, Button, Spin } from "antd";
+import { Form, Input, Modal, Button } from "antd";
 import ReactQuill from "react-quill";
 import { connect } from "react-redux";
-
+import Loading from "./Loading";
 const AddEditModal = ({
   visible,
   setVisible,
@@ -41,7 +41,7 @@ const AddEditModal = ({
       }}
       closable={false}
     >
-      <Spin spinning={loading}>
+      <Loading loading={loading}>
         <Form
           name={name}
           onFinish={onSubmit}
@@ -90,7 +90,7 @@ const AddEditModal = ({
             </Button>
           </div>
         </Form>
-      </Spin>
+      </Loading>
     </Modal>
   );
 };

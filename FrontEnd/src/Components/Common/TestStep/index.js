@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import StepMenu from "./StepMenu";
-import { Table, Tag, Popconfirm, Button } from "antd";
+import { Table, Tag, Popconfirm } from "antd";
 import AddEditStepModal from "./AddEditStepModal";
-import { DeleteOutlined, EditOutlined, CameraFilled } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  CameraFilled,
+  EyeOutlined,
+} from "@ant-design/icons";
 import ViewObjectModal from "./ViewObjectModal";
 import ViewParameterModal from "./ViewParameterModal";
 import ViewCommentModal from "./ViewCommentModal";
@@ -50,8 +55,10 @@ const TestStepTable = ({
         text?.name ? (
           <div>
             <Tag
-              style={{ cursor: "pointer" }}
-              color="blue"
+              style={{
+                cursor: "pointer",
+              }}
+              color="#108ee9"
               onClick={() => {
                 setObject(text);
                 setViewObjectModal(true);
@@ -73,49 +80,35 @@ const TestStepTable = ({
           <div>
             <Tag
               style={{ cursor: "pointer" }}
-              color="red"
+              color="#108ee9"
               onClick={() => {
                 setParameters(text);
                 setViewParameterModal(true);
               }}
             >
-              View
+              <EyeOutlined /> View
             </Tag>
           </div>
         ) : (
           "N/A"
         ),
     },
-    {
-      title: "Options",
-      // width: 100,
-      dataIndex: "options",
-      render: (text, record) => (
-        <>
-          {record.screenshot && (
-            <Tag>
-              <CameraFilled style={{ fontSize: 15 }} />
-            </Tag>
-          )}
-        </>
-      ),
-    },
+
     {
       title: "Comment",
-      // width: 100,
       dataIndex: "comment",
       render: (text, record) =>
         text.length ? (
           <div>
             <Tag
               style={{ cursor: "pointer" }}
-              color="red"
+              color="#108ee9"
               onClick={() => {
                 setComment(text);
                 setViewCommentModal(true);
               }}
             >
-              View
+              <EyeOutlined /> View
             </Tag>
           </div>
         ) : (
@@ -123,8 +116,22 @@ const TestStepTable = ({
         ),
     },
     {
-      title: "",
-      width: 70,
+      title: <CameraFilled style={{ fontSize: 15 }} />,
+      width: 50,
+      dataIndex: "options",
+      render: (text, record) => (
+        <>
+          {record.screenshot && (
+            <div style={{ cursor: "not-allowed" }}>
+              <CameraFilled style={{ fontSize: 15 }} />
+            </div>
+          )}
+        </>
+      ),
+    },
+    {
+      title: "Actions",
+      width: 100,
       dataIndex: "editDelete",
       render: (text, record) => (
         <div style={{ display: "flex", gap: 10, cursor: "pointer" }}>
@@ -175,6 +182,7 @@ const TestStepTable = ({
         dataSource={testSteps}
         pagination={false}
         sticky
+        size="small"
       />
       {addEditStepModal && (
         <AddEditStepModal

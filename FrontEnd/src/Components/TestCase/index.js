@@ -50,7 +50,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getTestCaseByProject,
   deleteTestCase,
-
   saveTestCase,
 };
 

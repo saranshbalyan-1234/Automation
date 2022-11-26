@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Modal, Button, Spin, Select, Switch } from "antd";
+import { Form, Input, Modal, Button, Select, Switch } from "antd";
 import { connect } from "react-redux";
 import { addProcess } from "../../../Redux/Actions/testCase";
 import { addStep, editStep } from "../../../Redux/Actions/testCase";
@@ -13,6 +13,7 @@ import AddEditObjectModal from "../../ObjectBank/AddEditObjectModal";
 import axios from "axios";
 import { saveObject } from "../../../Redux/Actions/object";
 import ReactQuill from "react-quill";
+import Loading from "../Loading";
 const Option = { Select };
 const AddEditStepModal = ({
   visible,
@@ -57,7 +58,8 @@ const AddEditStepModal = ({
           })
         );
     });
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [edit]);
 
   useEffect(() => {
     edit &&
@@ -75,22 +77,24 @@ const AddEditStepModal = ({
 
     form.setFieldsValue({
       type1:
-        editData?.testParameters.find((el) => {
+        editData?.testParameters?.find((el) => {
           return el.type === currentEvent.parameter1;
         })?.method || "Static",
       type2:
-        editData?.testParameters.find((el) => {
+        editData?.testParameters?.find((el) => {
           return el.type === currentEvent.parameter2;
         })?.method || "Static",
       type3:
-        editData?.testParameters.find((el) => {
+        editData?.testParameters?.find((el) => {
           return el.type === currentEvent.parameter3;
         })?.method || "Static",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentEvent, edit]);
 
   useEffect(() => {
     currentProjectId && getObjectByProject();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentProjectId]);
 
   const onSubmit = async (data) => {
@@ -192,7 +196,7 @@ const AddEditStepModal = ({
         }}
         closable={false}
       >
-        <Spin spinning={loading}>
+        <Loading loading={loading}>
           <Form
             form={form}
             name="testStep"
@@ -297,7 +301,7 @@ const AddEditStepModal = ({
                     margin: "0 8px",
                   }}
                 >
-                  {currentEvent.parameter1 == "Button" ? (
+                  {currentEvent.parameter1 === "Button" ? (
                     <Select style={{ minWidth: "160px" }} showSearch>
                       {KeyboardButtonList.map((el, i) => {
                         return (
@@ -350,7 +354,7 @@ const AddEditStepModal = ({
                     margin: "0 8px",
                   }}
                 >
-                  {currentEvent.parameter2 == "Button" ? (
+                  {currentEvent.parameter2 === "Button" ? (
                     <Select style={{ minWidth: "160px" }} showSearch>
                       {KeyboardButtonList.map((el, i) => {
                         return (
@@ -403,7 +407,7 @@ const AddEditStepModal = ({
                     margin: "0 8px",
                   }}
                 >
-                  {currentEvent.parameter3 == "Button" ? (
+                  {currentEvent.parameter3 === "Button" ? (
                     <Select style={{ minWidth: "160px" }} showSearch>
                       {KeyboardButtonList.map((el, i) => {
                         return (
@@ -453,7 +457,7 @@ const AddEditStepModal = ({
               </Button>
             </div>
           </Form>
-        </Spin>
+        </Loading>
       </Modal>
 
       <AddEditObjectModal

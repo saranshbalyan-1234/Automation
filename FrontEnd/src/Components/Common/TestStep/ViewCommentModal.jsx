@@ -1,5 +1,5 @@
 import React from "react";
-import { List, Typography, Modal } from "antd";
+import { Modal } from "antd";
 export default function ViewCommentModal({ comment, visible, setVisible }) {
   return (
     <Modal

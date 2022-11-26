@@ -46,18 +46,15 @@ export const sendResetPasswordMail = (payload) => {
   };
 };
 
-export const resetPassword = (token, password) => {
-  return async (dispatch) => {
-    try {
-      await axios.post(`/auth/reset-password/${token}`, {
-        password,
-      });
-      message.success("Password Reset Successfully");
-      return true;
-    } catch (err) {
-      return false;
-    }
-  };
+export const resetPassword = async (token, password) => {
+  try {
+    await axios.post(`/auth/reset-password/${token}`, {
+      password,
+    });
+    return true;
+  } catch (err) {
+    return false;
+  }
 };
 
 export const logout = () => {

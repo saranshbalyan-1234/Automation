@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Typography, Card, Button, Spin, Popconfirm, Tag } from "antd";
+import { Typography, Card, Button } from "antd";
 import moment from "moment";
 import { EditOutlined } from "@ant-design/icons";
 import UserAvatar from "./Avatar";
 import AddEditModal from "./AddEditModal";
+import Loading from "./Loading";
 const { Title } = Typography;
 const { Meta } = Card;
 const Details = ({ loading, details, name, onEdit = () => {} }) => {
   const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
 
-  if (loading) return <Spin />;
+  if (loading) return <Loading />;
   return (
     <div style={{ paddingTop: 20 }}>
-      <Spin spinning={loading}>
+      <Loading loading={loading}>
         <Card>
           <div
             style={{
@@ -40,6 +40,7 @@ const Details = ({ loading, details, name, onEdit = () => {} }) => {
               }
               description={<></>}
             />
+
             <div
               style={{
                 display: "flex",
@@ -60,13 +61,7 @@ const Details = ({ loading, details, name, onEdit = () => {} }) => {
               </Button>
             </div>
           </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: 30,
-            }}
-          >
+          {details.description && (
             <Meta
               title="Description"
               description={
@@ -78,9 +73,9 @@ const Details = ({ loading, details, name, onEdit = () => {} }) => {
                 ></div>
               }
             />
-          </div>
+          )}
         </Card>
-      </Spin>
+      </Loading>
       {addEditModal && (
         <AddEditModal
           visible={addEditModal}

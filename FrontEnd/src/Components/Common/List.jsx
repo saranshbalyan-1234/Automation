@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Table, Popconfirm, Button, Spin } from "antd";
+import { Table, Popconfirm, Button } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
 import AddEditModal from "./AddEditModal";
 import UserAvatar from "./Avatar";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 export const List = ({
   onDelete,
   onSave = () => {},
@@ -67,7 +68,7 @@ export const List = ({
 
   return (
     <>
-      <Spin spinning={loading}>
+      <Loading loading={loading}>
         {" "}
         <div
           style={{
@@ -109,7 +110,7 @@ export const List = ({
             onSave={onSave}
           />
         )}
-      </Spin>
+      </Loading>
     </>
   );
 };

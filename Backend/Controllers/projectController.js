@@ -28,14 +28,14 @@ const getMyProject = async (req, res) => {
               include: [
                 {
                   model: User.schema(req.database),
-                  attributes: ["id", "name", "email", "active"],
+                  attributes: ["id", "name", "email", "active", "profileImage"],
                 },
               ],
             },
             {
               model: User.schema(req.database),
               as: "createdBy",
-              attributes: ["id", "name", "email", "active"],
+              attributes: ["id", "name", "email", "active", "profileImage"],
             },
           ],
         },
@@ -94,7 +94,7 @@ const getProjectById = async (req, res) => {
         {
           model: User.schema(req.database),
           as: "createdBy",
-          attributes: ["id", "name", "email", "active"],
+          attributes: ["id", "name", "email", "active", "profileImage"],
         },
       ],
     });

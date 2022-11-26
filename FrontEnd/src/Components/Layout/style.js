@@ -16,9 +16,6 @@ export const StyledLayout = styled.div`
   .logo {
     height: 32px;
     margin: 13px;
-    background: white;
-
-    object-fit: cover;
   }
 
   .iconWhite {

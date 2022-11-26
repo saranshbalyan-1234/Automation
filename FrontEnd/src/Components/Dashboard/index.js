@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Typography, Statistic, Row, Col, Card, Spin } from "antd";
+import { Typography, Statistic, Row, Col, Card } from "antd";
 import axios from "axios";
-
 import { EditOutlined, UserOutlined, ProjectOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-
 import ColumnGraph from "../Common/ColumnGraph";
+import Loading from "../Common/Loading";
 const { Title } = Typography;
 
 export const Dashboard = ({ user }) => {
@@ -32,7 +31,7 @@ export const Dashboard = ({ user }) => {
           if (el[0] === "testCase") {
             key = "Test Case";
           } else if (el[0] === "reusableProcess") {
-            key = "Reusable Process";
+            key = "Reusable";
           } else if (el[0] === "object") {
             key = "Test Object";
           }
@@ -50,7 +49,7 @@ export const Dashboard = ({ user }) => {
   }, []);
 
   return (
-    <Spin spinning={loading}>
+    <Loading loading={loading}>
       <StyledContainer>
         {/* <Title level={3}>Hi, {user.name}</Title> */}
 
@@ -172,7 +171,7 @@ export const Dashboard = ({ user }) => {
           </Col>*/}
         </Row>
       </StyledContainer>
-    </Spin>
+    </Loading>
   );
 };
 

@@ -1,7 +1,9 @@
 import React from "react";
-import { Form, Input, Modal, Button, Spin } from "antd";
+import { Form, Input, Modal, Button } from "antd";
 import { connect } from "react-redux";
 import { executeTestCase } from "../../Redux/Actions/testCase";
+import ReactQuill from "react-quill";
+import Loading from "../Common/Loading";
 const ExecuteModal = ({
   visible,
   setVisible,
@@ -9,8 +11,8 @@ const ExecuteModal = ({
   executeTestCase,
   currentTestCaseId,
 }) => {
-  const handleExecute = async () => {
-    await executeTestCase(currentTestCaseId);
+  const handleExecute = async (data) => {
+    await executeTestCase(currentTestCaseId, data);
     setVisible(false);
   };
   return (
@@ -24,26 +26,53 @@ const ExecuteModal = ({
       }}
       closable={false}
     >
-      <Spin spinning={loading}>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            type="primary"
-            style={{ marginRight: "20px" }}
-            htmlType="button"
-            onClick={handleExecute}
+      <Loading loading={loading}>
+        <Form
+          name="execute"
+          onFinish={handleExecute}
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 16 }}
+        >
+          <Form.Item
+            name="name"
+            label="Name"
+            rules={[
+              {
+                required: true,
+                message: "Please input Execution Name!",
+              },
+            ]}
           >
-            Submit
-          </Button>
-          <Button
-            style={{ marginRight: "20px" }}
-            onClick={() => {
-              setVisible(false);
-            }}
-          >
-            Cancel
-          </Button>
-        </div>
-      </Spin>
+            <Input name="name" />
+          </Form.Item>
+
+          <Form.Item name="description" label="">
+            <ReactQuill
+              style={{ width: 450 }}
+              placeholder="Enter Description"
+              name="description"
+            />
+          </Form.Item>
+
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              type="primary"
+              style={{ marginRight: "20px" }}
+              htmlType="submit"
+            >
+              Submit
+            </Button>
+            <Button
+              style={{ marginRight: "20px" }}
+              onClick={() => {
+                setVisible(false);
+              }}
+            >
+              Cancel
+            </Button>
+          </div>
+        </Form>
+      </Loading>
     </Modal>
   );
 };

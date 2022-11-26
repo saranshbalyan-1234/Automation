@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Popconfirm, Spin, Collapse, Tag } from "antd";
+import { Popconfirm, Collapse, Tag } from "antd";
 import {
   getTestCaseStepsById,
   deleteProcess,
@@ -8,10 +8,11 @@ import {
 import { connect } from "react-redux";
 import ProcessMenu from "./ProcessMenu";
 import { useParams } from "react-router-dom";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import TestStepTable from "../../Common/TestStep";
 import AddEditProcessModal from "./AddEditProcessModal";
 import ViewCommentModal from "../../Common/TestStep/ViewCommentModal";
+import Loading from "../../Common/Loading";
 const { Panel } = Collapse;
 const Process = ({
   getTestCaseStepsById,
@@ -20,6 +21,7 @@ const Process = ({
   deleteStep,
 }) => {
   const [addEditProcessModal, setAddEditProcessModal] = useState(false);
+  const [addReusable, setAddReusable] = useState(false);
   const [comment, setComment] = useState(false);
   const [editProcessData, setEditProcessData] = useState({});
   const [edit, setEdit] = useState(true);
@@ -31,7 +33,7 @@ const Process = ({
 
   return (
     <>
-      <Spin spinning={false}>
+      <Loading loading={false}>
         {process.map((item, index) => {
           return (
             <Collapse style={{ marginTop: "10px" }} key={index}>
@@ -78,14 +80,17 @@ const Process = ({
                     >
                       {item.comment && (
                         <Tag
-                          color="red"
+                          color="#108ee9"
                           onClick={() => {
                             setComment(item.comment);
                           }}
                         >
-                          View Comment
+                          <EyeOutlined /> View Comment
                         </Tag>
                       )}
+                      <Tag color="blue" style={{ cursor: "default" }}>
+                        Step Count : {item.testSteps.length}
+                      </Tag>
                       <EditOutlined
                         onClick={() => {
                           setEditProcessData(item);
@@ -121,13 +126,26 @@ const Process = ({
             style={{ cursor: "pointer" }}
             onClick={() => {
               setEdit(false);
+              setAddReusable(false);
               setAddEditProcessModal(true);
             }}
           >
             Add First Process
           </Tag>
         )}
-      </Spin>
+        {process.length === 0 && (
+          <Tag
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setEdit(false);
+              setAddReusable(true);
+              setAddEditProcessModal(true);
+            }}
+          >
+            Add First Reusable Process
+          </Tag>
+        )}
+      </Loading>
       {addEditProcessModal && (
         <AddEditProcessModal
           visible={addEditProcessModal}
@@ -137,6 +155,7 @@ const Process = ({
           edit={edit}
           step={1}
           setEdit={setEdit}
+          addReusable={addReusable}
         />
       )}
       {comment && (

@@ -8,6 +8,7 @@ import {
   registerValidation,
   loginValidation,
 } from "../Utils/Validations/auth.js";
+import { createBucket } from "./awsController.js";
 import getError from "../Utils/sequelizeError.js";
 import moment from "moment";
 const User = db.users;
@@ -26,7 +27,9 @@ const Process = db.process;
 const TestParameter = db.testParameters;
 const ReusableProcess = db.reusableProcess;
 const ObjectLocator = db.ObjectLocators;
-
+const ExecutionHistory = db.executionHistory;
+const ProcessHistory = db.processHistory;
+const TestStepHistory = db.testStepHistory;
 const register = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
   try {
@@ -96,7 +99,7 @@ const login = async (req, res) => {
     const isAuthenticated = await bcrypt.compare(password, user.password);
     if (!isAuthenticated) throw new Error("Incorrect Password");
 
-    const { id, name, verifiedAt, defaultProjectId } = user;
+    const { id, name, verifiedAt, defaultProjectId, profileImage } = user;
     if (!verifiedAt) throw new Error("Email Not Verified");
 
     let allPermissions = [];
@@ -129,6 +132,7 @@ const login = async (req, res) => {
       id,
       name,
       email,
+      profileImage,
       customerAdmin,
       defaultProjectId,
       roles: newRoles,
@@ -163,6 +167,7 @@ const verifyCustomer = async (req, res) => {
           throw new Error("CustomerDatabase already exist");
         });
 
+        createBucket(database);
         await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
         await UserRole.schema(database).sync({ force: true, alter: true });
         await Permission.schema(database).sync({ force: true, alter: true });
@@ -194,6 +199,20 @@ const verifyCustomer = async (req, res) => {
         });
 
         await User.schema(database).sync({ force: true, alter: true });
+
+        await ExecutionHistory.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+        await ProcessHistory.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+        await TestStepHistory.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+
         await User.schema(database).create({
           name,
           email,
@@ -274,7 +293,8 @@ const sendResetPasswordMail = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
   try {
     const { email } = req.body;
-    const customer = await Customer.findOne({
+
+    const customer = await Customer.schema("Main").findOne({
       where: { email },
     });
     if (!customer) throw new Error("User Not Registered");

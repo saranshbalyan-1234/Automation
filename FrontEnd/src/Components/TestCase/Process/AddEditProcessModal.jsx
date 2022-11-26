@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { Form, Input, Modal, Button, Spin, Select } from "antd";
+import { Form, Input, Modal, Button, Select } from "antd";
 import { connect } from "react-redux";
 import { addProcess, editProcess } from "../../../Redux/Actions/testCase";
 import { getReusableProcessByProject } from "../../../Redux/Actions/reusableProcess";
 import ReactQuill from "react-quill";
+import Loading from "../../Common/Loading";
 const { Option } = Select;
 const AddEditProcessModal = ({
   visible,
@@ -56,10 +57,10 @@ const AddEditProcessModal = ({
         onCancel={() => {
           setVisible(false);
         }}
-        width={500}
+        width={600}
         closable={false}
       >
-        <Spin spinning={loading || reusableLoading}>
+        <Loading loading={loading || reusableLoading}>
           <Form
             name="process"
             onFinish={onSubmit}
@@ -107,7 +108,7 @@ const AddEditProcessModal = ({
             <Form.Item name="comment" label="">
               {/* <Input name="comment" showCount maxLength={50} /> */}
               <ReactQuill
-                style={{ width: 450 }}
+                style={{ width: 550 }}
                 placeholder="Enter Comment"
                 name="comment"
               />
@@ -131,7 +132,7 @@ const AddEditProcessModal = ({
               </Button>
             </div>
           </Form>
-        </Spin>
+        </Loading>
       </Modal>
     </div>
   );

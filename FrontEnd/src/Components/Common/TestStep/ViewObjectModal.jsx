@@ -1,22 +1,23 @@
 import React from "react";
-import { Modal, Spin } from "antd";
+import { Modal } from "antd";
 import { connect } from "react-redux";
 import Details from "../../ObjectBank/Details";
-const ViewObjectModal = ({ visible, setVisible, object }) => {
+import Loading from "../Loading";
+const ViewObjectModal = ({ visible, setVisible, object, history }) => {
   return (
     <Modal
       centered
       width={1000}
-      title={"Object Details"}
+      // title={"Object Details"}
       visible={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);
       }}
     >
-      <Spin spinning={false}>
-        <Details newObjectId={object.id} />
-      </Spin>
+      <Loading loading={false}>
+        <Details newObject={object} history={history} />
+      </Loading>
     </Modal>
   );
 };

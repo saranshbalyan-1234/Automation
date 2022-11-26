@@ -53,15 +53,44 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         setCollapsed(true);
       }}
     >
+      <div>
+        {collapsed ? (
+          <img
+            alt="logo"
+            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDIconWhite.svg"
+            className="logo"
+            style={{
+              height: "38px",
+              width: "50px",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate("/");
+            }}
+          />
+        ) : (
+          <img
+            alt="logo"
+            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDFullWhite.svg"
+            className="logo"
+            style={{
+              height: "38px",
+              width: "150px",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate("/");
+            }}
+          />
+        )}
+      </div>
       <Menu
         theme="dark"
         mode="inline"
         selectedKeys={selectedMenu}
-        // defaultSelectedKeys={["dashboard"]}
         style={{ marginTop: "-4px" }}
         onClick={handleMenuClick}
         items={items}
-        // onOpenChange={handleSubMenu}
       />
       ;
     </Sider>

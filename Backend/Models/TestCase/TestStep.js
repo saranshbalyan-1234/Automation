@@ -32,10 +32,6 @@ export default (sequelize, DataTypes) => {
     },
     processId: {
       type: DataTypes.INTEGER,
-      // allowNull: false,
-      // validate: {
-      //   notNull: true,
-      // },
       references: {
         model: "processes",
         key: "id",
@@ -44,10 +40,6 @@ export default (sequelize, DataTypes) => {
     },
     reusableProcessId: {
       type: DataTypes.INTEGER,
-      // allowNull: false,
-      // validate: {
-      //   notNull: true,
-      // },
       references: {
         model: "reusableProcesses",
         key: "id",

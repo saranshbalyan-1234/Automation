@@ -16,7 +16,7 @@ export default function ComingSoon() {
       {/* <div style={{ display: "flex", flexDirection: "column" }}> */}
       <img
         style={{ width: "20%", height: "auto", paddingTop: "5%" }}
-        src="/coming-soon.svg"
+        src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/coming-soon.svg"
         alt=""
       />
       <Button

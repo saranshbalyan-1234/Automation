@@ -39,7 +39,10 @@ export default function VerifyEmail() {
             showBtn={false}
           />
         ) : (
-          <img src="/verifying.gif" />
+          <img
+            alt="verifying"
+            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/verifying.gif"
+          />
         )}
       </center>
     </div>

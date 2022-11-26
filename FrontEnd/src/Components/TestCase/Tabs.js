@@ -9,9 +9,9 @@ import {
 } from "../../Redux/Actions/testCase";
 import Process from "./Process";
 import Details from "./TestCaseDetails";
-import ActivityLog from "../Common/ActivityLog";
 import ComingSoon from "../../Views/ComingSoon";
 import ExecuteModal from "./ExecuteModal";
+import ExecutionHistory from "./ExecutionHistory/List";
 function TestCaseTabs({
   getTestCaseDetailsById,
   currentTestCase,
@@ -77,10 +77,10 @@ function TestCaseTabs({
             {activeTab === "teststeps" && <Process />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Execution History" key="executionhistory">
-            <ComingSoon />
+            {activeTab === "executionhistory" && <ExecutionHistory />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Activity Log" key="activitylog">
-            <ActivityLog />
+            <ComingSoon />
           </Tabs.TabPane>
         </Tabs>
         {renderButton()}
