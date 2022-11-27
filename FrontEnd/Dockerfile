@@ -1,12 +1,16 @@
-FROM --platform=linux/amd64 node:13.12.0-alpine as builder
+
+
+FROM node:13.12.0-alpine as builder
 WORKDIR /FrontEnd/app
 
 # ENV
-# ENV PATH /FrontEnd/app/node_modules/.bin:$PATH
+ENV PATH /FrontEnd/app/node_modules/.bin:$PATH
 ENV REACT_APP_BASE_URL https://automationbackend.onrender.com
 
-COPY . ./
+# Install app dependencies
+COPY ./package*.json ./
 RUN npm install --silent
+COPY . .
 RUN npm run build
 
 # production environment
