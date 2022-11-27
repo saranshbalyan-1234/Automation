@@ -1,6 +1,6 @@
 
 
-FROM node:13.12.0-alpine as builder
+FROM --platform=linux/amd64 node:13.12.0-alpine as builder
 WORKDIR /FrontEnd/app
 
 # ENV
