@@ -7,7 +7,7 @@ ENV REACT_APP_BASE_URL https://automationbackend.onrender.com
 
 # Install app dependencies
 COPY /FrontEnd .
-RUN npm install --silent
+RUN npm install
 RUN npm run build
 
 # production environment
