@@ -1,7 +1,7 @@
 import AWS from "aws-sdk";
 const s3 = new AWS.S3({
-  accessKeyId: "AKIAWO24CNWA53OK4Y75",
-  secretAccessKey: "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",
+  accessKeyId: "AKIAWO24CNWAWKATUMFU",
+  secretAccessKey: "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",
   region: "ap-south-1",
 });
 
