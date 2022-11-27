@@ -1,6 +1,6 @@
 
 
-FROM --platform=linux/amd64 --entrypoint=/bin/sh node:14-alpine3.14 as builder
+FROM --platform=linux/amd64 node:14-alpine3.14 as builder
 WORKDIR /FrontEnd/app
 
 # ENV
