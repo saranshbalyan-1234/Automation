@@ -1,8 +1,8 @@
-FROM node:13.12.0-alpine as builder
+FROM --platform=linux/amd64 node:13.12.0-alpine as builder
 WORKDIR /FrontEnd/app
 
 # ENV
-ENV PATH /FrontEnd/app/node_modules/.bin:$PATH
+# ENV PATH /FrontEnd/app/node_modules/.bin:$PATH
 ENV REACT_APP_BASE_URL https://automationbackend.onrender.com
 
 COPY . ./
