@@ -16,5 +16,5 @@ RUN npm install --silent
 # Bundle app source
 COPY /Backend ./
 
-EXPOSE 8080
+EXPOSE 3001
 CMD [ "node", "index.js" ]
