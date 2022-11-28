@@ -9,12 +9,12 @@ ENV DATABASE_HOST first.cqjcsrxo1aks.us-east-1.rds.amazonaws.com
 ENV DATABASE_NAME Main
 
 # Install app dependencies
-COPY ./package*.json ./
+COPY /Backend/package*.json ./
 RUN npm install --silent
 
 
 # Bundle app source
-COPY . .
+COPY /Backend ./
 
-# EXPOSE 8080
+EXPOSE 8080
 CMD [ "node", "index.js" ]
