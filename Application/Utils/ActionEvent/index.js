@@ -444,9 +444,9 @@ const enterPassword = async (step, driver, processResult, stepHistoryId) => {
 };
 
 const pressButton = async (step, driver, processResult, req, stepHistoryId) => {
+  const Button = step.testParameters.Button;
   console.log("pressing button " + Button);
   try {
-    const Button = step.testParameters.Button;
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .sendKeys(Key[Button]);
