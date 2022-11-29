@@ -25,11 +25,11 @@ const ObjectDetails = ({
       setCurrentObject(newObject);
     } else {
       objectId && getObjectDetailsById(objectId);
-      newObject.id && getObjectDetailsById(newObject.id);
+      newObject?.id && getObjectDetailsById(newObject?.id);
       setCurrentObject(object);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [objectId, newObject.id, object.id, history]);
+  }, [objectId, newObject?.id, object?.id, history]);
 
   return (
     <div>

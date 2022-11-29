@@ -599,7 +599,7 @@ const clickLinkByText = async (
   req,
   stepHistoryId
 ) => {
-  console.log("Clicking Link By Text");
+  console.log(`Clicking Link By Text ${step.testParameters.Text}`);
   try {
     await driver.findElement(By.linkText(step.testParameters.Text)).click();
     return await updateStepResult(req, stepHistoryId, true);
