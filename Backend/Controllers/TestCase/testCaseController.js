@@ -79,7 +79,7 @@ const getAllTestCase = async (req, res) => {
       where: {
         projectId,
       },
-      attributes: ["id", "name", "updatedAt"],
+      attributes: ["id", "name", "updatedAt", "createdAt"],
       include: [
         {
           model: User.schema(req.database),

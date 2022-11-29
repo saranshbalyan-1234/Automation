@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Popconfirm, Button } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
@@ -6,16 +6,29 @@ import AddEditModal from "./AddEditModal";
 import UserAvatar from "./Avatar";
 import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
+import CustomSearch from "./Search";
 export const List = ({
   onDelete,
   onSave = () => {},
   loading,
-  data,
+  data = [],
   name,
   link,
 }) => {
   const navigate = useNavigate();
   const [addEditModal, setAddEditModal] = useState(false);
+  const [searchedData, setSearchedData] = useState(data);
+  useEffect(() => {
+    setSearchedData(data);
+  }, [data]);
+
+  const handleSearch = (e) => {
+    let value = e.target.value.toLowerCase();
+    const temp = data.filter((el) => {
+      return el.name.toLowerCase().includes(value);
+    });
+    setSearchedData(temp);
+  };
 
   const columns = [
     {
@@ -27,7 +40,7 @@ export const List = ({
       dataIndex: "createdBy",
       render: (_, record) => (
         <div>
-          {moment(record.createdAt).format("DD/MM/YY")} By &nbsp;
+          {moment(record.createdAt).format("DD/MM/YYYY h:mm:ss a")} By &nbsp;
           {record.createdBy && <UserAvatar user={record.createdBy} />}
         </div>
         // <div>{<UserAvatar user={record.createdBy} />}</div>
@@ -38,7 +51,7 @@ export const List = ({
       title: "Last Updated",
       key: "updatedAt",
       render: (_, record) => (
-        <div>{moment(record.updatedAt).format("DD-MM-YYYY h:mm:ss a")}</div>
+        <div>{moment(record.updatedAt).format("DD/MM/YYYY h:mm:ss a")}</div>
       ),
     },
 
@@ -78,7 +91,11 @@ export const List = ({
             padding: "10px 0px 10px 0px ",
           }}
         >
-          <div></div>
+          <CustomSearch
+            width={"250px"}
+            placeholder={`Search ${name}`}
+            onSearch={handleSearch}
+          />
           <Button
             type="primary"
             ghost
@@ -91,7 +108,7 @@ export const List = ({
         </div>
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={searchedData}
           rowClassName="pointer"
           onRow={(record, rowIndex) => {
             return {

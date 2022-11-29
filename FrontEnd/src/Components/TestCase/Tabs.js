@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Button } from "antd";
-import { PlayCircleFilled } from "@ant-design/icons";
+import { PlayCircleFilled, TableOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   getTestCaseDetailsById,
   editTestCase,
 } from "../../Redux/Actions/testCase";
+import EnvTable from "./EnvTable";
 import Process from "./Process";
 import Details from "./TestCaseDetails";
 import ComingSoon from "../../Views/ComingSoon";
@@ -22,6 +23,7 @@ function TestCaseTabs({
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
   const [executeModal, setExecuteModal] = useState(false);
+  const [envTableModal, setEnvTableModal] = useState(false);
 
   const handleActiveTab = (value) => {
     navigate(`/TestCase/${testCaseId}/${value}`);
@@ -38,21 +40,37 @@ function TestCaseTabs({
   const renderButton = () => {
     if (activeTab === "teststeps")
       return (
-        <Button
-          type="primary"
+        <div
           style={{
             position: "absolute",
             right: 0,
             top: 5,
-            width: 100,
-          }}
-          onClick={() => {
-            setExecuteModal(true);
+            width: 250,
+            display: "flex",
+            gap: 10,
           }}
         >
-          <PlayCircleFilled />
-          Execute
-        </Button>
+          <Button
+            type="primary"
+            ghost
+            onClick={() => {
+              setEnvTableModal(true);
+            }}
+          >
+            <TableOutlined />
+            Environments
+          </Button>
+
+          <Button
+            type="primary"
+            onClick={() => {
+              setExecuteModal(true);
+            }}
+          >
+            <PlayCircleFilled />
+            Execute
+          </Button>
+        </div>
       );
   };
   return (
@@ -87,6 +105,9 @@ function TestCaseTabs({
       </div>
       {executeModal && (
         <ExecuteModal setVisible={setExecuteModal} visible={executeModal} />
+      )}
+      {envTableModal && (
+        <EnvTable setVisible={setEnvTableModal} visible={envTableModal} />
       )}
     </>
   );

@@ -6,12 +6,12 @@ import { SearchOutlined } from "@ant-design/icons";
 export default function CustomSearch({
   placeholder = "Search",
   width = "200px",
-  onChange = () => {},
+  onSearch = () => {},
 }) {
   return (
     <StyledSearch width={width}>
       <Input
-        onChange={onChange}
+        onChange={onSearch}
         placeholder={placeholder}
         prefix={<SearchOutlined style={{ marginRight: "5px" }} />}
       />
