@@ -158,8 +158,7 @@ const deleteProject = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const projectId = req.headers["x-project-id"];
-
+    const projectId = req.params.projectId;
     const { error } = projectByIdValidation.validate({ projectId });
     if (error) throw new Error(error.details[0].message);
 
