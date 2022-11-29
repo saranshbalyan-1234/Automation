@@ -31,6 +31,10 @@ const ObjectDetails = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [objectId, newObject?.id, object?.id, history]);
 
+  useEffect(() => {
+    setCurrentObject(object);
+  }, [object?.locators]);
+
   return (
     <div>
       {currentObject && (
