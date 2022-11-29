@@ -417,9 +417,9 @@ const rightClick = async (step, driver, processResult, req, stepHistoryId) => {
 };
 
 const enterText = async (step, driver, processResult, req, stepHistoryId) => {
+  const text = step.testParameters.Text;
   console.log("Entering text " + text);
   try {
-    const text = step.testParameters.Text;
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .sendKeys(text);
