@@ -17,7 +17,7 @@ export const List = ({
 }) => {
   const navigate = useNavigate();
   const [addEditModal, setAddEditModal] = useState(false);
-  const [searchedData, setSearchedData] = useState(data);
+  const [searchedData, setSearchedData] = useState([]);
   useEffect(() => {
     setSearchedData(data);
   }, [data]);

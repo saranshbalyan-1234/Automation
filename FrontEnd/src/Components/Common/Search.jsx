@@ -20,6 +20,7 @@ export default function CustomSearch({
 }
 const StyledSearch = styled.div`
   width: ${({ width }) => width};
+  max-width: ${({ width }) => width};
   cursor: pointer;
   transition: width 0.5s;
 

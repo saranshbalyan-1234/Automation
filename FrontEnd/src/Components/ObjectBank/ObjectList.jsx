@@ -17,7 +17,7 @@ export const ObjectList = ({
 }) => {
   const navigate = useNavigate();
   const [addEditObjectModal, setAddEditObjectModal] = useState(false);
-  const [searchedData, setSearchedData] = useState(data);
+  const [searchedData, setSearchedData] = useState([]);
   useEffect(() => {
     setSearchedData(data);
   }, [data]);

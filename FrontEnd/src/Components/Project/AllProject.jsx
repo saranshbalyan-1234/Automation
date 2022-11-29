@@ -16,6 +16,7 @@ import {
   Typography,
   Progress,
 } from "antd";
+import CustomSearch from "../Common/Search";
 import { AiFillCheckCircle, AiTwotoneCheckCircle } from "react-icons/ai";
 import UserAvatar from "../Common/Avatar";
 import moment from "moment";
@@ -38,6 +39,19 @@ export const AllProject = ({
 }) => {
   const navigate = useNavigate();
   const [addEditProjectModal, setAddEditProjectModal] = useState(false);
+  const [searchedData, setSearchedData] = useState([]);
+  useEffect(() => {
+    setSearchedData(projects.data);
+  }, [projects.data]);
+
+  const handleSearch = (e) => {
+    let value = e.target.value.toLowerCase();
+    const temp = projects.data.filter((el) => {
+      return el.name.toLowerCase().includes(value);
+    });
+    setSearchedData(temp);
+  };
+
   useEffect(() => {
     getAllProject();
   }, []);
@@ -81,10 +95,15 @@ export const AllProject = ({
           display: "flex",
           justifyContent: "space-between",
           flexWrap: "wrap",
-          paddingTop: "10px",
+          paddingTop: 10,
+          marginBottom: 10,
         }}
       >
-        <Title level={3}>All Projects</Title>
+        <CustomSearch
+          width={"250px"}
+          placeholder={`Search Projects`}
+          onSearch={handleSearch}
+        />
         <Button
           type="primary"
           ghost
@@ -106,7 +125,7 @@ export const AllProject = ({
       >
         <Loading loading={projects.loading}>
           <List
-            dataSource={projects.data}
+            dataSource={searchedData}
             renderItem={(item) => (
               <List.Item key={`project_${item.id}`}>
                 <List.Item.Meta
