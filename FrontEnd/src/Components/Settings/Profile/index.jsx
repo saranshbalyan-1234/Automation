@@ -45,7 +45,7 @@ function Profile({ user, deleteCustomer }) {
             >
               {" "}
               <Button
-                type="danger"
+                danger
                 ghost
                 style={{ marginTop: "20px", marginLeft: "45px" }}
               >

@@ -116,7 +116,7 @@ export const Team = ({
                     okText="Yes, Remove"
                     cancelText="No"
                   >
-                    <Button type="danger" ghost size="small">
+                    <Button danger ghost size="small">
                       <DeleteOutlined /> Remove User
                     </Button>
                   </Popconfirm>

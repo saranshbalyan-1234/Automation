@@ -143,7 +143,7 @@ export const Role = ({
                           e.stopPropagation();
                         }}
                       >
-                        <Button type="danger" ghost size="small">
+                        <Button danger ghost size="small">
                           <DeleteOutlined /> Delete Role
                         </Button>
                       </Popconfirm>

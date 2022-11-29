@@ -276,7 +276,7 @@ export const AllProject = ({
                       okText="Yes, Remove"
                       cancelText="No"
                     >
-                      <Button type="danger" ghost size="small">
+                      <Button danger ghost size="small">
                         <DeleteOutlined />
                       </Button>
                     </Popconfirm>
@@ -287,7 +287,6 @@ export const AllProject = ({
                       display: "flex",
                       justifyContent: "space-between",
                       gap: "10px",
-
                       color: "grey",
                     }}
                   ></div>

@@ -22,3 +22,12 @@
   line-height: 1;
   content: "*";
 }
+
+body {
+  margin: 0px;
+}
+
+h3,
+h4 {
+  margin-top: 0px;
+}

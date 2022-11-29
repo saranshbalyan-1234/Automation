@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "antd/dist/antd.min.css";
+// import "antd/dist/antd.min.css";
 import "./global.css";
 import Register from "./Auth/Register";
 import Routess from "./Routess";
