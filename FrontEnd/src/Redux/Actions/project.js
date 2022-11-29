@@ -92,7 +92,7 @@ export const deleteProject = (projectId) => {
       let currentProjectId = getState().projects.currentProject?.id;
       if (currentProjectId === projectId)
         throw message.error("Cannot delete selected project!");
-      await axios.delete(`/project`);
+      await axios.delete(`/project/${projectId}`);
       dispatch({ type: DELETE_PROJECT, payload: projectId });
       return true;
     } catch (err) {

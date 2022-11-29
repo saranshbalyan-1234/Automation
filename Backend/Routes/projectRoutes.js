@@ -24,6 +24,10 @@ Router.post(
   validatePermission("project", "edit"),
   deleteMember
 );
-Router.delete("/", validatePermission("project", "delete"), deleteProject);
+Router.delete(
+  "/:projectId",
+  validatePermission("project", "delete"),
+  deleteProject
+);
 Router.put("/", validatePermission("project", "delete"), editProject);
 export default Router;

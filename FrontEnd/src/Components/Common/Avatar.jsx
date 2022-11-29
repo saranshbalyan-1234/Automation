@@ -9,12 +9,12 @@ export const UserAvatar = ({
   fetchAwsObject,
 }) => {
   const imageName = user.email.replace(/[^a-zA-Z0-9 ]/g, "");
-  useEffect(() => {
-    if (user.profileImage && !images[imageName]) {
-      fetchAwsObject(imageName);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   if (user.profileImage && !images[imageName]) {
+  //     fetchAwsObject(imageName);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const getUserData = () => {
     return (
