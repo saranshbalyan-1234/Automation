@@ -9,7 +9,7 @@ export default function ProcessMenu({ process }) {
 
   const menu = (
     <Menu
-      theme="dark"
+      
       items={[
         {
           label: (

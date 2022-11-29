@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import StepMenu from "./StepMenu";
 import { Table, Tag, Popconfirm } from "antd";
 import AddEditStepModal from "./AddEditStepModal";
@@ -33,7 +32,7 @@ const TestStepTable = ({
       width: 30,
       dataIndex: "action",
       render: (text, record) => (
-        <div style={{ cursor: "pointer" }}>
+        <div className="pointer">
           <StepMenu
             processId={processId}
             reusableProcessId={reusableProcessId}
@@ -224,8 +223,4 @@ const TestStepTable = ({
   );
 };
 
-const mapStateToProps = (state) => ({});
-
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(TestStepTable);
+export default TestStepTable;
