@@ -110,7 +110,7 @@ const AddUserModal = ({
                 handleDetails(e);
               }}
               showCount
-              maxLength={10}
+              maxLength={15}
             />
           </Form.Item>
           <Form.Item
@@ -133,7 +133,7 @@ const AddUserModal = ({
               }),
             ]}
           >
-            <Input.Password showCount maxLength={10} />
+            <Input.Password showCount maxLength={15} />
           </Form.Item>
 
           <div style={{ display: "flex", justifyContent: "center" }}>

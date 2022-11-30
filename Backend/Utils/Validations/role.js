@@ -1,7 +1,7 @@
 import joi from "@hapi/joi";
 
 const updateNameValidation = joi.object({
-  name: joi.string().min(3).required(),
+  name: joi.string().min(3).max(30).required(),
   roleId: joi.number().integer().required(),
 });
 const roleIdValidation = joi.object({
@@ -9,7 +9,7 @@ const roleIdValidation = joi.object({
 });
 
 const updatePermissionValidation = joi.object({
-  name: joi.string().min(3).required(),
+  name: joi.string().min(3).max(30).required(),
   add: joi.boolean().required(),
   edit: joi.boolean().required(),
   view: joi.boolean().required(),

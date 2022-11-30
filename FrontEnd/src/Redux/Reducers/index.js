@@ -8,6 +8,7 @@ import reusableProcessReducer from "./reusableProcessReducer";
 import objectBankReducer from "./objectBankReducer";
 import executionHistoryReducer from "./executionHistory";
 import imageReducer from "./imageReducer";
+import environmentReducer from "./environment";
 export default combineReducers({
   auth: authReducer,
   team: teamReducer,
@@ -18,4 +19,5 @@ export default combineReducers({
   objectBank: objectBankReducer,
   executionHistory: executionHistoryReducer,
   image: imageReducer,
+  environment: environmentReducer,
 });

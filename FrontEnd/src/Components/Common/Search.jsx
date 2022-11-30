@@ -14,8 +14,6 @@ export default function CustomSearch({
         onChange={onSearch}
         placeholder={placeholder}
         prefix={<SearchOutlined style={{ marginRight: "5px" }} />}
-        showCount
-        maxLength={30}
       />
     </StyledSearch>
   );

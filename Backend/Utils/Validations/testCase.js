@@ -1,12 +1,12 @@
 import joi from "@hapi/joi";
 
 const saveTestCaseValidation = joi.object({
-  name: joi.string().min(3).required(),
+  name: joi.string().min(3).max(30).required(),
   description: joi.string().allow(null, ""),
   projectId: joi.number().integer().required(),
 });
 const updateTestCaseValidation = joi.object({
-  name: joi.string().min(3).required(),
+  name: joi.string().min(3).max(30).required(),
   testCaseId: joi.number().integer().required(),
 });
 const testCaseIdValidation = joi.object({

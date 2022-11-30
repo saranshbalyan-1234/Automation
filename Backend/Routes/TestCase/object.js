@@ -12,7 +12,7 @@ import {
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
-Router.post("/", validatePermission("testcase", "add"), saveObject);
+Router.post("/", validatePermission("testcase", "edit"), saveObject);
 Router.put("/:objectId", validatePermission("testcase", "edit"), updateObject);
 Router.delete(
   "/:objectId",
@@ -28,7 +28,7 @@ Router.delete(
 Router.get("/", validatePermission("testcase", "view"), getAllObject);
 Router.get(
   "/:objectId/details",
-  validatePermission("testcase", "add"),
+  validatePermission("testcase", "view"),
   getObjectDetailsById
 );
 

@@ -5,7 +5,7 @@ const projectByIdValidation = joi.object({
 });
 
 const addProjectValidation = joi.object({
-  name: joi.string().min(3).required(),
+  name: joi.string().min(3).max(30).required(),
   description: joi.string(),
   startDate: joi.string().required(),
   endDate: joi.string().required(),

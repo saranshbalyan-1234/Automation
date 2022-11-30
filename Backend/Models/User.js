@@ -170,5 +170,10 @@ export default (sequelize, DataTypes) => {
       constraints: false,
     }
   );
+  sequelize.models.environments.hasMany(sequelize.models.columns, {
+    sourceKey: "id",
+    foreignKey: "envId",
+    constraints: false,
+  });
   return User;
 };

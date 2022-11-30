@@ -28,6 +28,9 @@ import ExecutionHistory from "../Models/TestCase/ExecutionHistory/ExecutionHisto
 import ProcessHistory from "../Models/TestCase/ExecutionHistory/ProcessHistory.js";
 import TestStepHistory from "../Models/TestCase/ExecutionHistory/TestStepHistory.js";
 
+//Env Table
+import Environment from "../Models/TestCase/Environment/Environment.js";
+import Column from "../Models/TestCase/Environment/Column.js";
 dotenv.config();
 
 const sequelize = new Sequelize(
@@ -82,6 +85,10 @@ db.executionHistory = ExecutionHistory(sequelize, DataTypes);
 db.processHistory = ProcessHistory(sequelize, DataTypes);
 db.testStepHistory = TestStepHistory(sequelize, DataTypes);
 
+//Environment
+db.enviroments = Environment(sequelize, DataTypes);
+db.columns = Column(sequelize, DataTypes);
+
 db.users = User(sequelize, DataTypes); //all associations
 
 await db.tenants.schema("Main").sync({ force: false, alter: true });
@@ -90,12 +97,8 @@ db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
 
-// await db.testStepHistory
-//   .schema("saranshbalyan123gmailcom")
-//   .sync({ force: true });
-// await db.processHistory
-//   .schema("saranshbalyan123gmailcom")
-//   .sync({ force: true });
+// await db.enviroments.schema("saranshbalyan123gmailcom").sync({ force: true });
+// await db.columns.schema("saranshbalyan123gmailcom").sync({ force: true });
 // await db.testStepHistory
 //   .schema("saranshbalyan123gmailcom")
 //   .sync({ force: true });

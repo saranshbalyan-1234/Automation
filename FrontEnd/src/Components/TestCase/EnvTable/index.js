@@ -1,39 +1,44 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
-import { Table, Button, Popconfirm, Input } from "antd";
+import { Table, Button, Popconfirm, Input, Spin } from "antd";
 import CustomSearch from "../../Common/Search";
-import {
-  DeleteOutlined,
-  PlusOutlined,
-  PlusCircleFilled,
-} from "@ant-design/icons";
-export default function DataTable({ visible, setVisible }) {
-  const [rows, setRows] = useState([]);
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import AddModal from "./AddModal";
+import { connect } from "react-redux";
+import { getAllEnvironments } from "../../../Redux/Actions/environment";
+const DataTable = ({
+  visible,
+  setVisible,
+  currentTestCaseId,
+  getAllEnvironments,
+  environments,
+  loading,
+}) => {
   const [columns, setColumns] = useState([]);
   const [searchedData, setSearchedData] = useState([]);
-  useEffect(() => {
-    setSearchedData(rows);
-  }, [rows]);
+  const [addModal, setAddModal] = useState({ active: false });
 
   useEffect(() => {
+    setSearchedData(environments);
+  }, [environments]);
+  useEffect(() => {
+    getAllEnvironments(currentTestCaseId);
+  }, [currentTestCaseId]);
+
+  useEffect(() => {
+    if (environments.length == 0) return;
+
+    const tempDynamicKeys = Object.keys(environments[0]).map((el) => {
+      return {
+        title: el,
+        dataIndex: el,
+      };
+    });
+    const dynamicKeys = tempDynamicKeys.filter((el) => {
+      return el.title !== "envId";
+    });
     setColumns([
-      {
-        title: "Environment",
-        dataIndex: "env",
-        render: (text, record) =>
-          record.editing ? (
-            <Input
-              showCount
-              maxLength={30}
-              onBlur={(e) => {
-                handleAddEdit(e, record);
-              }}
-              defaultValue={text}
-            />
-          ) : (
-            <div>{text}</div>
-          ),
-      },
+      ...dynamicKeys,
       {
         title: "Actions",
         key: "actions",
@@ -55,12 +60,18 @@ export default function DataTable({ visible, setVisible }) {
         ),
       },
     ]);
-  }, []);
+  }, [Object.keys(environments[0])?.length]);
 
   const handleSearch = (e) => {
     let value = e.target.value.toLowerCase();
-    const temp = rows.filter((el) => {
-      return el.env && el.env.toLowerCase().includes(value);
+    const temp = environments.filter((el) => {
+      return Object.keys(environments[0]).some((el1) => {
+        return (
+          el1 !== "envId" &&
+          el[el1] &&
+          String(el[el1]).toLowerCase().includes(value)
+        );
+      });
     });
     setSearchedData(temp);
   };
@@ -85,62 +96,86 @@ export default function DataTable({ visible, setVisible }) {
   const startEditMode = (id) => {};
 
   return (
-    <Modal
-      // title="Environment"
-      width={1000}
-      centered
-      visible={visible}
-      footer={false}
-      onCancel={() => {
-        setVisible(false);
-      }}
-      // closable={false}
-    >
-      <div style={{ maxHeight: "70vh", overflow: "auto", minHeight: "70vh" }}>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-            marginRight: 20,
-          }}
-        >
-          <CustomSearch
-            width="300px"
-            placeholder={`Search By Env Name or Column Value`}
-            onSearch={handleSearch}
-          />
-          <div className="row">
-            <Button
-              type="primary"
-              ghost
-              style={{ marginBottom: 5 }}
-              onClick={() => {
-                setRows([...rows, { env: "Enter Name", editing: true }]);
+    <>
+      <Modal
+        // title="Environment"
+        width={1000}
+        centered
+        visible={visible}
+        footer={false}
+        onCancel={() => {
+          setVisible(false);
+        }}
+        // closable={false}
+      >
+        <Spin spinning={loading}>
+          <div
+            style={{ maxHeight: "70vh", overflow: "auto", minHeight: "70vh" }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-between",
+                marginRight: 20,
               }}
             >
-              <PlusOutlined /> Column
-            </Button>
-            <Button
-              type="primary"
-              style={{ marginBottom: 5 }}
-              onClick={() => {
-                setRows([...rows, { env: "Enter Name", editing: true }]);
-              }}
-            >
-              <PlusOutlined />
-              Environment
-            </Button>
+              <CustomSearch
+                width="300px"
+                placeholder={`Search By Env Name or Column Value`}
+                onSearch={handleSearch}
+              />
+              <div className="row">
+                <Button
+                  type="primary"
+                  ghost
+                  style={{ marginBottom: 5 }}
+                  onClick={() => {
+                    // setRows([...rows, { env: "Enter Name", editing: true }]);
+                    setAddModal({ active: true, type: "Column" });
+                  }}
+                >
+                  <PlusOutlined /> Column
+                </Button>
+                <Button
+                  type="primary"
+                  style={{ marginBottom: 5 }}
+                  onClick={() => {
+                    // setRows([...rows, { env: "Enter Name", editing: true }]);
+                    setAddModal({ active: true, type: "Environment" });
+                  }}
+                >
+                  <PlusOutlined />
+                  Environment
+                </Button>
+              </div>
+            </div>
+            <Table
+              size="small"
+              columns={columns}
+              dataSource={searchedData}
+              pagination={false}
+              sticky
+            />
           </div>
-        </div>
-        <Table
-          size="small"
-          columns={columns}
-          dataSource={searchedData}
-          pagination={false}
-          sticky
+        </Spin>
+      </Modal>
+      {addModal.active && (
+        <AddModal
+          visible={addModal.active}
+          type={addModal.type}
+          setVisible={setAddModal}
         />
-      </div>
-    </Modal>
+      )}
+    </>
   );
-}
+};
+
+const mapStateToProps = (state) => ({
+  currentTestCaseId: state.testCase.currentTestCase?.id,
+  environments: state.environment.data,
+  loading: state.environment.loading,
+});
+const mapDispatchToProps = { getAllEnvironments };
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataTable);
