@@ -10,8 +10,14 @@ export const addEnvironment = (payload) => {
   return async (dispatch) => {
     try {
       dispatch({ type: ENVIRONMENT_REQUEST });
-      await axios.post(`/environment`, payload);
-      dispatch({ type: ADD_ENVIRONMENT, payload });
+      let { data } = await axios.post(`/environment`, payload);
+      data.Environment = data.name;
+      delete data.name;
+      delete data.message;
+      dispatch({
+        type: ADD_ENVIRONMENT,
+        payload: data,
+      });
       return true;
     } catch (err) {
       dispatch({ type: ENVIRONMENT_FAILURE });
@@ -25,7 +31,7 @@ export const addColumn = (payload) => {
       let testCaseId = getState().testCase.currentTestCase?.id;
       dispatch({ type: ENVIRONMENT_REQUEST });
       await axios.post(`/environment/column/testCase/${testCaseId}`, payload);
-      dispatch({ type: ADD_COLUMN, payload });
+      dispatch({ type: ADD_COLUMN, payload: payload.name });
       return true;
     } catch (err) {
       dispatch({ type: ENVIRONMENT_FAILURE });

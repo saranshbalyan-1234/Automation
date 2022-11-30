@@ -15,7 +15,9 @@ const saveEnvironment = async (req, res) => {
     const payload = { ...req.body };
     const env = await Environment.schema(req.database).create(payload);
 
-    return res.status(200).json({ message: "Environment Created!" });
+    return res
+      .status(200)
+      .json({ ...env.dataValues, message: "Environment Created!" });
   } catch (err) {
     getError(err, res);
   }

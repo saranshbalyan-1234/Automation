@@ -60,7 +60,7 @@ const DataTable = ({
         ),
       },
     ]);
-  }, [Object.keys(environments[0])?.length]);
+  }, [environments.length > 0 && Object.keys(environments[0]).length]);
 
   const handleSearch = (e) => {
     let value = e.target.value.toLowerCase();
