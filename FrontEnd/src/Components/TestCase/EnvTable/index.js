@@ -5,7 +5,10 @@ import CustomSearch from "../../Common/Search";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import AddModal from "./AddModal";
 import { connect } from "react-redux";
-import { getAllEnvironments } from "../../../Redux/Actions/environment";
+import {
+  getAllEnvironments,
+  updateColumnValue,
+} from "../../../Redux/Actions/environment";
 const DataTable = ({
   visible,
   setVisible,
@@ -13,6 +16,7 @@ const DataTable = ({
   getAllEnvironments,
   environments,
   loading,
+  updateColumnValue,
 }) => {
   const [columns, setColumns] = useState([]);
   const [searchedData, setSearchedData] = useState([]);
@@ -24,19 +28,41 @@ const DataTable = ({
   useEffect(() => {
     getAllEnvironments(currentTestCaseId);
   }, [currentTestCaseId]);
-
+  const handleUpdateValue = (record, column, e) => {
+    updateColumnValue({
+      envId: record.envId,
+      name: column,
+      value: e.target.innerText,
+    });
+  };
   useEffect(() => {
     if (environments.length == 0) return;
 
     const tempDynamicKeys = Object.keys(environments[0]).map((el) => {
-      return {
+      let temp = {
         title: el,
         dataIndex: el,
       };
+      if (el != "Environment") {
+        temp.render = (text, record) => (
+          <div style={{ minHeight: 30 }}>
+            <div
+              className="show-boundary"
+              style={{ minHeight: 25 }}
+              contentEditable
+              onBlur={(e) => handleUpdateValue(record, el, e)}
+            >
+              {text}
+            </div>
+          </div>
+        );
+      }
+      return temp;
     });
     const dynamicKeys = tempDynamicKeys.filter((el) => {
       return el.title !== "envId";
     });
+    console.log("saransh", dynamicKeys);
     setColumns([
       ...dynamicKeys,
       {
@@ -134,6 +160,7 @@ const DataTable = ({
                     // setRows([...rows, { env: "Enter Name", editing: true }]);
                     setAddModal({ active: true, type: "Column" });
                   }}
+                  disabled={searchedData.length == 0}
                 >
                   <PlusOutlined /> Column
                 </Button>
@@ -176,6 +203,6 @@ const mapStateToProps = (state) => ({
   environments: state.environment.data,
   loading: state.environment.loading,
 });
-const mapDispatchToProps = { getAllEnvironments };
+const mapDispatchToProps = { getAllEnvironments, updateColumnValue };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataTable);

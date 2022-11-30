@@ -15,6 +15,20 @@ const saveEnvironment = async (req, res) => {
     const payload = { ...req.body };
     const env = await Environment.schema(req.database).create(payload);
 
+    const enviroment = await Environment.schema(req.database).findOne({
+      where: {
+        testCaseId: payload.testCaseId,
+      },
+      attributes: ["id"],
+    });
+    const columns = await Column.schema(req.database).findAll({
+      where: { envId: enviroment.id },
+    });
+    const columnPayload = columns.map((el) => {
+      return { value: null, envId: enviroment.id, name: el.dataValues.name };
+    });
+    await Column.schema(req.database).bulkCreate(columnPayload);
+
     return res
       .status(200)
       .json({ ...env.dataValues, message: "Environment Created!" });
@@ -86,9 +100,36 @@ const createColumnForEnvironment = async (req, res) => {
     getError(err, res);
   }
 };
+const updateColumnValue = async (req, res) => {
+  /*  #swagger.tags = ["Environment Table"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const { value, envId, name } = req.body;
+
+    const updateColumnValue = await Column.schema(req.database).update(
+      { value },
+      {
+        where: {
+          envId,
+          name,
+        },
+      }
+    );
+    if (updateColumnValue[0]) {
+      return res.status(200).json({ message: "Column updated successfully!" });
+    } else {
+      return res.status(400).json({ error: "Record not found" });
+    }
+  } catch (err) {
+    getError(err, res);
+  }
+};
 
 export {
   saveEnvironment,
   getAllEnvironmentsByTestCase,
   createColumnForEnvironment,
+  updateColumnValue,
 };

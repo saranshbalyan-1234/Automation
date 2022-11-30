@@ -47,3 +47,13 @@ h5 {
 .ant-menu-title-content {
   transition: none !important;
 }
+
+.show-boundary:hover {
+  border: 1px solid grey;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.show-boundary {
+  padding-left: 10px;
+  padding-right: 10px;
+}

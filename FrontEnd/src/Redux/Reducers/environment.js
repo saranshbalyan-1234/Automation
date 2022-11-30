@@ -5,6 +5,7 @@ import {
   DELETE_ENVIRONMENT,
   ADD_ENVIRONMENT,
   ADD_COLUMN,
+  ENVIRONMENT_SUCCESS,
 } from "../Actions/action-types";
 
 const initState = {
@@ -20,6 +21,11 @@ const environmentReducer = (state = initState, { type, payload }) => {
         loading: true,
       };
     case ENVIRONMENT_FAILURE:
+      return {
+        ...state,
+        loading: false,
+      };
+    case ENVIRONMENT_SUCCESS:
       return {
         ...state,
         loading: false,
