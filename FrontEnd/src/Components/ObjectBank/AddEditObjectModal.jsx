@@ -69,7 +69,7 @@ const AddEditObjectModal = ({
                 },
               ]}
             >
-              <Input name="name" />
+              <Input name="name" showCount maxLength={30} />
             </Form.Item>
             <Form.Item name="description" label="">
               {/* <Input.TextArea name="description" /> */}

@@ -44,7 +44,7 @@ const ChangePasswordModal = ({
               },
             ]}
           >
-            <Input.Password />
+            <Input.Password showCount maxLength={10} />
           </Form.Item>
 
           <Form.Item
@@ -57,7 +57,7 @@ const ChangePasswordModal = ({
               },
             ]}
           >
-            <Input.Password />
+            <Input.Password showCount maxLength={10} />
           </Form.Item>
 
           <Form.Item

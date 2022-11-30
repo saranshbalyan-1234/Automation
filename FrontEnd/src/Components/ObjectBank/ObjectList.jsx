@@ -91,7 +91,6 @@ export const ObjectList = ({
           }}
         >
           <CustomSearch
-            width={"250px"}
             placeholder={`Search ${name}`}
             onSearch={handleSearch}
           />

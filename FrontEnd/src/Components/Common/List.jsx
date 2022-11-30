@@ -92,7 +92,6 @@ export const List = ({
           }}
         >
           <CustomSearch
-            width={"250px"}
             placeholder={`Search ${name}`}
             onSearch={handleSearch}
           />

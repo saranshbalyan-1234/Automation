@@ -70,6 +70,8 @@ const Register = ({ register }) => {
                   ]}
                 >
                   <Input
+                    showCount
+                    maxLength={30}
                     name="name"
                     onChange={(e) => {
                       handleDetails(e);
@@ -109,6 +111,8 @@ const Register = ({ register }) => {
                   hasFeedback
                 >
                   <Input.Password
+                    showCount
+                    maxLength={10}
                     name="password"
                     onChange={(e) => {
                       handleDetails(e);
@@ -137,7 +141,7 @@ const Register = ({ register }) => {
                     }),
                   ]}
                 >
-                  <Input.Password />
+                  <Input.Password showCount maxLength={10} />
                 </Form.Item>
                 <Form.Item
                   name="agreement"

@@ -43,7 +43,7 @@ const ExecuteModal = ({
               },
             ]}
           >
-            <Input name="name" />
+            <Input name="name" showCount maxLength={50} />
           </Form.Item>
 
           <Form.Item name="description" label="">

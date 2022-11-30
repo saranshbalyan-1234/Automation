@@ -68,6 +68,8 @@ const AddUserModal = ({
               onChange={(e) => {
                 handleDetails(e);
               }}
+              showCount
+              maxLength={30}
             />
           </Form.Item>
           <Form.Item
@@ -107,6 +109,8 @@ const AddUserModal = ({
               onChange={(e) => {
                 handleDetails(e);
               }}
+              showCount
+              maxLength={10}
             />
           </Form.Item>
           <Form.Item
@@ -129,7 +133,7 @@ const AddUserModal = ({
               }),
             ]}
           >
-            <Input.Password />
+            <Input.Password showCount maxLength={10} />
           </Form.Item>
 
           <div style={{ display: "flex", justifyContent: "center" }}>

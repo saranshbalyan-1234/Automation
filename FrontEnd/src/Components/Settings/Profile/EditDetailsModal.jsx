@@ -38,7 +38,7 @@ const EditDetailsModal = ({
             name="name"
             rules={[{ required: true, message: "Please input your name!" }]}
           >
-            <Input />
+            <Input showCount maxLength={30} />
           </Form.Item>
 
           <Form.Item

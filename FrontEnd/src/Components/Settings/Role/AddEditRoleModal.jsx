@@ -57,7 +57,7 @@ const AddEditRoleModal = ({
               },
             ]}
           >
-            <Input name="name" />
+            <Input name="name" showCount maxLength={30} />
           </Form.Item>
 
           <div style={{ display: "flex", justifyContent: "center" }}>

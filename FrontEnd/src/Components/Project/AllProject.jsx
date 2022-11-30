@@ -100,7 +100,6 @@ export const AllProject = ({
         }}
       >
         <CustomSearch
-          width={"250px"}
           placeholder={`Search Projects`}
           onSearch={handleSearch}
         />
