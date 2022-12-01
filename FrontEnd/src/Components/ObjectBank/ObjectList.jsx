@@ -33,10 +33,17 @@ export const ObjectList = ({
     {
       title: "Name",
       dataIndex: "name",
+      width: 500,
+    },
+    {
+      title: "Tags",
+      dataIndex: "tag",
+      width: 300,
     },
     {
       title: "Created At",
       dataIndex: "createdBy",
+      width: 240,
       render: (_, record) => (
         <div>
           {moment(record.createdAt).format("DD/MM/YYYY h:mm:ss a")} By &nbsp;
@@ -49,6 +56,7 @@ export const ObjectList = ({
     {
       title: "Last Updated",
       key: "updatedAt",
+      width: 190,
       render: (_, record) => (
         <div>{moment(record.updatedAt).format("DD/MM/YYYY h:mm:ss a")}</div>
       ),
@@ -57,6 +65,7 @@ export const ObjectList = ({
     {
       title: "Actions",
       key: "actions",
+      width: 70,
       render: (_, record) => (
         <div style={{ display: "flex", gap: 10 }}>
           <Popconfirm

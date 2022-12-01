@@ -189,7 +189,7 @@ const deleteEnvironment = async (req, res) => {
     // if (error) throw new Error(error.details[0].message);
     const envId = req.params.envId;
 
-    const deletedColumn = await Column.schema(req.database).destroy({
+    await Column.schema(req.database).destroy({
       where: {
         envId,
       },
@@ -200,7 +200,7 @@ const deleteEnvironment = async (req, res) => {
       },
     });
 
-    if (deletedColumn > 0 && deletedEnv > 0) {
+    if (deletedEnv > 0) {
       return res.status(200).json({ message: "Environment Deleted!" });
     } else {
       return res.status(400).json({ error: "Record not found" });

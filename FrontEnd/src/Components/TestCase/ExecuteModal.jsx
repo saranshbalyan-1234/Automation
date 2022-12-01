@@ -15,11 +15,13 @@ const ExecuteModal = ({
 }) => {
   const [form] = Form.useForm();
   const [allEnvironments, setAllEnvironments] = useState([]);
+  const [envLoading, setEnvLoading] = useState(false);
   useEffect(() => {
     getEnvironment();
   }, []);
 
   const getEnvironment = async () => {
+    setEnvLoading(true);
     const { data } = await axios.get(
       `/environment/names/testCase/${currentTestCaseId}`
     );
@@ -27,7 +29,7 @@ const ExecuteModal = ({
       form.setFieldsValue({
         environment: data[0].id,
       });
-
+    setEnvLoading(false);
     setAllEnvironments(data);
   };
   const handleExecute = async (data) => {
@@ -43,9 +45,8 @@ const ExecuteModal = ({
       onCancel={() => {
         setVisible(false);
       }}
-      // closable={false}
     >
-      <Loading loading={loading}>
+      <Loading loading={loading || envLoading}>
         <Form
           form={form}
           name="execute"
@@ -65,27 +66,28 @@ const ExecuteModal = ({
           >
             <Input name="name" showCount maxLength={50} />
           </Form.Item>
-
-          <Form.Item
-            name="environment"
-            label="Environment"
-            rules={[
-              {
-                required: allEnvironments.length > 0 ? true : false,
-                message: "Please input Name!",
-              },
-            ]}
-          >
-            <Select showSearch style={{ minWidth: "160px" }}>
-              {allEnvironments.map((el, i) => {
-                return (
-                  <Option value={el.id} key={i}>
-                    {el.name}
-                  </Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
+          {allEnvironments.length > 0 && (
+            <Form.Item
+              name="environment"
+              label="Environment"
+              rules={[
+                {
+                  required: true,
+                  message: "Please Select Environment!",
+                },
+              ]}
+            >
+              <Select showSearch style={{ minWidth: "160px" }}>
+                {allEnvironments.map((el, i) => {
+                  return (
+                    <Option value={el.id} key={i}>
+                      {el.name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          )}
 
           <Form.Item name="description" label="">
             <ReactQuill
