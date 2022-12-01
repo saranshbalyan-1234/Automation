@@ -417,8 +417,14 @@ const rightClick = async (step, driver, processResult, req, stepHistoryId) => {
 };
 
 const enterText = async (step, driver, processResult, req, stepHistoryId) => {
+  console.log("Entering text ");
   const text = step.testParameters.Text;
-  console.log("Entering text " + text);
+  if (!text) {
+    console.log("No Text Found");
+    if (processResult.result) return (processResult.result = false);
+    return;
+  }
+
   try {
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
@@ -439,6 +445,11 @@ const enterPassword = async (
   console.log("Entering Password");
   try {
     const password = step.testParameters.Password;
+    if (!password) {
+      console.log("No Password Found");
+      if (processResult.result) return (processResult.result = false);
+      return;
+    }
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .sendKeys(password);
