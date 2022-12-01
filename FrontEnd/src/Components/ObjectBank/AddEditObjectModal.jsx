@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Modal, Button } from "antd";
+import { Form, Input, Modal, Button, Select } from "antd";
 import ViewObjectModal from "../Common/TestStep/ViewObjectModal";
 import { connect } from "react-redux";
 import ReactQuill from "react-quill";
@@ -57,6 +57,11 @@ const AddEditObjectModal = ({
             initialValues={{
               name: edit ? editData.name : "",
               description: edit ? editData.description : "",
+              tags: edit
+                ? editData.tags
+                  ? editData.tags
+                  : undefined
+                : undefined,
             }}
           >
             <Form.Item
@@ -70,6 +75,9 @@ const AddEditObjectModal = ({
               ]}
             >
               <Input name="name" showCount maxLength={30} />
+            </Form.Item>
+            <Form.Item name="tags" label="Tags">
+              <Select mode="tags" placeholder="Tags" />
             </Form.Item>
             <Form.Item name="description" label="">
               {/* <Input.TextArea name="description" /> */}
