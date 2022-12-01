@@ -89,7 +89,7 @@ const ManagePermissionModal = ({
       onCancel={() => {
         setVisible(false);
       }}
-      closable={false}
+      // closable={false}
       width={550}
     >
       <Loading loading={roles.loading || loading}>

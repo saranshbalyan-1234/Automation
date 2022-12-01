@@ -44,7 +44,7 @@ const AddUserModal = ({
       onCancel={() => {
         setAddUserModal(false);
       }}
-      closable={false}
+      // closable={false}
     >
       <Loading loading={loading}>
         <Form

@@ -32,7 +32,7 @@ const AddModal = ({
       onCancel={() => {
         setVisible({ active: false });
       }}
-      closable={false}
+      // closable={false}
     >
       <Loading loading={loading}>
         <Form

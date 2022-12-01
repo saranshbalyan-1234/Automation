@@ -39,7 +39,7 @@ const AddEditModal = ({
       onCancel={() => {
         setVisible(false);
       }}
-      closable={false}
+      // closable={false}
     >
       <Loading loading={loading}>
         <Form

@@ -37,7 +37,7 @@ const AddEditProjectModal = ({
       onCancel={() => {
         setVisible(false);
       }}
-      closable={false}
+      // closable={false}
       width={500}
     >
       <Loading loading={projects.loading}>

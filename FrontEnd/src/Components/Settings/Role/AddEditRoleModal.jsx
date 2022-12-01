@@ -37,7 +37,7 @@ const AddEditRoleModal = ({
       onCancel={() => {
         setVisible(false);
       }}
-      closable={false}
+      // closable={false}
     >
       <Loading loading={roles.loading}>
         <Form

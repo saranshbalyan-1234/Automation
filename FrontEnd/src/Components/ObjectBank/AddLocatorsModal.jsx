@@ -27,7 +27,7 @@ const AddLocatorsModal = ({
       onCancel={() => {
         setVisible(false);
       }}
-      closable={false}
+      // closable={false}
       width={550}
     >
       <Loading loading={loading}>

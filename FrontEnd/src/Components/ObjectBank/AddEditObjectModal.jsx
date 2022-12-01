@@ -46,7 +46,7 @@ const AddEditObjectModal = ({
           setVisible(false);
         }}
         width={500}
-        closable={false}
+        // closable={false}
       >
         <Loading loading={loading}>
           <Form

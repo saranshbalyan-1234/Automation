@@ -14,7 +14,7 @@ export default function LayOut({ children }) {
   return (
     <StyledLayout>
       <Layout>
-        <Layout>
+        <Layout style={{ maxHeight: "100vh" }}>
           <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
           <div
             style={{

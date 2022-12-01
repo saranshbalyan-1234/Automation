@@ -24,7 +24,7 @@ const ChangePasswordModal = ({
       visible={changePasswordModal}
       onCancel={() => setChangePasswordModal(false)}
       footer={false}
-      closable={false}
+      // closable={false}
     >
       <Loading loading={loading}>
         <Form

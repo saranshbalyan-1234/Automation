@@ -27,7 +27,7 @@ const UploadProfileImage = ({ visible, setVisible, uploadProfilePic }) => {
       visible={visible}
       onCancel={() => setVisible(false)}
       footer={false}
-      closable={false}
+      // closable={false}
     >
       <Loading loading={loading}>
         <div

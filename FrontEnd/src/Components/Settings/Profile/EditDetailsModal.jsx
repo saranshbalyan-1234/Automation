@@ -23,7 +23,7 @@ const EditDetailsModal = ({
       visible={editDetailsModal}
       onCancel={() => setEditDetailsModal(false)}
       footer={false}
-      closable={false}
+      // closable={false}
     >
       <Loading loading={loading}>
         <Form

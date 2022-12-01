@@ -85,7 +85,7 @@ function ManageUser({ visible, setVisible, userId, updateUserRole }) {
       onCancel={() => {
         setVisible(false);
       }}
-      closable={false}
+      // closable={false}
     >
       <Loading loading={loading}>
         <div

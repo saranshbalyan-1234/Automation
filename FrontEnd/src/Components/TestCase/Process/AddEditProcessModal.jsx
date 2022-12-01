@@ -58,7 +58,7 @@ const AddEditProcessModal = ({
           setVisible(false);
         }}
         width={600}
-        closable={false}
+        // closable={false}
       >
         <Loading loading={loading || reusableLoading}>
           <Form
