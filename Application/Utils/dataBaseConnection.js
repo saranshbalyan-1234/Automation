@@ -13,6 +13,10 @@ const ReusableProcess = require("../Models/TestCase/ReusableProcess");
 const ExecutionHistory = require("../Models/TestCase/ExecutionHistory/ExecutionHistory");
 const ProcessHistory = require("../Models/TestCase/ExecutionHistory/ProcessHistory");
 const TestStepHistory = require("../Models/TestCase/ExecutionHistory/TestStepHistory");
+
+//Environment
+const Environment = require("../Models/TestCase/Environment/Environment");
+const Column = require("../Models/TestCase/Environment/Column");
 dotenv.config();
 
 const sequelize = new Sequelize("Main", "root", "ysoserious", {
@@ -47,6 +51,10 @@ db.reusableProcess = ReusableProcess(sequelize, DataTypes);
 db.executionHistory = ExecutionHistory(sequelize, DataTypes);
 db.processHistory = ProcessHistory(sequelize, DataTypes);
 db.testStepHistory = TestStepHistory(sequelize, DataTypes);
+
+//environment
+db.enviroments = Environment(sequelize, DataTypes);
+db.columns = Column(sequelize, DataTypes);
 
 db.users = User(sequelize, DataTypes); //all associations
 

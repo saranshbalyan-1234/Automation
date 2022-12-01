@@ -1,9 +1,11 @@
-import React from "react";
-import { Form, Input, Modal, Button } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Input, Modal, Button, Select } from "antd";
 import { connect } from "react-redux";
 import { executeTestCase } from "../../Redux/Actions/testCase";
 import ReactQuill from "react-quill";
 import Loading from "../Common/Loading";
+import axios from "axios";
+const { Option } = Select;
 const ExecuteModal = ({
   visible,
   setVisible,
@@ -11,6 +13,23 @@ const ExecuteModal = ({
   executeTestCase,
   currentTestCaseId,
 }) => {
+  const [form] = Form.useForm();
+  const [allEnvironments, setAllEnvironments] = useState([]);
+  useEffect(() => {
+    getEnvironment();
+  }, []);
+
+  const getEnvironment = async () => {
+    const { data } = await axios.get(
+      `/environment/names/testCase/${currentTestCaseId}`
+    );
+    data.length > 0 &&
+      form.setFieldsValue({
+        environment: data[0].id,
+      });
+
+    setAllEnvironments(data);
+  };
   const handleExecute = async (data) => {
     await executeTestCase(currentTestCaseId, data);
     setVisible(false);
@@ -28,9 +47,10 @@ const ExecuteModal = ({
     >
       <Loading loading={loading}>
         <Form
+          form={form}
           name="execute"
           onFinish={handleExecute}
-          labelCol={{ span: 5 }}
+          labelCol={{ span: 7 }}
           wrapperCol={{ span: 16 }}
         >
           <Form.Item
@@ -44,6 +64,27 @@ const ExecuteModal = ({
             ]}
           >
             <Input name="name" showCount maxLength={50} />
+          </Form.Item>
+
+          <Form.Item
+            name="environment"
+            label="Environment"
+            rules={[
+              {
+                required: allEnvironments.length > 0 ? true : false,
+                message: "Please input Name!",
+              },
+            ]}
+          >
+            <Select showSearch style={{ minWidth: "160px" }}>
+              {allEnvironments.map((el, i) => {
+                return (
+                  <Option value={el.id} key={i}>
+                    {el.name}
+                  </Option>
+                );
+              })}
+            </Select>
           </Form.Item>
 
           <Form.Item name="description" label="">

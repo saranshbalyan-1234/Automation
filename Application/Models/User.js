@@ -92,6 +92,10 @@ module.exports = (sequelize, DataTypes) => {
     foreignKey: "id",
     constraints: false,
   });
-
+  sequelize.models.environments.hasMany(sequelize.models.columns, {
+    sourceKey: "id",
+    foreignKey: "envId",
+    constraints: false,
+  });
   return User;
 };

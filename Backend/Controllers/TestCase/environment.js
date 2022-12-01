@@ -73,6 +73,24 @@ const getAllEnvironmentsByTestCase = async (req, res) => {
     getError(err, res);
   }
 };
+const getAllEnvironmentNamesByTestCase = async (req, res) => {
+  /*  #swagger.tags = ["Environment"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const testCaseId = req.params.testCaseId;
+    const enviroments = await Environment.schema(req.database).findAll({
+      where: {
+        testCaseId,
+      },
+      attributes: ["id", "name"],
+    });
+    return res.status(200).json(enviroments);
+  } catch (err) {
+    getError(err, res);
+  }
+};
 
 const createColumnForEnvironment = async (req, res) => {
   /*  #swagger.tags = ["Environment Table"] 
@@ -132,4 +150,5 @@ export {
   getAllEnvironmentsByTestCase,
   createColumnForEnvironment,
   updateColumnValue,
+  getAllEnvironmentNamesByTestCase,
 };
