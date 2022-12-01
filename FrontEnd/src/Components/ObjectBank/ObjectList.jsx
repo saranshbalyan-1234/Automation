@@ -50,7 +50,7 @@ export const ObjectList = ({
     {
       title: "Created At",
       dataIndex: "createdBy",
-      width: 270,
+      width: 290,
       render: (_, record) => (
         <div>
           {moment(record.createdAt).format("DD/MM/YYYY h:mm:ss a")} By &nbsp;
