@@ -10,7 +10,7 @@ const {
   updateExecutionFinishTime,
   updateStepResult,
 } = require("./Controllers/executionHistoryController");
-
+const { getAllEnvironmentsByTestCase } = require("./Controllers/environment");
 const moment = require("moment");
 const helmet = require("helmet");
 const cors = require("cors");
@@ -32,6 +32,7 @@ app.post("/execute/:testCaseId", async (req, res) => {
     const data = await getTestStepByTestCase(req, res);
     let canCreateS3Folder = true;
     let output = {};
+    let environment = await getAllEnvironmentsByTestCase(req, res);
 
     for (let i = 0; i < data.data.length; i++) {
       let process = data.data[i];
@@ -56,6 +57,8 @@ app.post("/execute/:testCaseId", async (req, res) => {
             tempParameter[parameter.type] = parameter.property;
           } else if (parameter.method == "Dynamic") {
             tempParameter[parameter.type] = output[parameter.property];
+          } else if (parameter.method == "Environment") {
+            tempParameter[parameter.type] = environment[parameter.property];
           }
         });
 
