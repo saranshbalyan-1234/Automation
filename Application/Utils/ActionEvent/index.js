@@ -421,7 +421,9 @@ const enterText = async (step, driver, processResult, req, stepHistoryId) => {
   const text = step.testParameters.Text;
   if (!text) {
     console.log("No Text Found");
-    if (processResult.result) return (processResult.result = false);
+    if (processResult.result) {
+      processResult.result = false;
+    }
     return;
   }
 
@@ -447,7 +449,9 @@ const enterPassword = async (
     const password = step.testParameters.Password;
     if (!password) {
       console.log("No Password Found");
-      if (processResult.result) return (processResult.result = false);
+      if (processResult.result) {
+        processResult.result = false;
+      }
       return;
     }
     await driver
