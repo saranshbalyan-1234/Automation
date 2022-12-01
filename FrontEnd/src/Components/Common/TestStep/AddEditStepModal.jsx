@@ -285,6 +285,7 @@ const AddEditStepModal = ({
                   <Select>
                     <Option value="Static">Static</Option>
                     <Option value="Dynamic">Dynamic</Option>
+                    <Option value="Environment">Environment</Option>
                   </Select>
                 </Form.Item>
                 <Form.Item
@@ -338,6 +339,7 @@ const AddEditStepModal = ({
                   <Select>
                     <Option value="Static">Static</Option>
                     <Option value="Dynamic">Dynamic</Option>
+                    <Option value="Environment">Environment</Option>
                   </Select>
                 </Form.Item>
                 <Form.Item
@@ -391,6 +393,7 @@ const AddEditStepModal = ({
                   <Select>
                     <Option value="Static">Static</Option>
                     <Option value="Dynamic">Dynamic</Option>
+                    <Option value="Environment">Environment</Option>
                   </Select>
                 </Form.Item>
                 <Form.Item

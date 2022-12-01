@@ -5,7 +5,7 @@ import {
   DELETE_ENVIRONMENT,
   ADD_ENVIRONMENT,
   ADD_COLUMN,
-  ENVIRONMENT_SUCCESS,
+  UPDATE_COLUMN_VALUE,
 } from "../Actions/action-types";
 
 const initState = {
@@ -25,11 +25,7 @@ const environmentReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: false,
       };
-    case ENVIRONMENT_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-      };
+
     case GET_ALL_ENVIRONMENT:
       return {
         ...state,
@@ -56,7 +52,17 @@ const environmentReducer = (state = initState, { type, payload }) => {
         loading: false,
         data: temp,
       };
-
+    case UPDATE_COLUMN_VALUE:
+      let updatedColumnValue = [...state.data].map((el) => {
+        let temp = {};
+        temp[payload.name] = payload.value;
+        return el.envId == payload.envId ? { ...el, ...temp } : el;
+      });
+      return {
+        ...state,
+        loading: false,
+        data: updatedColumnValue,
+      };
     default:
       return state;
   }

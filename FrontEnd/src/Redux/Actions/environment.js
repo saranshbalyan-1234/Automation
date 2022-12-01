@@ -5,7 +5,7 @@ import {
   GET_ALL_ENVIRONMENT,
   ADD_ENVIRONMENT,
   ADD_COLUMN,
-  ENVIRONMENT_SUCCESS,
+  UPDATE_COLUMN_VALUE,
 } from "./action-types";
 export const addEnvironment = (payload) => {
   return async (dispatch) => {
@@ -55,8 +55,8 @@ export const updateColumnValue = (payload) => {
   return async (dispatch) => {
     try {
       dispatch({ type: ENVIRONMENT_REQUEST });
-      const { data } = await axios.put(`/environment/column/value`, payload);
-      dispatch({ type: ENVIRONMENT_SUCCESS });
+      await axios.put(`/environment/column/value`, payload);
+      dispatch({ type: UPDATE_COLUMN_VALUE, payload });
       return true;
     } catch (err) {
       dispatch({ type: ENVIRONMENT_FAILURE });
