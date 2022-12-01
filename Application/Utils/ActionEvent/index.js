@@ -429,7 +429,13 @@ const enterText = async (step, driver, processResult, req, stepHistoryId) => {
     if (processResult.result) processResult.result = false;
   }
 };
-const enterPassword = async (step, driver, processResult, stepHistoryId) => {
+const enterPassword = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId
+) => {
   console.log("Entering Password");
   try {
     const password = step.testParameters.Password;
