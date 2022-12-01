@@ -77,7 +77,7 @@ const Details = ({ loading, details, name, onEdit = () => {} }) => {
           <div style={{ display: "flex", gap: 10 }}>
             <div>Tags:</div>
             <div>
-              {details.tags.length > 0
+              {details.tags?.length > 0
                 ? details.tags.map((el) => {
                     return <Tag>{el}</Tag>;
                   })

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Locators from "./Locators";
 import { useParams } from "react-router-dom";
-import { Button, Card, Typography } from "antd";
+import { Button, Card, Typography, Tag } from "antd";
 import { getObjectDetailsById, editObject } from "../../Redux/Actions/object";
 import { PlusOutlined } from "@ant-design/icons";
 import AddLocatorsModal from "./AddLocatorsModal";
@@ -71,6 +71,16 @@ const ObjectDetails = ({
                 }
               />
             )}
+            <div style={{ display: "flex", gap: 10 }}>
+              <div>Tags:</div>
+              <div>
+                {currentObject.tags?.length > 0
+                  ? currentObject.tags.map((el) => {
+                      return <Tag>{el}</Tag>;
+                    })
+                  : "N/A"}
+              </div>
+            </div>
           </Card>
           <div style={{ display: "flex", flexDirection: "column" }}>
             {!history && (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Popconfirm, Button } from "antd";
+import { Table, Popconfirm, Button, Tag } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
 import AddEditObjectModal from "./AddEditObjectModal";
@@ -37,8 +37,15 @@ export const ObjectList = ({
     },
     {
       title: "Tags",
-      dataIndex: "tag",
+      dataIndex: "tags",
       width: 300,
+      render: (tags, record) => (
+        <div>
+          {tags?.map((el) => {
+            return <Tag>{el}</Tag>;
+          })}
+        </div>
+      ),
     },
     {
       title: "Created At",
