@@ -36,40 +36,42 @@ const ObjectDetails = ({
   }, [object?.locators]);
 
   return (
-    <div>
+    <div style={{ paddingTop: 20 }}>
       {currentObject && (
         <>
-          <Meta
-            title={
-              <div style={{ display: "flex", gap: 20 }}>
-                <Title style={{ textTransform: "capitalize" }} level={3}>
-                  {`Object: ${currentObject.name}`}
-                </Title>
-                <div style={{ color: "black" }}>
-                  Created On &nbsp;
-                  {moment(currentObject.createdAt).format("DD/MM/YY")} By &nbsp;
-                  {currentObject.createdBy && (
-                    <UserAvatar user={currentObject.createdBy} />
-                  )}
-                </div>
-              </div>
-            }
-            description={<></>}
-          />
-          {currentObject.description && (
+          <Card>
             <Meta
-              title="Description"
-              description={
-                <div
-                  style={{ marginTop: "5px" }}
-                  dangerouslySetInnerHTML={{
-                    __html: currentObject.description,
-                  }}
-                ></div>
+              title={
+                <div style={{ display: "flex", gap: 20 }}>
+                  <Title style={{ textTransform: "capitalize" }} level={3}>
+                    {`Object: ${currentObject.name}`}
+                  </Title>
+                  <div style={{ color: "black" }}>
+                    Created On &nbsp;
+                    {moment(currentObject.createdAt).format("DD/MM/YY")} By
+                    &nbsp;
+                    {currentObject.createdBy && (
+                      <UserAvatar user={currentObject.createdBy} />
+                    )}
+                  </div>
+                </div>
               }
+              description={<></>}
             />
-          )}
-
+            {currentObject.description && (
+              <Meta
+                title="Description"
+                description={
+                  <div
+                    style={{ marginTop: "5px" }}
+                    dangerouslySetInnerHTML={{
+                      __html: currentObject.description,
+                    }}
+                  ></div>
+                }
+              />
+            )}
+          </Card>
           <div style={{ display: "flex", flexDirection: "column" }}>
             {!history && (
               <Button

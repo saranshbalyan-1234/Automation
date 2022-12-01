@@ -38,21 +38,17 @@ const updateReusableProcess = async (req, res) => {
   */
 
   try {
-    const name = req.body.name;
     const reusableProcessId = req.params.reusableProcessId;
     // const { error } = updateTestCaseValidation.validate({ name, reusableProcessId });
     // if (error) throw new Error(error.details[0].message);
 
     const updatedReusableProcess = await ReusableProcess.schema(
       req.database
-    ).update(
-      { name },
-      {
-        where: {
-          id: reusableProcessId,
-        },
-      }
-    );
+    ).update(req.body, {
+      where: {
+        id: reusableProcessId,
+      },
+    });
 
     if (updatedReusableProcess[0]) {
       return res
@@ -82,7 +78,7 @@ const getAllReusableProcess = async (req, res) => {
       where: {
         projectId,
       },
-      attributes: ["id", "name", "updatedAt", "createdAt"],
+      attributes: ["id", "name", "updatedAt", "createdAt", "tags"],
       include: [
         {
           model: User.schema(req.database),
@@ -139,7 +135,14 @@ const getReusableProcessDetailsById = async (req, res) => {
       where: {
         id: reusableProcessId,
       },
-      attributes: ["id", "name", "createdAt", "updatedAt", "description"],
+      attributes: [
+        "id",
+        "name",
+        "createdAt",
+        "updatedAt",
+        "description",
+        "tags",
+      ],
       include: [
         {
           model: User.schema(req.database),

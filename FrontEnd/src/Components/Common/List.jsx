@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Popconfirm, Button } from "antd";
+import { Table, Popconfirm, Button, Tag } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
 import AddEditModal from "./AddEditModal";
@@ -25,7 +25,12 @@ export const List = ({
   const handleSearch = (e) => {
     let value = e.target.value.toLowerCase();
     const temp = data.filter((el) => {
-      return el.name.toLowerCase().includes(value);
+      return (
+        el.name.toLowerCase().includes(value) ||
+        el.tags.some((el1) => {
+          return el1.toLowerCase().includes(value);
+        })
+      );
     });
     setSearchedData(temp);
   };
@@ -38,26 +43,32 @@ export const List = ({
     },
     {
       title: "Tags",
-      dataIndex: "tag",
+      dataIndex: "tags",
       width: 300,
+      render: (tags, record) => (
+        <div>
+          {tags?.map((el) => {
+            return <Tag>{el}</Tag>;
+          })}
+        </div>
+      ),
     },
     {
       title: "Created At",
       dataIndex: "createdBy",
-      width: 240,
+      width: 270,
       render: (_, record) => (
         <div>
           {moment(record.createdAt).format("DD/MM/YYYY h:mm:ss a")} By &nbsp;
           {record.createdBy && <UserAvatar user={record.createdBy} />}
         </div>
-        // <div>{<UserAvatar user={record.createdBy} />}</div>
       ),
     },
 
     {
       title: "Last Updated",
       key: "updatedAt",
-      width: 190,
+      width: 210,
       render: (_, record) => (
         <div>{moment(record.updatedAt).format("DD/MM/YYYY h:mm:ss a")}</div>
       ),

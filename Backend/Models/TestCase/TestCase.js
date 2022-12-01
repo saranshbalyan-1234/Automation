@@ -23,6 +23,10 @@ export default (sequelize, DataTypes) => {
       },
       onDelete: "CASCADE",
     },
+    tags: {
+      type: DataTypes.JSON,
+      defaultValue: null,
+    },
     createdByUser: {
       type: DataTypes.INTEGER,
       allowNull: false,

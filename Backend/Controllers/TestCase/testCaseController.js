@@ -39,13 +39,13 @@ const updateTestCase = async (req, res) => {
   */
 
   try {
-    const name = req.body.name;
+    // const { name, tags } = req.body;
     const testCaseId = req.params.testCaseId;
-    const { error } = updateTestCaseValidation.validate({ name, testCaseId });
+    const { error } = updateTestCaseValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
 
     const updatedTestCase = await TestCase.schema(req.database).update(
-      { name },
+      req.body,
       {
         where: {
           id: testCaseId,
@@ -79,7 +79,7 @@ const getAllTestCase = async (req, res) => {
       where: {
         projectId,
       },
-      attributes: ["id", "name", "updatedAt", "createdAt"],
+      attributes: ["id", "name", "updatedAt", "createdAt", "tags"],
       include: [
         {
           model: User.schema(req.database),
@@ -132,7 +132,14 @@ const getTestCaseDetailsById = async (req, res) => {
       where: {
         id: testCaseId,
       },
-      attributes: ["id", "name", "createdAt", "updatedAt", "description"],
+      attributes: [
+        "id",
+        "name",
+        "createdAt",
+        "updatedAt",
+        "description",
+        "tags",
+      ],
       include: [
         {
           model: User.schema(req.database),

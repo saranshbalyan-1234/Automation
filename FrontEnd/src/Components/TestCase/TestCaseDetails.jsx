@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Typography, Card, Button } from "antd";
+import { Typography, Card, Button, Tag } from "antd";
 import moment from "moment";
 import { EditOutlined } from "@ant-design/icons";
 import UserAvatar from "../Common/Avatar";
@@ -51,21 +51,32 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
                     <Card>
                       <Meta
                         title="Total Process"
-                        description={details.processCount || "0"}
+                        description={details.processCount || "N/A"}
                       />
                     </Card>
                     <Card>
                       <Meta
                         title="Reusable Process"
-                        description={details.reusableProcessCount || "0"}
+                        description={details.reusableProcessCount || "N/A"}
                       />
                     </Card>
                     <Card>
                       <Meta
                         title="Total Steps"
-                        description={details.stepCount || "0"}
+                        description={details.stepCount || "N/A"}
                       />
                     </Card>
+                  </div>
+
+                  <div style={{ display: "flex", gap: 10 }}>
+                    <div>Tags:</div>
+                    <div>
+                      {details.tags.length > 0
+                        ? details.tags.map((el) => {
+                            return <Tag>{el}</Tag>;
+                          })
+                        : "N/A"}
+                    </div>
                   </div>
                 </>
               }

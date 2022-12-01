@@ -56,7 +56,7 @@ const ReusableProcessDetails = ({
                     <Card>
                       <Meta
                         title="Total Steps"
-                        description={details.totalSteps || "0"}
+                        description={details.totalSteps || "N/A"}
                       />
                     </Card>
                   </div>

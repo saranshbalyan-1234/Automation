@@ -37,7 +37,14 @@ const getObjectDetailsById = async (req, res) => {
       where: {
         id: objectId,
       },
-      // attributes: ["id", "name", "createdAt", "updatedAt", "description"],
+      attributes: [
+        "id",
+        "name",
+        "createdAt",
+        "updatedAt",
+        "description",
+        "tags",
+      ],
       include: [
         {
           model: User.schema(req.database),
@@ -121,7 +128,7 @@ const getAllObject = async (req, res) => {
       where: {
         projectId,
       },
-      // attributes: ["id", "name", "updatedAt"],
+      attributes: ["id", "name", "createdAt", "updatedAt", "tags"],
       include: [
         {
           model: User.schema(req.database),
