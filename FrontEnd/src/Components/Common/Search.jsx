@@ -11,6 +11,7 @@ export default function CustomSearch({
   return (
     <StyledSearch width={width}>
       <Input
+        allowClear
         onChange={onSearch}
         placeholder={placeholder}
         prefix={<SearchOutlined style={{ marginRight: "5px" }} />}
