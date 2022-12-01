@@ -8,8 +8,10 @@ import { connect } from "react-redux";
 import {
   getAllEnvironments,
   updateColumnValue,
+  deleteColumn,
+  deleteEnvironment,
 } from "../../../Redux/Actions/environment";
-const DataTable = ({
+const Environment = ({
   visible,
   setVisible,
   currentTestCaseId,
@@ -17,6 +19,8 @@ const DataTable = ({
   environments,
   loading,
   updateColumnValue,
+  deleteColumn,
+  deleteEnvironment,
 }) => {
   const [columns, setColumns] = useState([]);
   const [searchedData, setSearchedData] = useState([]);
@@ -40,8 +44,30 @@ const DataTable = ({
 
     const tempDynamicKeys = Object.keys(environments[0]).map((el) => {
       let temp = {
-        title: el,
+        title:
+          el != "Environment" && el != "envId" ? (
+            <div style={{ paddingLeft: 10 }}>
+              {el}
+              <Popconfirm
+                title={`Are you sure to delete this Column?`}
+                onConfirm={async (e) => {
+                  e.stopPropagation();
+                  await deleteColumn(el);
+                }}
+                okText="Yes, Delete"
+                cancelText="No"
+              >
+                <DeleteOutlined
+                  onClick={(e) => e.stopPropagation()}
+                  style={{ fontSize: 14, marginLeft: 5 }}
+                />
+              </Popconfirm>
+            </div>
+          ) : (
+            el
+          ),
         dataIndex: el,
+        width: "100%",
       };
       if (el != "Environment") {
         temp.render = (text, record) => (
@@ -62,7 +88,6 @@ const DataTable = ({
     const dynamicKeys = tempDynamicKeys.filter((el) => {
       return el.title !== "envId";
     });
-    console.log("saransh", dynamicKeys);
     setColumns([
       ...dynamicKeys,
       {
@@ -73,7 +98,7 @@ const DataTable = ({
             title={`Are you sure to delete this Env?`}
             onConfirm={async (e) => {
               e.stopPropagation();
-              await onDelete(record.id);
+              await deleteEnvironment(record.envId);
             }}
             okText="Yes, Delete"
             cancelText="No"
@@ -84,6 +109,7 @@ const DataTable = ({
             />
           </Popconfirm>
         ),
+        width: 70,
       },
     ]);
   }, [environments.length > 0 && Object.keys(environments[0]).length]);
@@ -102,29 +128,15 @@ const DataTable = ({
     setSearchedData(temp);
   };
   const onDelete = (id) => {
-    const deletedData = searchedData.filter((el) => {
-      return el.id !== id;
-    });
-    setSearchedData(deletedData);
+    // const deletedData = searchedData.filter((el) => {
+    //   return el.id !== id;
+    // });
+    // setSearchedData(deletedData);
   };
-  const handleAddEdit = (e, record) => {
-    const value = e.target.value;
-    if (record.id) {
-      //edit
-    } else {
-      // add new
-      const addedData = searchedData.map((el) => {
-        return { ...el, env: value, editing: false };
-      });
-      setSearchedData(addedData);
-    }
-  };
-  const startEditMode = (id) => {};
 
   return (
     <>
       <Modal
-        // title="Environment"
         width={1000}
         centered
         visible={visible}
@@ -203,6 +215,11 @@ const mapStateToProps = (state) => ({
   environments: state.environment.data,
   loading: state.environment.loading,
 });
-const mapDispatchToProps = { getAllEnvironments, updateColumnValue };
+const mapDispatchToProps = {
+  getAllEnvironments,
+  updateColumnValue,
+  deleteColumn,
+  deleteEnvironment,
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataTable);
+export default connect(mapStateToProps, mapDispatchToProps)(Environment);

@@ -5,6 +5,7 @@ import {
   DELETE_ENVIRONMENT,
   ADD_ENVIRONMENT,
   ADD_COLUMN,
+  DELETE_COLUMN,
   UPDATE_COLUMN_VALUE,
 } from "../Actions/action-types";
 
@@ -45,18 +46,25 @@ const environmentReducer = (state = initState, { type, payload }) => {
         return temp;
       });
       return { ...state, loading: false, data: addedColumn };
+    case DELETE_COLUMN:
+      let deleteColumn = [...state.data].map((el) => {
+        let temp = { ...el };
+        delete temp[payload];
+        return temp;
+      });
+      return { ...state, loading: false, data: deleteColumn };
     case DELETE_ENVIRONMENT:
-      let temp = [...state.data].filter((el) => el.id !== payload);
+      let deletedEnv = [...state.data].filter((el) => el.envId !== payload);
       return {
         ...state,
         loading: false,
-        data: temp,
+        data: deletedEnv,
       };
     case UPDATE_COLUMN_VALUE:
       let updatedColumnValue = [...state.data].map((el) => {
         let temp = {};
         temp[payload.name] = payload.value;
-        return el.envId == payload.envId ? { ...el, ...temp } : el;
+        return el.envId === payload.envId ? { ...el, ...temp } : el;
       });
       return {
         ...state,

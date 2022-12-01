@@ -1,10 +1,12 @@
 import express from "express";
 import {
-  saveEnvironment,
+  createEnvironment,
   getAllEnvironmentsByTestCase,
   createColumnForEnvironment,
   updateColumnValue,
   getAllEnvironmentNamesByTestCase,
+  deleteColumnFromEnvironment,
+  deleteEnvironment,
 } from "../../Controllers/TestCase/environment.js";
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
@@ -19,11 +21,21 @@ Router.get(
   validatePermission("testcase", "view"),
   getAllEnvironmentNamesByTestCase
 );
-Router.post("/", validatePermission("testcase", "edit"), saveEnvironment);
+Router.post("/", validatePermission("testcase", "edit"), createEnvironment);
 Router.post(
   "/column/testCase/:testCaseId",
   validatePermission("testcase", "edit"),
   createColumnForEnvironment
+);
+Router.delete(
+  "/column/:name/testCase/:testCaseId",
+  validatePermission("testcase", "edit"),
+  deleteColumnFromEnvironment
+);
+Router.delete(
+  "/:envId",
+  validatePermission("testcase", "edit"),
+  deleteEnvironment
 );
 Router.put(
   "/column/value",

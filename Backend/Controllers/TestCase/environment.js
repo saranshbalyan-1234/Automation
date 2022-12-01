@@ -1,10 +1,9 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-import { nameValidation } from "../../Utils/Validations/index.js";
 const Environment = db.enviroments;
 const Column = db.columns;
 
-const saveEnvironment = async (req, res) => {
+const createEnvironment = async (req, res) => {
   /*  #swagger.tags = ["Environment Table"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
@@ -51,7 +50,7 @@ const getAllEnvironmentsByTestCase = async (req, res) => {
       include: [
         {
           model: Column.schema(req.database),
-          // attributes: ["id", "name", "email", "active", "profileImage"],
+          attributes: ["name", "value"],
         },
       ],
     });
@@ -145,10 +144,78 @@ const updateColumnValue = async (req, res) => {
   }
 };
 
+const deleteColumnFromEnvironment = async (req, res) => {
+  /*  #swagger.tags = ["Environment Table"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const columnName = req.params.name;
+    const testCaseId = req.params.testCaseId;
+    const enviroments = await Environment.schema(req.database).findAll({
+      where: {
+        testCaseId,
+      },
+      attributes: ["id"],
+    });
+
+    let payload = enviroments.map((el) => {
+      let envId = el.dataValues.id;
+      return envId;
+    });
+    const deletedColumn = await Column.schema(req.database).destroy({
+      where: {
+        name: columnName,
+        envId: payload,
+      },
+    });
+
+    if (deletedColumn > 0) {
+      return res.status(200).json({ message: "Column Deleted!" });
+    } else {
+      return res.status(400).json({ error: "Record not found" });
+    }
+  } catch (err) {
+    getError(err, res);
+  }
+};
+const deleteEnvironment = async (req, res) => {
+  /*  #swagger.tags = ["Environment Table"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    // const { error } = nameValidation.validate(req.body);
+    // if (error) throw new Error(error.details[0].message);
+    const envId = req.params.envId;
+
+    const deletedColumn = await Column.schema(req.database).destroy({
+      where: {
+        envId,
+      },
+    });
+    const deletedEnv = await Environment.schema(req.database).destroy({
+      where: {
+        id: envId,
+      },
+    });
+
+    if (deletedColumn > 0 && deletedEnv > 0) {
+      return res.status(200).json({ message: "Environment Deleted!" });
+    } else {
+      return res.status(400).json({ error: "Record not found" });
+    }
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
 export {
-  saveEnvironment,
+  createEnvironment,
   getAllEnvironmentsByTestCase,
   createColumnForEnvironment,
+  deleteColumnFromEnvironment,
   updateColumnValue,
   getAllEnvironmentNamesByTestCase,
+  deleteEnvironment,
 };

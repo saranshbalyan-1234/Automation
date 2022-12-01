@@ -7,7 +7,7 @@ import {
   getTestCaseDetailsById,
   editTestCase,
 } from "../../Redux/Actions/testCase";
-import EnvTable from "./EnvTable";
+import Environment from "./Environment";
 import Process from "./Process";
 import Details from "./TestCaseDetails";
 import ComingSoon from "../../Views/ComingSoon";
@@ -23,7 +23,7 @@ function TestCaseTabs({
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
   const [executeModal, setExecuteModal] = useState(false);
-  const [envTableModal, setEnvTableModal] = useState(false);
+  const [envModal, setEnvModal] = useState(false);
 
   const handleActiveTab = (value) => {
     navigate(`/TestCase/${testCaseId}/${value}`);
@@ -54,7 +54,7 @@ function TestCaseTabs({
             type="primary"
             ghost
             onClick={() => {
-              setEnvTableModal(true);
+              setEnvModal(true);
             }}
           >
             <TableOutlined />
@@ -106,9 +106,7 @@ function TestCaseTabs({
       {executeModal && (
         <ExecuteModal setVisible={setExecuteModal} visible={executeModal} />
       )}
-      {envTableModal && (
-        <EnvTable setVisible={setEnvTableModal} visible={envTableModal} />
-      )}
+      {envModal && <Environment setVisible={setEnvModal} visible={envModal} />}
     </>
   );
 }
