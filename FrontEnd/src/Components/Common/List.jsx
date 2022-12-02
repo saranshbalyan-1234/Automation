@@ -23,6 +23,7 @@ const List = ({
   const [searchedData, setSearchedData] = useState([]);
   useEffect(() => {
     getList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentProjectId]);
 
   useEffect(() => {

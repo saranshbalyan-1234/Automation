@@ -24,6 +24,7 @@ const ObjectList = ({
 
   useEffect(() => {
     getList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentProjectId]);
 
   useEffect(() => {

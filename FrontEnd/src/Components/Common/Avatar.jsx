@@ -13,7 +13,6 @@ export const UserAvatar = ({
   //   if (user.profileImage && !images[imageName]) {
   //     fetchAwsObject(imageName);
   //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, []);
 
   const getUserData = () => {

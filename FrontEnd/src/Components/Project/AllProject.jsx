@@ -33,6 +33,7 @@ export const AllProject = ({
   const [searchedData, setSearchedData] = useState([]);
   useEffect(() => {
     setSearchedData(projects.data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projects.data]);
 
   const handleSearch = (e) => {
@@ -45,6 +46,7 @@ export const AllProject = ({
 
   useEffect(() => {
     getAllProject();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const formatDates = (startDate, endDate) => {
