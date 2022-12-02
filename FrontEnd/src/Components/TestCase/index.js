@@ -17,9 +17,9 @@ const TestCase = ({
   loading,
   saveTestCase,
 }) => {
-  useEffect(() => {
-    getTestCaseByProject();
-  }, [currentProjectId]);
+  // useEffect(() => {
+  //   getTestCaseByProject();
+  // }, [currentProjectId]);
   return (
     <>
       <Routes>
@@ -33,6 +33,7 @@ const TestCase = ({
               onSave={saveTestCase}
               name="Test Case"
               link="TestCase"
+              getList={getTestCaseByProject}
             />
           }
         />
@@ -42,7 +43,7 @@ const TestCase = ({
   );
 };
 const mapStateToProps = (state) => ({
-  currentProjectId: state.projects.currentProject.id,
+  currentProjectId: state.projects.currentProject?.id,
   testCases: state.testCase.data,
   loading: state.testCase.loading,
 });
