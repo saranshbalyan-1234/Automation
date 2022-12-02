@@ -1199,18 +1199,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -1803,18 +1791,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -2086,6 +2062,35 @@
         ]
       }
     },
+    "/environment/names/testCase/{testCaseId}": {
+      "get": {
+        "tags": [
+          "Environment"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "testCaseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
     "/environment/": {
       "post": {
         "tags": [
@@ -2147,6 +2152,48 @@
             "apiKeyAuth": []
           }
         ]
+      }
+    },
+    "/environment/column/{name}/testCase/{testCaseId}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "testCaseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/environment/{envId}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
       }
     },
     "/environment/column/value": {
