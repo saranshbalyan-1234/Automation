@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
-import { Table, Button, Popconfirm, Input, Spin } from "antd";
+import { Table, Button, Popconfirm, Spin } from "antd";
 import CustomSearch from "../../Common/Search";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import AddModal from "./AddModal";
@@ -40,12 +40,12 @@ const Environment = ({
     });
   };
   useEffect(() => {
-    if (environments.length == 0) return;
+    if (environments.length === 0) return;
 
     const tempDynamicKeys = Object.keys(environments[0]).map((el) => {
       let temp = {
         title:
-          el != "Environment" && el != "envId" ? (
+          el !== "Environment" && el !== "envId" ? (
             <div style={{ paddingLeft: 10 }}>
               {el}
               <Popconfirm
@@ -69,7 +69,7 @@ const Environment = ({
         dataIndex: el,
         width: "100%",
       };
-      if (el != "Environment") {
+      if (el !== "Environment") {
         temp.render = (text, record) => (
           <div style={{ minHeight: 30 }}>
             <div
@@ -127,12 +127,6 @@ const Environment = ({
     });
     setSearchedData(temp);
   };
-  const onDelete = (id) => {
-    // const deletedData = searchedData.filter((el) => {
-    //   return el.id !== id;
-    // });
-    // setSearchedData(deletedData);
-  };
 
   return (
     <>
@@ -144,7 +138,6 @@ const Environment = ({
         onCancel={() => {
           setVisible(false);
         }}
-        // closable={false}
       >
         <Spin spinning={loading}>
           <div
@@ -172,7 +165,7 @@ const Environment = ({
                     // setRows([...rows, { env: "Enter Name", editing: true }]);
                     setAddModal({ active: true, type: "Column" });
                   }}
-                  disabled={searchedData.length == 0}
+                  disabled={searchedData.length === 0}
                 >
                   <PlusOutlined /> Column
                 </Button>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form, Input, Modal, Button } from "antd";
 import Loading from "../../Common/Loading";
 import { addEnvironment, addColumn } from "../../../Redux/Actions/environment";
@@ -14,7 +14,7 @@ const AddModal = ({
 }) => {
   const onSubmit = async (data) => {
     let result = false;
-    if (type == "Environment") {
+    if (type === "Environment") {
       result = await addEnvironment({ ...data, testCaseId: currentTestCaseId });
     } else {
       result = await addColumn(data);

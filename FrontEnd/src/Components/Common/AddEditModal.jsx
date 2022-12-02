@@ -3,7 +3,6 @@ import { Form, Input, Modal, Button, Select } from "antd";
 import ReactQuill from "react-quill";
 import { connect } from "react-redux";
 import Loading from "./Loading";
-const { Option } = Select;
 const AddEditModal = ({
   visible,
   setVisible,

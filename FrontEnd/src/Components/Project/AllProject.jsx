@@ -7,15 +7,7 @@ import {
 } from "../../Redux/Actions/project";
 import { editDetails } from "../../Redux/Actions/user";
 import AddEditProjectModal from "./AddEditProjectModal";
-import {
-  Avatar,
-  Popconfirm,
-  List,
-  Tooltip,
-  Button,
-  Typography,
-  Progress,
-} from "antd";
+import { Avatar, Popconfirm, List, Tooltip, Button, Progress } from "antd";
 import CustomSearch from "../Common/Search";
 import { AiFillCheckCircle, AiTwotoneCheckCircle } from "react-icons/ai";
 import UserAvatar from "../Common/Avatar";
@@ -28,7 +20,6 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Common/Loading";
-const { Title } = Typography;
 export const AllProject = ({
   getAllProject,
   getProjectById,
@@ -99,10 +90,7 @@ export const AllProject = ({
           marginBottom: 10,
         }}
       >
-        <CustomSearch
-          placeholder={`Search Projects`}
-          onSearch={handleSearch}
-        />
+        <CustomSearch placeholder={`Search Projects`} onSearch={handleSearch} />
         <Button
           type="primary"
           ghost

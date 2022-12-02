@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Avatar, Popover, Card, Badge } from "antd";
 import { connect } from "react-redux";
 import { fetchAwsObject } from "../../Redux/Actions/image";
@@ -6,7 +6,7 @@ export const UserAvatar = ({
   user,
   size = "small",
   images,
-  fetchAwsObject,
+  // fetchAwsObject,
 }) => {
   const imageName = user.email.replace(/[^a-zA-Z0-9 ]/g, "");
   // useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import {
   getObjectByProject,
@@ -14,13 +14,8 @@ const ObjectBank = ({
   loading,
   getObjectByProject,
   deleteObject,
-  currentProjectId,
   saveObject,
 }) => {
-  // useEffect(() => {
-  //   currentProjectId && getObjectByProject();
-  // }, [currentProjectId]);
-
   return (
     <>
       <Routes>
@@ -45,7 +40,6 @@ const ObjectBank = ({
 };
 
 const mapStateToProps = (state) => ({
-  currentProjectId: state.projects.currentProject.id,
   objectList: state.objectBank.data,
   loading: state.objectBank.loading,
 });
