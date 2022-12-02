@@ -16,9 +16,9 @@ const ReusableProcess = ({
   currentProjectId,
   saveReusableProcess,
 }) => {
-  useEffect(() => {
-    currentProjectId && getReusableProcessByProject();
-  }, [currentProjectId]);
+  // useEffect(() => {
+  //   currentProjectId && getReusableProcessByProject();
+  // }, [currentProjectId]);
 
   return (
     <>
@@ -33,6 +33,7 @@ const ReusableProcess = ({
               name="Reusable Process"
               link="ReusableProcess"
               onSave={saveReusableProcess}
+              getList={getReusableProcessByProject}
             />
           }
         />

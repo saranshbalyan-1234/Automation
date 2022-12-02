@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Typography, Card, Button } from "antd";
+import { Typography, Card, Button, Tag } from "antd";
 import moment from "moment";
 import { EditOutlined } from "@ant-design/icons";
 import UserAvatar from "../Common/Avatar";
@@ -104,6 +104,16 @@ const ReusableProcessDetails = ({
               />
             </div>
           )}
+          <div style={{ display: "flex", gap: 10 }}>
+            <div>Tags:</div>
+            <div>
+              {details.tags?.length > 0
+                ? details.tags.map((el) => {
+                    return <Tag>{el}</Tag>;
+                  })
+                : "N/A"}
+            </div>
+          </div>
         </Card>
       </Loading>
       {addEditModal && (

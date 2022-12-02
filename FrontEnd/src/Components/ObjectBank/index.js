@@ -17,9 +17,9 @@ const ObjectBank = ({
   currentProjectId,
   saveObject,
 }) => {
-  useEffect(() => {
-    currentProjectId && getObjectByProject();
-  }, [currentProjectId]);
+  // useEffect(() => {
+  //   currentProjectId && getObjectByProject();
+  // }, [currentProjectId]);
 
   return (
     <>
@@ -34,6 +34,7 @@ const ObjectBank = ({
               name="Object"
               link="ObjectBank"
               onSave={saveObject}
+              getList={getObjectByProject}
             />
           }
         />

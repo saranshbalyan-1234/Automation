@@ -7,17 +7,24 @@ import UserAvatar from "./Avatar";
 import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 import CustomSearch from "./Search";
-export const List = ({
+import { connect } from "react-redux";
+const List = ({
   onDelete,
   onSave = () => {},
   loading,
   data = [],
   name,
   link,
+  getList = () => {},
+  currentProjectId,
 }) => {
   const navigate = useNavigate();
   const [addEditModal, setAddEditModal] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
+  useEffect(() => {
+    getList();
+  }, [currentProjectId]);
+
   useEffect(() => {
     setSearchedData(data);
   }, [data]);
@@ -27,7 +34,7 @@ export const List = ({
     const temp = data.filter((el) => {
       return (
         el.name.toLowerCase().includes(value) ||
-        el.tags.some((el1) => {
+        el.tags?.some((el1) => {
           return el1.toLowerCase().includes(value);
         })
       );
@@ -151,4 +158,10 @@ export const List = ({
   );
 };
 
-export default List;
+const mapStateToProps = (state) => ({
+  currentProjectId: state.projects.currentProject?.id,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(List);

@@ -41,7 +41,11 @@ const updateTestCase = async (req, res) => {
   try {
     // const { name, tags } = req.body;
     const testCaseId = req.params.testCaseId;
-    const { error } = updateTestCaseValidation.validate(req.body);
+    console.log(testCaseId);
+    const { error } = updateTestCaseValidation.validate({
+      ...req.body,
+      testCaseId,
+    });
     if (error) throw new Error(error.details[0].message);
 
     const updatedTestCase = await TestCase.schema(req.database).update(
