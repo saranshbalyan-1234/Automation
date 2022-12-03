@@ -7,6 +7,10 @@ const s3 = new AWS.S3({
 
 export const createBucket = (bucketName) => {
   // Create the parameters for calling createBucket
+  if (!bucketName)
+    return res.status(400).json({
+      error: "Invalid Bucket!",
+    });
   var bucketParams = {
     Bucket: bucketName,
     CreateBucketConfiguration: {
@@ -26,6 +30,10 @@ export const createBucket = (bucketName) => {
 
 export const deleteBucket = (bucketName) => {
   // Create params for S3.deleteBucket
+  if (!bucketName)
+    return res.status(400).json({
+      error: "Invalid Bucket!",
+    });
   var bucketParams = {
     Bucket: bucketName,
   };
@@ -42,6 +50,18 @@ export const deleteBucket = (bucketName) => {
 
 export const uploadFile = async (file, bucketName, keyName) => {
   // Setting up S3 upload parameters
+  if (!bucketName)
+    return res.status(400).json({
+      error: "Invalid Bucket!",
+    });
+  if (!keyName)
+    return res.status(400).json({
+      error: "Invalid File!",
+    });
+  if (!file)
+    return res.status(400).json({
+      error: "Invalid File!",
+    });
   const uploadParams = {
     Bucket: bucketName, // Bucket into which you want to upload file
     Key: keyName, // Name by which you want to save it
@@ -66,6 +86,14 @@ export const listBuckets = () => {
 };
 
 export const deleteObject = (bucketName, key) => {
+  if (!bucketName)
+    return res.status(400).json({
+      error: "Invalid Bucket!",
+    });
+  if (!key)
+    return res.status(400).json({
+      error: "Invalid File!",
+    });
   s3.deleteObject({ Bucket: bucketName, key }, (err, data) => {
     if (err) return false;
     else return true;
@@ -73,6 +101,11 @@ export const deleteObject = (bucketName, key) => {
 };
 
 export const listObjectsInBucket = (bucketName) => {
+  if (!bucketName)
+    return res.status(400).json({
+      error: "Invalid Bucket!",
+    });
+
   // Create the parameters for calling listObjects
   var bucketParams = {
     Bucket: bucketName,
@@ -89,6 +122,11 @@ export const getObject = async (req, res) => {
     Bucket: req.database,
     Key: req.body.fileName,
   };
+
+  if (!req.body.fileName)
+    return res.status(400).json({
+      error: "Invalid File Name!",
+    });
   try {
     const data = await s3.getObject(getParams).promise();
     if (!data) throw new Error("Object Not Found");
@@ -106,6 +144,15 @@ export const getObject = async (req, res) => {
 };
 
 export const deleteS3Folder = (bucketName, folderName) => {
+  if (!bucketName)
+    return res.status(400).json({
+      error: "Invalid Bucket!",
+    });
+  if (!folderName)
+    return res.status(400).json({
+      error: "Invalid Folder!",
+    });
+
   var params = {
     Bucket: bucketName,
     Prefix: folderName + "/",

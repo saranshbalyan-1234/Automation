@@ -293,7 +293,7 @@ const sendResetPasswordMail = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
   try {
     const { email } = req.body;
-
+    if (!email) throw new Error("Invalid User");
     const customer = await Customer.schema("Main").findOne({
       where: { email },
     });
