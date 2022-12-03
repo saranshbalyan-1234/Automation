@@ -327,7 +327,34 @@ const handleStep = async (
       await EndCondition(step, processResult, req, stepHistoryId, stepExtra);
       break;
     case "Collect Text":
-      await collectText(step, driver, processResult, req, stepHistoryId);
+      await collectText(
+        step,
+        driver,
+        output,
+        processResult,
+        req,
+        stepHistoryId
+      );
+      break;
+    case "Collect Object CSS Property":
+      await collectObjectCSSProperty(
+        step,
+        driver,
+        output,
+        processResult,
+        req,
+        stepHistoryId
+      );
+      break;
+    case "Collect Object Property":
+      await collectObjectProperty(
+        step,
+        driver,
+        output,
+        processResult,
+        req,
+        stepHistoryId
+      );
       break;
     default:
       break;
@@ -735,7 +762,50 @@ const collectText = async (
     console.log(err);
     if (processResult.result) processResult.result = false;
   }
-
-  await driver.findElement(webdriver.By.className("credits")).getText();
 };
+const collectObjectCSSProperty = async (
+  step,
+  driver,
+  output,
+  processResult,
+  req,
+  stepHistoryId
+) => {
+  console.log("Collecting Object CSS Property");
+  try {
+    const attribute = await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .getCssValue(step.testParameters.Attribute);
+    output[step.testParameters.Output] = attribute;
+    console.log(attribute);
+
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    console.log(err);
+    if (processResult.result) processResult.result = false;
+  }
+};
+const collectObjectProperty = async (
+  step,
+  driver,
+  output,
+  processResult,
+  req,
+  stepHistoryId
+) => {
+  console.log("Collecting Object Property");
+  try {
+    const attribute = await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .getAttribute(step.testParameters.Attribute);
+    output[step.testParameters.Output] = attribute;
+    console.log(attribute);
+
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    console.log(err);
+    if (processResult.result) processResult.result = false;
+  }
+};
+
 module.exports = { handleStep };

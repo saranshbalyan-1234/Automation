@@ -101,7 +101,6 @@ app.post("/execute/:testCaseId", async (req, res) => {
       }
 
       if (processResult.result) {
-        console.log("processResult");
         await updateProcessResult(req, processHistory.dataValues.id, true);
       }
     }
