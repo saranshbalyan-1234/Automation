@@ -174,7 +174,13 @@ const AddEditStepModal = ({
         width={700}
         centered
         title={
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginRight: 27,
+            }}
+          >
             <div>{edit ? "Edit Step" : "Create New Step"}</div>
             {currentEvent.object && (
               <Button

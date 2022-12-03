@@ -326,6 +326,9 @@ const handleStep = async (
     case "End Condition":
       await EndCondition(step, processResult, req, stepHistoryId, stepExtra);
       break;
+    case "Collect Text":
+      await collectText(step, driver, processResult, req, stepHistoryId);
+      break;
     default:
       break;
   }
@@ -712,4 +715,27 @@ const getCurrentDateTime = async (
   }
 };
 
+const collectText = async (
+  step,
+  driver,
+  output,
+  processResult,
+  req,
+  stepHistoryId
+) => {
+  console.log("Collecting Text");
+  try {
+    const text = await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .getText();
+    output[step.testParameters.Output] = text;
+
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    console.log(err);
+    if (processResult.result) processResult.result = false;
+  }
+
+  await driver.findElement(webdriver.By.className("credits")).getText();
+};
 module.exports = { handleStep };
