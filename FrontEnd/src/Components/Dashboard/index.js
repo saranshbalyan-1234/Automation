@@ -195,7 +195,7 @@ const StyledContainer = styled.div`
     display: flex;
   }
   .icon {
-    margin-top: 5px;
+    margin-top: 3px;
     font-size: 18px;
   }
 `;

@@ -155,7 +155,7 @@ const Environment = ({
               }}
             >
               <CustomSearch
-                width="300px"
+                width="310px"
                 placeholder={`Search By Env Name or Column Value`}
                 onSearch={handleSearch}
               />
