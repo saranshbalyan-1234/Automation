@@ -4,8 +4,10 @@ import {
   projectByIdValidation,
   addProjectValidation,
   memberProjectValidation,
+  updateProjectValidation,
 } from "../Utils/Validations/project.js";
-// import moment from "moment";
+import { userIdValidation } from "../Utils/Validations/user.js";
+
 const UserProject = db.userProjects;
 const Project = db.projects;
 const User = db.users;
@@ -16,8 +18,12 @@ const getMyProject = async (req, res) => {
   /*  #swagger.tags = ["Project"] 
       #swagger.security = [{"apiKeyAuth": []}] */
   try {
+    const userId = req.user.id;
+    const { error } = userIdValidation.validate({ userId });
+    if (error) throw new Error(error.details[0].message);
+
     const projects = await UserProject.schema(req.database).findAll({
-      where: { userId: req.user.id },
+      where: { userId },
       include: [
         {
           model: Project.schema(req.database),
@@ -253,7 +259,10 @@ const editProject = async (req, res) => {
   try {
     const projectId = req.headers["x-project-id"];
 
-    const { error } = projectByIdValidation.validate({ projectId });
+    const { error } = updateProjectValidation.validate({
+      ...req.body,
+      projectId,
+    });
     if (error) throw new Error(error.details[0].message);
 
     const updatedProject = await Project.schema(req.database).update(req.body, {

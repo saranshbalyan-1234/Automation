@@ -10,10 +10,22 @@ const addProjectValidation = joi.object({
   startDate: joi.string().required(),
   endDate: joi.string().required(),
 });
+const updateProjectValidation = joi.object({
+  name: joi.string().min(3).max(30),
+  description: joi.string(),
+  startDate: joi.string(),
+  endDate: joi.string(),
+  projectId: joi.number().integer().required(),
+});
 
 const memberProjectValidation = joi.object({
   projectId: joi.number().integer().required(),
   userId: joi.number().integer().required(),
 });
 
-export { projectByIdValidation, addProjectValidation, memberProjectValidation };
+export {
+  projectByIdValidation,
+  addProjectValidation,
+  memberProjectValidation,
+  updateProjectValidation,
+};

@@ -22,7 +22,7 @@ const getTeam = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const team = await User.schema(req.database).findAll({});
+    const team = await User.schema(req.database).findAll();
     const filteredTeam = team.filter((el) => {
       return el.id !== req.user.id;
     });
@@ -213,10 +213,8 @@ const uploadProfileImage = async (req, res) => {
   */
   try {
     const file = req.files.image;
-    // const { error } = changeDetailsValidation.validate(req.body);
-    // if (error) throw new Error(error.details[0].message);
+    if (!file) throw new Error("Inavlid Image");
     const bucketName = req.database;
-    // const file = req.body.file;
     const fileName = req.user.email.replace(/[^a-zA-Z0-9 ]/g, "");
     const result = await uploadFile(file, bucketName, fileName);
     if (result) {

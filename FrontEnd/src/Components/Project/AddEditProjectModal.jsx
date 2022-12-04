@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import ReactQuill from "react-quill";
 import moment from "moment";
 import Loading from "../Common/Loading";
+import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
 const AddEditProjectModal = ({
   visible,
@@ -51,8 +52,8 @@ const AddEditProjectModal = ({
             description: edit ? projects.currentProject.description : "",
             date: edit
               ? [
-                  moment(projects.currentProject.startDate, format),
-                  moment(projects.currentProject.endDate, format),
+                  dayjs(projects.currentProject.startDate, format),
+                  dayjs(projects.currentProject.endDate, format),
                 ]
               : [],
           }}
