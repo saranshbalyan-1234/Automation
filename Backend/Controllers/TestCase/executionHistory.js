@@ -2,6 +2,8 @@ import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
 import moment from "moment";
 import { deleteS3Folder } from "../awsController.js";
+import { executionHistoryIdValidation } from "../../Utils/Validations/executionHistory.js";
+import { testCaseIdValidation } from "../../Utils/Validations/testCase.js";
 const ExecutionHistory = db.executionHistory;
 const User = db.users;
 const ProcessHistory = db.processHistory;
@@ -11,8 +13,12 @@ const getAllExecutionHistoryByTestCase = async (req, res) => {
   /*  #swagger.tags = ["Execution History"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
-  const testCaseId = req.params.testCaseId;
+
   try {
+    const testCaseId = req.params.testCaseId;
+    const { error } = testCaseIdValidation.validate({ testCaseId });
+    if (error) throw new Error(error.details[0].message);
+
     const executionHistories = await ExecutionHistory.schema(
       req.database
     ).findAll({
@@ -42,7 +48,10 @@ const deleteExecutionHistory = async (req, res) => {
 
   try {
     const executionHistoryId = req.params.executionHistoryId;
-
+    const { error } = executionHistoryIdValidation.validate({
+      executionHistoryId,
+    });
+    if (error) throw new Error(error.details[0].message);
     const deletedExecutionHistory = await ExecutionHistory.schema(
       req.database
     ).destroy({
@@ -68,6 +77,11 @@ const getExecutionHistoryById = async (req, res) => {
   */
   try {
     const executionHistoryId = req.params.executionHistoryId;
+    const { error } = executionHistoryIdValidation.validate({
+      executionHistoryId,
+    });
+    if (error) throw new Error(error.details[0].message);
+
     const executionHistory = await ExecutionHistory.schema(
       req.database
     ).findByPk(executionHistoryId, {
