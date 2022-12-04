@@ -1,5 +1,11 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
+import { testCaseIdValidation } from "../../Utils/Validations/testCase.js";
+import {
+  nameTestCaseId,
+  updateColumnValidation,
+  envIdValidation,
+} from "../../Utils/Validations/environment.js";
 const Environment = db.enviroments;
 const Column = db.columns;
 
@@ -9,8 +15,8 @@ const createEnvironment = async (req, res) => {
   */
 
   try {
-    // const { error } = nameValidation.validate(req.body);
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = nameTestCaseId.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
     const payload = { ...req.body };
     const env = await Environment.schema(req.database).create(payload);
 
@@ -42,6 +48,8 @@ const getAllEnvironmentsByTestCase = async (req, res) => {
 
   try {
     const testCaseId = req.params.testCaseId;
+    const { error } = testCaseIdValidation.validate({ testCaseId });
+    if (error) throw new Error(error.details[0].message);
     const enviroments = await Environment.schema(req.database).findAll({
       where: {
         testCaseId,
@@ -79,6 +87,9 @@ const getAllEnvironmentNamesByTestCase = async (req, res) => {
 
   try {
     const testCaseId = req.params.testCaseId;
+
+    const { error } = testCaseIdValidation.validate({ testCaseId });
+    if (error) throw new Error(error.details[0].message);
     const enviroments = await Environment.schema(req.database).findAll({
       where: {
         testCaseId,
@@ -99,6 +110,12 @@ const createColumnForEnvironment = async (req, res) => {
   try {
     const columnName = req.body.name;
     const testCaseId = req.params.testCaseId;
+    const { error } = nameTestCaseId.validate({
+      name: columnName,
+      testCaseId,
+    });
+    if (error) throw new Error(error.details[0].message);
+
     const enviroments = await Environment.schema(req.database).findAll({
       where: {
         testCaseId,
@@ -124,6 +141,9 @@ const updateColumnValue = async (req, res) => {
 
   try {
     const { value, envId, name } = req.body;
+
+    const { error } = updateColumnValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
 
     const updateColumnValue = await Column.schema(req.database).update(
       { value },
@@ -152,6 +172,13 @@ const deleteColumnFromEnvironment = async (req, res) => {
   try {
     const columnName = req.params.name;
     const testCaseId = req.params.testCaseId;
+
+    const { error } = nameTestCaseId.validate({
+      name: columnName,
+      testCaseId,
+    });
+    if (error) throw new Error(error.details[0].message);
+
     const enviroments = await Environment.schema(req.database).findAll({
       where: {
         testCaseId,
@@ -185,10 +212,9 @@ const deleteEnvironment = async (req, res) => {
   */
 
   try {
-    // const { error } = nameValidation.validate(req.body);
-    // if (error) throw new Error(error.details[0].message);
     const envId = req.params.envId;
-
+    const { error } = envIdValidation.validate({ envId });
+    if (error) throw new Error(error.details[0].message);
     await Column.schema(req.database).destroy({
       where: {
         envId,
