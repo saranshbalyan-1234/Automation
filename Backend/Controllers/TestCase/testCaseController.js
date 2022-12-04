@@ -1,7 +1,11 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
 import { idValidation } from "../../Utils/Validations/index.js";
-import { updateTestCaseValidation } from "../../Utils/Validations/testCase.js";
+import {
+  updateTestCaseValidation,
+  saveProcesValidation,
+  updateProcessValidation,
+} from "../../Utils/Validations/testCase.js";
 import { nameDesTagPrjValidation } from "../../Utils/Validations/index.js";
 import { Op } from "sequelize";
 const TestCase = db.testCases;
@@ -126,6 +130,9 @@ const getTestCaseDetailsById = async (req, res) => {
   try {
     const testCaseId = req.params.testCaseId;
 
+    const { error } = idValidation.validate({ id: testCaseId });
+    if (error) throw new Error(error.details[0].message);
+
     const testCase = await TestCase.schema(req.database).findOne({
       where: {
         id: testCaseId,
@@ -190,6 +197,9 @@ const getTestStepByTestCase = async (req, res) => {
     // if (error) throw new Error(error.details[0].message);
 
     const testCaseId = req.params.testCaseId;
+    const { error } = idValidation.validate({ id: testCaseId });
+    if (error) throw new Error(error.details[0].message);
+
     const data = await Process.schema(req.database).findAll({
       where: { testCaseId },
       include: [
@@ -241,8 +251,8 @@ const saveProcess = async (req, res) => {
   */
 
   try {
-    // const { error } = nameValidation.validate(req.body);
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = saveProcesValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
 
     const { testCaseId, step } = req.body;
 
@@ -278,8 +288,11 @@ const updateProcess = async (req, res) => {
 
   try {
     const processId = req.params.processId;
-    // const { error } = updateTestCaseValidation.validate({ name, testCaseId });
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = updateProcessValidation.validate({
+      ...req.body,
+      processId,
+    });
+    if (error) throw new Error(error.details[0].message);
 
     const updatedProcess = await Process.schema(req.database).update(req.body, {
       where: {
@@ -305,6 +318,9 @@ const deleteProcess = async (req, res) => {
 
   try {
     const processId = req.params.processId;
+
+    const { error } = idValidation.validate({ id: processId });
+    if (error) throw new Error(error.details[0].message);
 
     const deletingProcess = await Process.schema(req.database).findByPk(
       processId

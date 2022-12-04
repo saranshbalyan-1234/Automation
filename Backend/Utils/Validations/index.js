@@ -9,7 +9,7 @@ export const idValidation = joi.object({
 
 export const nameDesTagPrjValidation = joi.object({
   name: joi.string().min(3).max(30).required(),
-  description: joi.string().allow(null, ""),
+  description: joi.string().allow(null, "").required(),
   tags: joi.array().allow(null, ""),
   projectId: joi.number().integer().required(),
 });

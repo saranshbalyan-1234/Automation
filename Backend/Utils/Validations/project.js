@@ -2,13 +2,13 @@ import joi from "@hapi/joi";
 
 const addProjectValidation = joi.object({
   name: joi.string().min(3).max(30).required(),
-  description: joi.string(),
+  description: joi.string().allow(null, "").required(),
   startDate: joi.string().required(),
   endDate: joi.string().required(),
 });
 const updateProjectValidation = joi.object({
   name: joi.string().min(3).max(30),
-  description: joi.string(),
+  description: joi.string().allow(null, "").required(),
   startDate: joi.string(),
   endDate: joi.string(),
   projectId: joi.number().integer().required(),

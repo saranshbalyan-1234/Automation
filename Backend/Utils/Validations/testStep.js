@@ -7,7 +7,7 @@ export const saveTestStepValidation = joi.object({
   step: joi.number().integer().required(),
   parameters: joi.array().allow(null),
   screenshot: joi.boolean().required(),
-  comment: joi.string().allow(null, ""),
+  comment: joi.string().allow(null, "").required(),
   actionEvent: joi.string().required(),
 });
 
@@ -16,6 +16,6 @@ export const updateTestStepValidation = joi.object({
   objectId: joi.number().integer(),
   parameters: joi.array().allow(null),
   screenshot: joi.boolean().required(),
-  comment: joi.string().allow(null, ""),
+  comment: joi.string().allow(null, "").required(),
   actionEvent: joi.string().required(),
 });
