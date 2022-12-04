@@ -41,7 +41,6 @@ const updateTestCase = async (req, res) => {
   try {
     // const { name, tags } = req.body;
     const testCaseId = req.params.testCaseId;
-    console.log(testCaseId);
     const { error } = updateTestCaseValidation.validate({
       ...req.body,
       testCaseId,
