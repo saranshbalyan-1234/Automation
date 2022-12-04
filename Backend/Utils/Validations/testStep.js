@@ -19,7 +19,3 @@ export const updateTestStepValidation = joi.object({
   comment: joi.string().allow(null, ""),
   actionEvent: joi.string().required(),
 });
-
-export const testStepIdValidation = joi.object({
-  testStepId: joi.number().integer().required(),
-});

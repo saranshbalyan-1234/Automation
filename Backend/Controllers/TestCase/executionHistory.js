@@ -2,8 +2,7 @@ import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
 import moment from "moment";
 import { deleteS3Folder } from "../awsController.js";
-import { executionHistoryIdValidation } from "../../Utils/Validations/executionHistory.js";
-import { testCaseIdValidation } from "../../Utils/Validations/testCase.js";
+import { idValidation } from "../../Utils/Validations/index.js";
 const ExecutionHistory = db.executionHistory;
 const User = db.users;
 const ProcessHistory = db.processHistory;
@@ -16,7 +15,7 @@ const getAllExecutionHistoryByTestCase = async (req, res) => {
 
   try {
     const testCaseId = req.params.testCaseId;
-    const { error } = testCaseIdValidation.validate({ testCaseId });
+    const { error } = idValidation.validate({ id: testCaseId });
     if (error) throw new Error(error.details[0].message);
 
     const executionHistories = await ExecutionHistory.schema(
@@ -48,9 +47,7 @@ const deleteExecutionHistory = async (req, res) => {
 
   try {
     const executionHistoryId = req.params.executionHistoryId;
-    const { error } = executionHistoryIdValidation.validate({
-      executionHistoryId,
-    });
+    const { error } = idValidation.validate({ id: executionHistoryId });
     if (error) throw new Error(error.details[0].message);
     const deletedExecutionHistory = await ExecutionHistory.schema(
       req.database
@@ -77,9 +74,7 @@ const getExecutionHistoryById = async (req, res) => {
   */
   try {
     const executionHistoryId = req.params.executionHistoryId;
-    const { error } = executionHistoryIdValidation.validate({
-      executionHistoryId,
-    });
+    const { error } = idValidation.validate({ id: executionHistoryId });
     if (error) throw new Error(error.details[0].message);
 
     const executionHistory = await ExecutionHistory.schema(

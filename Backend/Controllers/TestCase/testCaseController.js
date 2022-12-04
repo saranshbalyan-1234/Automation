@@ -1,11 +1,8 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-import { projectByIdValidation } from "../../Utils/Validations/project.js";
-import {
-  saveTestCaseValidation,
-  updateTestCaseValidation,
-  testCaseIdValidation,
-} from "../../Utils/Validations/testCase.js";
+import { idValidation } from "../../Utils/Validations/index.js";
+import { updateTestCaseValidation } from "../../Utils/Validations/testCase.js";
+import { nameDesTagPrjValidation } from "../../Utils/Validations/index.js";
 import { Op } from "sequelize";
 const TestCase = db.testCases;
 const User = db.users;
@@ -20,7 +17,7 @@ const saveTestCase = async (req, res) => {
   */
 
   try {
-    const { error } = saveTestCaseValidation.validate(req.body);
+    const { error } = nameDesTagPrjValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
     const payload = { ...req.body };
     payload.createdByUser = req.user.id;
@@ -75,7 +72,7 @@ const getAllTestCase = async (req, res) => {
 
   try {
     const projectId = req.headers["x-project-id"];
-    const { error } = projectByIdValidation.validate({ projectId });
+    const { error } = idValidation.validate({ id: projectId });
     if (error) throw new Error(error.details[0].message);
 
     const testCases = await TestCase.schema(req.database).findAll({
@@ -105,7 +102,7 @@ const deleteTestCase = async (req, res) => {
 
   try {
     const testCaseId = req.params.testCaseId;
-    const { error } = testCaseIdValidation.validate({ testCaseId });
+    const { error } = idValidation.validate({ id: testCaseId });
     if (error) throw new Error(error.details[0].message);
 
     const deletedTestCase = await TestCase.schema(req.database).destroy({
@@ -128,8 +125,6 @@ const getTestCaseDetailsById = async (req, res) => {
 
   try {
     const testCaseId = req.params.testCaseId;
-    // const { error } = projectByIdValidation.validate({ projectId });
-    // if (error) throw new Error(error.details[0].message);
 
     const testCase = await TestCase.schema(req.database).findOne({
       where: {
@@ -310,8 +305,7 @@ const deleteProcess = async (req, res) => {
 
   try {
     const processId = req.params.processId;
-    // const { error } = testCaseIdValidation.validate({ testCaseId });
-    // if (error) throw new Error(error.details[0].message);
+
     const deletingProcess = await Process.schema(req.database).findByPk(
       processId
     );

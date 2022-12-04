@@ -9,7 +9,3 @@ export const updateColumnValidation = joi.object({
   value: joi.string().min(3).max(30).required(),
   envId: joi.number().integer().required(),
 });
-
-export const envIdValidation = joi.object({
-  envId: joi.number().integer().required(),
-});

@@ -7,8 +7,9 @@ import {
   changeDetailsValidation,
   activeInactiveValidation,
   resendVerificationMailValidation,
-  userIdValidation,
 } from "../Utils/Validations/user.js";
+import { idValidation } from "../Utils/Validations/index.js";
+
 import { deleteBucket } from "./awsController.js";
 import { registerValidation } from "../Utils/Validations/auth.js";
 import { uploadFile } from "./awsController.js";
@@ -95,7 +96,7 @@ const deleteUser = async (req, res) => {
   try {
     const userId = req.params.userId;
 
-    const { error } = userIdValidation.validate({ userId });
+    const { error } = idValidation.validate({ id: userId });
     if (error) throw new Error(error.details[0].message);
 
     const user = await User.schema(req.database).findByPk(userId);

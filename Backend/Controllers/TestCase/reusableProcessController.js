@@ -1,11 +1,8 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-import { projectByIdValidation } from "../../Utils/Validations/project.js";
-import {
-  reusableProcessIdValidation,
-  updateReusableProcessValidation,
-} from "../../Utils/Validations/reusableProcess.js";
-import { saveTestCaseValidation } from "../../Utils/Validations/testCase.js";
+import { idValidation } from "../../Utils/Validations/index.js";
+import { updateReusableProcessValidation } from "../../Utils/Validations/reusableProcess.js";
+import { nameDesTagPrjValidation } from "../../Utils/Validations/index.js";
 
 const User = db.users;
 const Object = db.objects;
@@ -18,7 +15,7 @@ const saveReusableProcess = async (req, res) => {
   */
 
   try {
-    const { error } = saveTestCaseValidation.validate(req.body);
+    const { error } = nameDesTagPrjValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
     const payload = { ...req.body };
     payload.createdByUser = req.user.id;
@@ -72,7 +69,7 @@ const getAllReusableProcess = async (req, res) => {
 
   try {
     const projectId = req.headers["x-project-id"];
-    const { error } = projectByIdValidation.validate({ projectId });
+    const { error } = idValidation.validate({ id: projectId });
     if (error) throw new Error(error.details[0].message);
 
     const reusableProcesses = await ReusableProcess.schema(
@@ -104,8 +101,8 @@ const deleteReusableProcess = async (req, res) => {
 
   try {
     const reusableProcessId = req.params.reusableProcessId;
-    const { error } = reusableProcessIdValidation.validate({
-      reusableProcessId,
+    const { error } = idValidation.validate({
+      id: reusableProcessId,
     });
     if (error) throw new Error(error.details[0].message);
 
@@ -133,8 +130,8 @@ const getReusableProcessDetailsById = async (req, res) => {
 
   try {
     const reusableProcessId = req.params.reusableProcessId;
-    const { error } = reusableProcessIdValidation.validate({
-      reusableProcessId,
+    const { error } = idValidation.validate({
+      id: reusableProcessId,
     });
     if (error) throw new Error(error.details[0].message);
     const reusableProcess = await ReusableProcess.schema(req.database).findOne({
@@ -174,8 +171,8 @@ const getTestStepByReusableProcess = async (req, res) => {
 
   try {
     const reusableProcessId = req.params.reusableProcessId;
-    const { error } = reusableProcessIdValidation.validate({
-      reusableProcessId,
+    const { error } = idValidation.validate({
+      id: reusableProcessId,
     });
     if (error) throw new Error(error.details[0].message);
 

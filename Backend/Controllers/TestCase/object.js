@@ -1,6 +1,13 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-import { projectByIdValidation } from "../../Utils/Validations/project.js";
+import {
+  idValidation,
+  nameDesTagPrjValidation,
+} from "../../Utils/Validations/index.js";
+import {
+  updateObjectValidation,
+  saveObjectLocatorValidation,
+} from "../../Utils/Validations/object.js";
 const Object = db.objects;
 const User = db.users;
 const ObjectLocator = db.ObjectLocators;
@@ -11,8 +18,8 @@ const saveObject = async (req, res) => {
   */
 
   try {
-    // const { error } = nameValidation.validate(req.body);
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = nameDesTagPrjValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
     const payload = { ...req.body };
     payload.createdByUser = req.user.id;
 
@@ -30,8 +37,8 @@ const getObjectDetailsById = async (req, res) => {
 
   try {
     const objectId = req.params.objectId;
-    // const { error } = projectByIdValidation.validate({ projectId });
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = idValidation.validate({ id: objectId });
+    if (error) throw new Error(error.details[0].message);
 
     const testCase = await Object.schema(req.database).findOne({
       where: {
@@ -71,8 +78,8 @@ const updateObject = async (req, res) => {
 
   try {
     const objectId = req.params.objectId;
-    // const { error } = updateTestCaseValidation.validate({ name, testCaseId });
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = updateObjectValidation.validate({ name, testCaseId });
+    if (error) throw new Error(error.details[0].message);
 
     const updatedObject = await Object.schema(req.database).update(req.body, {
       where: {
@@ -97,8 +104,9 @@ const deleteObject = async (req, res) => {
 
   try {
     const objectId = req.params.objectId;
-    // const { error } = testCaseIdValidation.validate({ testCaseId });
-    // if (error) throw new Error(error.details[0].message);
+
+    const { error } = idValidation.validate({ id: objectId });
+    if (error) throw new Error(error.details[0].message);
 
     const deletedObject = await Object.schema(req.database).destroy({
       where: { id: objectId },
@@ -121,7 +129,7 @@ const getAllObject = async (req, res) => {
 
   try {
     const projectId = req.headers["x-project-id"];
-    const { error } = projectByIdValidation.validate({ projectId });
+    const { error } = idValidation.validate({ id: projectId });
     if (error) throw new Error(error.details[0].message);
 
     const objects = await Object.schema(req.database).findAll({
@@ -150,8 +158,9 @@ const getObjectLocatorsByObjectId = async (req, res) => {
 
   try {
     const objectId = req.params.objectId;
-    // const { error } = projectByIdValidation.validate({ projectId });
-    // if (error) throw new Error(error.details[0].message);
+
+    const { error } = idValidation.validate({ id: objectId });
+    if (error) throw new Error(error.details[0].message);
 
     const locators = await ObjectLocator.schema(req.database).findAll({
       where: {
@@ -171,8 +180,8 @@ const saveObjectLocator = async (req, res) => {
   */
 
   try {
-    // const { error } = nameValidation.validate(req.body);
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = saveObjectLocatorValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
 
     const locator = await ObjectLocator.schema(req.database).create(req.body);
     return res.status(200).json(locator);
@@ -188,8 +197,9 @@ const deleteObjectLocator = async (req, res) => {
 
   try {
     const locatorId = req.params.locatorId;
-    // const { error } = testCaseIdValidation.validate({ testCaseId });
-    // if (error) throw new Error(error.details[0].message);
+
+    const { error } = idValidation.validate({ id: locatorId });
+    if (error) throw new Error(error.details[0].message);
 
     const deletedLocator = await ObjectLocator.schema(req.database).destroy({
       where: { id: locatorId },

@@ -1,12 +1,11 @@
 import db from "../Utils/dataBaseConnection.js";
 import getError from "../Utils/sequelizeError.js";
 import {
-  projectByIdValidation,
   addProjectValidation,
   memberProjectValidation,
   updateProjectValidation,
 } from "../Utils/Validations/project.js";
-import { userIdValidation } from "../Utils/Validations/user.js";
+import { idValidation } from "../Utils/Validations/index.js";
 
 const UserProject = db.userProjects;
 const Project = db.projects;
@@ -19,7 +18,7 @@ const getMyProject = async (req, res) => {
       #swagger.security = [{"apiKeyAuth": []}] */
   try {
     const userId = req.user.id;
-    const { error } = userIdValidation.validate({ userId });
+    const { error } = idValidation.validate({ id: userId });
     if (error) throw new Error(error.details[0].message);
 
     const projects = await UserProject.schema(req.database).findAll({
@@ -68,7 +67,7 @@ const getProjectById = async (req, res) => {
   */
   try {
     const projectId = req.params.projectId;
-    const { error } = projectByIdValidation.validate({ projectId });
+    const { error } = idValidation.validate({ id: projectId });
     if (error) throw new Error(error.details[0].message);
 
     const userProject = await UserProject.schema(req.database).findOne({
@@ -165,7 +164,7 @@ const deleteProject = async (req, res) => {
   */
   try {
     const projectId = req.params.projectId;
-    const { error } = projectByIdValidation.validate({ projectId });
+    const { error } = idValidation.validate({ id: projectId });
     if (error) throw new Error(error.details[0].message);
 
     const userProject = await UserProject.schema(req.database).findOne({

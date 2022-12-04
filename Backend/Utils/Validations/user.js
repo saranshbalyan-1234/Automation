@@ -20,14 +20,9 @@ const activeInactiveValidation = joi.object({
   active: joi.boolean().required(),
 });
 
-const userIdValidation = joi.object({
-  userId: joi.number().integer().required(),
-});
-
 export {
   changePasswordValidation,
   changeDetailsValidation,
   activeInactiveValidation,
   resendVerificationMailValidation,
-  userIdValidation,
 };

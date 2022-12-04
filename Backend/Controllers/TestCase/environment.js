@@ -1,10 +1,9 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-import { testCaseIdValidation } from "../../Utils/Validations/testCase.js";
+import { idValidation } from "../../Utils/Validations/index.js";
 import {
   nameTestCaseId,
   updateColumnValidation,
-  envIdValidation,
 } from "../../Utils/Validations/environment.js";
 const Environment = db.enviroments;
 const Column = db.columns;
@@ -48,7 +47,7 @@ const getAllEnvironmentsByTestCase = async (req, res) => {
 
   try {
     const testCaseId = req.params.testCaseId;
-    const { error } = testCaseIdValidation.validate({ testCaseId });
+    const { error } = idValidation.validate({ id: testCaseId });
     if (error) throw new Error(error.details[0].message);
     const enviroments = await Environment.schema(req.database).findAll({
       where: {
@@ -88,7 +87,7 @@ const getAllEnvironmentNamesByTestCase = async (req, res) => {
   try {
     const testCaseId = req.params.testCaseId;
 
-    const { error } = testCaseIdValidation.validate({ testCaseId });
+    const { error } = idValidation.validate({ id: testCaseId });
     if (error) throw new Error(error.details[0].message);
     const enviroments = await Environment.schema(req.database).findAll({
       where: {
@@ -213,7 +212,7 @@ const deleteEnvironment = async (req, res) => {
 
   try {
     const envId = req.params.envId;
-    const { error } = envIdValidation.validate({ envId });
+    const { error } = idValidation.validate({ id: envId });
     if (error) throw new Error(error.details[0].message);
     await Column.schema(req.database).destroy({
       where: {

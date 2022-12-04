@@ -3,8 +3,8 @@ import getError from "../../Utils/sequelizeError.js";
 import {
   saveTestStepValidation,
   updateTestStepValidation,
-  testStepIdValidation,
 } from "../../Utils/Validations/testStep.js";
+import { idValidation } from "../../Utils/Validations/index.js";
 import { Op } from "sequelize";
 const TestStep = db.testSteps;
 const Object = db.objects;
@@ -119,7 +119,7 @@ const deleteTestStep = async (req, res) => {
 
   try {
     const testStepId = req.params.testStepId;
-    const { error } = testStepIdValidation.validate({ testStepId });
+    const { error } = idValidation.validate({ id: testStepId });
     if (error) throw new Error(error.details[0].message);
     const deletingTestStep = await TestStep.schema(req.database).findByPk(
       testStepId
