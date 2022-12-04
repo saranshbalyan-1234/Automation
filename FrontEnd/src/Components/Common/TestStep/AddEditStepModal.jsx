@@ -107,18 +107,24 @@ const AddEditStepModal = ({
       const value = data.parameter1;
       const method = data.type1;
       payload.parameters.push({ type: key, property: value, method });
+      delete payload.parameter1;
+      delete payload.type1;
     }
     if (currentEvent.parameter2) {
       const key = currentEvent.parameter2;
       const value = data.parameter2;
       const method = data.type2;
       payload.parameters.push({ type: key, property: value, method });
+      delete payload.parameter2;
+      delete payload.type2;
     }
     if (currentEvent.parameter3) {
       const key = currentEvent.parameter3;
       const value = data.parameter3;
       const method = data.type3;
       payload.parameters.push({ type: key, property: value, method });
+      delete payload.parameter3;
+      delete payload.type3;
     }
 
     if (edit) {
