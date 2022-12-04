@@ -11,23 +11,23 @@ import {
 import { validatePermission } from "../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
-Router.get("/", validatePermission("project", "view"), getMyProject);
+Router.get("/", validatePermission("Project", "view"), getMyProject);
 Router.get(
   "/:projectId",
-  validatePermission("project", "view"),
+  validatePermission("Project", "view"),
   getProjectById
 );
-Router.post("/", validatePermission("project", "add"), addProject);
-Router.post("/addMember", validatePermission("project", "edit"), addMember);
+Router.post("/", validatePermission("Project", "add"), addProject);
+Router.post("/addMember", validatePermission("Project", "edit"), addMember);
 Router.post(
   "/removeMember",
-  validatePermission("project", "edit"),
+  validatePermission("Project", "edit"),
   deleteMember
 );
 Router.delete(
   "/:projectId",
-  validatePermission("project", "delete"),
+  validatePermission("Project", "delete"),
   deleteProject
 );
-Router.put("/", validatePermission("project", "edit"), editProject);
+Router.put("/", validatePermission("Project", "edit"), editProject);
 export default Router;
