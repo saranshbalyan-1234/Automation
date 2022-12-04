@@ -262,18 +262,6 @@ const toggleUserActiveInactive = async (req, res) => {
   }
 };
 
-const getAllUser = async (req, res) => {
-  /*  #swagger.tags = ["User"] 
-     #swagger.security = [{"apiKeyAuth": []}]
-  */
-  try {
-    const allUsers = await User.schema(req.database).findAll();
-    return res.status(200).json(allUsers);
-  } catch (error) {
-    getError(error, res);
-  }
-};
-
 export {
   addUser,
   deleteUser,
@@ -283,6 +271,5 @@ export {
   toggleUserActiveInactive,
   resentVerificationEmail,
   deleteCustomerUser,
-  getAllUser,
   uploadProfileImage,
 };

@@ -12,34 +12,34 @@ import {
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
-Router.post("/", validatePermission("testcase", "edit"), saveObject);
-Router.put("/:objectId", validatePermission("testcase", "edit"), updateObject);
+Router.post("/", validatePermission("Test Case", "edit"), saveObject);
+Router.put("/:objectId", validatePermission("Test Case", "edit"), updateObject);
 Router.delete(
   "/:objectId",
-  validatePermission("testcase", "delete"),
+  validatePermission("Test Case", "edit"),
   deleteObject
 );
 Router.delete(
   "/locator/:locatorId",
-  validatePermission("testcase", "delete"),
+  validatePermission("Test Case", "edit"),
   deleteObjectLocator
 );
 
-Router.get("/", validatePermission("testcase", "view"), getAllObject);
+Router.get("/", validatePermission("Test Case", "view"), getAllObject);
 Router.get(
   "/:objectId/details",
-  validatePermission("testcase", "view"),
+  validatePermission("Test Case", "view"),
   getObjectDetailsById
 );
 
 Router.get(
   "/:objectId/locator",
-  validatePermission("testcase", "view"),
+  validatePermission("Test Case", "view"),
   getObjectLocatorsByObjectId
 );
 Router.post(
   "/locator",
-  validatePermission("testcase", "edit"),
+  validatePermission("Test Case", "edit"),
   saveObjectLocator
 );
 

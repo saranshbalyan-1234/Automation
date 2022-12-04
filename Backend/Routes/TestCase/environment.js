@@ -13,33 +13,33 @@ const Router = express.Router();
 
 Router.get(
   "/testCase/:testCaseId",
-  validatePermission("testcase", "view"),
+  validatePermission("Test Case", "view"),
   getAllEnvironmentsByTestCase
 );
 Router.get(
   "/names/testCase/:testCaseId",
-  validatePermission("testcase", "view"),
+  validatePermission("Test Case", "view"),
   getAllEnvironmentNamesByTestCase
 );
-Router.post("/", validatePermission("testcase", "edit"), createEnvironment);
+Router.post("/", validatePermission("Test Case", "edit"), createEnvironment);
 Router.post(
   "/column/testCase/:testCaseId",
-  validatePermission("testcase", "edit"),
+  validatePermission("Test Case", "edit"),
   createColumnForEnvironment
 );
 Router.delete(
   "/column/:name/testCase/:testCaseId",
-  validatePermission("testcase", "edit"),
+  validatePermission("Test Case", "edit"),
   deleteColumnFromEnvironment
 );
 Router.delete(
   "/:envId",
-  validatePermission("testcase", "edit"),
+  validatePermission("Test Case", "edit"),
   deleteEnvironment
 );
 Router.put(
   "/column/value",
-  validatePermission("testcase", "edit"),
+  validatePermission("Test Case", "edit"),
   updateColumnValue
 );
 

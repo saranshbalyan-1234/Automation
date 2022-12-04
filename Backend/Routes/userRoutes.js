@@ -8,7 +8,6 @@ import {
   toggleUserActiveInactive,
   resentVerificationEmail,
   deleteCustomerUser,
-  getAllUser,
   uploadProfileImage,
 } from "../Controllers/userController.js";
 import { validatePermission } from "../Utils/Middlewares/permissions.js";
@@ -16,19 +15,8 @@ const Router = express.Router();
 
 Router.delete("/customer", deleteCustomerUser);
 Router.get("/team", validatePermission("Team & Role", "view"), getTeam);
-Router.post(
-  "/resend-verification-email",
-  validatePermission("Team & Role", "view"),
-  resentVerificationEmail
-);
 Router.post("/add", validatePermission("Team & Role", "add"), addUser);
-Router.put(
-  "/uploadProfileImage",
-  validatePermission("Team & Role", "add"),
-  uploadProfileImage
-);
-Router.put("/details", changeDetails);
-Router.put("/change-password", changePassword);
+Router.post("/resend-verification-email", resentVerificationEmail);
 Router.delete(
   "/:userId",
   validatePermission("Team & Role", "delete"),
@@ -39,5 +27,7 @@ Router.put(
   validatePermission("Team & Role", "edit"),
   toggleUserActiveInactive
 );
-Router.get("/", getAllUser);
+Router.put("/uploadProfileImage", uploadProfileImage);
+Router.put("/details", changeDetails);
+Router.put("/change-password", changePassword);
 export default Router;

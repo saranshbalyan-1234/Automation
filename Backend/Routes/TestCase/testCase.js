@@ -13,42 +13,42 @@ import {
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
-Router.post("/", validatePermission("testcase", "add"), saveTestCase);
-Router.post("/process", validatePermission("testcase", "add"), saveProcess);
+Router.post("/", validatePermission("Test Case", "add"), saveTestCase);
+Router.post("/process", validatePermission("Test Case", "edit"), saveProcess);
 
 Router.put(
   "/process/:processId",
-  validatePermission("Ttestcase", "add"),
+  validatePermission("Test Case", "edit"),
   updateProcess
 );
 Router.delete(
   "/process/:processId",
-  validatePermission("testcase", "add"),
+  validatePermission("Test Case", "edit"),
   deleteProcess
 );
 
 Router.put(
   "/:testCaseId",
-  validatePermission("testcase", "add"),
+  validatePermission("Test Case", "edit"),
   updateTestCase
 );
 Router.get(
   "/:testCaseId/details",
-  validatePermission("testcase", "add"),
+  validatePermission("Test Case", "view"),
   getTestCaseDetailsById
 );
 
-Router.get("/", validatePermission("testcase", "view"), getAllTestCase);
+Router.get("/", validatePermission("Test Case", "view"), getAllTestCase);
 
 Router.get(
   "/:testCaseId/teststeps",
-  validatePermission("testcase", "add"),
+  validatePermission("Test Case", "view"),
   getTestStepByTestCase
 );
 
 Router.delete(
   "/:testCaseId",
-  validatePermission("testcase", "add"),
+  validatePermission("Test Case", "delete"),
   deleteTestCase
 );
 

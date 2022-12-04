@@ -29,5 +29,5 @@ Router.delete(
   validatePermission("project", "delete"),
   deleteProject
 );
-Router.put("/", validatePermission("project", "delete"), editProject);
+Router.put("/", validatePermission("project", "edit"), editProject);
 export default Router;
