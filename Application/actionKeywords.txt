@@ -4,10 +4,7 @@ Add DateTime
 AddDaysToDate
 AddNumbersAndStore
 AlertSuccess
-CollectBackgroundColor
 CollectCellValueFromTable
-CollectObjectAttributeValue
-CollectText
 CompareText
 ConvertToDateTime
 ConvertToHex
@@ -16,15 +13,11 @@ ConvertToNumber
 ConvertToString
 CopySubString
 DivideNumbersAndStore
-Else
-ElseIf
-EndIf
 EndLoopf
 ExcelConfigure
 ExitForLoop
 ForLoop
 GetValueFromList
-IF
 IfElementVisible
 MultiplyNumbersAndStore
 RemoveCharacter
