@@ -13,30 +13,14 @@ export const Dashboard = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [mainData, setMainData] = useState([]);
   const [userData, setUserData] = useState([]);
+  const [executionHistoryData, setExecutionHistoryData] = useState([]);
   useEffect(() => {
     axios.get("/dashboard").then((res) => {
       setData(res.data);
       setLoading(false);
-      let mainData = Object.entries(res.data.createdByMe)
-        .filter((el) => {
-          return (
-            el[0] === "testCase" ||
-            el[0] === "reusableProcess" ||
-            el[0] === "object" ||
-            el[0] === "Project"
-          );
-        })
-        .map((el) => {
-          let key = el[0];
-          if (el[0] === "testCase") {
-            key = "Test Case";
-          } else if (el[0] === "reusableProcess") {
-            key = "Reusable";
-          } else if (el[0] === "object") {
-            key = "Test Object";
-          }
-          return { name: key, Total: el[1] };
-        });
+      let mainData = Object.entries(res.data.createdByMe).map((el) => {
+        return { name: el[0], Total: el[1] };
+      });
 
       setMainData(mainData);
       let tempUserdata = { ...res.data.user };
@@ -45,6 +29,17 @@ export const Dashboard = ({ user }) => {
         return { name: el[0], Total: el[1] };
       });
       setUserData(userData);
+
+      let tempExecutedData = { ...res.data.executionHistory };
+      delete tempExecutedData.total;
+      let executedData = Object.entries(tempExecutedData)
+        .filter((el) => {
+          return el != "Total";
+        })
+        .map((el) => {
+          return { name: el[0], Total: el[1] };
+        });
+      setExecutionHistoryData(executedData);
     });
   }, []);
 
@@ -121,54 +116,21 @@ export const Dashboard = ({ user }) => {
             </Card>
           </Col>
           <Col>
-            {/* <Card className="card" style={{ width: 400 }}>
+            <Card
+              title={
+                <div>
+                  <UserOutlined style={{ marginRight: 10 }} />
+                  {`Total Executed: ${data.executionHistory?.Total}`}
+                </div>
+              }
+              className="card"
+              style={{ width: 400, height: 360 }}
+            >
               <div style={{ width: 350, height: 200 }}>
-                {mainData.data && <Column {...mainData} />}
+                <ColumnGraph data={executionHistoryData} />
               </div>
-            </Card> */}
-          </Col>
-
-          {/*  <Col>
-            <Card className="card">
-              <Statistic
-                title={
-                  <div className="title">
-                    <FileOutlined className="icon" />
-                    <Title level={5}>Test Cases</Title>
-                  </div>
-                }
-                value={data.testCase}
-              />
             </Card>
           </Col>
-
-          <Col>
-            <Card className="card">
-              <Statistic
-                title={
-                  <div className="title">
-                    <VscDebugRestart className="icon" />
-                    <Title level={5}>Reusable Process</Title>
-                  </div>
-                }
-                value={data.reusableProcess}
-              />
-            </Card>
-          </Col>
-
-          <Col>
-            <Card className="card">
-              <Statistic
-                title={
-                  <div className="title">
-                    <BankOutlined className="icon" />
-                    <Title level={5}>Total Objects</Title>
-                  </div>
-                }
-                value={data.object}
-              />
-            </Card>
-          </Col>*/}
         </Row>
       </StyledContainer>
     </Loading>
