@@ -31,7 +31,7 @@ export const Dashboard = ({ user }) => {
       setUserData(userData);
 
       let tempExecutedData = { ...res.data.executionHistory };
-      delete tempExecutedData.total;
+      delete tempExecutedData.Total;
       let executedData = Object.entries(tempExecutedData)
         .filter((el) => {
           return el != "Total";
@@ -74,6 +74,19 @@ export const Dashboard = ({ user }) => {
                       </div>
                     }
                     value={data.user?.total}
+                  />
+                </Card>
+              </Col>
+              <Col>
+                <Card className="card">
+                  <Statistic
+                    title={
+                      <div className="title">
+                        <UserOutlined className="icon" />
+                        <Title level={5}>Executed By Me</Title>
+                      </div>
+                    }
+                    value={data.executionHistory?.Total}
                   />
                 </Card>
               </Col>
@@ -120,7 +133,7 @@ export const Dashboard = ({ user }) => {
               title={
                 <div>
                   <UserOutlined style={{ marginRight: 10 }} />
-                  {`Total Executed: ${data.executionHistory?.Total}`}
+                  {`Executed By Me: ${data.executionHistory?.Total}`}
                 </div>
               }
               className="card"
