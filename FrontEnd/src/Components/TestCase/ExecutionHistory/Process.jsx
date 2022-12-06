@@ -82,7 +82,7 @@ const Process = ({ process, loading }) => {
                         <div
                           style={{ color: "grey", fontWeight: 600, width: 80 }}
                         >
-                          Incomplete
+                          INCOMPLETE
                         </div>
                       )}
                     </div>

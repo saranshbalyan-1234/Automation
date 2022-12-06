@@ -59,7 +59,9 @@ export const List = ({
         ) : text == false ? (
           <div style={{ color: "red", fontWeight: 600, width: 40 }}>FAIL</div>
         ) : (
-          <div style={{ color: "grey", fontWeight: 600, width: 40 }}>N/A</div>
+          <div style={{ color: "grey", fontWeight: 600, width: 100 }}>
+            INCOMPLETE
+          </div>
         ),
     },
 
