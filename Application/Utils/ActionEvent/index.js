@@ -382,6 +382,7 @@ const launchWebsite = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -395,6 +396,7 @@ const click = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -412,6 +414,7 @@ const doubleClick = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -425,6 +428,7 @@ const hoverMouse = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -442,6 +446,7 @@ const rightClick = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -454,7 +459,7 @@ const enterText = async (step, driver, processResult, req, stepHistoryId) => {
     if (processResult.result) {
       processResult.result = false;
     }
-    return;
+    return await updateStepResult(req, stepHistoryId, false);
   }
 
   try {
@@ -464,6 +469,7 @@ const enterText = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -482,7 +488,7 @@ const enterPassword = async (
       if (processResult.result) {
         processResult.result = false;
       }
-      return;
+      return await updateStepResult(req, stepHistoryId, false);
     }
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
@@ -490,6 +496,7 @@ const enterPassword = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -504,6 +511,7 @@ const pressButton = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -514,6 +522,7 @@ const maximizeBrowser = async (driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -525,6 +534,7 @@ const closeBrowser = async (driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -535,6 +545,7 @@ const refreshPage = async (driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -554,6 +565,7 @@ const generateRandomNumber = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -572,6 +584,7 @@ const getPageTitle = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -585,6 +598,7 @@ const clearInput = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -604,6 +618,7 @@ const scrollToObject = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -615,6 +630,7 @@ const scrollToEnd = async (driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -625,6 +641,7 @@ const scrollToTop = async (driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -639,6 +656,7 @@ const clickByJs = async (step, driver, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -656,6 +674,7 @@ const clickLinkByText = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -674,6 +693,7 @@ const clickLinkByPartialText = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -685,6 +705,7 @@ const copyText = async (step, output, processResult, req, stepHistoryId) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -702,6 +723,7 @@ const copyPassword = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -720,6 +742,7 @@ const combineString = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -738,6 +761,7 @@ const getCurrentDateTime = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -760,6 +784,7 @@ const collectText = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -782,6 +807,7 @@ const collectObjectCSSProperty = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -804,6 +830,7 @@ const collectObjectProperty = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };

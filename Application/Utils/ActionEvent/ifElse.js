@@ -25,6 +25,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
             stepExtra.conditionalResult = true;
             return await updateStepResult(req, stepHistoryId, true);
           } else {
+            await updateStepResult(req, stepHistoryId, false);
             stepExtra.conditionalResult = false;
           }
         }
@@ -32,6 +33,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
           stepExtra.conditionalResult = true;
           return await updateStepResult(req, stepHistoryId, true);
         } else {
+          await updateStepResult(req, stepHistoryId, false);
           stepExtra.conditionalResult = false;
         }
       } else if (condition == "!=") {
@@ -49,6 +51,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
             stepExtra.conditionalResult = true;
             return await updateStepResult(req, stepHistoryId, true);
           } else {
+            await updateStepResult(req, stepHistoryId, false);
             stepExtra.conditionalResult = false;
           }
         }
@@ -56,6 +59,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
           stepExtra.conditionalResult = true;
           return await updateStepResult(req, stepHistoryId, true);
         } else {
+          await updateStepResult(req, stepHistoryId, false);
           stepExtra.conditionalResult = false;
         }
       } else if (condition == ">=") {
@@ -63,6 +67,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
           stepExtra.conditionalResult = true;
           return await updateStepResult(req, stepHistoryId, true);
         } else {
+          await updateStepResult(req, stepHistoryId, false);
           stepExtra.conditionalResult = false;
         }
       } else if (condition == "<=") {
@@ -70,6 +75,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
           stepExtra.conditionalResult = true;
           return await updateStepResult(req, stepHistoryId, true);
         } else {
+          await updateStepResult(req, stepHistoryId, false);
           stepExtra.conditionalResult = false;
         }
       } else if (condition == ">") {
@@ -77,6 +83,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
           stepExtra.conditionalResult = true;
           return await updateStepResult(req, stepHistoryId, true);
         } else {
+          await updateStepResult(req, stepHistoryId, false);
           stepExtra.conditionalResult = false;
         }
       } else if (condition == "<") {
@@ -84,6 +91,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
           stepExtra.conditionalResult = true;
           return await updateStepResult(req, stepHistoryId, true);
         } else {
+          await updateStepResult(req, stepHistoryId, false);
           stepExtra.conditionalResult = false;
         }
       }
@@ -92,11 +100,13 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
         stepExtra.conditionalResult = true;
         return await updateStepResult(req, stepHistoryId, true);
       } else {
+        await updateStepResult(req, stepHistoryId, false);
         stepExtra.conditionalResult = false;
       }
     }
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -115,6 +125,7 @@ const EndCondition = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -125,6 +136,7 @@ const Else = async (step, processResult, req, stepHistoryId, stepExtra) => {
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };

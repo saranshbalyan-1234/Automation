@@ -20,6 +20,7 @@ const implicitWait = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -43,6 +44,7 @@ const waitUntilObjectLocated = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -65,6 +67,7 @@ const waitUntilObjectsLocated = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -88,6 +91,7 @@ const waitUntilObjectEnabled = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -110,6 +114,7 @@ const waitUntilObjectDisabled = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -133,6 +138,7 @@ const waitUntilObjectNotSelected = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -156,6 +162,7 @@ const waitUntilObjectSelected = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -179,6 +186,7 @@ const waitUntilObjectNotVisible = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -202,6 +210,7 @@ const waitUntilObjectVisible = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -222,6 +231,7 @@ const waitUntilObjectTextContains = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -242,6 +252,7 @@ const waitUntilObjectTextIs = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -262,6 +273,7 @@ const waitUntilObjectTextMatches = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -284,6 +296,7 @@ const waitUntilObjectStalenessOf = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -304,6 +317,7 @@ const waitUntilTitleContains = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -324,6 +338,7 @@ const waitUntilTitleIs = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -344,6 +359,7 @@ const waitUntilTitleMatches = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -365,6 +381,7 @@ const waitUntilUrlContains = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -385,6 +402,7 @@ const waitUntilUrlIs = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -405,6 +423,7 @@ const waitUntilUrlMatches = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
@@ -426,6 +445,8 @@ const waitUntilAlertPresent = async (
       });
       return await updateStepResult(req, stepHistoryId, true);
     } catch (err) {
+      console.log(err);
+      await updateStepResult(req, stepHistoryId, false);
       if (processResult.result) processResult.result = false;
     }
   }
@@ -449,6 +470,7 @@ const waitUntilAbleToSwitchToFrame = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
+    await updateStepResult(req, stepHistoryId, false);
     if (processResult.result) processResult.result = false;
   }
 };
