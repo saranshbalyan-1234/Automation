@@ -34,6 +34,10 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: true,
     },
+    result: {
+      type: DataTypes.BOOLEAN,
+      values: [0, 1],
+    },
   });
 
   return ExecutionHistory;

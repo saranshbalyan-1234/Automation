@@ -7,8 +7,9 @@ const {
   createProcessHistory,
   createStepHistory,
   updateProcessResult,
-  updateExecutionFinishTime,
+  // updateExecutionFinishTime,
   updateStepResult,
+  updateExecutionResult,
 } = require("./Controllers/executionHistoryController");
 const { getAllEnvironmentsByTestCase } = require("./Controllers/environment");
 const moment = require("moment");
@@ -33,7 +34,7 @@ app.post("/execute/:testCaseId", async (req, res) => {
     let canCreateS3Folder = true;
     let output = {};
     let environment = await getAllEnvironmentsByTestCase(req, res);
-
+    let executionResult = { result: true };
     for (let i = 0; i < data.data.length; i++) {
       let process = data.data[i];
       let processResult = { result: true };
@@ -99,12 +100,22 @@ app.post("/execute/:testCaseId", async (req, res) => {
           await updateStepResult(req, stepHistory.dataValues.id, null);
         }
       }
-
-      if (processResult.result) {
-        await updateProcessResult(req, processHistory.dataValues.id, true);
+      await updateProcessResult(
+        req,
+        processHistory.dataValues.id,
+        processResult.result
+      );
+      if (!processResult.result) {
+        executionResult.result = false;
       }
     }
-    await updateExecutionFinishTime(req, data.executionHistory.id, moment());
+
+    await updateExecutionResult(
+      req,
+      data.executionHistory.id,
+      moment(),
+      executionResult.result
+    );
     console.log("Execution Finished");
   } catch (err) {
     console.log(err);

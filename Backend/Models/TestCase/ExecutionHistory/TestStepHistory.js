@@ -55,7 +55,6 @@ export default (sequelize, DataTypes) => {
     },
     result: {
       type: DataTypes.BOOLEAN,
-      defaultValue: 0,
       values: [0, 1],
     },
   });

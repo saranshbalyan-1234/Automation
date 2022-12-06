@@ -11,6 +11,7 @@ const createExecutionHistory = async (req, res) => {
     const testCaseId = req.params.testCaseId;
     payload.executedByUser = req.user.id;
     payload.testCaseId = testCaseId;
+    payload.result = null;
 
     res.status(200).json({ message: "Started Execution" });
     return await ExecutionHistory.schema(req.database).create(payload);
@@ -26,6 +27,7 @@ const createProcessHistory = async (req, process, executionHistory) => {
   payload.name = process.name;
   payload.reusableProcess = process.reusableProcess;
   payload.comment = process.comment;
+  payload.result = null;
 
   return await ProcessHistory.schema(req.database).create(payload);
 };
@@ -45,6 +47,7 @@ const createStepHistory = async (
   payload.processId = processHistory.dataValues.processId;
   payload.screenshot = step.screenshot;
   payload.executionHistoryId = executionHistory.id;
+  payload.result = null;
   return await TestStepHistory.schema(req.database).create(payload);
 };
 const updateStepResult = async (req, id, result) => {
@@ -73,9 +76,20 @@ const updateProcessResult = async (req, id, result) => {
   );
 };
 
-const updateExecutionFinishTime = async (req, id, time) => {
+// const updateExecutionResult = async (req, id, result) => {
+//   return await ExecutionHistory.schema(req.database).update(
+//     { result },
+//     {
+//       where: {
+//         id,
+//       },
+//     }
+//   );
+// };
+
+const updateExecutionResult = async (req, id, time, result) => {
   return await ExecutionHistory.schema(req.database).update(
-    { finishedAt: time },
+    { finishedAt: time, result: result },
     {
       where: {
         id,
@@ -90,5 +104,6 @@ module.exports = {
   createStepHistory,
   updateStepResult,
   updateProcessResult,
-  updateExecutionFinishTime,
+  // updateExecutionFinishTime,
+  updateExecutionResult,
 };

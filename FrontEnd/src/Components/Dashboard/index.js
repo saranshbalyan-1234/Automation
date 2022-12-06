@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Typography, Statistic, Row, Col, Card } from "antd";
+import { Typography, Statistic, Row, Col, Card, Tag } from "antd";
 import axios from "axios";
 import { EditOutlined, UserOutlined, ProjectOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import ColumnGraph from "../Common/ColumnGraph";
 import Loading from "../Common/Loading";
+import ExecutionDetailModal from "./ExecutionDetailModal";
 const { Title } = Typography;
 
 export const Dashboard = ({ user }) => {
@@ -13,6 +14,8 @@ export const Dashboard = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [mainData, setMainData] = useState([]);
   const [userData, setUserData] = useState([]);
+  const [detailedExecutionReportModal, setDetailedExecutionReportModal] =
+    useState(false);
   const [executionHistoryData, setExecutionHistoryData] = useState([]);
   useEffect(() => {
     axios.get("/dashboard").then((res) => {
@@ -34,7 +37,7 @@ export const Dashboard = ({ user }) => {
       delete tempExecutedData.Total;
       let executedData = Object.entries(tempExecutedData)
         .filter((el) => {
-          return el != "Total";
+          return el !== "Total";
         })
         .map((el) => {
           return { name: el[0], Total: el[1] };
@@ -131,9 +134,25 @@ export const Dashboard = ({ user }) => {
           <Col>
             <Card
               title={
-                <div>
-                  <UserOutlined style={{ marginRight: 10 }} />
-                  {`Executed By Me: ${data.executionHistory?.Total}`}
+                <div
+                  className="row"
+                  style={{
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div className="row">
+                    <UserOutlined />
+                    {`Executed By Me: ${data.executionHistory?.Total}`}
+                    <Tag
+                      className="pointer"
+                      style={{ textAlign: "center", fontWeight: 450 }}
+                      onClick={() => {
+                        setDetailedExecutionReportModal(true);
+                      }}
+                    >
+                      More Details
+                    </Tag>
+                  </div>
                 </div>
               }
               className="card"
@@ -146,6 +165,12 @@ export const Dashboard = ({ user }) => {
           </Col>
         </Row>
       </StyledContainer>
+      {detailedExecutionReportModal && (
+        <ExecutionDetailModal
+          visible={detailedExecutionReportModal}
+          setVisible={setDetailedExecutionReportModal}
+        />
+      )}
     </Loading>
   );
 };

@@ -77,4 +77,16 @@ const dashboard = async (req, res) => {
   }
 };
 
+const detailedExecutionReport = async (req, res) => {
+  /*  #swagger.tags = ["Dashboard"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+  try {
+    //Execution History End
+    return res.status(200).json({});
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
 export { dashboard };
