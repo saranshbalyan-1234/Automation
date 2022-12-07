@@ -7,7 +7,7 @@ import AddEditModal from "../Common/AddEditModal";
 import ColumnGraph from "../Common/ColumnGraph";
 import Loading from "../Common/Loading";
 import axios from "axios";
-import { useParams, userParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 const { Title } = Typography;
 const { Meta } = Card;
 const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {

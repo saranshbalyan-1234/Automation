@@ -35,6 +35,7 @@ export const ProjectDetails = ({
   const [graphCount, setGraphCount] = useState([]);
   useEffect(() => {
     getProject();
+    // eslint-disable-next-line
   }, [projectId]);
 
   const getProject = async () => {

@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { BiSupport } from "react-icons/bi";
 // import { TbApps } from "react-icons/tb";
-import { Avatar, Dropdown, Menu, Badge, Card } from "antd";
+import { Avatar, Dropdown, Menu, Badge } from "antd";
 import { logout } from "../../../Redux/Actions/auth";
 import { Link } from "react-router-dom";
 import { handleAvatarInitials } from "../../Common/Avatar";
@@ -23,6 +23,7 @@ const ProfileMenu = ({ logout, user, images, fetchAwsObject }) => {
     if (user.profileImage && !images[imageName]) {
       fetchAwsObject(imageName);
     }
+    // eslint-disable-next-line
   }, []);
   const profileMenu = (
     <Menu
