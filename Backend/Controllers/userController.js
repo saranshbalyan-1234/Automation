@@ -23,7 +23,17 @@ const getTeam = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const team = await User.schema(req.database).findAll();
+    const team = await User.schema(req.database).findAll({
+      attributes: [
+        "id",
+        "name",
+        "email",
+        "profileImage",
+        "verifiedAt",
+        "active",
+        "defaultProjectId",
+      ],
+    });
     const filteredTeam = team.filter((el) => {
       return el.id !== req.user.id;
     });

@@ -1,6 +1,7 @@
 import db from "../Utils/dataBaseConnection.js";
 import getError from "../Utils/sequelizeError.js";
-import { Sequelize } from "sequelize";
+import { Sequelize, Op } from "sequelize";
+import moment from "moment";
 const User = db.users;
 const TestCase = db.testCases;
 const ReusableProcess = db.reusableProcess;
@@ -8,7 +9,7 @@ const Objects = db.objects;
 const UserProject = db.userProjects;
 const Project = db.projects;
 const ExecutionHistory = db.executionHistory;
-const dashboard = async (req, res) => {
+export const dashboard = async (req, res) => {
   /*  #swagger.tags = ["Dashboard"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
@@ -24,91 +25,135 @@ const dashboard = async (req, res) => {
       return el.verifiedAt === null;
     }).length;
     const Inactive = user.length - Active - Unverified;
-    const testCase = await TestCase.schema(req.database).count({
-      where: { createdByUser: req.user.id },
-    });
-    //Users End
 
-    //CreatedByMe Start
-    const reusableProcess = await ReusableProcess.schema(req.database).count({
-      where: { createdByUser: req.user.id },
-    });
-    const object = await Objects.schema(req.database).count({
-      where: { createdByUser: req.user.id },
-    });
-    const projects = await Project.schema(req.database).count({
-      where: { createdByUser: req.user.id },
-    });
+    //Users End
 
     const userProject = await UserProject.schema(req.database).count({
       where: { userId: req.user.id },
     });
-    //CreatedByMe End
 
-    //Execution History Start
-    const totalHistory = await ExecutionHistory.schema(req.database).findAll({
+    const executionHistoryCount = await ExecutionHistory.schema(
+      req.database
+    ).count({
       where: { executedByUser: req.user.id },
     });
-
-    const incompleteHistory = totalHistory.filter((el) => {
-      return el.dataValues.finishedAt == null;
-    });
-
-    // const completedHistory = totalHistory.length - incompleteHistory.length;
-
-    const passedHistory = totalHistory.filter((el) => {
-      return el.dataValues.result == true;
-    });
-    const failedHistory =
-      totalHistory.length - passedHistory.length - incompleteHistory.length;
-    //Execution History End
     return res.status(200).json({
       project: userProject,
       user: { total: user.length, Active, Inactive, Unverified },
-      createdByMe: {
-        Project: projects,
-        TestCase: testCase,
-        Object: object,
-        Reusable: reusableProcess,
-      },
-      executionHistory: {
-        Total: totalHistory.length,
-        Incomplete: incompleteHistory.length,
-        // Completed: completedHistory,
-        Passed: passedHistory.length,
-        Failed: failedHistory,
-      },
+      executionHistoryCount,
     });
   } catch (error) {
     getError(error, res);
   }
 };
 
-const detailedExecutionReport = async (req, res) => {
+export const createdReport = async (req, res) => {
   /*  #swagger.tags = ["Dashboard"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
+    const reusableProcess = await ReusableProcess.schema(req.database).count({
+      where: { createdByUser: req.body.userId },
+    });
+    const object = await Objects.schema(req.database).count({
+      where: { createdByUser: req.body.userId },
+    });
+
+    const projects = await Project.schema(req.database).count({
+      where: { createdByUser: req.body.userId },
+    });
+    const testCase = await TestCase.schema(req.database).count({
+      where: { createdByUser: req.body.userId },
+    });
+
+    return res.status(200).json({
+      Projects: projects,
+      TestCase: testCase,
+      Resuable: reusableProcess,
+      Object: object,
+    });
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
+export const executionReport = async (req, res) => {
+  /*  #swagger.tags = ["Dashboard"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+  try {
+    const totalHistory = await ExecutionHistory.schema(req.database).findAll({
+      where: { executedByUser: req.body.userId },
+    });
+
+    const incompleteHistory = totalHistory.filter((el) => {
+      return el.dataValues.finishedAt == null;
+    });
+
+    const passedHistory = totalHistory.filter((el) => {
+      return el.dataValues.result == true;
+    });
+    const failedHistory =
+      totalHistory.length - passedHistory.length - incompleteHistory.length;
+    return res.status(200).json({
+      Total: totalHistory.length,
+      Incomplete: incompleteHistory.length,
+      Passed: passedHistory.length,
+      Failed: failedHistory,
+    });
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
+export const detailedExecutionReport = async (req, res) => {
+  /*  #swagger.tags = ["Dashboard"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+  try {
+    const startDate = new Date(req.body.startDate);
+    const endDate = new Date(req.body.endDate);
     const passedHistory = await ExecutionHistory.schema(req.database).count({
-      where: { result: true },
+      where: {
+        result: true,
+        executedByUser: req.body.userId,
+        createdAt:
+          req.body.startDate && endDate
+            ? { [Op.between]: [startDate, endDate] }
+            : { [Op.not]: null },
+      },
       attributes: [[Sequelize.fn("DATE", Sequelize.col("createdAt")), "Date"]],
       group: [Sequelize.fn("DATE", Sequelize.col("createdAt")), "Date"],
     });
     const failedHistory = await ExecutionHistory.schema(req.database).count({
-      where: { result: false },
+      where: {
+        result: false,
+        executedByUser: req.body.userId,
+        createdAt: req.body.startDate
+          ? { [Op.between]: [startDate, endDate] }
+          : { [Op.not]: null },
+      },
       attributes: [[Sequelize.fn("DATE", Sequelize.col("createdAt")), "Date"]],
       group: [Sequelize.fn("DATE", Sequelize.col("createdAt")), "Date"],
     });
     const incompleteHistory = await ExecutionHistory.schema(req.database).count(
       {
-        where: { result: null },
+        where: {
+          result: null,
+          executedByUser: req.body.userId,
+          createdAt: req.body.startDate
+            ? { [Op.between]: [startDate, endDate] }
+            : { [Op.not]: null },
+        },
         attributes: [
           [Sequelize.fn("DATE", Sequelize.col("createdAt")), "Date"],
         ],
         group: [Sequelize.fn("DATE", Sequelize.col("createdAt")), "Date"],
       }
     );
-
+    const totalCount = await ExecutionHistory.schema(req.database).count({
+      where: { executedByUser: req.body.userId },
+    });
     let data = {};
 
     passedHistory.forEach((el) => {
@@ -149,10 +194,8 @@ const detailedExecutionReport = async (req, res) => {
           (el[1].Incomplete || 0) + (el[1].Failed || 0) + (el[1].Passed || 0),
       });
     });
-    return res.status(200).json(finalData);
+    return res.status(200).json({ totalCount, data: finalData });
   } catch (error) {
     getError(error, res);
   }
 };
-
-export { dashboard, detailedExecutionReport };
