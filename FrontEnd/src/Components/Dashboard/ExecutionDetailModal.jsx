@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
 import { Line } from "@ant-design/plots";
+import axios from "axios";
 export default function ExecutionDetailModal({ visible, setVisible }) {
   const [data, setData] = useState([]);
 
@@ -8,21 +9,15 @@ export default function ExecutionDetailModal({ visible, setVisible }) {
     asyncFetch();
   }, []);
 
-  const asyncFetch = () => {
-    fetch(
-      "https://gw.alipayobjects.com/os/bmw-prod/55424a73-7cb8-4f79-b60d-3ab627ac5698.json"
-    )
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => {
-        console.log("fetch data failed", error);
-      });
+  const asyncFetch = async () => {
+    const { data } = await axios.get("/dashboard/detailed-execution");
+    setData(data);
   };
   const config = {
     data,
-    xField: "year",
+    xField: "date",
     yField: "value",
-    seriesField: "category",
+    seriesField: "type",
     xAxis: {
       type: "time",
     },

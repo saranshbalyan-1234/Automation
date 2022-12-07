@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Typography, Statistic, Row, Col, Card, Tag } from "antd";
 import axios from "axios";
-import { EditOutlined, UserOutlined, ProjectOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  UserOutlined,
+  ProjectOutlined,
+  ClockCircleOutlined,
+} from "@ant-design/icons";
 import styled from "styled-components";
 import ColumnGraph from "../Common/ColumnGraph";
 import Loading from "../Common/Loading";
@@ -85,7 +90,7 @@ export const Dashboard = ({ user }) => {
                   <Statistic
                     title={
                       <div className="title">
-                        <UserOutlined className="icon" />
+                        <ClockCircleOutlined className="icon" />
                         <Title level={5}>Executed By Me</Title>
                       </div>
                     }
@@ -141,7 +146,7 @@ export const Dashboard = ({ user }) => {
                   }}
                 >
                   <div className="row">
-                    <UserOutlined />
+                    <ClockCircleOutlined style={{ marginTop: "4px" }} />
                     {`Executed By Me: ${data.executionHistory?.Total}`}
                     <Tag
                       className="pointer"
