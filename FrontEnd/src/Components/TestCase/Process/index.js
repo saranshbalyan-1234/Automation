@@ -64,7 +64,7 @@ const Process = ({
                           gap: "5px",
                         }}
                       >
-                        Process: {item.name}
+                        Process {index + 1} : {item.name}
                       </div>
                       {item.reusableProcess && (
                         <Tag color="blue">

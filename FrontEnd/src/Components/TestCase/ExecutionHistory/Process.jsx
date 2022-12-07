@@ -61,30 +61,31 @@ const Process = ({ process, loading }) => {
                       <Tag color="blue" style={{ cursor: "default" }}>
                         Step Count : {item.testSteps.length}
                       </Tag>
-
-                      {item.result == true ? (
-                        <div
-                          style={{
-                            color: "green",
-                            fontWeight: 600,
-                            width: 40,
-                          }}
-                        >
-                          PASS
-                        </div>
-                      ) : item.result == false ? (
-                        <div
-                          style={{ color: "red", fontWeight: 600, width: 40 }}
-                        >
-                          FAIL
-                        </div>
-                      ) : (
-                        <div
-                          style={{ color: "grey", fontWeight: 600, width: 80 }}
-                        >
-                          INCOMPLETE
-                        </div>
-                      )}
+                      <div style={{ width: 90 }}>
+                        {item.result == true ? (
+                          <div
+                            style={{
+                              color: "green",
+                              fontWeight: 600,
+                            }}
+                          >
+                            PASS
+                          </div>
+                        ) : item.result == false ? (
+                          <div style={{ color: "red", fontWeight: 600 }}>
+                            FAIL
+                          </div>
+                        ) : (
+                          <div
+                            style={{
+                              color: "grey",
+                              fontWeight: 600,
+                            }}
+                          >
+                            INCOMPLETE
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 }

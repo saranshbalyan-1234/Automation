@@ -179,7 +179,7 @@ const getTestCaseDetailsById = async (req, res) => {
     return res.status(200).json({
       ...testCase.dataValues,
       reusableProcessCount,
-      processCount,
+      totalProcess: totalProcess.length,
       stepCount,
     });
   } catch (err) {

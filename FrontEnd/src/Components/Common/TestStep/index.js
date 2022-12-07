@@ -42,6 +42,16 @@ const TestStepTable = ({
       ),
     },
     {
+      title: "",
+      width: 40,
+      dataIndex: "index",
+      render: (text, record, index) => (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          {index + 1}
+        </div>
+      ),
+    },
+    {
       title: "Action Event",
       // width: 100,
       dataIndex: "actionEvent",

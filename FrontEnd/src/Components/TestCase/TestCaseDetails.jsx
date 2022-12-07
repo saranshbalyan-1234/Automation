@@ -51,7 +51,7 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
                     <Card>
                       <Meta
                         title="Total Process"
-                        description={details.processCount || "N/A"}
+                        description={details.totalProcess || "N/A"}
                       />
                     </Card>
                     <Card>

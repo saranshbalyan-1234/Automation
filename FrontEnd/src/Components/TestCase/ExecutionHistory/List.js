@@ -45,24 +45,24 @@ export const List = ({
       title: "Result",
       width: 100,
       dataIndex: "result",
-      render: (text, record) =>
-        text == true ? (
-          <div
-            style={{
-              color: "green",
-              fontWeight: 600,
-              width: 40,
-            }}
-          >
-            PASS
-          </div>
-        ) : text == false ? (
-          <div style={{ color: "red", fontWeight: 600, width: 40 }}>FAIL</div>
-        ) : (
-          <div style={{ color: "grey", fontWeight: 600, width: 100 }}>
-            INCOMPLETE
-          </div>
-        ),
+      render: (text, record) => (
+        <div style={{ width: 100 }}>
+          {text == true ? (
+            <div
+              style={{
+                color: "green",
+                fontWeight: 600,
+              }}
+            >
+              PASS
+            </div>
+          ) : text == false ? (
+            <div style={{ color: "red", fontWeight: 600 }}>FAIL</div>
+          ) : (
+            <div style={{ color: "grey", fontWeight: 600 }}>INCOMPLETE</div>
+          )}
+        </div>
+      ),
     },
 
     {
