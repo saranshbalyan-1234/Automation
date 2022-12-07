@@ -17,7 +17,7 @@ const DetailedExecutionReportModal = ({
   const [range, setRange] = useState({});
   const [userId, setUserId] = useState(currentUserId);
   useEffect(() => {
-    let payload = { userId };
+    let payload = { executedByUser: userId };
     if (range.startDate && range.endDate) {
       payload = { ...payload, ...range };
     }

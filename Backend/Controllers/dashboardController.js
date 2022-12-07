@@ -83,7 +83,7 @@ export const executionReport = async (req, res) => {
   */
   try {
     const totalHistory = await ExecutionHistory.schema(req.database).findAll({
-      where: { executedByUser: req.body.userId },
+      where: req.body,
     });
 
     const incompleteHistory = totalHistory.filter((el) => {
@@ -113,38 +113,30 @@ export const detailedExecutionReport = async (req, res) => {
   try {
     const startDate = new Date(req.body.startDate);
     const endDate = new Date(req.body.endDate);
+    let payload = {};
+    if (req.body.executedByUser) {
+      payload.executedByUser = req.body.executedByUser;
+    }
+    if (req.body.testCaseId) {
+      payload.testCaseId = req.body.testCaseId;
+    }
+    if (req.body.startDate && endDate) {
+      payload.createdAt = { [Op.between]: [startDate, endDate] };
+    }
+
     const passedHistory = await ExecutionHistory.schema(req.database).count({
-      where: {
-        result: true,
-        executedByUser: req.body.userId,
-        createdAt:
-          req.body.startDate && endDate
-            ? { [Op.between]: [startDate, endDate] }
-            : { [Op.not]: null },
-      },
+      where: { ...payload, result: true },
       attributes: [[Sequelize.fn("DATE", Sequelize.col("createdAt")), "Date"]],
       group: [Sequelize.fn("DATE", Sequelize.col("createdAt")), "Date"],
     });
     const failedHistory = await ExecutionHistory.schema(req.database).count({
-      where: {
-        result: false,
-        executedByUser: req.body.userId,
-        createdAt: req.body.startDate
-          ? { [Op.between]: [startDate, endDate] }
-          : { [Op.not]: null },
-      },
+      where: { ...payload, result: false },
       attributes: [[Sequelize.fn("DATE", Sequelize.col("createdAt")), "Date"]],
       group: [Sequelize.fn("DATE", Sequelize.col("createdAt")), "Date"],
     });
     const incompleteHistory = await ExecutionHistory.schema(req.database).count(
       {
-        where: {
-          result: null,
-          executedByUser: req.body.userId,
-          createdAt: req.body.startDate
-            ? { [Op.between]: [startDate, endDate] }
-            : { [Op.not]: null },
-        },
+        where: { ...payload, result: null },
         attributes: [
           [Sequelize.fn("DATE", Sequelize.col("createdAt")), "Date"],
         ],
@@ -152,7 +144,7 @@ export const detailedExecutionReport = async (req, res) => {
       }
     );
     const totalCount = await ExecutionHistory.schema(req.database).count({
-      where: { executedByUser: req.body.userId },
+      where: { executedByUser: req.body.userId || req.user.id },
     });
     let data = {};
 

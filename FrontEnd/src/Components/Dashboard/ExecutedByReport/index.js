@@ -20,20 +20,22 @@ export const ExecutedByReport = ({ user, getTeam, team }) => {
   }, []);
 
   useEffect(() => {
-    axios.post("/dashboard/execution-report", { userId }).then((res) => {
-      setData(res.data);
-      setLoading(false);
-      let tempExecutedData = { ...res.data };
-      delete tempExecutedData.Total;
-      let executedData = Object.entries(tempExecutedData)
-        .filter((el) => {
-          return el !== "Total";
-        })
-        .map((el) => {
-          return { name: el[0], Total: el[1] };
-        });
-      setExecutionHistoryData(executedData);
-    });
+    axios
+      .post("/dashboard/execution-report", { executedByUser: userId })
+      .then((res) => {
+        setData(res.data);
+        setLoading(false);
+        let tempExecutedData = { ...res.data };
+        delete tempExecutedData.Total;
+        let executedData = Object.entries(tempExecutedData)
+          .filter((el) => {
+            return el !== "Total";
+          })
+          .map((el) => {
+            return { name: el[0], Total: el[1] };
+          });
+        setExecutionHistoryData(executedData);
+      });
   }, [userId]);
 
   return (
