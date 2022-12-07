@@ -7,31 +7,31 @@ import AddEditModal from "../Common/AddEditModal";
 import ColumnGraph from "../Common/ColumnGraph";
 import Loading from "../Common/Loading";
 import axios from "axios";
+import { useParams, userParams } from "react-router-dom";
 const { Title } = Typography;
 const { Meta } = Card;
 const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
+  const { testCaseId } = useParams();
   const [addEditModal, setAddEditModal] = useState(false);
   const [graphLoading, setGraphLoading] = useState(true);
   const [graphData, setGraphData] = useState([]);
   const [editData, setEditData] = useState({});
 
   useEffect(() => {
-    axios
-      .post("/dashboard/execution-report", { testCaseId: details.id })
-      .then((res) => {
-        setGraphLoading(false);
-        let tempExecutedData = { ...res.data };
-        delete tempExecutedData.Total;
-        let executedData = Object.entries(tempExecutedData)
-          .filter((el) => {
-            return el !== "Total";
-          })
-          .map((el) => {
-            return { name: el[0], Total: el[1] };
-          });
-        setGraphData(executedData);
-      });
-  }, []);
+    axios.post("/dashboard/execution-report", { testCaseId }).then((res) => {
+      setGraphLoading(false);
+      let tempExecutedData = { ...res.data };
+      delete tempExecutedData.Total;
+      let executedData = Object.entries(tempExecutedData)
+        .filter((el) => {
+          return el !== "Total";
+        })
+        .map((el) => {
+          return { name: el[0], Total: el[1] };
+        });
+      setGraphData(executedData);
+    });
+  }, [testCaseId]);
 
   if (loading) return <Loading />;
   return (
