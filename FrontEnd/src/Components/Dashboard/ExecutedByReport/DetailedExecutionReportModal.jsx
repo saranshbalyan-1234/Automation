@@ -3,6 +3,7 @@ import { Modal, Select, DatePicker } from "antd";
 import { Line } from "@ant-design/plots";
 import axios from "axios";
 import { connect } from "react-redux";
+import Loading from "../../Common/Loading";
 const DetailedExecutionReportModal = ({
   visible,
   setVisible,
@@ -12,6 +13,7 @@ const DetailedExecutionReportModal = ({
 }) => {
   const [data, setData] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [range, setRange] = useState({});
   const [userId, setUserId] = useState(currentUserId);
   useEffect(() => {
@@ -20,6 +22,7 @@ const DetailedExecutionReportModal = ({
       payload = { ...payload, ...range };
     }
     axios.post("/dashboard/detailed-execution-report", payload).then((res) => {
+      setLoading(false);
       setData(res.data.data);
       setTotalCount(res.data.totalCount);
     });
@@ -79,7 +82,9 @@ const DetailedExecutionReportModal = ({
         setVisible(false);
       }}
     >
-      <Line {...config} />
+      <Loading loading={loading}>
+        <Line {...config} />
+      </Loading>
     </Modal>
   );
 };
