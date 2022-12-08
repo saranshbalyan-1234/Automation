@@ -4,20 +4,28 @@ import { Line } from "@ant-design/plots";
 import axios from "axios";
 import { connect } from "react-redux";
 import Loading from "../../Common/Loading";
+import { useParams } from "react-router-dom";
 const DetailedExecutionReportModal = ({
   visible,
   setVisible,
   currentUserId,
   team,
   user,
+  dashboard = true,
 }) => {
   const [data, setData] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [range, setRange] = useState({});
   const [userId, setUserId] = useState(currentUserId);
+  const { testCaseId } = useParams();
   useEffect(() => {
-    let payload = { executedByUser: userId };
+    let payload = {};
+    if (dashboard) {
+      payload.executedByUser = userId;
+    } else {
+      payload.testCaseId = Number(testCaseId);
+    }
     if (range.startDate && range.endDate) {
       payload = { ...payload, ...range };
     }
@@ -56,23 +64,29 @@ const DetailedExecutionReportModal = ({
       title={
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div>Detailed Execution Report</div>
-          <DatePicker.RangePicker onChange={handleRangeSelection} />
-          <div style={{ display: "flex", gap: 10, marginRight: 30 }}>
-            Total Executed By
-            <Select
-              size="small"
-              defaultValue={user?.id}
-              style={{ width: 80, marginRight: "-2px" }}
-              onChange={(e) => {
-                setUserId(e);
-              }}
-            >
-              <Select.Option value={user?.id}>Me</Select.Option>
-              {team.map((el) => {
-                return <Select.Option value={el.id}>{el.name}</Select.Option>;
-              })}
-            </Select>
-            : {totalCount}
+          <div style={{ marginRight: 30 }}>
+            <DatePicker.RangePicker onChange={handleRangeSelection} />
+            {dashboard && (
+              <div style={{ display: "flex", gap: 10 }}>
+                Total Executed By
+                <Select
+                  size="small"
+                  defaultValue={user?.id}
+                  style={{ width: 80, marginRight: "-2px" }}
+                  onChange={(e) => {
+                    setUserId(e);
+                  }}
+                >
+                  <Select.Option value={user?.id}>Me</Select.Option>
+                  {team.map((el) => {
+                    return (
+                      <Select.Option value={el.id}>{el.name}</Select.Option>
+                    );
+                  })}
+                </Select>
+                : {totalCount}
+              </div>
+            )}
           </div>
         </div>
       }

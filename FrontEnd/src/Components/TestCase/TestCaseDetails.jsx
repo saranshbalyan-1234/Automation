@@ -8,6 +8,7 @@ import ColumnGraph from "../Common/ColumnGraph";
 import Loading from "../Common/Loading";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import DetailedExecutionReportModal from "../Dashboard/ExecutedByReport/DetailedExecutionReportModal";
 const { Title } = Typography;
 const { Meta } = Card;
 const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
@@ -16,6 +17,8 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
   const [graphLoading, setGraphLoading] = useState(true);
   const [graphData, setGraphData] = useState([]);
   const [editData, setEditData] = useState({});
+  const [detailedExecutionReportModal, setDetailedExecutionReportModal] =
+    useState(false);
 
   useEffect(() => {
     axios.post("/dashboard/execution-report", { testCaseId }).then((res) => {
@@ -151,6 +154,19 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
             )}
           </Card>
           <Card style={{ boxShadow: "5px 10px #f6f6f6" }}>
+            <Tag
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setDetailedExecutionReportModal(true);
+              }}
+            >
+              More Details
+            </Tag>
             <Loading loading={graphLoading}>
               <ColumnGraph data={graphData} />
             </Loading>
@@ -167,6 +183,13 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
           name={name}
           onEdit={onEdit}
           loading={loading}
+        />
+      )}
+      {detailedExecutionReportModal && (
+        <DetailedExecutionReportModal
+          visible={detailedExecutionReportModal}
+          setVisible={setDetailedExecutionReportModal}
+          dashboard={false}
         />
       )}
     </div>
