@@ -62,32 +62,35 @@ const DetailedExecutionReportModal = ({
       centered
       width={1000}
       title={
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginRight: 30,
+          }}
+        >
           <div>Detailed Execution Report</div>
-          <div style={{ marginRight: 30 }}>
-            <DatePicker.RangePicker onChange={handleRangeSelection} />
-            {dashboard && (
-              <div style={{ display: "flex", gap: 10 }}>
-                Total Executed By
-                <Select
-                  size="small"
-                  defaultValue={user?.id}
-                  style={{ width: 80, marginRight: "-2px" }}
-                  onChange={(e) => {
-                    setUserId(e);
-                  }}
-                >
-                  <Select.Option value={user?.id}>Me</Select.Option>
-                  {team.map((el) => {
-                    return (
-                      <Select.Option value={el.id}>{el.name}</Select.Option>
-                    );
-                  })}
-                </Select>
-                : {totalCount}
-              </div>
-            )}
-          </div>
+
+          <DatePicker.RangePicker onChange={handleRangeSelection} />
+          {dashboard && (
+            <div style={{ display: "flex", gap: 10 }}>
+              Total Executed By
+              <Select
+                size="small"
+                defaultValue={user?.id}
+                style={{ width: 80, marginRight: "-2px" }}
+                onChange={(e) => {
+                  setUserId(e);
+                }}
+              >
+                <Select.Option value={user?.id}>Me</Select.Option>
+                {team.map((el) => {
+                  return <Select.Option value={el.id}>{el.name}</Select.Option>;
+                })}
+              </Select>
+              : {totalCount}
+            </div>
+          )}
         </div>
       }
       open={visible}
