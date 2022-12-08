@@ -51,8 +51,11 @@ const ExecuteModal = ({
           form={form}
           name="execute"
           onFinish={handleExecute}
-          labelCol={{ span: 8 }}
+          labelCol={{ span: 7 }}
           wrapperCol={{ span: 16 }}
+          initialValues={{
+            continueOnError: false,
+          }}
         >
           <Form.Item
             name="name"
@@ -91,12 +94,6 @@ const ExecuteModal = ({
           <Form.Item
             name="continueOnError"
             label="Continue On Error"
-            rules={[
-              {
-                required: true,
-                message: "Please Select Environment!",
-              },
-            ]}
             valuePropName="checked"
           >
             <Switch checkedChildren="Yes" unCheckedChildren="No" />
