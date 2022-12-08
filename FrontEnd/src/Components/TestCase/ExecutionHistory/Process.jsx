@@ -61,7 +61,7 @@ const Process = ({ process, loading }) => {
                       <Tag color="blue" style={{ cursor: "default" }}>
                         Step Count : {item.testSteps.length}
                       </Tag>
-                      <div style={{ width: 90 }}>
+                      <div style={{ width: 100 }}>
                         {item.result == true ? (
                           <div
                             style={{

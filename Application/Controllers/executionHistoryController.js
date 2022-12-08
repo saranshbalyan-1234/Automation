@@ -16,6 +16,7 @@ const createExecutionHistory = async (req, res) => {
     res.status(200).json({ message: "Started Execution" });
     return await ExecutionHistory.schema(req.database).create(payload);
   } catch (err) {
+    console.log(err);
     getError(err, res);
   }
 };

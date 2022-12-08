@@ -1,7 +1,15 @@
 const {
   updateStepResult,
 } = require("../../Controllers/executionHistoryController");
-const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
+const { handleActionEventError } = require("./utils");
+const If = async (
+  step,
+  processResult,
+  req,
+  stepHistoryId,
+  stepExtra,
+  executionHistory
+) => {
   console.log("If");
   stepExtra.conditional = true;
   stepExtra.conditionalType = "if";
@@ -105,17 +113,21 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
       }
     }
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const EndCondition = async (
-  step,
   processResult,
   req,
   stepHistoryId,
-  stepExtra
+  stepExtra,
+  executionHistory
 ) => {
   console.log("End Condition");
   try {
@@ -124,20 +136,34 @@ const EndCondition = async (
     stepExtra.conditionalType = "";
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
-const Else = async (step, processResult, req, stepHistoryId, stepExtra) => {
+const Else = async (
+  processResult,
+  req,
+  stepHistoryId,
+  stepExtra,
+  executionHistory
+) => {
   console.log("Else");
   try {
     stepExtra.conditionalType = "else";
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 

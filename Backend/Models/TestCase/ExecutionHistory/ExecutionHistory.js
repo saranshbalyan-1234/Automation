@@ -38,6 +38,11 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       values: [0, 1],
     },
+    continueOnError: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 1,
+      values: [0, 1],
+    },
   });
 
   return ExecutionHistory;

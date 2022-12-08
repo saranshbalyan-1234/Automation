@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Modal, Button, Select } from "antd";
+import { Form, Input, Modal, Button, Select, Switch } from "antd";
 import { connect } from "react-redux";
 import { executeTestCase } from "../../Redux/Actions/testCase";
 import ReactQuill from "react-quill";
@@ -51,7 +51,7 @@ const ExecuteModal = ({
           form={form}
           name="execute"
           onFinish={handleExecute}
-          labelCol={{ span: 7 }}
+          labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
         >
           <Form.Item
@@ -88,7 +88,19 @@ const ExecuteModal = ({
               </Select>
             </Form.Item>
           )}
-
+          <Form.Item
+            name="continueOnError"
+            label="Continue On Error"
+            rules={[
+              {
+                required: true,
+                message: "Please Select Environment!",
+              },
+            ]}
+            valuePropName="checked"
+          >
+            <Switch checkedChildren="Yes" unCheckedChildren="No" />
+          </Form.Item>
           <Form.Item name="description" label="">
             <ReactQuill
               style={{ width: 450 }}

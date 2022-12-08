@@ -30,13 +30,18 @@ module.exports = (sequelize, DataTypes) => {
         notNull: true,
       },
     },
+    finishedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
     result: {
       type: DataTypes.BOOLEAN,
       values: [0, 1],
     },
-    finishedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
+    continueOnError: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 1,
+      values: [0, 1],
     },
   });
 

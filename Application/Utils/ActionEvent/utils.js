@@ -1,6 +1,9 @@
 const chromeDriver = require("selenium-webdriver");
 const { By } = chromeDriver;
 const { uploadFile } = require("../../Controllers/awsController");
+const {
+  updateStepResult,
+} = require("../../Controllers/executionHistoryController");
 const findByLocator = async (locators) => {
   // ClassName
   // CSS
@@ -41,7 +44,7 @@ const findByLocator = async (locators) => {
     }
   }
 };
-const takeScreenshot = async (driver, req, step, executionHistory) => {
+const takeScreenshot = async (driver, req, step, executionHistoryId) => {
   console.log("Taking screenshot");
   await driver.takeScreenshot().then(async (data, err) => {
     if (err) return console.log("error in taking screenshot", err);
@@ -52,9 +55,24 @@ const takeScreenshot = async (driver, req, step, executionHistory) => {
     );
 
     // console.log(data);
-    const fileName = `${executionHistory.id}/${step.id}`;
+    const fileName = `${executionHistoryId}/${step.id}`;
     await uploadFile(buf, req.database, fileName);
   });
 };
 
-module.exports = { findByLocator, takeScreenshot };
+const handleActionEventError = async (
+  err,
+  req,
+  stepHistoryId,
+  processResult,
+  continueOnError
+) => {
+  console.log(err);
+  if (processResult.result) processResult.result = false;
+  await updateStepResult(req, stepHistoryId, false);
+
+  if (continueOnError) return "CONTINUE";
+  else return "STOP";
+};
+
+module.exports = { findByLocator, takeScreenshot, handleActionEventError };

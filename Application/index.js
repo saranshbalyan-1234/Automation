@@ -3,11 +3,12 @@ const { createDriver } = require("./Utils/driver");
 const { getTestStepByTestCase } = require("./Controllers/testCaseController");
 const { handleStep } = require("./Utils/actionEvent");
 const { validateToken } = require("./Utils/Middlewares/jwt");
+const { takeScreenshot } = require("./Utils/ActionEvent/utils");
+const { createFolder } = require("./Controllers/awsController");
 const {
   createProcessHistory,
   createStepHistory,
   updateProcessResult,
-  // updateExecutionFinishTime,
   updateStepResult,
   updateExecutionResult,
 } = require("./Controllers/executionHistoryController");
@@ -71,7 +72,6 @@ app.post("/execute/:testCaseId", async (req, res) => {
           data.executionHistory,
           processHistory
         );
-        // console.log(stepExtra.conditionalResult, stepExtra.conditional);
         if (
           stepExtra.conditional == false ||
           tempStep.actionEvent == "End Condition" ||
@@ -85,7 +85,7 @@ app.post("/execute/:testCaseId", async (req, res) => {
             stepExtra.conditionalType == "Else If" &&
             stepExtra.conditionalResult == false)
         ) {
-          await handleStep(
+          const continueOnError = await handleStep(
             tempStep,
             driver,
             output,
@@ -93,9 +93,30 @@ app.post("/execute/:testCaseId", async (req, res) => {
             stepHistory.dataValues.id,
             processResult,
             data.executionHistory,
-            canCreateS3Folder,
             stepExtra
           );
+          if (tempStep.screenshot) {
+            await createFolder(req.database, data.executionHistory.id);
+            canCreateS3Folder = false;
+            await takeScreenshot(
+              driver,
+              req,
+              tempStep,
+              data.executionHistory.id
+            );
+          }
+
+          if (continueOnError === "STOP") {
+            console.log("Execution Stopped");
+            await updateProcessResult(req, processHistory.dataValues.id, false);
+            await updateExecutionResult(
+              req,
+              data.executionHistory.id,
+              moment(),
+              false
+            );
+            return;
+          }
         } else {
           await updateStepResult(req, stepHistory.dataValues.id, null);
         }

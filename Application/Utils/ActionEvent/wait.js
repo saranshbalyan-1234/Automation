@@ -5,7 +5,7 @@ const {
 } = require("../../Controllers/executionHistoryController");
 //totalActionEvents = 21
 
-const { findByLocator } = require("./utils");
+const { findByLocator, handleActionEventError } = require("./utils");
 const implicitWait = async (
   step,
   driver,
@@ -19,9 +19,13 @@ const implicitWait = async (
     await driver.sleep(time);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
@@ -30,7 +34,8 @@ const waitUntilObjectLocated = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
@@ -43,9 +48,13 @@ const waitUntilObjectLocated = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const waitUntilObjectsLocated = async (
@@ -53,7 +62,8 @@ const waitUntilObjectsLocated = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
@@ -66,9 +76,13 @@ const waitUntilObjectsLocated = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
@@ -77,7 +91,8 @@ const waitUntilObjectEnabled = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
@@ -90,9 +105,13 @@ const waitUntilObjectEnabled = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const waitUntilObjectDisabled = async (
@@ -100,7 +119,8 @@ const waitUntilObjectDisabled = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
@@ -113,9 +133,13 @@ const waitUntilObjectDisabled = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
@@ -124,7 +148,8 @@ const waitUntilObjectNotSelected = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
@@ -137,9 +162,13 @@ const waitUntilObjectNotSelected = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
@@ -148,7 +177,8 @@ const waitUntilObjectSelected = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
@@ -161,9 +191,13 @@ const waitUntilObjectSelected = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
@@ -172,7 +206,8 @@ const waitUntilObjectNotVisible = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
@@ -185,9 +220,13 @@ const waitUntilObjectNotVisible = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
@@ -196,7 +235,8 @@ const waitUntilObjectVisible = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
@@ -209,9 +249,13 @@ const waitUntilObjectVisible = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const waitUntilObjectTextContains = async (
@@ -219,7 +263,8 @@ const waitUntilObjectTextContains = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const string = step.testParameters.string;
   const timeout = Number(step.testParameters.Timeout);
@@ -230,9 +275,13 @@ const waitUntilObjectTextContains = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const waitUntilObjectTextIs = async (
@@ -240,7 +289,8 @@ const waitUntilObjectTextIs = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   const string = step.testParameters.string;
@@ -251,9 +301,13 @@ const waitUntilObjectTextIs = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const waitUntilObjectTextMatches = async (
@@ -261,7 +315,8 @@ const waitUntilObjectTextMatches = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   const RegEx = new RegExp(step.testParameters.RegEx);
@@ -272,9 +327,13 @@ const waitUntilObjectTextMatches = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const waitUntilObjectStalenessOf = async (
@@ -282,7 +341,8 @@ const waitUntilObjectStalenessOf = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
@@ -295,9 +355,13 @@ const waitUntilObjectStalenessOf = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const waitUntilTitleContains = async (
@@ -305,7 +369,8 @@ const waitUntilTitleContains = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   const string = step.testParameters.String;
@@ -316,9 +381,13 @@ const waitUntilTitleContains = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const waitUntilTitleIs = async (
@@ -326,7 +395,8 @@ const waitUntilTitleIs = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   const string = step.testParameters.String;
@@ -337,9 +407,13 @@ const waitUntilTitleIs = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const waitUntilTitleMatches = async (
@@ -347,7 +421,8 @@ const waitUntilTitleMatches = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   const RegEx = new RegExp(step.testParameters.RegEx);
@@ -358,9 +433,13 @@ const waitUntilTitleMatches = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
@@ -369,7 +448,8 @@ const waitUntilUrlContains = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   const string = step.testParameters.String;
@@ -380,9 +460,13 @@ const waitUntilUrlContains = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const waitUntilUrlIs = async (
@@ -390,7 +474,8 @@ const waitUntilUrlIs = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   const string = step.testParameters.String;
@@ -401,9 +486,13 @@ const waitUntilUrlIs = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const waitUntilUrlMatches = async (
@@ -411,7 +500,8 @@ const waitUntilUrlMatches = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const timeout = Number(step.testParameters.Timeout);
   const RegEx = new RegExp(step.testParameters.RegEx);
@@ -422,9 +512,13 @@ const waitUntilUrlMatches = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const waitUntilAlertPresent = async (
@@ -432,7 +526,8 @@ const waitUntilAlertPresent = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   const temp = Number(step.testParameters.Timeout);
   const timeout = temp > 1000 ? temp : 1000;
@@ -445,9 +540,13 @@ const waitUntilAlertPresent = async (
       });
       return await updateStepResult(req, stepHistoryId, true);
     } catch (err) {
-      console.log(err);
-      await updateStepResult(req, stepHistoryId, false);
-      if (processResult.result) processResult.result = false;
+      return await handleActionEventError(
+        err,
+        req,
+        stepHistoryId,
+        processResult,
+        executionHistory.continueOnError
+      );
     }
   }
   console.log("Alter Not Found");
@@ -457,7 +556,8 @@ const waitUntilAbleToSwitchToFrame = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   //need fix
   const timeout = Number(step.testParameters.Timeout);
@@ -469,9 +569,13 @@ const waitUntilAbleToSwitchToFrame = async (
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    await updateStepResult(req, stepHistoryId, false);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
