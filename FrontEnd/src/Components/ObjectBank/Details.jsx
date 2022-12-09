@@ -32,7 +32,8 @@ const ObjectDetails = ({
   }, [objectId, newObject?.id, object?.id, history]);
 
   useEffect(() => {
-    history == false && setCurrentObject(object);
+    history === false && setCurrentObject(object);
+    // eslint-disable-next-line
   }, [object?.locators]);
 
   return (

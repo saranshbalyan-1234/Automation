@@ -18,6 +18,7 @@ const ExecuteModal = ({
   const [envLoading, setEnvLoading] = useState(false);
   useEffect(() => {
     getEnvironment();
+    // eslint-disable-next-line
   }, []);
 
   const getEnvironment = async () => {

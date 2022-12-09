@@ -22,6 +22,7 @@ export const List = ({
   const [executionHistoryId, setExecutionHistoryId] = useState(0);
   useEffect(() => {
     getAllExecutionHistoryByTestCase(testCaseId);
+    // eslint-disable-next-line
   }, [testCaseId]);
 
   const columns = [
@@ -47,7 +48,7 @@ export const List = ({
       dataIndex: "result",
       render: (text, record) => (
         <div style={{ width: 100 }}>
-          {text == true ? (
+          {text === true ? (
             <div
               style={{
                 color: "green",
@@ -56,7 +57,7 @@ export const List = ({
             >
               PASS
             </div>
-          ) : text == false ? (
+          ) : text === false ? (
             <div style={{ color: "red", fontWeight: 600 }}>FAIL</div>
           ) : (
             <div style={{ color: "grey", fontWeight: 600 }}>INCOMPLETE</div>

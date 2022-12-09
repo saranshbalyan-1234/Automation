@@ -62,7 +62,7 @@ const Process = ({ process, loading }) => {
                         Step Count : {item.testSteps.length}
                       </Tag>
                       <div style={{ width: 100 }}>
-                        {item.result == true ? (
+                        {item.result === true ? (
                           <div
                             style={{
                               color: "green",
@@ -71,7 +71,7 @@ const Process = ({ process, loading }) => {
                           >
                             PASS
                           </div>
-                        ) : item.result == false ? (
+                        ) : item.result === false ? (
                           <div style={{ color: "red", fontWeight: 600 }}>
                             FAIL
                           </div>

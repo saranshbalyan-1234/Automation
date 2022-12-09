@@ -20,7 +20,8 @@ const ViewExecutionHistoryModal = ({
   const [viewExecutionViewModal, setViewExecutionVideoModal] = useState(false);
   useEffect(() => {
     getExecutionHistoryById(visible);
-  }, []);
+    // eslint-disable-next-line
+  }, [visible]);
 
   return (
     <Modal
@@ -138,12 +139,14 @@ const ViewExecutionHistoryModal = ({
                   setViewExecutionVideoModal(true);
               }}
             >
-              Record All Steps
-              {currentExecutionHistory.recordAllSteps ? (
-                <CheckOutlined />
-              ) : (
-                <CloseOutlined />
-              )}
+              <div>Record All Steps</div>
+              <div>
+                {currentExecutionHistory.recordAllSteps ? (
+                  <CheckOutlined />
+                ) : (
+                  <CloseOutlined />
+                )}
+              </div>
             </Tag>
             <Tag
               color={
@@ -151,12 +154,14 @@ const ViewExecutionHistoryModal = ({
               }
               className="row"
             >
-              Continue On Error
-              {currentExecutionHistory.continueOnError ? (
-                <CheckOutlined />
-              ) : (
-                <CloseOutlined />
-              )}
+              <div> Continue On Error</div>
+              <div>
+                {currentExecutionHistory.continueOnError ? (
+                  <CheckOutlined />
+                ) : (
+                  <CloseOutlined />
+                )}
+              </div>
             </Tag>
           </div>
           <div style={{ marginTop: 20 }}>

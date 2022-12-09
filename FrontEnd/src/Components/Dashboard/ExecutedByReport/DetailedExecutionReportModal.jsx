@@ -34,6 +34,7 @@ const DetailedExecutionReportModal = ({
       setData(res.data.data);
       setTotalCount(res.data.totalCount);
     });
+    // eslint-disable-next-line
   }, [userId, range]);
   const handleRangeSelection = (date) => {
     setRange({
