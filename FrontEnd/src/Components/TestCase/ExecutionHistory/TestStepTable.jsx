@@ -142,7 +142,7 @@ const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
         <ViewObjectModal
           visible={viewObjectModal}
           setVisible={setViewObjectModal}
-          newObject={object}
+          object={object}
           history={true}
           setObject={setObject}
         />

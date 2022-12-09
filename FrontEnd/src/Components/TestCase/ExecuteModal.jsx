@@ -55,6 +55,7 @@ const ExecuteModal = ({
           wrapperCol={{ span: 16 }}
           initialValues={{
             continueOnError: false,
+            recordAllSteps: false,
           }}
         >
           <Form.Item
@@ -94,6 +95,13 @@ const ExecuteModal = ({
           <Form.Item
             name="continueOnError"
             label="Continue On Error"
+            valuePropName="checked"
+          >
+            <Switch checkedChildren="Yes" unCheckedChildren="No" />
+          </Form.Item>
+          <Form.Item
+            name="recordAllSteps"
+            label="Record All Steps"
             valuePropName="checked"
           >
             <Switch checkedChildren="Yes" unCheckedChildren="No" />

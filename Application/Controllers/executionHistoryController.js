@@ -46,7 +46,7 @@ const createStepHistory = async (
   payload.object = step.object;
   payload.testParameters = step.testParameters;
   payload.processId = processHistory.dataValues.processId;
-  payload.screenshot = step.screenshot;
+  payload.screenshot = step.screenshot || executionHistory.recordAllSteps;
   payload.executionHistoryId = executionHistory.id;
   payload.result = null;
   return await TestStepHistory.schema(req.database).create(payload);

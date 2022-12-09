@@ -32,7 +32,7 @@ const ObjectDetails = ({
   }, [objectId, newObject?.id, object?.id, history]);
 
   useEffect(() => {
-    setCurrentObject(object);
+    history == false && setCurrentObject(object);
   }, [object?.locators]);
 
   return (

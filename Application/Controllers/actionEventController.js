@@ -80,7 +80,7 @@ const execute = async (req, res) => {
             data.executionHistory,
             stepExtra
           );
-          if (tempStep.screenshot) {
+          if (tempStep.screenshot || data.executionHistory.recordAllSteps) {
             await createFolder(req.database, data.executionHistory.id);
             canCreateS3Folder = false;
             await takeScreenshot(

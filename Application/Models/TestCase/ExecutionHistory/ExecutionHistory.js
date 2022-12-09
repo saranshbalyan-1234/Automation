@@ -40,7 +40,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     continueOnError: {
       type: DataTypes.BOOLEAN,
-      defaultValue: 1,
+      defaultValue: 0,
+      values: [0, 1],
+    },
+    recordAllSteps: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
       values: [0, 1],
     },
   });

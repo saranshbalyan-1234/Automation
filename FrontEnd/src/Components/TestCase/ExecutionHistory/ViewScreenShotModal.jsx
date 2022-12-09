@@ -47,7 +47,7 @@ const ViewScreenShotModal = ({ visible, setVisible }) => {
             <img
               alt="screenshot"
               src={"data:image/jpeg;base64," + imgData}
-              style={{ maxWidth: "75vw" }}
+              style={{ maxWidth: "85vw" }}
             />
           )}
         </div>
