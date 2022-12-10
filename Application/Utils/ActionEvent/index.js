@@ -6,7 +6,14 @@ const {
 } = require("./utils");
 const { By } = chromeDriver;
 const moment = require("moment");
-// const { createFolder } = require("../../Controllers/awsController");
+const {
+  ConvertToString,
+  ConvertToNumber,
+  ConvertToDateTime,
+  ConvertToInteger,
+  ConvertToFloat,
+  ConvertToHex,
+} = require("./convert");
 const {
   implicitWait,
   waitUntilObjectLocated,
@@ -566,6 +573,60 @@ const handleStep = async (
         step,
         driver,
         output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Convert To String":
+      return await ConvertToString(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Convert To Number":
+      return await ConvertToNumber(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Convert To DateTime":
+      return await ConvertToDateTime(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Convert To Integer":
+      return await ConvertToInteger(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Convert To Float":
+      return await ConvertToFloat(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Convert To Hex":
+      return await ConvertToHex(
+        step,
         processResult,
         req,
         stepHistoryId,
