@@ -8,7 +8,8 @@ const ConvertToString = async (
   processResult,
   req,
   stepHistoryId,
-  executionHistory
+  executionHistory,
+  output
 ) => {
   console.log("Converting To String");
   try {

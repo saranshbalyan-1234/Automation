@@ -1,9 +1,5 @@
 const chromeDriver = require("selenium-webdriver");
-const {
-  findByLocator,
-  // takeScreenshot,
-  handleActionEventError,
-} = require("./utils");
+const { findByLocator, handleActionEventError } = require("./utils");
 const { By } = chromeDriver;
 const moment = require("moment");
 const {
@@ -392,7 +388,7 @@ const handleStep = async (
       );
       break;
     case "Console Log":
-      return await console.log(
+      return await printLog(
         step.testParameters.Value,
         processResult,
         req,
@@ -585,7 +581,8 @@ const handleStep = async (
         processResult,
         req,
         stepHistoryId,
-        executionHistory
+        executionHistory,
+        output
       );
       break;
     case "Convert To Number":
@@ -1312,6 +1309,26 @@ const collectObjectProperty = async (
       .getAttribute(step.testParameters.Attribute);
     output[step.testParameters.Output] = attribute;
     console.log(attribute);
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+const printLog = async (
+  value,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  try {
+    console.log("Log: " + value);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
