@@ -27,26 +27,28 @@ const ViewExecutionVideoModal = ({
 
   useEffect(() => {
     if (!playing) return;
-    setTimeout(() => {
+    handleNextScreenshot();
+    //   eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nextScreenshot, playing]);
+  const handleNextScreenshot = async () => {
+    setTimeout(async () => {
       if (
         currentPos.j <
         currentExecutionHistory.process[currentPos.i].testSteps.length
       ) {
         setCurrentPos({ ...currentPos, j: { ...currentPos }.j + 1 });
       } else if (currentPos.i < currentExecutionHistory.process.length - 1) {
-        setCurrentPos({ ...currentPos, i: { ...currentPos }.i + 1 });
+        setCurrentPos({ ...currentPos, i: { ...currentPos }.i + 1, j: 0 });
       } else {
-        return;
+        nextScreenshot && setCurrentScreenshot(nextScreenshot);
       }
       nextScreenshot && setCurrentScreenshot(nextScreenshot);
-      fetchNextScreenShot(
+      await fetchNextScreenShot(
         currentExecutionHistory.process[currentPos.i].testSteps[currentPos.j]
           .testStepId
       );
     }, interval);
-    //   eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nextScreenshot, playing]);
-
+  };
   const fetchCurrentScreenShot = async (stepId) => {
     setLoading(true);
     const { data } = await axios.post("/aws/object", {
@@ -73,7 +75,7 @@ const ViewExecutionVideoModal = ({
         setVisible(false);
       }}
     >
-      <Loading loading={loading && false}>
+      <Loading loading={loading}>
         <div
           style={{
             display: "flex",
