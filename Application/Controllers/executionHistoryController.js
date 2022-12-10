@@ -44,11 +44,18 @@ const createStepHistory = async (
   payload.actionEvent = step.actionEvent;
   payload.step = step.step;
   payload.object = step.object;
-  payload.testParameters = step.testParameters;
   payload.processId = processHistory.dataValues.processId;
   payload.screenshot = step.screenshot || executionHistory.recordAllSteps;
   payload.executionHistoryId = executionHistory.id;
   payload.result = null;
+  payload.testParameters = Object.entries(step.testParameters).map((el) => {
+    let temp = {};
+    temp.type = el[0];
+    temp.property = temp.type.toLowerCase().includes("password")
+      ? "*".repeat(el[1].length)
+      : el[1];
+    return temp;
+  });
   return await TestStepHistory.schema(req.database).create(payload);
 };
 const updateStepResult = async (req, id, result) => {
@@ -77,17 +84,6 @@ const updateProcessResult = async (req, id, result) => {
   );
 };
 
-// const updateExecutionResult = async (req, id, result) => {
-//   return await ExecutionHistory.schema(req.database).update(
-//     { result },
-//     {
-//       where: {
-//         id,
-//       },
-//     }
-//   );
-// };
-
 const updateExecutionResult = async (req, id, time, result) => {
   return await ExecutionHistory.schema(req.database).update(
     { finishedAt: time, result: result },
@@ -105,6 +101,5 @@ module.exports = {
   createStepHistory,
   updateStepResult,
   updateProcessResult,
-  // updateExecutionFinishTime,
   updateExecutionResult,
 };

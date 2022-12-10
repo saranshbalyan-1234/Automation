@@ -53,7 +53,7 @@ const execute = async (req, res) => {
 
         const stepHistory = await createStepHistory(
           req,
-          step.dataValues,
+          tempStep,
           data.executionHistory,
           processHistory
         );
