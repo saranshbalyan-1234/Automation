@@ -630,6 +630,16 @@ const handleStep = async (
         executionHistory
       );
       break;
+    case "Select Option By Value":
+      return await selectOptionByValue(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
     default:
       break;
   }
@@ -1329,6 +1339,41 @@ const printLog = async (
 ) => {
   try {
     console.log("Log: " + value);
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const selectOptionByValue = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Selecting Option By Value");
+  const value = step.testParameters.Value;
+  if (!value) {
+    console.log("No Value Found");
+    if (processResult.result) {
+      processResult.result = false;
+    }
+    return await updateStepResult(req, stepHistoryId, false);
+  }
+
+  try {
+    // other possible solution => #select > option[value=saransh]
+    await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .sendKeys(value);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
