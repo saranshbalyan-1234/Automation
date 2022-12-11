@@ -1413,7 +1413,6 @@ const selectOptionByPosition = async (
     }
     return await updateStepResult(req, stepHistoryId, false);
   }
-
   try {
     const elements = await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
@@ -1429,20 +1428,6 @@ const selectOptionByPosition = async (
         });
       });
 
-    // await driver.sleep(1000);
-    // console.log(elements[0]);
-    // await elements;
-    // const locators = step.object.dataValues.locators.map((el) => {
-    //   let temp = {
-    //     ...el,
-    //     dataValues: {
-    //       ...{ ...el }.dataValues,
-    //       locator: `${el.dataValues.locator}>option:nth-child(${index})`,
-    //     },
-    //   };
-    //   return temp;
-    // });
-    // await driver.findElement(await findByLocator(locators)).click();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
