@@ -10,11 +10,7 @@ export default function Test() {
   }, []);
   return (
     <div>
-      <select id="test">
-        <option>first</option>
-        <option>second</option>
-        <option>third</option>
-      </select>
+      <a href="http://www.google.com">partial link</a>
     </div>
   );
 }

@@ -103,6 +103,22 @@ const If = async (
           stepExtra.conditionalResult = false;
         }
       }
+    } else if (condition == "notEmpty") {
+      if (value1) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == "empty") {
+      if (!value1) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
     } else {
       if (eval(value1 + condition + value2)) {
         stepExtra.conditionalResult = true;
