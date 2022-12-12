@@ -12,7 +12,7 @@ import {
 } from "../../Redux/Actions/reusableProcess";
 import TestStep from "../Common/TestStep";
 // import Details from "../Common/Details";
-import ActivityLog from "../Common/ActivityLog";
+// import ActivityLog from "../Common/ActivityLog";
 function ReusableProcessTabs({
   getReusableProcessDetailsById,
   getReusableProcessStepsById,
@@ -85,9 +85,9 @@ function ReusableProcessTabs({
               />
             )}
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Activity Log" key="activitylog">
+          {/* <Tabs.TabPane tab="Activity Log" key="activitylog">
             <ActivityLog />
-          </Tabs.TabPane>
+          </Tabs.TabPane> */}
         </Tabs>
         {renderButton()}
       </div>

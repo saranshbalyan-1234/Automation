@@ -10,7 +10,7 @@ import {
 import Environment from "./Environment";
 import Process from "./Process";
 import Details from "./TestCaseDetails";
-import ComingSoon from "../../Views/ComingSoon";
+// import ComingSoon from "../../Views/ComingSoon";
 import ExecuteModal from "./ExecuteModal";
 import ExecutionHistory from "./ExecutionHistory/List";
 function TestCaseTabs({
@@ -97,9 +97,9 @@ function TestCaseTabs({
           <Tabs.TabPane tab="Execution History" key="executionhistory">
             {activeTab === "executionhistory" && <ExecutionHistory />}
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Activity Log" key="activitylog">
+          {/* <Tabs.TabPane tab="Activity Log" key="activitylog">
             <ComingSoon />
-          </Tabs.TabPane>
+          </Tabs.TabPane> */}
         </Tabs>
         {renderButton()}
       </div>
