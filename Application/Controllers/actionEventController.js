@@ -28,6 +28,11 @@ const execute = async (req, res) => {
         conditional: false,
         conditionalType: "",
         conditionalResult: false,
+        forLoopValue: null,
+        initial: null,
+        final: null,
+        counter: null,
+        current: null,
       };
       const processHistory = await createProcessHistory(
         req,
@@ -57,7 +62,7 @@ const execute = async (req, res) => {
           data.executionHistory,
           processHistory
         );
-        if (
+        let ifElseConditionCheck =
           stepExtra.conditional == false ||
           tempStep.actionEvent == "End Condition" ||
           (stepExtra.conditional == true &&
@@ -68,8 +73,22 @@ const execute = async (req, res) => {
             stepExtra.conditionalResult == false) ||
           (stepExtra.conditional == true &&
             stepExtra.conditionalType == "Else If" &&
-            stepExtra.conditionalResult == false)
-        ) {
+            stepExtra.conditionalResult == false);
+
+        if (tempStep.actionEvent == "For Loop") {
+          stepExtra.initial = Number(tempStep.testParameters.Initial);
+          stepExtra.current = Number(tempStep.testParameters.Initial);
+          stepExtra.final = Number(tempStep.testParameters.Final);
+          stepExtra.counter = Number(tempStep.testParameters.Counter);
+          stepExtra.forLoopValue = j;
+        }
+        if (tempStep.actionEvent == "End For Loop") {
+          stepExtra.current = stepExtra.current + stepExtra.counter;
+          if (stepExtra.final >= stepExtra.current) {
+            j = stepExtra.forLoopValue;
+          }
+        }
+        if (ifElseConditionCheck) {
           const continueOnError = await handleStep(
             tempStep,
             driver,

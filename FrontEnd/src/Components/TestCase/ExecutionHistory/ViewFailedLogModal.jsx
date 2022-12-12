@@ -2,7 +2,6 @@ import React from "react";
 import { Modal } from "antd";
 
 const ViewFailedLogModal = ({ visible, setVisible }) => {
-  console.log("saransh", visible);
   return (
     <Modal
       title="Logs"

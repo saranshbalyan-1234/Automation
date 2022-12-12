@@ -9,7 +9,7 @@ export default function Test() {
     console.log(result);
   }, []);
   return (
-    <div>
+    <div id="test" style={{ minHeight: "200vh" }}>
       <a href="http://www.google.com">partial link</a>
     </div>
   );
