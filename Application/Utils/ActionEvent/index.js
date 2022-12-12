@@ -650,6 +650,26 @@ const handleStep = async (
         executionHistory
       );
       break;
+    case "Switch To Frame":
+      return await switchToFrame(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Switch To Default Frame":
+      return await switchToDefaultFrame(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
     default:
       break;
   }
@@ -1428,6 +1448,58 @@ const selectOptionByPosition = async (
         });
       });
 
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const switchToFrame = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Switching To Frame");
+  const value = step.testParameters.Value;
+
+  try {
+    const element = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+    await driver.switchTo().frame(element);
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+const switchToDefaultFrame = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Switching To Default Frame");
+  const value = step.testParameters.Value;
+
+  try {
+    await driver.switchTo().defaultContent();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(

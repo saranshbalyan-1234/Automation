@@ -559,13 +559,14 @@ const waitUntilAbleToSwitchToFrame = async (
   stepHistoryId,
   executionHistory
 ) => {
-  //need fix
   const timeout = Number(step.testParameters.Timeout);
-  const RegEx = step.testParameters.RegEx;
   console.log("Waiting for " + timeout + " ms");
   try {
     await driver.wait(async () => {
-      return until.ableToSwitchToFrame(RegEx, timeout);
+      return until.ableToSwitchToFrame(
+        await findByLocator(step.object.dataValues.locators),
+        timeout
+      );
     });
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
