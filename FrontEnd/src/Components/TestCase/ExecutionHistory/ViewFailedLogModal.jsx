@@ -1,0 +1,22 @@
+import React from "react";
+import { Modal } from "antd";
+
+const ViewFailedLogModal = ({ visible, setVisible }) => {
+  console.log("saransh", visible);
+  return (
+    <Modal
+      title="Logs"
+      width={700}
+      centered
+      visible={visible}
+      footer={false}
+      onCancel={() => {
+        setVisible(false);
+      }}
+    >
+      <div>{visible}</div>
+    </Modal>
+  );
+};
+
+export default ViewFailedLogModal;

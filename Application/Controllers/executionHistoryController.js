@@ -48,6 +48,7 @@ const createStepHistory = async (
   payload.screenshot = step.screenshot || executionHistory.recordAllSteps;
   payload.executionHistoryId = executionHistory.id;
   payload.result = null;
+  payload.failedOutput = null;
   payload.testParameters = Object.entries(step.testParameters).map((el) => {
     let temp = {};
     temp.type = el[0];
@@ -58,11 +59,11 @@ const createStepHistory = async (
   });
   return await TestStepHistory.schema(req.database).create(payload);
 };
-const updateStepResult = async (req, id, result) => {
+const updateStepResult = async (req, id, result, failedLog = null) => {
   if (!id) return console.log("Unable to update step result");
   try {
     return await TestStepHistory.schema(req.database).update(
-      { result },
+      { result, failedLog },
       {
         where: {
           id,

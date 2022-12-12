@@ -57,6 +57,10 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       values: [0, 1],
     },
+    failedLog: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
   });
   return TestStepHistory;
 };

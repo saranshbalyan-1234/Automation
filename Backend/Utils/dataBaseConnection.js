@@ -97,7 +97,7 @@ db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
 
-// await db.executionHistory
+// await db.testStepHistory
 //   .schema("saranshbalyan123gmailcom")
 //   .sync({ force: true });
 

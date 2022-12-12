@@ -69,7 +69,7 @@ const handleActionEventError = async (
 ) => {
   console.log(err);
   if (processResult.result) processResult.result = false;
-  await updateStepResult(req, stepHistoryId, false);
+  await updateStepResult(req, stepHistoryId, false, String(err));
 
   if (continueOnError) return "CONTINUE";
   else return "STOP";
