@@ -30,6 +30,7 @@ const execute = async (req, res) => {
         conditionalResult: false,
         forLoopInitialValue: null,
         break: false,
+        skip: false,
         initial: null,
         final: null,
         counter: null,
@@ -86,9 +87,12 @@ const execute = async (req, res) => {
         }
         if (tempStep.actionEvent == "End For Loop") {
           stepExtra.current = stepExtra.current + stepExtra.counter;
-          if (stepExtra.break == false) {
+          if (stepExtra.break == false || stepExtra.skip) {
             if (stepExtra.final >= stepExtra.current) {
               j = stepExtra.forLoopInitialValue;
+            }
+            if (stepExtra.skip) {
+              stepExtra.skip = false;
             }
           } else {
             stepExtra.break = false;
@@ -99,7 +103,15 @@ const execute = async (req, res) => {
           stepExtra.break = true;
           await updateStepResult(req, stepHistory.dataValues.id, true);
         }
-        if (ifElseConditionCheck && stepExtra.break == false) {
+        if (tempStep.actionEvent == "Skip For Loop Iteration") {
+          stepExtra.skip = true;
+          await updateStepResult(req, stepHistory.dataValues.id, true);
+        }
+        if (
+          ifElseConditionCheck &&
+          stepExtra.break == false &&
+          stepExtra.skip == false
+        ) {
           const continueOnError = await handleStep(
             tempStep,
             driver,

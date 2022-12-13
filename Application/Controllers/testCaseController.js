@@ -76,7 +76,7 @@ const getTestStepByTestCase = async (req, res) => {
       }
       return tempTestCaseData;
     });
-
+    console.log("Execution Started");
     return { executionHistory, data: updatedTestCase };
   } catch (err) {
     getError(err, res);
