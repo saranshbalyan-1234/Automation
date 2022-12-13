@@ -49,7 +49,7 @@ const ViewExecutionHistoryModal = ({
                   <Title style={{ textTransform: "capitalize" }} level={3}>
                     {`Execution History: ${currentExecutionHistory.name}`}
                   </Title>
-                  <div style={{ color: "black" }}>
+                  <div style={{ color: "black", fontWeight: 600 }}>
                     Executed By &nbsp;
                     {currentExecutionHistory.executedBy && (
                       <UserAvatar user={currentExecutionHistory.executedBy} />
