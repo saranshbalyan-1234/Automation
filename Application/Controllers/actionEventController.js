@@ -28,7 +28,8 @@ const execute = async (req, res) => {
         conditional: false,
         conditionalType: "",
         conditionalResult: false,
-        forLoopValue: null,
+        forLoopInitialValue: null,
+        break: false,
         initial: null,
         final: null,
         counter: null,
@@ -80,15 +81,25 @@ const execute = async (req, res) => {
           stepExtra.current = Number(tempStep.testParameters.Initial);
           stepExtra.final = Number(tempStep.testParameters.Final);
           stepExtra.counter = Number(tempStep.testParameters.Counter);
-          stepExtra.forLoopValue = j;
+          stepExtra.forLoopInitialValue = j;
+          await updateStepResult(req, stepHistory.dataValues.id, true);
         }
         if (tempStep.actionEvent == "End For Loop") {
           stepExtra.current = stepExtra.current + stepExtra.counter;
-          if (stepExtra.final >= stepExtra.current) {
-            j = stepExtra.forLoopValue;
+          if (stepExtra.break == false) {
+            if (stepExtra.final >= stepExtra.current) {
+              j = stepExtra.forLoopInitialValue;
+            }
+          } else {
+            stepExtra.break = false;
           }
+          await updateStepResult(req, stepHistory.dataValues.id, true);
         }
-        if (ifElseConditionCheck) {
+        if (tempStep.actionEvent == "Break For Loop") {
+          stepExtra.break = true;
+          await updateStepResult(req, stepHistory.dataValues.id, true);
+        }
+        if (ifElseConditionCheck && stepExtra.break == false) {
           const continueOnError = await handleStep(
             tempStep,
             driver,
@@ -97,7 +108,8 @@ const execute = async (req, res) => {
             stepHistory.dataValues.id,
             processResult,
             data.executionHistory,
-            stepExtra
+            stepExtra,
+            j
           );
           if (tempStep.screenshot || data.executionHistory.recordAllSteps) {
             await createFolder(req.database, data.executionHistory.id);
