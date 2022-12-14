@@ -9,7 +9,7 @@ const Environment = db.enviroments;
 const Column = db.columns;
 
 const createEnvironment = async (req, res) => {
-  /*  #swagger.tags = ["Environment Table"] 
+  /*  #swagger.tags = ["Environment"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -102,7 +102,7 @@ const getAllEnvironmentNamesByTestCase = async (req, res) => {
 };
 
 const createColumnForEnvironment = async (req, res) => {
-  /*  #swagger.tags = ["Environment Table"] 
+  /*  #swagger.tags = ["Environment"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -134,7 +134,7 @@ const createColumnForEnvironment = async (req, res) => {
   }
 };
 const updateColumnValue = async (req, res) => {
-  /*  #swagger.tags = ["Environment Table"] 
+  /*  #swagger.tags = ["Environment"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -164,7 +164,7 @@ const updateColumnValue = async (req, res) => {
 };
 
 const deleteColumnFromEnvironment = async (req, res) => {
-  /*  #swagger.tags = ["Environment Table"] 
+  /*  #swagger.tags = ["Environment"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
@@ -206,7 +206,7 @@ const deleteColumnFromEnvironment = async (req, res) => {
   }
 };
 const deleteEnvironment = async (req, res) => {
-  /*  #swagger.tags = ["Environment Table"] 
+  /*  #swagger.tags = ["Environment"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 

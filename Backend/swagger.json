@@ -1988,6 +1988,9 @@
     },
     "/aws/object": {
       "post": {
+        "tags": [
+          "AWS"
+        ],
         "description": "",
         "parameters": [
           {
@@ -2013,7 +2016,12 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/environment/testCase/{testCaseId}": {
@@ -2077,7 +2085,7 @@
     "/environment/": {
       "post": {
         "tags": [
-          "Environment Table"
+          "Environment"
         ],
         "description": "",
         "parameters": [],
@@ -2099,7 +2107,7 @@
     "/environment/column/testCase/{testCaseId}": {
       "post": {
         "tags": [
-          "Environment Table"
+          "Environment"
         ],
         "description": "",
         "parameters": [
@@ -2182,7 +2190,7 @@
     "/environment/column/value": {
       "put": {
         "tags": [
-          "Environment Table"
+          "Environment"
         ],
         "description": "",
         "parameters": [

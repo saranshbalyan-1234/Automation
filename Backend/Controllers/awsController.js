@@ -118,6 +118,9 @@ export const listObjectsInBucket = (bucketName) => {
 };
 
 export const getObject = async (req, res) => {
+  /*  #swagger.tags = ["AWS"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
   var getParams = {
     Bucket: req.database,
     Key: req.body.fileName,
