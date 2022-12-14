@@ -1543,7 +1543,6 @@ const switchToDefaultFrame = async (
   executionHistory
 ) => {
   console.log("Switching To Default Frame");
-  const value = step.testParameters.Value;
 
   try {
     await driver.switchTo().defaultContent();
