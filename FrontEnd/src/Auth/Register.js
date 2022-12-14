@@ -71,7 +71,7 @@ const Register = ({ register }) => {
                 >
                   <Input
                     showCount
-                    maxLength={30}
+                    maxlength={50}
                     name="name"
                     onChange={(e) => {
                       handleDetails(e);

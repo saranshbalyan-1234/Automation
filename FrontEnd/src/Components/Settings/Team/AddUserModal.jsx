@@ -69,7 +69,7 @@ const AddUserModal = ({
                 handleDetails(e);
               }}
               showCount
-              maxLength={30}
+              maxlength={50}
             />
           </Form.Item>
           <Form.Item

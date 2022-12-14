@@ -81,7 +81,7 @@ const AddEditProcessModal = ({
                 },
               ]}
             >
-              <Input name="name" showCount maxLength={30} />
+              <Input name="name" showCount maxlength={50} />
             </Form.Item>
             {addReusable && (
               <Form.Item

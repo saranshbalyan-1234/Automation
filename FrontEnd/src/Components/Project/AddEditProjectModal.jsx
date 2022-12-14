@@ -68,7 +68,7 @@ const AddEditProjectModal = ({
               },
             ]}
           >
-            <Input name="name" showCount maxLength={30} />
+            <Input name="name" showCount maxlength={50} />
           </Form.Item>
 
           <Form.Item
