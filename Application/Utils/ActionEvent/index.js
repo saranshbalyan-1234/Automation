@@ -30,9 +30,15 @@ const {
   waitUntilUrlContains,
   waitUntilUrlIs,
   waitUntilUrlMatches,
-  waitUntilAlertPresent,
   waitUntilAbleToSwitchToFrame,
 } = require("./wait");
+const {
+  waitUntilAlertPresent,
+  acceptAlert,
+  dismissAlert,
+  enterTextInAlert,
+  getAlertMessage,
+} = require("./alert");
 const { If, Else, EndCondition } = require("./ifElse");
 
 const {
@@ -240,6 +246,47 @@ const handleStep = async (
       break;
     case "Wait Until Alert Present":
       return await waitUntilAlertPresent(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Accept Alert":
+      return await acceptAlert(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Dismiss Alert":
+      return await dismissAlert(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Get Alert Message":
+      return await waitUntilAlertPresent(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        output
+      );
+      break;
+    case "Enter Text In Alert":
+      return await enterTextInAlert(
         step,
         driver,
         processResult,

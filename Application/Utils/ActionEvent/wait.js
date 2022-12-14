@@ -521,36 +521,7 @@ const waitUntilUrlMatches = async (
     );
   }
 };
-const waitUntilAlertPresent = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  const temp = Number(step.testParameters.Timeout);
-  const timeout = temp > 1000 ? temp : 1000;
-  console.log("Waiting for " + timeout + " ms");
-  for (var i = 0; i < timeout; i = i + 1000) {
-    try {
-      await driver.sleep(1000);
-      await driver.wait(async () => {
-        return await driver.switchTo().alert();
-      });
-      return await updateStepResult(req, stepHistoryId, true);
-    } catch (err) {
-      return await handleActionEventError(
-        err,
-        req,
-        stepHistoryId,
-        processResult,
-        executionHistory.continueOnError
-      );
-    }
-  }
-  console.log("Alter Not Found");
-};
+
 const waitUntilAbleToSwitchToFrame = async (
   step,
   driver,
