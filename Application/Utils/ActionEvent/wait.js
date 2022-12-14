@@ -571,6 +571,5 @@ module.exports = {
   waitUntilUrlContains,
   waitUntilUrlIs,
   waitUntilUrlMatches,
-  waitUntilAlertPresent,
   waitUntilAbleToSwitchToFrame,
 };

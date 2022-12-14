@@ -275,7 +275,7 @@ const handleStep = async (
       );
       break;
     case "Get Alert Message":
-      return await waitUntilAlertPresent(
+      return await getAlertMessage(
         step,
         driver,
         processResult,
@@ -717,6 +717,18 @@ const handleStep = async (
         executionHistory
       );
       break;
+    case "Collect Cell Value From Table":
+      return await collectCellValueFromTable(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        output
+      );
+      break;
+
     default:
       break;
   }
@@ -1481,19 +1493,17 @@ const selectOptionByPosition = async (
     return await updateStepResult(req, stepHistoryId, false);
   }
   try {
-    const elements = await driver
-      .findElement(await findByLocator(step.object.dataValues.locators))
-      .then(async (el) => {
-        el.findElements(
-          await findByLocator([
-            {
-              dataValues: { type: "TagName", locator: "option" },
-            },
-          ])
-        ).then((options) => {
-          options[position - 1].click();
-        });
-      });
+    const select = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+    const options = await select.findElements(
+      await findByLocator([
+        {
+          dataValues: { type: "TagName", locator: "option" },
+        },
+      ])
+    );
+    await options[position - 1].click();
 
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
@@ -1516,7 +1526,6 @@ const switchToFrame = async (
   executionHistory
 ) => {
   console.log("Switching To Frame");
-  const value = step.testParameters.Value;
 
   try {
     const element = await driver.findElement(
@@ -1546,6 +1555,58 @@ const switchToDefaultFrame = async (
 
   try {
     await driver.switchTo().defaultContent();
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const collectCellValueFromTable = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory,
+  output
+) => {
+  console.log("Collecting Cell Value From Table");
+  let row = parseInt(step.testParameters.Row);
+  let column = parseInt(step.testParameters.Column) - 1;
+  if (isNaN(row) || isNaN(column)) {
+    console.log("Invalid Position Found");
+    if (processResult.result) {
+      processResult.result = false;
+    }
+    return await updateStepResult(req, stepHistoryId, false);
+  }
+  try {
+    const table = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+    const rows = await table.findElements(
+      await findByLocator([
+        {
+          dataValues: { type: "TagName", locator: "tr" },
+        },
+      ])
+    );
+    const col = await rows[row].findElements(
+      await findByLocator([
+        {
+          dataValues: { type: "TagName", locator: "td" },
+        },
+      ])
+    );
+    const cell = await col[column].getText();
+    output[step.testParameters.Output] = cell;
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
