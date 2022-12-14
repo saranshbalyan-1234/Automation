@@ -1,4 +1,4 @@
-const KeyboardButtonList = [
+export const KeyboardButtonList = [
   "NULL̵̵",
   "CANCEL", // ^break
   "HELP",
@@ -63,4 +63,14 @@ const KeyboardButtonList = [
   "COMMAND", // Apple command key
   "META", // alias for Windows key
 ];
-export default KeyboardButtonList;
+
+export const ConditionList = [
+  "==",
+  "!=",
+  ">=",
+  "<=",
+  ">",
+  "<",
+  "Not Empty",
+  "Empty",
+];

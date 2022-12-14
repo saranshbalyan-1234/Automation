@@ -103,7 +103,56 @@ const If = async (
           stepExtra.conditionalResult = false;
         }
       }
-    } else if (condition == "notEmpty") {
+    }
+    if (condition == "==") {
+      if (Number(value1) == Number(value2)) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == "!=") {
+      if (Number(value1) != Number(value2)) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == ">=") {
+      if (Number(value1) >= Number(value2)) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == "<=") {
+      if (Number(value1) <= Number(value2.length)) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == ">") {
+      if (Number(value1) > Number(value2)) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == "<") {
+      if (Number(value1) < Number(value2)) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == "Not Empty") {
       if (value1) {
         stepExtra.conditionalResult = true;
         return await updateStepResult(req, stepHistoryId, true);
@@ -111,7 +160,7 @@ const If = async (
         await updateStepResult(req, stepHistoryId, false);
         stepExtra.conditionalResult = false;
       }
-    } else if (condition == "empty") {
+    } else if (condition == "Empty") {
       if (!value1) {
         stepExtra.conditionalResult = true;
         return await updateStepResult(req, stepHistoryId, true);
