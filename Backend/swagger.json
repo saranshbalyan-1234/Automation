@@ -758,28 +758,6 @@
         ]
       }
     },
-    "/mail/sendMail": {
-      "post": {
-        "tags": [
-          "Mail"
-        ],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
     "/project/": {
       "get": {
         "tags": [
