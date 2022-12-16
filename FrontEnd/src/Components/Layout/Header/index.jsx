@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Layout, Dropdown, Menu, message } from "antd";
 import ProfileMenu from "./ProfileMenu";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { CaretDownOutlined, ProjectOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { getAllProject, getProjectById } from "../../../Redux/Actions/project";
@@ -14,6 +14,7 @@ const Headers = ({
   defaultProjectId,
   getProjectById,
 }) => {
+  const location = useLocation();
   useEffect(() => {
     getProject();
   }, []);
@@ -57,23 +58,28 @@ const Headers = ({
       >
         <div></div>
 
-        <Dropdown overlay={ProjectMenu} arrow trigger={"click"}>
-          <div
-            style={{
-              color: "white",
-              cursor: "pointer",
-            }}
-          >
-            <ProjectOutlined style={{ marginRight: 7 }} />
-            Current Project:
-            {projects.currentProject.name ? (
-              <>&nbsp;&nbsp;{projects.currentProject.name}</>
-            ) : (
-              " No Project Selected"
-            )}
-            <CaretDownOutlined style={{ marginLeft: 5 }} />
-          </div>
-        </Dropdown>
+        {location.pathname === "/" ||
+        location.pathname.toLowerCase().includes("settings") ? (
+          <div></div>
+        ) : (
+          <Dropdown overlay={ProjectMenu} arrow trigger={"click"}>
+            <div
+              style={{
+                color: "white",
+                cursor: "pointer",
+              }}
+            >
+              <ProjectOutlined style={{ marginRight: 7 }} />
+              Current Project:
+              {projects.currentProject.name ? (
+                <>&nbsp;&nbsp;{projects.currentProject.name}</>
+              ) : (
+                " No Project Selected"
+              )}
+              <CaretDownOutlined style={{ marginLeft: 5 }} />
+            </div>
+          </Dropdown>
+        )}
         <div style={{ marginRight: "20px" }}>
           <ProfileMenu />
         </div>
