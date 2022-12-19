@@ -26,6 +26,7 @@ export const Team = ({
 }) => {
   useEffect(() => {
     getTeam();
+    // eslint-disable-next-line
   }, []);
   const toggleActiveInactive = (status, userId) => {
     toggleUserActiveInactive(status, userId);

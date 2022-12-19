@@ -59,7 +59,6 @@ const UploadProfileImage = ({ visible, setVisible, uploadProfilePic }) => {
             <Button type="primary" onClick={onFinish}>
               Upload
             </Button>
-            {console.log("saransh", formData.image)}
             <Button style={{ marginLeft: "10px" }}>Preview</Button>
             <Button
               style={{ marginLeft: "10px" }}
