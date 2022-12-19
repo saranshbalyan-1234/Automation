@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-const s3 = new AWS.S3({
+export const s3 = new AWS.S3({
   accessKeyId: "AKIAWO24CNWAYGVPM2FU",
   secretAccessKey: "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",
   region: "ap-south-1",

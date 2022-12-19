@@ -193,7 +193,7 @@ export const AllProject = ({
                               }}
                             >
                               {item.members.map((el) => {
-                                return <UserAvatar user={el} />;
+                                return <UserAvatar user={el.id} />;
                               })}
                             </Avatar.Group>
                           </div>
@@ -221,7 +221,7 @@ export const AllProject = ({
                 >
                   <div style={{ display: "flex", gap: "5px" }}>
                     <div>Author</div>
-                    <UserAvatar user={item.createdBy} />
+                    <UserAvatar user={item.createdBy.id} />
                   </div>
 
                   <div

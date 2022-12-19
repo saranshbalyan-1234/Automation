@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Popover, Card, Badge } from "antd";
 import { connect } from "react-redux";
 
-export const UserAvatar = ({ user, size = "small", images }) => {
-  const imageName = user.email.replace(/[^a-zA-Z0-9 ]/g, "");
+const UserAvatar = ({ userList, user, size = "small", self, log }) => {
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const temp = [...userList, self]?.find((el) => {
+      return el.id === user;
+    });
+    temp.id && setUserData(temp);
+    // eslint-disable-next-line
+  }, [userList, user]);
 
   const getUserData = () => {
     return (
       <Badge.Ribbon
-        text={user.active ? "Active" : "Inactive"}
+        text={userData.active ? "Active" : "Inactive"}
         style={{ marginTop: "-10px" }}
       >
         <Card.Meta
@@ -21,19 +29,21 @@ export const UserAvatar = ({ user, size = "small", images }) => {
                 marginRight: 60,
               }}
             >
-              {user.name}
+              {userData.name}
             </div>
           }
-          description={user.email}
+          description={userData.email}
         />
       </Badge.Ribbon>
     );
   };
+  if (!userData.id || !user) return;
+
   return (
     <Popover content={getUserData}>
-      {images[imageName] && false ? (
+      {userData.profileImage ? (
         <Avatar
-          src={"data:image/jpeg;base64," + images[imageName]}
+          src={"data:image/jpeg;base64," + userData.profileImage}
           size={size}
           style={{
             backgroundColor: "#f56a00",
@@ -53,7 +63,7 @@ export const UserAvatar = ({ user, size = "small", images }) => {
           }}
         >
           <div style={{ marginTop: "-1px", textTransform: "uppercase" }}>
-            {handleAvatarInitials(user)}
+            {userData.id && handleAvatarInitials(userData)}
           </div>
         </Avatar>
       )}
@@ -67,9 +77,13 @@ export const handleAvatarInitials = (user) => {
       return el[0];
     })
     .join("");
+
   return initials;
 };
 
-const mapStateToProps = (state) => ({ images: state.image });
+const mapStateToProps = (state) => ({
+  userList: state.team.data,
+  self: state.auth.user,
+});
 const mapDispatchToProps = {};
 export default connect(mapStateToProps, mapDispatchToProps)(UserAvatar);

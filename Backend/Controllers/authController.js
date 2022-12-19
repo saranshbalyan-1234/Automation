@@ -11,6 +11,7 @@ import {
 import { createBucket } from "./awsController.js";
 import getError from "../Utils/sequelizeError.js";
 import moment from "moment";
+import { s3 } from "./awsController.js";
 const User = db.users;
 const UserRole = db.userRoles;
 const Permission = db.permissions;
@@ -127,12 +128,26 @@ const login = async (req, res) => {
         ? process.env.JWT_REFRESH_REMEMBER_EXPIRATION
         : process.env.JWT_REFRESH_EXPIRATION
     );
+    let base64ProfileImage = "";
+    if (profileImage) {
+      var getParams = {
+        Bucket: customer.tenantName.replace(/[^a-zA-Z0-9 ]/g, ""),
+        Key: email.replace(/[^a-zA-Z0-9 ]/g, ""),
+      };
 
+      const data = await s3.getObject(getParams).promise();
+
+      if (data?.Body) {
+        base64ProfileImage = data.Body.toString("base64");
+      } else {
+        base64ProfileImage = data;
+      }
+    }
     return res.status(200).json({
       id,
       name,
       email,
-      profileImage,
+      profileImage: profileImage ? base64ProfileImage : "",
       customerAdmin,
       defaultProjectId,
       roles: newRoles,

@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { CaretDownOutlined, ProjectOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { getAllProject, getProjectById } from "../../../Redux/Actions/project";
+import { getTeam } from "../../../Redux/Actions/team";
 import Loading from "../../Common/Loading";
 const { Header } = Layout;
 
@@ -13,10 +14,13 @@ const Headers = ({
   projects,
   defaultProjectId,
   getProjectById,
+  getTeam,
 }) => {
   const location = useLocation();
   useEffect(() => {
     getProject();
+    getTeam();
+    // eslint-disable-next-line
   }, []);
 
   const getProject = async () => {
@@ -93,6 +97,6 @@ const mapStateToProps = (state) => ({
   defaultProjectId: state.auth.user.defaultProjectId,
 });
 
-const mapDispatchToProps = { getAllProject, getProjectById };
+const mapDispatchToProps = { getAllProject, getProjectById, getTeam };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Headers);

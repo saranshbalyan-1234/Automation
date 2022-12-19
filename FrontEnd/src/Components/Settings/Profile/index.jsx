@@ -23,7 +23,7 @@ function Profile({ user, deleteCustomer }) {
                 }}
                 style={{ cursor: "pointer" }}
               >
-                <UserAvatar user={user} />
+                <UserAvatar user={user.id} />
               </div>
             }
             title={

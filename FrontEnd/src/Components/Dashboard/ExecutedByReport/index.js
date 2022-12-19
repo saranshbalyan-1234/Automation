@@ -6,18 +6,13 @@ import { ClockCircleOutlined } from "@ant-design/icons";
 import ColumnGraph from "../../Common/ColumnGraph";
 import Loading from "../../Common/Loading";
 import DetailedExecutionReportModal from "./DetailedExecutionReportModal";
-import { getTeam } from "../../../Redux/Actions/team";
-export const ExecutedByReport = ({ user, getTeam, team }) => {
+export const ExecutedByReport = ({ user, team }) => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [detailedExecutionReportModal, setDetailedExecutionReportModal] =
     useState(false);
   const [userId, setUserId] = useState(user?.id);
   const [executionHistoryData, setExecutionHistoryData] = useState([]);
-  useEffect(() => {
-    getTeam();
-    // eslint-disable-next-line
-  }, []);
 
   useEffect(() => {
     axios
@@ -105,6 +100,6 @@ const mapStateToProps = (state) => ({
   team: state.team.data,
 });
 
-const mapDispatchToProps = { getTeam };
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExecutedByReport);

@@ -25,7 +25,8 @@ const AddEditProcessModal = ({
 }) => {
   useEffect(() => {
     addReusable && getReusableProcessByProject();
-  }, []);
+    // eslint-disable-next-line
+  }, [addReusable]);
 
   const onSubmit = async (data) => {
     let result = false;

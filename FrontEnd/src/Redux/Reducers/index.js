@@ -7,7 +7,6 @@ import testCaseReducer from "./testCaseReducer";
 import reusableProcessReducer from "./reusableProcessReducer";
 import objectBankReducer from "./objectBankReducer";
 import executionHistoryReducer from "./executionHistory";
-import imageReducer from "./imageReducer";
 import environmentReducer from "./environment";
 export default combineReducers({
   auth: authReducer,
@@ -18,6 +17,5 @@ export default combineReducers({
   reusableProcess: reusableProcessReducer,
   objectBank: objectBankReducer,
   executionHistory: executionHistoryReducer,
-  image: imageReducer,
   environment: environmentReducer,
 });

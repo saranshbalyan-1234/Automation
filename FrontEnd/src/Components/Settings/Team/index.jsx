@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Avatar, Popconfirm, List, Tag, Button, Switch } from "antd";
+import { Popconfirm, List, Tag, Button, Switch } from "antd";
+import UserAvatar from "../../Common/Avatar";
 import {
   getTeam,
   removeTeamMember,
@@ -47,7 +48,7 @@ export const Team = ({
             renderItem={(item) => (
               <List.Item key={item.email}>
                 <List.Item.Meta
-                  avatar={<Avatar src={""} />}
+                  avatar={<UserAvatar user={item.id} log={true} />}
                   title={
                     <div
                       style={{

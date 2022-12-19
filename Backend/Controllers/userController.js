@@ -8,6 +8,7 @@ import {
   activeInactiveValidation,
   resendVerificationMailValidation,
 } from "../Utils/Validations/user.js";
+import { s3 } from "./awsController.js";
 import { idValidation } from "../Utils/Validations/index.js";
 
 import { deleteBucket } from "./awsController.js";
@@ -37,7 +38,31 @@ const getTeam = async (req, res) => {
     const filteredTeam = team.filter((el) => {
       return el.id !== req.user.id;
     });
-    return res.status(200).json(filteredTeam);
+
+    const teamWithImages = await filteredTeam.map(async (user) => {
+      let base64ProfileImage = "";
+      if (user.dataValues.profileImage) {
+        var getParams = {
+          Bucket: req.database,
+          Key: user.email.replace(/[^a-zA-Z0-9 ]/g, ""),
+        };
+
+        const data = await s3.getObject(getParams).promise();
+
+        if (data?.Body) {
+          base64ProfileImage = data.Body.toString("base64");
+        } else {
+          base64ProfileImage = data;
+        }
+      }
+      return {
+        ...user.dataValues,
+        profileImage: user.dataValues.profileImage ? base64ProfileImage : "",
+      };
+    });
+    Promise.all(teamWithImages).then((data) => {
+      return res.status(200).json(data);
+    });
   } catch (error) {
     getError(error, res);
   }

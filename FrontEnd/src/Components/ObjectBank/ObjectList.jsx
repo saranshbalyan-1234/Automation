@@ -68,7 +68,7 @@ const ObjectList = ({
       render: (_, record) => (
         <div>
           {moment(record.createdAt).format("DD/MM/YYYY h:mm:ss a")} By &nbsp;
-          {record.createdBy && <UserAvatar user={record.createdBy} />}
+          {record.createdBy && <UserAvatar user={record.createdBy.id} />}
         </div>
         // <div>{<UserAvatar user={record.createdBy} />}</div>
       ),
