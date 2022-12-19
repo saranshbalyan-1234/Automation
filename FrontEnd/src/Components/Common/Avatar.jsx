@@ -1,19 +1,9 @@
 import React from "react";
 import { Avatar, Popover, Card, Badge } from "antd";
 import { connect } from "react-redux";
-import { fetchAwsObject } from "../../Redux/Actions/image";
-export const UserAvatar = ({
-  user,
-  size = "small",
-  images,
-  // fetchAwsObject,
-}) => {
+
+export const UserAvatar = ({ user, size = "small", images }) => {
   const imageName = user.email.replace(/[^a-zA-Z0-9 ]/g, "");
-  // useEffect(() => {
-  //   if (user.profileImage && !images[imageName]) {
-  //     fetchAwsObject(imageName);
-  //   }
-  // }, []);
 
   const getUserData = () => {
     return (
@@ -21,7 +11,6 @@ export const UserAvatar = ({
         text={user.active ? "Active" : "Inactive"}
         style={{ marginTop: "-10px" }}
       >
-        {/* <Card> */}
         <Card.Meta
           title={
             <div
@@ -37,7 +26,6 @@ export const UserAvatar = ({
           }
           description={user.email}
         />
-        {/* </Card> */}
       </Badge.Ribbon>
     );
   };
@@ -74,12 +62,14 @@ export const UserAvatar = ({
 };
 export const handleAvatarInitials = (user) => {
   const temp = user.name?.split(" ");
-  if (temp.length > 1) return temp[0][0] + temp[1][0];
-  else return temp[0][0];
+  const initials = temp
+    ?.map((el) => {
+      return el[0];
+    })
+    .join("");
+  return initials;
 };
 
 const mapStateToProps = (state) => ({ images: state.image });
-
-const mapDispatchToProps = { fetchAwsObject };
-
+const mapDispatchToProps = {};
 export default connect(mapStateToProps, mapDispatchToProps)(UserAvatar);
