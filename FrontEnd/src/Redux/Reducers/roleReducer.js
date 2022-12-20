@@ -6,6 +6,7 @@ import {
   ADD_ROLE_SUCCESS,
   EDIT_ROLE_SUCCESS,
   UPDATE_ROLE_PERMISSION_SUCCESS,
+  EMPTY_ROLE,
 } from "../Actions/action-types";
 
 const initState = {
@@ -65,6 +66,11 @@ const roleReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: false,
         data: tempUpdatedRole,
+      };
+    case EMPTY_ROLE:
+      return {
+        loading: false,
+        data: [],
       };
     default:
       return state;

@@ -57,3 +57,9 @@ h5 {
   padding-left: 10px;
   padding-right: 10px;
 }
+
+.profileMenu:hover {
+  background-color: #021d36;
+  border-radius: 15px;
+  /* padding-top: -10px; */
+}

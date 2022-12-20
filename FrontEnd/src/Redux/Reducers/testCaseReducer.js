@@ -13,6 +13,7 @@ import {
   ADD_STEP,
   DELETE_STEP,
   EDIT_STEP,
+  EMPTY_TEST_CASE,
 } from "../Actions/action-types";
 import { orderBy } from "lodash";
 const initState = {
@@ -201,7 +202,12 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         },
         loading: false,
       };
-
+    case EMPTY_TEST_CASE:
+      return {
+        loading: false,
+        data: [],
+        currentTestCase: { process: [] },
+      };
     default:
       return state;
   }

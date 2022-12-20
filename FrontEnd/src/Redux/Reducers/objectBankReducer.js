@@ -9,6 +9,7 @@ import {
   GET_OBJECT_LOCATORS,
   ADD_OBJECT_LOCATOR,
   DELETE_OBJECT_LOCATOR,
+  EMPTY_OBJECT_BANK,
 } from "../Actions/action-types";
 const initState = {
   loading: false,
@@ -94,6 +95,12 @@ const objectBankReducer = (state = initState, { type, payload }) => {
           locators: deletedLocator,
         },
         loading: false,
+      };
+    case EMPTY_OBJECT_BANK:
+      return {
+        loading: false,
+        data: [],
+        currentObject: { locators: [] },
       };
     default:
       return state;

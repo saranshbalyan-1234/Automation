@@ -10,6 +10,7 @@ import {
   ADD_REUSABLE_STEP,
   DELETE_REUSABLE_STEP,
   EDIT_REUSABLE_STEP,
+  EMPTY_REUSABLE_PROCESS,
 } from "../Actions/action-types";
 import { orderBy } from "lodash";
 const initState = {
@@ -123,7 +124,12 @@ const reusableProcessReducer = (state = initState, { type, payload }) => {
         },
         loading: false,
       };
-
+    case EMPTY_REUSABLE_PROCESS:
+      return {
+        loading: false,
+        data: [],
+        currentReusableProcess: { testSteps: [] },
+      };
     default:
       return state;
   }

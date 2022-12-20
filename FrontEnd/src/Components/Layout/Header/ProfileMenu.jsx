@@ -7,14 +7,13 @@ import {
   BellOutlined,
   CaretDownOutlined,
 } from "@ant-design/icons";
-
 import { BiSupport } from "react-icons/bi";
 import { Avatar, Dropdown, Menu, Badge } from "antd";
 import { logout } from "../../../Redux/Actions/auth";
 import { Link } from "react-router-dom";
 import { handleAvatarInitials } from "../../Common/Avatar";
 import DownloadAppModal from "../../../Views/DownloadAppModal";
-const ProfileMenu = ({ logout, user, images }) => {
+const ProfileMenu = ({ logout, user }) => {
   const [downloadAppModal, setDownloadAppModal] = useState(false);
 
   const profileMenu = (
@@ -31,7 +30,6 @@ const ProfileMenu = ({ logout, user, images }) => {
             </div>
           ),
           key: "1",
-          // onClick: logout,
         },
 
         {
@@ -40,8 +38,7 @@ const ProfileMenu = ({ logout, user, images }) => {
               <BiSupport style={{ marginRight: "5px" }} /> Support
             </Link>
           ),
-          key: "3",
-          // onClick: logout,
+          key: "2",
         },
         {
           label: (
@@ -50,8 +47,7 @@ const ProfileMenu = ({ logout, user, images }) => {
               Settings
             </Link>
           ),
-          key: "4",
-          // onClick: logout,
+          key: "3",
         },
 
         {
@@ -60,7 +56,7 @@ const ProfileMenu = ({ logout, user, images }) => {
               <LogoutOutlined style={{ marginRight: "5px" }} /> Logout
             </>
           ),
-          key: "5",
+          key: "4",
           onClick: logout,
         },
       ]}
@@ -82,7 +78,6 @@ const ProfileMenu = ({ logout, user, images }) => {
             </div>
           ),
           key: "1",
-          // onClick: logout,
         },
         {
           label: (
@@ -96,7 +91,6 @@ const ProfileMenu = ({ logout, user, images }) => {
             </div>
           ),
           key: "2",
-          // onClick: logout,
         },
       ]}
     />
@@ -119,13 +113,13 @@ const ProfileMenu = ({ logout, user, images }) => {
       </div>
       <Dropdown overlay={profileMenu} trigger={["hover"]}>
         <div
-          className="row"
+          className="row profileMenu"
           style={{ alignItems: "center", cursor: "pointer", color: "white" }}
         >
           {user.profileImage ? (
             <Avatar
               src={"data:image/jpeg;base64," + user.profileImage}
-              size={32}
+              size={28}
               style={{
                 backgroundColor: "white",
                 color: "#001529",
@@ -138,7 +132,7 @@ const ProfileMenu = ({ logout, user, images }) => {
             </Avatar>
           ) : (
             <Avatar
-              size={32}
+              size={28}
               style={{
                 backgroundColor: "white",
                 color: "#001529",

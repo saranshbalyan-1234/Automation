@@ -7,6 +7,7 @@ import {
   ADD_COLUMN,
   DELETE_COLUMN,
   UPDATE_COLUMN_VALUE,
+  EMPTY_ENVIRONMENT,
 } from "../Actions/action-types";
 
 const initState = {
@@ -70,6 +71,11 @@ const environmentReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: false,
         data: updatedColumnValue,
+      };
+    case EMPTY_ENVIRONMENT:
+      return {
+        loading: false,
+        data: [],
       };
     default:
       return state;
