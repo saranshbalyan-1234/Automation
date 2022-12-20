@@ -9,9 +9,6 @@
 .space-between {
   justify-content: space-between;
 }
-/* .ant-modal-content {
-  border-radius: 12px;
-} */
 
 .star::before {
   display: inline-block;
@@ -32,17 +29,7 @@ h4,
 h5 {
   margin-top: 0px;
 }
-/* .ant-dropdown-menu {
-  background-color: black !important;
-}
 
-.ant-dropdown-menu-item,
-.ant-dropdown-menu-item-only-child {
-  color: grey !important;
-}
-.ant-dropdown-menu-item-active {
-  color: white !important;
-} */
 .ant-menu-item,
 .ant-menu-title-content {
   transition: none !important;
@@ -53,6 +40,7 @@ h5 {
   cursor: pointer;
   border-radius: 4px;
 }
+
 .show-boundary {
   padding-left: 10px;
   padding-right: 10px;
@@ -61,5 +49,4 @@ h5 {
 .profileMenu:hover {
   background-color: #021d36;
   border-radius: 15px;
-  /* padding-top: -10px; */
 }

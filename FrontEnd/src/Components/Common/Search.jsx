@@ -2,17 +2,20 @@ import React from "react";
 import { Input } from "antd";
 import styled from "styled-components";
 import { SearchOutlined } from "@ant-design/icons";
-
+import { debounce } from "lodash";
 export default function CustomSearch({
   placeholder = "Search",
   width = "250px",
   onSearch = () => {},
 }) {
+  const handleSearch = debounce((e) => {
+    onSearch(e);
+  }, 200);
   return (
     <StyledSearch width={width}>
       <Input
         allowClear
-        onChange={onSearch}
+        onChange={handleSearch}
         placeholder={placeholder}
         prefix={<SearchOutlined style={{ marginRight: "5px" }} />}
       />
