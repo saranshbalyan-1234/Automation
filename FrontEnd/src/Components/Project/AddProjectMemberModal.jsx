@@ -27,7 +27,6 @@ const AddProjectMemberModal = ({
       });
     setAvailableMembers(difference);
   };
-
   useEffect(() => {
     checkAvailableMember();
     // eslint-disable-next-line
