@@ -1,49 +1,53 @@
 export default (sequelize, DataTypes) => {
-  const User = sequelize.define("users", {
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+  const User = sequelize.define(
+    "users",
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
 
-      validate: {
-        notNull: true,
+        validate: {
+          notNull: true,
+        },
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: true,
+          notNull: true,
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: true,
+        },
+      },
+      profileImage: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 0,
+        values: [0, 1],
+      },
+      verifiedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 1,
+        values: [0, 1],
+      },
+      defaultProjectId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        default: null,
       },
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
-        notNull: true,
-      },
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: true,
-      },
-    },
-    profileImage: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: 1,
-      values: [0, 1],
-    },
-    verifiedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    active: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: 1,
-      values: [0, 1],
-    },
-    defaultProjectId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      default: null,
-    },
-  });
+    { paranoid: true }
+  );
 
   sequelize.models.users.hasMany(sequelize.models.userRoles, {
     foreignKey: "userId",

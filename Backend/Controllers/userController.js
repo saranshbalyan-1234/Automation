@@ -42,23 +42,36 @@ const getTeam = async (req, res) => {
     const teamWithImages = await filteredTeam.map(async (user) => {
       let base64ProfileImage = "";
       if (user.dataValues.profileImage) {
-        var getParams = {
-          Bucket: req.database,
-          Key: user.email.replace(/[^a-zA-Z0-9 ]/g, ""),
-        };
+        try {
+          var getParams = {
+            Bucket: req.database,
+            Key: user.email.replace(/[^a-zA-Z0-9 ]/g, ""),
+          };
 
-        const data = await s3.getObject(getParams).promise();
+          const data = await s3.getObject(getParams).promise();
 
-        if (data?.Body) {
-          base64ProfileImage = data.Body.toString("base64");
-        } else {
-          base64ProfileImage = data;
+          if (data?.Body) {
+            base64ProfileImage = data.Body.toString("base64");
+          } else {
+            base64ProfileImage = data;
+          }
+          return {
+            ...user.dataValues,
+            profileImage: user.dataValues.profileImage
+              ? base64ProfileImage
+              : "",
+          };
+        } catch (err) {
+          return {
+            ...user.dataValues,
+            profileImage: "",
+          };
         }
-      }
-      return {
-        ...user.dataValues,
-        profileImage: user.dataValues.profileImage ? base64ProfileImage : "",
-      };
+      } else
+        return {
+          ...user.dataValues,
+          profileImage: base64ProfileImage,
+        };
     });
     Promise.all(teamWithImages).then((data) => {
       return res.status(200).json(data);
@@ -178,7 +191,9 @@ const deleteCustomerUser = async (req, res) => {
     const database = req.database;
     await db.sequelize.query(`drop database ${database}`);
     deleteBucket(database);
-    await Customer.schema("Main").destroy({ tenant: req.user.tenant });
+    await Customer.schema("Main").destroy({
+      where: { tenant: req.user.tenant },
+    });
     const deletedTenant = await Tenant.schema("Main").destroy({
       where: {
         name: req.user.tenant,
