@@ -31,9 +31,11 @@ const getTeam = async (req, res) => {
         "email",
         "profileImage",
         "verifiedAt",
+        "deletedAt",
         "active",
         "defaultProjectId",
       ],
+      paranoid: false,
     });
     const filteredTeam = team.filter((el) => {
       return el.id !== req.user.id;

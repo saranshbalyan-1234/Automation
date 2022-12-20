@@ -21,10 +21,12 @@ const ManagePermissionModal = ({
   const [allPermission, setAllPermission] = useState([]);
   useEffect(() => {
     getAvailablePermission();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     checkAvailablePermission(allPermission);
+    // eslint-disable-next-line
   }, [addedPermission]);
 
   const getAvailablePermission = async () => {

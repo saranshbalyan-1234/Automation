@@ -16,7 +16,13 @@ const UserAvatar = ({ userList, user, size = "small", self, log }) => {
   const getUserData = () => {
     return (
       <Badge.Ribbon
-        text={userData.active ? "Active" : "Inactive"}
+        text={
+          userData.verifiedAt
+            ? userData.active
+              ? "Active"
+              : "Inactive"
+            : "Verification Pending"
+        }
         style={{ marginTop: "-10px" }}
       >
         <Card.Meta

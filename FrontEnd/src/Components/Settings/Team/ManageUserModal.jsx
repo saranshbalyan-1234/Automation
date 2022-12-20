@@ -13,10 +13,12 @@ function ManageUser({ visible, setVisible, userId, updateUserRole }) {
   const [allRole, setAllRole] = useState([]);
   useEffect(() => {
     getAvailableRole();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     checkAvailableRole(allRole);
+    // eslint-disable-next-line
   }, [addedRole]);
 
   const getAvailableRole = async () => {

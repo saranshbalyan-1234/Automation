@@ -45,7 +45,9 @@ export const Team = ({
       >
         <Loading loading={loading}>
           <List
-            dataSource={team}
+            dataSource={team.filter((el) => {
+              return el.deletedAt == null;
+            })}
             renderItem={(item) => (
               <List.Item key={item.email}>
                 <List.Item.Meta
@@ -72,7 +74,9 @@ export const Team = ({
                           cancelText="No"
                           trigger={"hover"}
                         >
-                          <Tag color="red">Verification Pending</Tag>
+                          <Tag color="red" className="pointer">
+                            Verification Pending
+                          </Tag>
                         </Popconfirm>
                       )}
                     </div>
