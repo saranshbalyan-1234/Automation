@@ -33,7 +33,7 @@ const AddEditProjectModal = ({
   return (
     <Modal
       title={edit ? "Edit Project" : "Add New Project"}
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);

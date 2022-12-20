@@ -7,7 +7,7 @@ const ViewFailedLogModal = ({ visible, setVisible }) => {
       title="Logs"
       width={700}
       centered
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);

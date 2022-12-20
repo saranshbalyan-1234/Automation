@@ -201,7 +201,7 @@ const AddEditStepModal = ({
             )}
           </div>
         }
-        visible={visible}
+        open={visible}
         footer={false}
         onCancel={() => {
           setVisible(false);

@@ -57,7 +57,7 @@ const AddProjectMemberModal = ({
     <Modal
       centered
       title={"Add Project Memer"}
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);

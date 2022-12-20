@@ -80,7 +80,7 @@ function ManageUser({ visible, setVisible, userId, updateUserRole }) {
     <Modal
       centered
       title="Manager User"
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);

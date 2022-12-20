@@ -40,7 +40,7 @@ const AddEditObjectModal = ({
     <>
       <Modal
         title={edit ? `Edit ${name}` : `Create New ${name}`}
-        visible={visible}
+        open={visible}
         footer={false}
         onCancel={() => {
           setVisible(false);

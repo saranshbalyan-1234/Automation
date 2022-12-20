@@ -41,7 +41,7 @@ const ExecuteModal = ({
     <Modal
       centered
       title={`Execute`}
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);

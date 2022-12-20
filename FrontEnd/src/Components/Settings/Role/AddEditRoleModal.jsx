@@ -32,7 +32,7 @@ const AddEditRoleModal = ({
     <Modal
       centered
       title={edit ? "Edit Role" : "Add Role"}
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);

@@ -69,7 +69,7 @@ const ViewExecutionVideoModal = ({
     <Modal
       width={1300}
       centered
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);

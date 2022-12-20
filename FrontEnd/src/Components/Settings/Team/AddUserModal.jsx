@@ -39,7 +39,7 @@ const AddUserModal = ({
     <Modal
       centered
       title="Add User"
-      visible={addUserModal}
+      open={addUserModal}
       footer={false}
       onCancel={() => {
         setAddUserModal(false);

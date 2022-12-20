@@ -21,7 +21,7 @@ const ChangePasswordModal = ({
     <Modal
       centered
       title="Change Password"
-      visible={changePasswordModal}
+      open={changePasswordModal}
       onCancel={() => setChangePasswordModal(false)}
       footer={false}
       // closable={false}

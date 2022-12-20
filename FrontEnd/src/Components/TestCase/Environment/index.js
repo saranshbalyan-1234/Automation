@@ -136,7 +136,7 @@ const Environment = ({
       <Modal
         width={1000}
         centered
-        visible={visible}
+        open={visible}
         footer={false}
         onCancel={() => {
           setVisible(false);

@@ -29,7 +29,7 @@ const ViewScreenShotModal = ({ visible, setVisible }) => {
     <Modal
       width={1200}
       centered
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);

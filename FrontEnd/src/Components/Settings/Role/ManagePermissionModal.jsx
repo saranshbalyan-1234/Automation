@@ -84,7 +84,7 @@ const ManagePermissionModal = ({
     <Modal
       centered
       title="Manage Permissions"
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);

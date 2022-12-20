@@ -9,7 +9,7 @@ const ViewObjectModal = ({ visible, setVisible, object, history }) => {
       centered
       width={1000}
       // title={"Object Details"}
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);

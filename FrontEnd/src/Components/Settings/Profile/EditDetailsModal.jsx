@@ -20,7 +20,7 @@ const EditDetailsModal = ({
     <Modal
       centered
       title="Edit Details"
-      visible={editDetailsModal}
+      open={editDetailsModal}
       onCancel={() => setEditDetailsModal(false)}
       footer={false}
       // closable={false}

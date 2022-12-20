@@ -22,7 +22,7 @@ const AddLocatorsModal = ({
     <Modal
       centered
       title="Add Locator"
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);

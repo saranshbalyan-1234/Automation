@@ -25,10 +25,10 @@ const UploadProfileImage = ({ visible, setVisible, uploadProfilePic }) => {
   return (
     <Modal
       centered
-      visible={visible}
+      open={visible}
       onCancel={() => setVisible(false)}
       footer={false}
-      // closable={false}
+      closable={false}
     >
       <Loading loading={loading}>
         <div
@@ -40,6 +40,7 @@ const UploadProfileImage = ({ visible, setVisible, uploadProfilePic }) => {
         >
           <Dragger
             beforeUpload={(file) => {
+              console.log("saransh", file);
               const format =
                 file.type === "image/png" ||
                 file.type === "image/jpg" ||
@@ -54,24 +55,23 @@ const UploadProfileImage = ({ visible, setVisible, uploadProfilePic }) => {
             }}
             maxCount={1}
             onChange={(e) => handleFile(e)}
-            style={{ minWidth: 400 }}
+            style={{ minWidth: 450, maxHeight: 170 }}
           >
-            <p className="ant-upload-drag-icon">
+            <p className="ant-upload-drag-icon" style={{ marginTop: -5 }}>
               <InboxOutlined />
             </p>
-            <p className="ant-upload-text">
+            <p className="ant-upload-text" style={{ marginTop: -5 }}>
               Click or drag file to this area to upload
             </p>
-            <p className="ant-upload-hint">
-              Supported Formats: <br />
-              JPEG, JPG, PNG
+            <p className="ant-upload-hint" style={{ marginBottom: -5 }}>
+              Supported Formats: JPEG, JPG, PNG
             </p>
           </Dragger>{" "}
           <div style={{ marginTop: 10 }}>
             <Button type="primary" onClick={onFinish} disabled={!valid}>
               Upload
             </Button>
-            <Button style={{ marginLeft: "10px" }}>Preview</Button>
+
             <Button
               style={{ marginLeft: "10px" }}
               onClick={() => {
