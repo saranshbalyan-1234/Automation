@@ -97,6 +97,7 @@ const StyledUploadImage = styled.div`
   .uploadImage {
     display: none;
     position: absolute;
+    font-size: 15px;
   }
   .profileImage:hover {
     opacity: 0.2;
