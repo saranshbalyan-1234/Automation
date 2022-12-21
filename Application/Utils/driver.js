@@ -19,7 +19,7 @@ const createDriver = async (req, res) => {
     ) {
       error = "Chromedriver not found!";
     }
-    return res.status(400).json(error ? error : String(e));
+    return res.status(400).json({ error: error ? error : String(e) });
   }
 };
 
