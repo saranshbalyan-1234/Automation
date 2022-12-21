@@ -739,6 +739,16 @@ const handleStep = async (
         output
       );
       break;
+    case "Get Date Time":
+      return await getDateTime(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        output
+      );
+      break;
     case "Upload File":
       return await uploadFile(
         step,
@@ -1675,7 +1685,7 @@ const uploadFile = async (
 ) => {
   try {
     const path = step.testParameters.Path;
-    console.log("Uploading File" + path);
+    console.log("Uploading File " + path);
 
     let newPath = "";
     let oldPath = process.execPath.split("/");
@@ -1687,6 +1697,36 @@ const uploadFile = async (
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .sendKeys(newPath);
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const getDateTime = async (
+  step,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory,
+  output
+) => {
+  try {
+    const dateTime = step.testParameters.DateTime;
+    const format = step.testParameters.Format;
+    console.log("Getting Date Time " + dateTime + " as " + format);
+
+    const finalDateTime = moment(dateTime).format(format);
+    output[step.testParameters.Output] = finalDateTime;
+    if (finalDateTime == "Invalid date") throw new Error("Invalid Date");
+    console.log(finalDateTime + "saransh");
+    return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
       err,
