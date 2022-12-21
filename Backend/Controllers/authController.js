@@ -31,6 +31,7 @@ const ObjectLocator = db.ObjectLocators;
 const ExecutionHistory = db.executionHistory;
 const ProcessHistory = db.processHistory;
 const TestStepHistory = db.testStepHistory;
+const Environment = db.enviroments;
 const register = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
   try {
@@ -224,6 +225,11 @@ const verifyCustomer = async (req, res) => {
           alter: true,
         });
         await TestStepHistory.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+
+        await Environment.schema(database).sync({
           force: true,
           alter: true,
         });

@@ -1,5 +1,6 @@
 const chromeDriver = require("selenium-webdriver");
 const { findByLocator, handleActionEventError } = require("./utils");
+const fs = require("fs");
 const { By } = chromeDriver;
 const moment = require("moment");
 const {
@@ -728,7 +729,16 @@ const handleStep = async (
         output
       );
       break;
-
+    case "Create File":
+      return await createFile(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
     default:
       break;
   }
@@ -1608,6 +1618,32 @@ const collectCellValueFromTable = async (
     output[step.testParameters.Output] = cell;
 
     return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const createFile = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  try {
+    const fileName = step.testParameters.Name;
+    console.log("Creating File" + fileName);
+    fs.writeFile("newfile.txt", "Learn Node FS module", async function (err) {
+      if (err) return await updateStepResult(req, stepHistoryId, false);
+      return await updateStepResult(req, stepHistoryId, true);
+    });
   } catch (err) {
     return await handleActionEventError(
       err,
