@@ -314,6 +314,31 @@ const toggleUserActiveInactive = async (req, res) => {
   }
 };
 
+const myStatus = async (req, res) => {
+  /*  #swagger.tags = ["User"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+  try {
+    const user = await User.schema(req.database).findOne({
+      where: { email: req.user.email },
+    });
+    if (!user.active)
+      return res
+        .status(403)
+        .json({ error: "Account Inactive, Please Contact Your Admin!" });
+    const customer = await Customer.schema("Main").findOne({
+      where: { email: req.user.email },
+    });
+
+    if (customer.blocked)
+      return res.status(403).json({ error: "Account Blocked!" });
+
+    return res.status(200).json("Active");
+  } catch (error) {
+    getError(error, res);
+  }
+};
+
 export {
   addUser,
   deleteUser,
@@ -324,4 +349,5 @@ export {
   resentVerificationEmail,
   deleteCustomerUser,
   uploadProfileImage,
+  myStatus,
 };

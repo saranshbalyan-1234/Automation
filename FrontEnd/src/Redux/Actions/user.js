@@ -48,3 +48,6 @@ export const uploadProfilePic = (formData) => {
     }
   };
 };
+export const myStatus = () => {
+  axios.get("/user/my-status");
+};

@@ -6,6 +6,7 @@ import { CaretDownOutlined, ProjectOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { getAllProject, getProjectById } from "../../../Redux/Actions/project";
 import { getTeam } from "../../../Redux/Actions/team";
+import { myStatus } from "../../../Redux/Actions/user";
 import Loading from "../../Common/Loading";
 const { Header } = Layout;
 
@@ -20,6 +21,7 @@ const Headers = ({
   useEffect(() => {
     getProject();
     getTeam();
+    myStatus();
     // eslint-disable-next-line
   }, []);
 
