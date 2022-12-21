@@ -729,8 +729,8 @@ const handleStep = async (
         output
       );
       break;
-    case "Create File":
-      return await createFile(
+    case "Upload File":
+      return await uploadFile(
         step,
         driver,
         processResult,
@@ -1629,7 +1629,7 @@ const collectCellValueFromTable = async (
   }
 };
 
-const createFile = async (
+const uploadFile = async (
   step,
   driver,
   processResult,
@@ -1638,12 +1638,19 @@ const createFile = async (
   executionHistory
 ) => {
   try {
-    const fileName = step.testParameters.Name;
-    console.log("Creating File" + fileName);
-    fs.writeFile("newfile.txt", "Learn Node FS module", async function (err) {
-      if (err) return await updateStepResult(req, stepHistoryId, false);
-      return await updateStepResult(req, stepHistoryId, true);
-    });
+    const path = step.testParameters.Path;
+    console.log("Uploading File" + path);
+
+    let newPath = "";
+    let oldPath = process.execPath.split("/");
+    oldPath[oldPath.length - 1] = path;
+    newPath = oldPath.join("/");
+
+    //  newPath= process.cwd() + path;
+
+    await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .sendKeys(newPath);
   } catch (err) {
     return await handleActionEventError(
       err,
