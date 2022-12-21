@@ -73,6 +73,9 @@ const AddEditStepModal = ({
         parameter3: editData.testParameters.find((el) => {
           return el.type === currentEvent.parameter3;
         })?.property,
+        parameter4: editData.testParameters.find((el) => {
+          return el.type === currentEvent.parameter4;
+        })?.property,
       });
 
     form.setFieldsValue({
@@ -87,6 +90,10 @@ const AddEditStepModal = ({
       type3:
         editData?.testParameters?.find((el) => {
           return el.type === currentEvent.parameter3;
+        })?.method || "Static",
+      type4:
+        editData?.testParameters?.find((el) => {
+          return el.type === currentEvent.parameter4;
         })?.method || "Static",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -125,6 +132,15 @@ const AddEditStepModal = ({
       payload.parameters.push({ type: key, property: value, method });
       delete payload.parameter3;
       delete payload.type3;
+    }
+
+    if (currentEvent.parameter4) {
+      const key = currentEvent.parameter4;
+      const value = data.parameter4;
+      const method = data.type4;
+      payload.parameters.push({ type: key, property: value, method });
+      delete payload.parameter4;
+      delete payload.type4;
     }
 
     if (edit) {
@@ -464,6 +480,70 @@ const AddEditStepModal = ({
                     </Select>
                   ) : (
                     <Input name="parameter3" showCount maxLength={50} />
+                  )}
+                </Form.Item>
+              </Form.Item>
+            )}
+
+            {currentEvent.parameter4 && (
+              <Form.Item
+                label={<div className="star">{currentEvent.parameter4}</div>}
+              >
+                <Form.Item
+                  name="type4"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Select Parameter Type",
+                    },
+                  ]}
+                  style={{
+                    display: "inline-block",
+                    width: "calc(30% - 8px)",
+                  }}
+                >
+                  <Select>
+                    <Option value="Static">Static</Option>
+                    <Option value="Dynamic">Dynamic</Option>
+                    <Option value="Environment">Environment</Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  name="parameter4"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Parameter!",
+                    },
+                  ]}
+                  style={{
+                    display: "inline-block",
+                    width: "calc(70% - 8px)",
+                    margin: "0 8px",
+                  }}
+                >
+                  {currentEvent.parameter4 === "Button" ? (
+                    <Select style={{ minWidth: "160px" }} showSearch>
+                      {KeyboardButtonList.map((el, i) => {
+                        return (
+                          <Option value={el} key={i}>
+                            {el}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  ) : currentEvent.parameter4 === "Condition" ? (
+                    <Select style={{ minWidth: "160px" }} showSearch>
+                      {ConditionList.map((el, i) => {
+                        return (
+                          <Option value={el} key={i}>
+                            {el}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  ) : (
+                    <Input name="parameter4" showCount maxLength={50} />
                   )}
                 </Form.Item>
               </Form.Item>

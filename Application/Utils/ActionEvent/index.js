@@ -512,8 +512,18 @@ const handleStep = async (
         executionHistory
       );
       break;
-    case "Copy Test":
+    case "Copy Text":
       return await copyText(
+        step,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Copy Substring":
+      return await copySubstring(
         step,
         output,
         processResult,
@@ -1264,6 +1274,32 @@ const copyText = async (
   try {
     const value = step.testParameters.Value;
     output[step.testParameters.Output] = value;
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+const copySubstring = async (
+  step,
+  output,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Copying Substring");
+  try {
+    const value = step.testParameters.Value;
+    const start = parseInt(step.testParameters.StartIndex);
+    const end = parseInt(step.testParameters.EndIndex);
+    const newValue = value.substring(start, end);
+    output[step.testParameters.Output] = newValue;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
