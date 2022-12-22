@@ -76,9 +76,6 @@ const AddEditStepModal = ({
         parameter4: editData.testParameters.find((el) => {
           return el.type === currentEvent.parameter4;
         })?.property,
-        parameter5: editData.testParameters.find((el) => {
-          return el.type === currentEvent.parameter5;
-        })?.property,
       });
 
     form.setFieldsValue({
@@ -97,10 +94,6 @@ const AddEditStepModal = ({
       type4:
         editData?.testParameters?.find((el) => {
           return el.type === currentEvent.parameter4;
-        })?.method || "Static",
-      type5:
-        editData?.testParameters?.find((el) => {
-          return el.type === currentEvent.parameter5;
         })?.method || "Static",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -148,14 +141,6 @@ const AddEditStepModal = ({
       payload.parameters.push({ type: key, property: value, method });
       delete payload.parameter4;
       delete payload.type4;
-    }
-    if (currentEvent.parameter5) {
-      const key = currentEvent.parameter5;
-      const value = data.parameter5;
-      const method = data.type5;
-      payload.parameters.push({ type: key, property: value, method });
-      delete payload.parameter5;
-      delete payload.type5;
     }
 
     if (edit) {

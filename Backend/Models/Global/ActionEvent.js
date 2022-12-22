@@ -27,9 +27,6 @@ export default (sequelize, DataTypes) => {
       parameter4: {
         type: DataTypes.STRING,
       },
-      parameter5: {
-        type: DataTypes.STRING,
-      },
     },
     { timestamps: false }
   );

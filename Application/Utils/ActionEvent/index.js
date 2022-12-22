@@ -108,6 +108,16 @@ const handleStep = async (
         executionHistory
       );
       break;
+    case "Enter Date Time":
+      return await enterDateTime(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
     case "Clear Input":
       return await clearInput(
         step,
@@ -978,6 +988,38 @@ const enterPassword = async (
   }
 };
 
+const enterDateTime = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Entering Date Time ");
+
+  try {
+    const format = step.testParameters.Format;
+    const tempDateTime = step.testParameters.DateTime;
+    const momentDateTime =
+      typeof tempDateTime == "string" ? moment(tempDateTime) : tempDateTime;
+    const dateTime = momentDateTime.format(format);
+
+    await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .sendKeys(dateTime);
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
 const pressButton = async (
   step,
   driver,
@@ -1388,8 +1430,7 @@ const getCurrentDateTime = async (
 ) => {
   console.log("Getting Current Time");
   try {
-    const format = step.testParameters.Format;
-    const dateTime = moment(new Date()).format(format);
+    const dateTime = moment(new Date());
     output[step.testParameters.Output] = dateTime;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
@@ -1731,10 +1772,9 @@ const getDateTime = async (
 ) => {
   try {
     const dateTime = step.testParameters.DateTime;
-    const format = step.testParameters.Format;
     console.log("Getting Date Time " + dateTime + " as " + format);
 
-    const finalDateTime = moment(dateTime).format(format);
+    const finalDateTime = moment(dateTime);
     output[step.testParameters.Output] = finalDateTime;
     if (finalDateTime == "Invalid date") throw new Error("Invalid Date");
 
@@ -1760,7 +1800,6 @@ const addDateTime = async (
 ) => {
   try {
     const dateTime = step.testParameters.DateTime;
-    const format = step.testParameters.Format;
     const dayMonthYear = step.testParameters["Day Month Year"].split(" ");
 
     const day = parseInt(dayMonthYear[0]);
@@ -1772,7 +1811,8 @@ const addDateTime = async (
     const min = parseInt(hourMinSec[1]);
     const sec = parseInt(hourMinSec[2]);
 
-    let finalDateTime = moment(dateTime);
+    let finalDateTime =
+      typeof dateTime == "string" ? moment(dateTime) : dateTime;
 
     if (day) finalDateTime = finalDateTime.add(day, "days");
     if (month) finalDateTime = moment(dateTime).add(month, "months");
@@ -1784,7 +1824,6 @@ const addDateTime = async (
 
     console.log("Adding Date Time " + dayMonthYear + " " + hourMinSec);
 
-    finalDateTime = moment(finalDateTime).format(format);
     output[step.testParameters.Output] = finalDateTime;
     if (finalDateTime == "Invalid date") throw new Error("Invalid Date");
     return await updateStepResult(req, stepHistoryId, true);
