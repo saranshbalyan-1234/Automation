@@ -749,6 +749,16 @@ const handleStep = async (
         output
       );
       break;
+    case "Add Date Time":
+      return await addDateTime(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        output
+      );
+      break;
     case "Upload File":
       return await uploadFile(
         step,
@@ -1515,7 +1525,7 @@ const selectOptionByValue = async (
   }
 
   try {
-    // other possible solution => #select > option[value=saransh]
+    // other possible solution => #select > option[value=value]
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .sendKeys(value);
@@ -1694,6 +1704,8 @@ const uploadFile = async (
 
     //  newPath= process.cwd() + path;
 
+    if (newPath[0] !== "/") newPath = newPath + "/";
+
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .sendKeys(newPath);
@@ -1725,7 +1737,60 @@ const getDateTime = async (
     const finalDateTime = moment(dateTime).format(format);
     output[step.testParameters.Output] = finalDateTime;
     if (finalDateTime == "Invalid date") throw new Error("Invalid Date");
-    console.log(finalDateTime + "saransh");
+
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const addDateTime = async (
+  step,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory,
+  output
+) => {
+  try {
+    const dateTime = step.testParameters.DateTime;
+    const format = step.testParameters.Format;
+    const dayMonthYear = step.testParameters["Day Month Year"].split(" ");
+
+    const day = parseInt(dayMonthYear[0]);
+    const month = parseInt(dayMonthYear[1]);
+    const year = parseInt(dayMonthYear[2]);
+
+    const hourMinSec = step.testParameters["Hour Min Sec"].split(" ");
+    const hour = parseInt(hourMinSec[0]);
+    const min = parseInt(hourMinSec[1]);
+    const sec = parseInt(hourMinSec[2]);
+
+    let finalDateTime = moment(new Date(dateTime));
+
+    // if (day)
+    // finalDateTime = finalDateTime.add(2, "days");
+    // if (month) finalDateTime = moment(dateTime).add(month, "months");
+    // if (year) finalDateTime = moment(dateTime).add(year, "years");
+
+    // if (hour) finalDateTime = moment(dateTime).add(hour, "hours");
+    // if (min) finalDateTime = moment(dateTime).add(min, "minutes");
+    // if (sec) finalDateTime = moment(dateTime).add(sec, "seconds");
+
+    // console.log("Adding Date Time " + dayMonthYear + " " + hourMinSec);
+
+    console.log("saransh", dateTime);
+
+    finalDateTime = moment(finalDateTime).format(format);
+    output[step.testParameters.Output] = finalDateTime;
+    if (finalDateTime == "Invalid date") throw new Error("Invalid Date");
+    // console.log(finalDateTime + "saransh");
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(

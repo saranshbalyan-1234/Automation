@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Modal, Button, Select, Switch } from "antd";
+import { Form, Modal, Button, Select, Switch } from "antd";
 import { connect } from "react-redux";
 import { addProcess } from "../../../Redux/Actions/testCase";
 import { addStep, editStep } from "../../../Redux/Actions/testCase";
@@ -8,12 +8,12 @@ import {
   addReusableStep,
   editReusableStep,
 } from "../../../Redux/Actions/reusableProcess";
-import { KeyboardButtonList, ConditionList } from "./ActionEventConstants";
 import AddEditObjectModal from "../../ObjectBank/AddEditObjectModal";
 import axios from "axios";
 import { saveObject } from "../../../Redux/Actions/object";
 import ReactQuill from "react-quill";
 import Loading from "../Loading";
+import Parameter from "./Parameter";
 const Option = { Select };
 const AddEditStepModal = ({
   visible,
@@ -76,6 +76,9 @@ const AddEditStepModal = ({
         parameter4: editData.testParameters.find((el) => {
           return el.type === currentEvent.parameter4;
         })?.property,
+        parameter5: editData.testParameters.find((el) => {
+          return el.type === currentEvent.parameter5;
+        })?.property,
       });
 
     form.setFieldsValue({
@@ -94,6 +97,10 @@ const AddEditStepModal = ({
       type4:
         editData?.testParameters?.find((el) => {
           return el.type === currentEvent.parameter4;
+        })?.method || "Static",
+      type5:
+        editData?.testParameters?.find((el) => {
+          return el.type === currentEvent.parameter5;
         })?.method || "Static",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,6 +148,14 @@ const AddEditStepModal = ({
       payload.parameters.push({ type: key, property: value, method });
       delete payload.parameter4;
       delete payload.type4;
+    }
+    if (currentEvent.parameter5) {
+      const key = currentEvent.parameter5;
+      const value = data.parameter5;
+      const method = data.type5;
+      payload.parameters.push({ type: key, property: value, method });
+      delete payload.parameter5;
+      delete payload.type5;
     }
 
     if (edit) {
@@ -293,261 +308,7 @@ const AddEditStepModal = ({
               </Form.Item>
             )}
 
-            {currentEvent.parameter1 && (
-              <Form.Item
-                label={<div className="star">{currentEvent.parameter1}</div>}
-              >
-                <Form.Item
-                  name="type1"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please Select Parameter Type",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(30% - 8px)",
-                  }}
-                >
-                  <Select>
-                    <Option value="Static">Static</Option>
-                    <Option value="Dynamic">Dynamic</Option>
-                    <Option value="Environment">Environment</Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  name="parameter1"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Parameter!",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(70% - 8px)",
-                    margin: "0 8px",
-                  }}
-                >
-                  {currentEvent.parameter1 === "Button" ? (
-                    <Select style={{ minWidth: "160px" }} showSearch>
-                      {KeyboardButtonList.map((el, i) => {
-                        return (
-                          <Option value={el} key={i}>
-                            {el}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  ) : currentEvent.parameter1 === "Condition" ? (
-                    <Select style={{ minWidth: "160px" }} showSearch>
-                      {ConditionList.map((el, i) => {
-                        return (
-                          <Option value={el} key={i}>
-                            {el}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  ) : (
-                    <Input name="parameter1" showCount maxLength={50} />
-                  )}
-                </Form.Item>
-              </Form.Item>
-            )}
-
-            {currentEvent.parameter2 && (
-              <Form.Item
-                label={<div className="star">{currentEvent.parameter2}</div>}
-              >
-                <Form.Item
-                  name="type2"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please Select Parameter Type",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(30% - 8px)",
-                  }}
-                >
-                  <Select>
-                    <Option value="Static">Static</Option>
-                    <Option value="Dynamic">Dynamic</Option>
-                    <Option value="Environment">Environment</Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  name="parameter2"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Parameter!",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(70% - 8px)",
-                    margin: "0 8px",
-                  }}
-                >
-                  {currentEvent.parameter2 === "Button" ? (
-                    <Select style={{ minWidth: "160px" }} showSearch>
-                      {KeyboardButtonList.map((el, i) => {
-                        return (
-                          <Option value={el} key={i}>
-                            {el}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  ) : currentEvent.parameter2 === "Condition" ? (
-                    <Select style={{ minWidth: "160px" }} showSearch>
-                      {ConditionList.map((el, i) => {
-                        return (
-                          <Option value={el} key={i}>
-                            {el}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  ) : (
-                    <Input name="parameter2" showCount maxLength={50} />
-                  )}
-                </Form.Item>
-              </Form.Item>
-            )}
-
-            {currentEvent.parameter3 && (
-              <Form.Item
-                label={<div className="star">{currentEvent.parameter3}</div>}
-              >
-                <Form.Item
-                  name="type3"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please Select Parameter Type",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(30% - 8px)",
-                  }}
-                >
-                  <Select>
-                    <Option value="Static">Static</Option>
-                    <Option value="Dynamic">Dynamic</Option>
-                    <Option value="Environment">Environment</Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  name="parameter3"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Parameter!",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(70% - 8px)",
-                    margin: "0 8px",
-                  }}
-                >
-                  {currentEvent.parameter3 === "Button" ? (
-                    <Select style={{ minWidth: "160px" }} showSearch>
-                      {KeyboardButtonList.map((el, i) => {
-                        return (
-                          <Option value={el} key={i}>
-                            {el}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  ) : currentEvent.parameter3 === "Condition" ? (
-                    <Select style={{ minWidth: "160px" }} showSearch>
-                      {ConditionList.map((el, i) => {
-                        return (
-                          <Option value={el} key={i}>
-                            {el}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  ) : (
-                    <Input name="parameter3" showCount maxLength={50} />
-                  )}
-                </Form.Item>
-              </Form.Item>
-            )}
-
-            {currentEvent.parameter4 && (
-              <Form.Item
-                label={<div className="star">{currentEvent.parameter4}</div>}
-              >
-                <Form.Item
-                  name="type4"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please Select Parameter Type",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(30% - 8px)",
-                  }}
-                >
-                  <Select>
-                    <Option value="Static">Static</Option>
-                    <Option value="Dynamic">Dynamic</Option>
-                    <Option value="Environment">Environment</Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  name="parameter4"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Parameter!",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(70% - 8px)",
-                    margin: "0 8px",
-                  }}
-                >
-                  {currentEvent.parameter4 === "Button" ? (
-                    <Select style={{ minWidth: "160px" }} showSearch>
-                      {KeyboardButtonList.map((el, i) => {
-                        return (
-                          <Option value={el} key={i}>
-                            {el}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  ) : currentEvent.parameter4 === "Condition" ? (
-                    <Select style={{ minWidth: "160px" }} showSearch>
-                      {ConditionList.map((el, i) => {
-                        return (
-                          <Option value={el} key={i}>
-                            {el}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  ) : (
-                    <Input name="parameter4" showCount maxLength={50} />
-                  )}
-                </Form.Item>
-              </Form.Item>
-            )}
+            <Parameter currentEvent={currentEvent} />
 
             <Form.Item
               name="screenshot"
