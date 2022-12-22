@@ -1772,25 +1772,21 @@ const addDateTime = async (
     const min = parseInt(hourMinSec[1]);
     const sec = parseInt(hourMinSec[2]);
 
-    let finalDateTime = moment(new Date(dateTime));
+    let finalDateTime = moment(dateTime);
 
-    // if (day)
-    // finalDateTime = finalDateTime.add(2, "days");
-    // if (month) finalDateTime = moment(dateTime).add(month, "months");
-    // if (year) finalDateTime = moment(dateTime).add(year, "years");
+    if (day) finalDateTime = finalDateTime.add(day, "days");
+    if (month) finalDateTime = moment(dateTime).add(month, "months");
+    if (year) finalDateTime = moment(dateTime).add(year, "years");
 
-    // if (hour) finalDateTime = moment(dateTime).add(hour, "hours");
-    // if (min) finalDateTime = moment(dateTime).add(min, "minutes");
-    // if (sec) finalDateTime = moment(dateTime).add(sec, "seconds");
+    if (hour) finalDateTime = moment(dateTime).add(hour, "hours");
+    if (min) finalDateTime = moment(dateTime).add(min, "minutes");
+    if (sec) finalDateTime = moment(dateTime).add(sec, "seconds");
 
-    // console.log("Adding Date Time " + dayMonthYear + " " + hourMinSec);
-
-    console.log("saransh", dateTime);
+    console.log("Adding Date Time " + dayMonthYear + " " + hourMinSec);
 
     finalDateTime = moment(finalDateTime).format(format);
     output[step.testParameters.Output] = finalDateTime;
     if (finalDateTime == "Invalid date") throw new Error("Invalid Date");
-    // console.log(finalDateTime + "saransh");
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
