@@ -2,8 +2,8 @@ const chrome = require("selenium-webdriver/chrome");
 
 const createDriver = async (req, res) => {
   try {
-    return createLocalDriver();
-    // return createApplicationDriver();
+    // return createLocalDriver();
+    return createApplicationDriver();
   } catch (e) {
     console.log(e);
     let error = "";
