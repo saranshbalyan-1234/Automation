@@ -40,12 +40,13 @@ const waitUntilObjectLocated = async (
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.elementLocated(
-        await findByLocator(step.object.dataValues.locators),
-        timeout
-      );
-    });
+    //locator
+    await driver.wait(
+      until.elementLocated(
+        await findByLocator(step.object.dataValues.locators)
+      ),
+      timeout
+    );
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -68,12 +69,14 @@ const waitUntilObjectsLocated = async (
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.elementsLocated(
-        await findByLocator(step.object.dataValues.locators),
-        timeout
-      );
-    });
+    //locator
+    await driver.wait(
+      until.elementsLocated(
+        await findByLocator(step.object.dataValues.locators)
+      ),
+      timeout
+    );
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -97,12 +100,14 @@ const waitUntilObjectEnabled = async (
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.elementIsEnabled(
-        await findByLocator(step.object.dataValues.locators),
-        timeout
-      );
-    });
+    //element
+    await driver.wait(
+      until.elementIsEnabled(
+        await findByLocator(step.object.dataValues.locators)
+      ),
+      timeout
+    );
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -125,12 +130,14 @@ const waitUntilObjectDisabled = async (
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.elementIsDisabled(
-        await findByLocator(step.object.dataValues.locators),
-        timeout
-      );
-    });
+    //element
+    await driver.wait(
+      until.elementIsDisabled(
+        await findByLocator(step.object.dataValues.locators)
+      ),
+      timeout
+    );
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -154,12 +161,14 @@ const waitUntilObjectNotSelected = async (
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.elementIsNotSelected(
-        await findByLocator(step.object.dataValues.locators),
-        timeout
-      );
-    });
+    //element
+    await driver.wait(
+      until.elementIsNotSelected(
+        await findByLocator(step.object.dataValues.locators)
+      ),
+      timeout
+    );
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -183,12 +192,14 @@ const waitUntilObjectSelected = async (
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.elementIsSelected(
-        await findByLocator(step.object.dataValues.locators),
-        timeout
-      );
-    });
+    //element
+    await driver.wait(
+      until.elementIsSelected(
+        await findByLocator(step.object.dataValues.locators)
+      ),
+      timeout
+    );
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -212,12 +223,14 @@ const waitUntilObjectNotVisible = async (
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.elementIsNotVisible(
-        await findByLocator(step.object.dataValues.locators),
-        timeout
-      );
-    });
+    //element
+    await driver.wait(
+      until.elementIsNotVisible(
+        await findByLocator(step.object.dataValues.locators)
+      ),
+      timeout
+    );
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -238,15 +251,17 @@ const waitUntilObjectVisible = async (
   stepHistoryId,
   executionHistory
 ) => {
+  //element
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.elementIsVisible(
-        await findByLocator(step.object.dataValues.locators),
-        timeout
-      );
-    });
+    await driver.wait(
+      until.elementIsVisible(
+        await findByLocator(step.object.dataValues.locators)
+      ),
+      timeout
+    );
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -270,9 +285,15 @@ const waitUntilObjectTextContains = async (
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.elementTextContains(string, timeout);
-    });
+    //element
+    await driver.wait(
+      until.elementTextContains(
+        await findByLocator(step.object.dataValues.locators),
+        string
+      ),
+      timeout
+    );
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -296,9 +317,15 @@ const waitUntilObjectTextIs = async (
   const string = step.testParameters.string;
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.elementTextIs(string, timeout);
-    });
+    //element
+    await driver.wait(
+      until.elementTextIs(
+        await findByLocator(step.object.dataValues.locators),
+        string
+      ),
+      timeout
+    );
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -322,9 +349,15 @@ const waitUntilObjectTextMatches = async (
   const RegEx = new RegExp(step.testParameters.RegEx);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.elementTextMatches(RegEx, timeout);
-    });
+    //element
+    await driver.wait(
+      until.elementTextMatches(
+        await findByLocator(step.object.dataValues.locators),
+        RegEx
+      ),
+      timeout
+    );
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -347,12 +380,11 @@ const waitUntilObjectStalenessOf = async (
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.stalenessOf(
-        await findByLocator(step.object.dataValues.locators),
-        timeout
-      );
-    });
+    //element
+    await driver.wait(
+      until.stalenessOf(await findByLocator(step.object.dataValues.locators)),
+      timeout
+    );
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -376,9 +408,8 @@ const waitUntilTitleContains = async (
   const string = step.testParameters.String;
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.titleContains(string, timeout);
-    });
+    await driver.wait(until.titleContains(string), timeout);
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -402,9 +433,8 @@ const waitUntilTitleIs = async (
   const string = step.testParameters.String;
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.titleIs(string, timeout);
-    });
+    await driver.wait(until.titleIs(string), timeout);
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -428,9 +458,8 @@ const waitUntilTitleMatches = async (
   const RegEx = new RegExp(step.testParameters.RegEx);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.titleMatches(RegEx, timeout);
-    });
+    await driver.wait(until.titleMatches(RegEx), timeout);
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -455,9 +484,8 @@ const waitUntilUrlContains = async (
   const string = step.testParameters.String;
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.urlContains(string, timeout);
-    });
+    await driver.wait(until.urlContains(string), timeout);
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -481,9 +509,7 @@ const waitUntilUrlIs = async (
   const string = step.testParameters.String;
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.urlIs(string, timeout);
-    });
+    await driver.wait(until.urlIs(string), timeout);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -507,9 +533,8 @@ const waitUntilUrlMatches = async (
   const RegEx = new RegExp(step.testParameters.RegEx);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.urlMatches(RegEx, timeout);
-    });
+    await driver.wait(until.urlMatches(RegEx), timeout);
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -533,12 +558,14 @@ const waitUntilAbleToSwitchToFrame = async (
   const timeout = Number(step.testParameters.Timeout);
   console.log("Waiting for " + timeout + " ms");
   try {
-    await driver.wait(async () => {
-      return until.ableToSwitchToFrame(
-        await findByLocator(step.object.dataValues.locators),
-        timeout
-      );
-    });
+    //element
+    await driver.wait(
+      until.ableToSwitchToFrame(
+        await findByLocator(step.object.dataValues.locators)
+      ),
+      timeout
+    );
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(

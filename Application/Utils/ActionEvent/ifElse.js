@@ -178,6 +178,7 @@ const If = async (
       }
     }
   } catch (err) {
+    stepExtra.conditionalResult = false;
     return await handleActionEventError(
       err,
       req,
