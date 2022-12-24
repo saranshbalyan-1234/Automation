@@ -8,14 +8,5 @@ export default function Test() {
 
     console.log(result);
   }, []);
-  return (
-    <table id="test">
-      <tr>
-        <th>saransh</th>
-      </tr>
-      <tr>
-        <td>balyan</td>
-      </tr>
-    </table>
-  );
+  return <input id="test"></input>;
 }

@@ -73,6 +73,7 @@ export const List = ({
       render: (_, record) => (
         <div style={{ display: "flex", gap: 10 }}>
           <Popconfirm
+            placement="left"
             title={`Are you sure to delete this Execution History?`}
             onConfirm={async (e) => {
               e.stopPropagation();
@@ -95,6 +96,7 @@ export const List = ({
     <>
       <Loading loading={loading}>
         <Table
+          sticky
           columns={columns}
           dataSource={data}
           rowClassName="pointer"

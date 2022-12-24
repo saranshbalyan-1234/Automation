@@ -32,6 +32,7 @@ const ExecutionHistory = db.executionHistory;
 const ProcessHistory = db.processHistory;
 const TestStepHistory = db.testStepHistory;
 const Environment = db.enviroments;
+const Column = db.columns;
 const register = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
   try {
@@ -230,6 +231,11 @@ const verifyCustomer = async (req, res) => {
         });
 
         await Environment.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+
+        await Column.schema(database).sync({
           force: true,
           alter: true,
         });

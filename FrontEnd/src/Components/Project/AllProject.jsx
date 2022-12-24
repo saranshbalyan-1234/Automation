@@ -258,6 +258,7 @@ export const AllProject = ({
                         <EditOutlined />
                       </Button> */}
                     <Popconfirm
+                      placement="left"
                       title="Are you sure to delete this project?"
                       onConfirm={async () => {
                         await deleteProject(item.id);

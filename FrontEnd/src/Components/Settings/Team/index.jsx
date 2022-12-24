@@ -63,6 +63,7 @@ export const Team = ({
                       <div> {item.name}</div>
                       {!item.verifiedAt && (
                         <Popconfirm
+                          placement="right"
                           title="Resend Verification Email?"
                           onConfirm={async () => {
                             await resendVerificationMail({
@@ -115,6 +116,7 @@ export const Team = ({
                   </Button>
 
                   <Popconfirm
+                    placement="left"
                     title="Are you sure to remove this user?"
                     onConfirm={() => {
                       removeTeamMember(item.id);

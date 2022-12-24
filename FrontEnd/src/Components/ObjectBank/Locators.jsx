@@ -20,6 +20,7 @@ export const Locators = ({ locators, deleteLocator, history = false }) => {
       render: (_, record) =>
         !history && (
           <Popconfirm
+            placement="left"
             title="Are you sure to remove this locator?"
             onConfirm={async () => {
               await deleteLocator(record.id);
@@ -35,7 +36,7 @@ export const Locators = ({ locators, deleteLocator, history = false }) => {
 
   return (
     <>
-      <Table columns={columns} dataSource={locators} size="small" />
+      <Table sticky columns={columns} dataSource={locators} size="small" />
     </>
   );
 };

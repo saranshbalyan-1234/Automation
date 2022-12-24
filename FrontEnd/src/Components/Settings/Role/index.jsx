@@ -132,6 +132,7 @@ export const Role = ({
                         <SettingOutlined /> Manage Permmission
                       </Button>
                       <Popconfirm
+                        placement="left"
                         title="Are you sure to delete this Role?"
                         onConfirm={(e) => {
                           e.stopPropagation();

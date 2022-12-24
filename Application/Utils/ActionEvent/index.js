@@ -12,6 +12,15 @@ const {
   ConvertToHex,
 } = require("./convert");
 const {
+  refreshPage,
+  backPage,
+  forwardPage,
+  newTab,
+  newWindow,
+  closeBrowser,
+  maximizeBrowser,
+} = require("./browser");
+const {
   enterDateTime,
   getCurrentDateTime,
   getDateTime,
@@ -437,6 +446,42 @@ const handleStep = async (
         executionHistory
       );
       break;
+    case "Back Page":
+      return await backPage(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Forward Page":
+      return await forwardPage(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "New Tab":
+      return await newTab(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "New Window":
+      return await newWindow(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
     case "Generate Random Number":
       return await generateRandomNumber(
         step,
@@ -449,6 +494,17 @@ const handleStep = async (
       break;
     case "Get Page Title":
       return await getPageTitle(
+        step,
+        driver,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Get Page URL":
+      return await getPageUrl(
         step,
         driver,
         output,
@@ -811,6 +867,16 @@ const handleStep = async (
         stepExtra
       );
       break;
+    case "Calculate And Store":
+      return await calculateAndStore(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        output
+      );
+      break;
     default:
       break;
   }
@@ -1045,70 +1111,7 @@ const pressButton = async (
     );
   }
 };
-const maximizeBrowser = async (
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Maximize Browser");
-  try {
-    await driver.manage().window().maximize();
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
-  }
-};
 
-const closeBrowser = async (
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Browser Closed");
-  try {
-    await driver.quit();
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
-  }
-};
-
-const refreshPage = async (
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  try {
-    await driver.navigate().refresh();
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
-  }
-};
 const generateRandomNumber = async (
   step,
   output,
@@ -1146,6 +1149,30 @@ const getPageTitle = async (
   console.log("Getting Page Title");
   try {
     const title = await driver.getTitle();
+    output[step.testParameters.Output] = title;
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+const getPageUrl = async (
+  step,
+  driver,
+  output,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Getting Page URL");
+  try {
+    const title = await driver.getCurrentUrl();
     output[step.testParameters.Output] = title;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
@@ -1620,6 +1647,36 @@ const uploadFile = async (
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .sendKeys(newPath);
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const calculateAndStore = async (
+  step,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory,
+  output
+) => {
+  try {
+    const value1 = step.testParameters.Value1;
+    const value2 = step.testParameters.Value2;
+    const operand = step.testParameters.Operand;
+
+    console.log("Calculating " + value1 + " " + value2 + " with " + operand);
+    const result = eval(value1 + operand + value2);
+
+    output[step.testParameters.Output] = result;
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(

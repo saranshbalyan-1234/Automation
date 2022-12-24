@@ -118,6 +118,7 @@ export const ProjectDetails = ({
       key: "delete",
       render: (_, record) => (
         <Popconfirm
+          placement="left"
           title="Are you sure to remove this user?"
           onConfirm={async () => {
             await removeMember({

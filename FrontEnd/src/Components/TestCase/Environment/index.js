@@ -51,6 +51,7 @@ const Environment = ({
             <div style={{ paddingLeft: 10 }}>
               {el}
               <Popconfirm
+                placement="left"
                 title={`Are you sure to delete this Column?`}
                 onConfirm={async (e) => {
                   e.stopPropagation();
@@ -97,6 +98,7 @@ const Environment = ({
         key: "actions",
         render: (_, record) => (
           <Popconfirm
+            placement="left"
             title={`Are you sure to delete this Env?`}
             onConfirm={async (e) => {
               e.stopPropagation();

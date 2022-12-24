@@ -151,6 +151,7 @@ const TestStepTable = ({
             }}
           />
           <Popconfirm
+            placement="left"
             title="Are you sure to remove this step?"
             onConfirm={async () => {
               if (processId)

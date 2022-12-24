@@ -98,6 +98,7 @@ const Process = ({
                         }}
                       />
                       <Popconfirm
+                        placement="left"
                         title="Are you sure to remove this process?"
                         onConfirm={async () => {
                           await deleteProcess(item.id, item.step);

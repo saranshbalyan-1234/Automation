@@ -1,5 +1,5 @@
 export const KeyboardButtonList = [
-  "NULL̵̵",
+  "NULL",
   "CANCEL", // ^break
   "HELP",
   "BACK_SPACE",

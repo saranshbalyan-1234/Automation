@@ -89,6 +89,7 @@ const List = ({
       render: (_, record) => (
         <div style={{ display: "flex", gap: 10 }}>
           <Popconfirm
+            placement="left"
             title={`Are you sure to delete this ${name}?`}
             onConfirm={async (e) => {
               e.stopPropagation();
@@ -134,6 +135,7 @@ const List = ({
           </Button>
         </div>
         <Table
+          sticky
           columns={columns}
           dataSource={searchedData}
           rowClassName="pointer"
