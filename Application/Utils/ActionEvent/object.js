@@ -1,9 +1,7 @@
-const chromeDriver = require("selenium-webdriver");
 const { findByLocator, handleActionEventError } = require("./utils");
 const {
   updateStepResult,
 } = require("../../Controllers/executionHistoryController");
-const { until } = chromeDriver;
 const collectObjectText = async (
   step,
   driver,
@@ -113,48 +111,9 @@ const scrollToObject = async (
   }
 };
 
-const ifObjecttVisible = async (
-  step,
-  driver,
-  req,
-  stepHistoryId,
-  stepExtra
-) => {
-  console.log("If Object Visible");
-  stepExtra.conditional = true;
-  stepExtra.conditionalType = "if";
-  try {
-    const result = await driver.wait(async () => {
-      until.elementIsVisible(
-        await findByLocator(step.object.dataValues.locators),
-        100
-      );
-    });
-    console.log(result);
-    stepExtra.conditionalResult = true;
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    console.log(err);
-    // if (processResult.result) processResult.result = false;
-
-    stepExtra.conditionalResult = false;
-    await updateStepResult(req, stepHistoryId, false, String(err));
-    return;
-
-    // return await handleActionEventError(
-    //   err,
-    //   req,
-    //   stepHistoryId,
-    //   processResult,
-    //   executionHistory.continueOnError
-    // );
-  }
-};
-
 module.exports = {
   collectObjectText,
   collectObjectCSSProperty,
   collectObjectProperty,
   scrollToObject,
-  ifObjecttVisible,
 };

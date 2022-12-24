@@ -1,7 +1,9 @@
 const {
   updateStepResult,
 } = require("../../Controllers/executionHistoryController");
+const chromeDriver = require("selenium-webdriver");
 const { handleActionEventError } = require("./utils");
+const { until } = chromeDriver;
 const If = async (
   step,
   processResult,
@@ -233,4 +235,40 @@ const Else = async (
   }
 };
 
-module.exports = { If, Else, EndCondition };
+const IfObjecttVisible = async (
+  step,
+  driver,
+  req,
+  stepHistoryId,
+  stepExtra
+) => {
+  console.log("If Object Visible");
+  stepExtra.conditional = true;
+  stepExtra.conditionalType = "if";
+  try {
+    const element = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+    await driver.wait(until.elementIsVisible(element), 1);
+
+    stepExtra.conditionalResult = true;
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    console.log(err);
+    // if (processResult.result) processResult.result = false;
+
+    stepExtra.conditionalResult = false;
+    await updateStepResult(req, stepHistoryId, false, String(err));
+    return;
+
+    // return await handleActionEventError(
+    //   err,
+    //   req,
+    //   stepHistoryId,
+    //   processResult,
+    //   executionHistory.continueOnError
+    // );
+  }
+};
+
+module.exports = { If, Else, EndCondition, IfObjecttVisible };
