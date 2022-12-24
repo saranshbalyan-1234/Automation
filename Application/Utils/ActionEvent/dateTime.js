@@ -2,7 +2,7 @@ const { findByLocator, handleActionEventError } = require("./utils");
 const {
   updateStepResult,
 } = require("../../Controllers/executionHistoryController");
-
+const moment = require("moment");
 const enterDateTime = async (
   step,
   driver,
@@ -112,14 +112,62 @@ const addDateTime = async (
       typeof dateTime == "string" ? moment(dateTime) : dateTime;
 
     if (day) finalDateTime = finalDateTime.add(day, "days");
-    if (month) finalDateTime = moment(dateTime).add(month, "months");
-    if (year) finalDateTime = moment(dateTime).add(year, "years");
+    if (month) finalDateTime = finalDateTime.add(month, "months");
+    if (year) finalDateTime = finalDateTime.add(year, "years");
 
-    if (hour) finalDateTime = moment(dateTime).add(hour, "hours");
-    if (min) finalDateTime = moment(dateTime).add(min, "minutes");
-    if (sec) finalDateTime = moment(dateTime).add(sec, "seconds");
+    if (hour) finalDateTime = finalDateTime.add(hour, "hours");
+    if (min) finalDateTime = finalDateTime.add(min, "minutes");
+    if (sec) finalDateTime = finalDateTime.add(sec, "seconds");
 
     console.log("Adding Date Time " + dayMonthYear + " " + hourMinSec);
+
+    output[step.testParameters.Output] = finalDateTime;
+    if (finalDateTime == "Invalid date") throw new Error("Invalid Date");
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const subtractDateTime = async (
+  step,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory,
+  output
+) => {
+  try {
+    const dateTime = step.testParameters.DateTime;
+    const dayMonthYear = step.testParameters["Day Month Year"].split(" ");
+
+    const day = parseInt(dayMonthYear[0]);
+    const month = parseInt(dayMonthYear[1]);
+    const year = parseInt(dayMonthYear[2]);
+
+    const hourMinSec = step.testParameters["Hour Min Sec"].split(" ");
+    const hour = parseInt(hourMinSec[0]);
+    const min = parseInt(hourMinSec[1]);
+    const sec = parseInt(hourMinSec[2]);
+
+    let finalDateTime =
+      typeof dateTime == "string" ? moment(dateTime) : dateTime;
+
+    if (day) finalDateTime = finalDateTime.subtract(day, "days");
+    if (month) finalDateTime = finalDateTime.subtract(month, "months");
+    if (year) finalDateTime = finalDateTime.subtract(year, "years");
+
+    if (hour) finalDateTime = finalDateTime.subtract(hour, "hours");
+    if (min) finalDateTime = finalDateTime.subtract(min, "minutes");
+    if (sec) finalDateTime = finalDateTime.subtract(sec, "seconds");
+
+    console.log("Subtracting Date Time " + dayMonthYear + " " + hourMinSec);
 
     output[step.testParameters.Output] = finalDateTime;
     if (finalDateTime == "Invalid date") throw new Error("Invalid Date");
@@ -140,4 +188,5 @@ module.exports = {
   getCurrentDateTime,
   getDateTime,
   addDateTime,
+  subtractDateTime,
 };

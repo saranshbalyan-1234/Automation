@@ -16,6 +16,7 @@ const {
   getCurrentDateTime,
   getDateTime,
   addDateTime,
+  subtractDateTime,
 } = require("./dateTime");
 const {
   collectObjectText,
@@ -773,6 +774,16 @@ const handleStep = async (
       break;
     case "Add Date Time":
       return await addDateTime(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        output
+      );
+      break;
+    case "Subtract Date Time":
+      return await subtractDateTime(
         step,
         processResult,
         req,

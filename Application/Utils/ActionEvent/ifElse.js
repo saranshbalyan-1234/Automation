@@ -2,7 +2,7 @@ const {
   updateStepResult,
 } = require("../../Controllers/executionHistoryController");
 const chromeDriver = require("selenium-webdriver");
-const { handleActionEventError } = require("./utils");
+const { findByLocator, handleActionEventError } = require("./utils");
 const { until } = chromeDriver;
 const If = async (
   step,
