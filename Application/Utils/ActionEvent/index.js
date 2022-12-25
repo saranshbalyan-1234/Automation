@@ -12,6 +12,11 @@ const {
   ConvertToHex,
 } = require("./convert");
 const {
+  validateObjectTextIncludes,
+  validateObjectTextNotIncludes,
+  validateObjectTextEquals,
+} = require("./validate");
+const {
   refreshPage,
   backPage,
   forwardPage,
@@ -887,6 +892,36 @@ const handleStep = async (
         req,
         stepHistoryId,
         stepExtra
+      );
+      break;
+    case "Validate Object Text Includes":
+      return await validateObjectTextIncludes(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Validate Object Text Not Includes":
+      return await validateObjectTextNotIncludes(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Validate Object Text Equals":
+      return await validateObjectTextEquals(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Calculate And Store":
