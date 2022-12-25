@@ -545,6 +545,69 @@ const waitUntilAbleToSwitchToFrame = async (
   }
 };
 
+const waitUntilObjectClickable = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  const timeout = Number(step.testParameters.Timeout);
+  console.log("Waiting for " + timeout + " ms");
+  try {
+    const element = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+
+    await driver.wait(until.elementIsVisible(element), timeout);
+    await driver.wait(until.elementIsEnabled(element), timeout);
+
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const waitUntilObjectNotClickable = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  const timeout = Number(step.testParameters.Timeout);
+  console.log("Waiting for " + timeout + " ms");
+  try {
+    const element = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+
+    try {
+      await driver.wait(until.elementIsNotVisible(element), timeout);
+    } catch (err) {
+      await driver.wait(until.elementIsDisabled(element), timeout);
+    }
+
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
 module.exports = {
   implicitWait,
   waitUntilObjectLocated,
@@ -566,4 +629,6 @@ module.exports = {
   waitUntilUrlIs,
   waitUntilUrlMatches,
   waitUntilAbleToSwitchToFrame,
+  waitUntilObjectClickable,
+  waitUntilObjectNotClickable,
 };

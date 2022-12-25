@@ -54,6 +54,8 @@ const {
   waitUntilUrlIs,
   waitUntilUrlMatches,
   waitUntilAbleToSwitchToFrame,
+  waitUntilObjectClickable,
+  waitUntilObjectNotClickable,
 } = require("./wait");
 const {
   waitUntilAlertPresent,
@@ -199,6 +201,26 @@ const handleStep = async (
       break;
     case "Wait Until Object Located":
       return await waitUntilObjectLocated(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Wait Until Object Clickable":
+      return await waitUntilObjectClickable(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Wait Until Object Not Clickable":
+      return await waitUntilObjectNotClickable(
         step,
         driver,
         processResult,
