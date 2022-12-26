@@ -29,7 +29,7 @@ const TestStepTable = ({
   const columns = [
     {
       title: "",
-      width: 30,
+      width: 50,
       dataIndex: "action",
       render: (text, record) => (
         <div className="pointer">

@@ -67,9 +67,9 @@ export const List = ({
     },
 
     {
-      title: "Actions",
+      title: "",
       key: "actions",
-      width: 100,
+      width: 50,
       render: (_, record) => (
         <div style={{ display: "flex", gap: 10 }}>
           <Popconfirm

@@ -8,5 +8,5 @@ export default function Test() {
 
     console.log(result);
   }, []);
-  return <input id="test"></input>;
+  return <div id="test">saranshsss</div>;
 }

@@ -113,7 +113,7 @@ const Environment = ({
             />
           </Popconfirm>
         ),
-        width: 70,
+        width: 50,
       },
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps

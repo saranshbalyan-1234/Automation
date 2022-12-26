@@ -85,7 +85,7 @@ const List = ({
     {
       title: "",
       key: "actions",
-      width: 70,
+      width: 50,
       render: (_, record) => (
         <div style={{ display: "flex", gap: 10 }}>
           <Popconfirm

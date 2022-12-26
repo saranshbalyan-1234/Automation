@@ -297,6 +297,7 @@ const IfObjectTextNotIncludes = async (
   driver,
   req,
   stepHistoryId,
+  executionHistory,
   stepExtra
 ) => {
   console.log("If Object Text Not Includes");
@@ -333,6 +334,7 @@ const IfObjectTextEquals = async (
   driver,
   req,
   stepHistoryId,
+  executionHistory,
   stepExtra
 ) => {
   console.log("If Object Text Equals");
@@ -347,10 +349,10 @@ const IfObjectTextEquals = async (
     const result = text === value;
     if (result) {
       stepExtra.conditionalResult = true;
-      await updateStepResult(req, stepHistoryId, true);
+      return await updateStepResult(req, stepHistoryId, true);
     } else {
       stepExtra.conditionalResult = false;
-      await updateStepResult(req, stepHistoryId, false);
+      return await updateStepResult(req, stepHistoryId, false);
     }
   } catch (err) {
     stepExtra.conditionalResult = false;
