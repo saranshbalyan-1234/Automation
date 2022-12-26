@@ -235,13 +235,7 @@ const Else = async (
   }
 };
 
-const IfObjecttVisible = async (
-  step,
-  driver,
-  req,
-  stepHistoryId,
-  stepExtra
-) => {
+const IfObjectVisible = async (step, driver, req, stepHistoryId, stepExtra) => {
   console.log("If Object Visible");
   stepExtra.conditional = true;
   stepExtra.conditionalType = "if";
@@ -255,20 +249,127 @@ const IfObjecttVisible = async (
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     console.log(err);
-    // if (processResult.result) processResult.result = false;
-
     stepExtra.conditionalResult = false;
     await updateStepResult(req, stepHistoryId, false, String(err));
     return;
-
-    // return await handleActionEventError(
-    //   err,
-    //   req,
-    //   stepHistoryId,
-    //   processResult,
-    //   executionHistory.continueOnError
-    // );
   }
 };
 
-module.exports = { If, Else, EndCondition, IfObjecttVisible };
+const IfObjectTextIncludes = async (
+  step,
+  driver,
+  req,
+  stepHistoryId,
+  executionHistory,
+  stepExtra
+) => {
+  console.log("If Object Text Includes");
+  stepExtra.conditional = true;
+  stepExtra.conditionalType = "if";
+  try {
+    const value = step.testParameters.Value;
+    const text = await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .getText();
+
+    const result = text.includes(value);
+    if (result) {
+      stepExtra.conditionalResult = true;
+      await updateStepResult(req, stepHistoryId, true);
+    } else {
+      stepExtra.conditionalResult = false;
+      await updateStepResult(req, stepHistoryId, false);
+    }
+  } catch (err) {
+    stepExtra.conditionalResult = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const IfObjectTextNotIncludes = async (
+  step,
+  driver,
+  req,
+  stepHistoryId,
+  stepExtra
+) => {
+  console.log("If Object Text Not Includes");
+  stepExtra.conditional = true;
+  stepExtra.conditionalType = "if";
+  try {
+    const value = step.testParameters.Value;
+    const text = await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .getText();
+
+    const result = text.includes(value);
+    if (result) {
+      stepExtra.conditionalResult = false;
+      await updateStepResult(req, stepHistoryId, false);
+    } else {
+      stepExtra.conditionalResult = true;
+      await updateStepResult(req, stepHistoryId, true);
+    }
+  } catch (err) {
+    stepExtra.conditionalResult = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const IfObjectTextEquals = async (
+  step,
+  driver,
+  req,
+  stepHistoryId,
+  stepExtra
+) => {
+  console.log("If Object Text Equals");
+  stepExtra.conditional = true;
+  stepExtra.conditionalType = "if";
+  try {
+    const value = step.testParameters.Value;
+    const text = await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .getText();
+
+    const result = text === value;
+    if (result) {
+      stepExtra.conditionalResult = true;
+      await updateStepResult(req, stepHistoryId, true);
+    } else {
+      stepExtra.conditionalResult = false;
+      await updateStepResult(req, stepHistoryId, false);
+    }
+  } catch (err) {
+    stepExtra.conditionalResult = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+module.exports = {
+  If,
+  Else,
+  EndCondition,
+  IfObjectVisible,
+  IfObjectTextIncludes,
+  IfObjectTextNotIncludes,
+  IfObjectTextEquals,
+};

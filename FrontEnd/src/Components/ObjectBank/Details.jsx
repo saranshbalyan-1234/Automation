@@ -72,7 +72,7 @@ const ObjectDetails = ({
                 }
               />
             )}
-            <div style={{ display: "flex", gap: 10 }}>
+            <div style={{ display: "flex", gap: 10, maxWidth: 500 }}>
               <div>Tags:</div>
               <div>
                 {currentObject.tags?.length > 0

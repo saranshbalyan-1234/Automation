@@ -1,8 +1,6 @@
 const chromeDriver = require("selenium-webdriver");
 const { findByLocator, handleActionEventError } = require("./utils");
-const fs = require("fs");
 const { By } = chromeDriver;
-const moment = require("moment");
 const {
   ConvertToString,
   ConvertToNumber,
@@ -69,7 +67,15 @@ const {
   enterTextInAlert,
   getAlertMessage,
 } = require("./alert");
-const { If, Else, EndCondition, IfObjecttVisible } = require("./ifElse");
+const {
+  If,
+  Else,
+  EndCondition,
+  IfObjectVisible,
+  IfObjectTextIncludes,
+  IfObjectTextNotIncludes,
+  IfObjectTextEquals,
+} = require("./ifElse");
 
 const {
   updateStepResult,
@@ -886,11 +892,35 @@ const handleStep = async (
       );
       break;
     case "If Object Visible":
-      return await IfObjecttVisible(
+      return await IfObjectVisible(step, driver, req, stepHistoryId, stepExtra);
+      break;
+    case "If Object Text Includes":
+      return await IfObjectTextIncludes(
         step,
         driver,
         req,
         stepHistoryId,
+        executionHistory,
+        stepExtra
+      );
+      break;
+    case "If Object Text Not Includes":
+      return await IfObjectTextNotIncludes(
+        step,
+        driver,
+        req,
+        stepHistoryId,
+        executionHistory,
+        stepExtra
+      );
+      break;
+    case "If Object Text Equals":
+      return await IfObjectTextEquals(
+        step,
+        driver,
+        req,
+        stepHistoryId,
+        executionHistory,
         stepExtra
       );
       break;

@@ -47,14 +47,14 @@ const ObjectList = ({
     {
       title: "Name",
       dataIndex: "name",
-      width: 500,
+      // width: 500,
     },
     {
       title: "Tags",
       dataIndex: "tags",
       width: 300,
       render: (tags, record) => (
-        <div>
+        <div style={{ overflow: "auto" }}>
           {tags?.map((el) => {
             return <Tag>{el}</Tag>;
           })}
@@ -64,7 +64,7 @@ const ObjectList = ({
     {
       title: "Created At",
       dataIndex: "createdBy",
-      width: 290,
+      width: 250,
       render: (_, record) => (
         <div>
           {moment(record.createdAt).format("DD/MM/YYYY h:mm:ss a")} By &nbsp;
@@ -77,14 +77,14 @@ const ObjectList = ({
     {
       title: "Last Updated",
       key: "updatedAt",
-      width: 210,
+      width: 190,
       render: (_, record) => (
         <div>{moment(record.updatedAt).format("DD/MM/YYYY h:mm:ss a")}</div>
       ),
     },
 
     {
-      title: "Actions",
+      title: "",
       key: "actions",
       width: 70,
       render: (_, record) => (

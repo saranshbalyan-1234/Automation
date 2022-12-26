@@ -104,7 +104,7 @@ const ReusableProcessDetails = ({
               />
             </div>
           )}
-          <div style={{ display: "flex", gap: 10 }}>
+          <div style={{ display: "flex", gap: 10, maxWidth: 500 }}>
             <div>Tags:</div>
             <div>
               {details.tags?.length > 0

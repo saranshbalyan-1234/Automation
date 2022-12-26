@@ -77,7 +77,7 @@ const validateObjectTextEquals = async (
       .findElement(await findByLocator(step.object.dataValues.locators))
       .getText();
 
-    const result = text == value;
+    const result = text === value;
     if (result) return await updateStepResult(req, stepHistoryId, true);
     else return await updateStepResult(req, stepHistoryId, false);
   } catch (err) {
