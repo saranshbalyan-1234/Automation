@@ -26,6 +26,7 @@ export const Role = ({
 
   useEffect(() => {
     getAllRole();
+    // eslint-disable-next-line
   }, []);
 
   const handleRoleEdit = (item) => {

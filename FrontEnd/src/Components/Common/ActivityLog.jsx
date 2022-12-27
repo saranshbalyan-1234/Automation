@@ -12,6 +12,7 @@ export default function ActivityLog({ logs = [] }) {
     {
       title: "Message",
       dataIndex: "log",
+      render: (text) => <div style={{ overflow: "auto" }}>{text}</div>,
     },
     {
       title: "Time",
@@ -23,7 +24,6 @@ export default function ActivityLog({ logs = [] }) {
     },
   ];
 
-  console.log("saransh", logs);
   return (
     <Table
       scroll={{ x: true }}

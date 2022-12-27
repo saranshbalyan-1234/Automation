@@ -29,6 +29,7 @@ const Process = ({
 
   useEffect(() => {
     testCaseId && getTestCaseStepsById(testCaseId);
+    // eslint-disable-next-line
   }, [testCaseId]);
 
   return (

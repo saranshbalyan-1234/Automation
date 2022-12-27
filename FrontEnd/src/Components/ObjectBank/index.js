@@ -6,8 +6,6 @@ import {
   saveObject,
 } from "../../Redux/Actions/object";
 import { connect } from "react-redux";
-
-import Details from "./Details";
 import ObjectList from "./ObjectList";
 import ObjectTabs from "./ObjectTabs";
 const ObjectBank = ({

@@ -19,7 +19,8 @@ function ObjectBankTabs({ logs, getObjectLogsById }) {
   }, [tab]);
 
   useEffect(() => {
-    tab == "logs" && getObjectLogsById(objectId);
+    tab === "logs" && getObjectLogsById(objectId);
+    // eslint-disable-next-line
   }, [tab]);
 
   return (
