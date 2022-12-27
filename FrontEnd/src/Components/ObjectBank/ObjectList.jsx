@@ -47,7 +47,7 @@ const ObjectList = ({
     {
       title: "Name",
       dataIndex: "name",
-      // width: 500,
+      width: 400,
     },
     {
       title: "Tags",
@@ -74,14 +74,14 @@ const ObjectList = ({
       ),
     },
 
-    {
-      title: "Last Updated",
-      key: "updatedAt",
-      width: 190,
-      render: (_, record) => (
-        <div>{moment(record.updatedAt).format("DD/MM/YYYY h:mm:ss a")}</div>
-      ),
-    },
+    // {
+    //   title: "Last Updated",
+    //   key: "updatedAt",
+    //   width: 190,
+    //   render: (_, record) => (
+    //     <div>{moment(record.updatedAt).format("DD/MM/YYYY h:mm:ss a")}</div>
+    //   ),
+    // },
 
     {
       title: "",
@@ -136,6 +136,7 @@ const ObjectList = ({
           </Button>
         </div>
         <Table
+          scroll={{ x: true }}
           sticky
           columns={columns}
           dataSource={searchedData}

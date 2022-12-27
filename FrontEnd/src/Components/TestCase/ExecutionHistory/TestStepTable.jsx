@@ -146,6 +146,7 @@ const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
   return (
     <>
       <Table
+        scroll={{ x: true }}
         size="small"
         columns={columns}
         dataSource={testSteps}

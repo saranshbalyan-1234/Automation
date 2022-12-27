@@ -188,6 +188,7 @@ const Environment = ({
               </div>
             </div>
             <Table
+              scroll={{ x: true }}
               size="small"
               columns={columns}
               dataSource={searchedData}

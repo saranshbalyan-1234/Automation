@@ -171,6 +171,7 @@ const TestStepTable = ({
   return (
     <>
       <Table
+        scroll={{ x: true }}
         locale={{
           emptyText: (
             <div

@@ -16,12 +16,15 @@ import UserRole from "../Models/RolePermission/UserRole.js";
 import Project from "../Models/Project/Project.js";
 import UserProject from "../Models/Project/UserProject.js";
 import TestCase from "../Models/TestCase/TestCase.js";
-import Object from "../Models/TestCase/Object/Object.js";
-import ObjectLocator from "../Models/TestCase/Object/ObjectLocator.js";
 import TestParameter from "../Models/TestCase/TestParameter.js";
 import TestStep from "../Models/TestCase/TestStep.js";
 import Process from "../Models/TestCase/Process.js";
 import ReusableProcess from "../Models/TestCase/ReusableProcess.js";
+
+//Object
+import Object from "../Models/TestCase/Object/Object.js";
+import ObjectLocator from "../Models/TestCase/Object/ObjectLocator.js";
+import ObjectLog from "../Models/TestCase/Object/ObjectLog.js";
 
 //Execution History
 import ExecutionHistory from "../Models/TestCase/ExecutionHistory/ExecutionHistory.js";
@@ -73,12 +76,15 @@ db.userProjects = UserProject(sequelize, DataTypes);
 db.projects = Project(sequelize, DataTypes);
 db.roles = Role(sequelize, DataTypes);
 db.testParameters = TestParameter(sequelize, DataTypes);
-db.objects = Object(sequelize, DataTypes);
-db.ObjectLocators = ObjectLocator(sequelize, DataTypes);
 db.testSteps = TestStep(sequelize, DataTypes);
 db.testCases = TestCase(sequelize, DataTypes);
 db.process = Process(sequelize, DataTypes);
 db.reusableProcess = ReusableProcess(sequelize, DataTypes);
+
+//Object
+db.objects = Object(sequelize, DataTypes);
+db.ObjectLocators = ObjectLocator(sequelize, DataTypes);
+db.objectLogs = ObjectLog(sequelize, DataTypes);
 
 //executionHistory
 db.executionHistory = ExecutionHistory(sequelize, DataTypes);
@@ -97,8 +103,6 @@ db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
 
-// await db.testStepHistory
-//   .schema("saranshbalyan123gmailcom")
-//   .sync({ force: true });
+// await db.objectLogs.schema("saranshbalyan123gmailcom").sync({ force: true });
 
 export default db;

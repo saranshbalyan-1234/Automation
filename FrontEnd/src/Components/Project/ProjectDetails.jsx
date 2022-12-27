@@ -264,6 +264,7 @@ export const ProjectDetails = ({
             </div>
           )}
           <Table
+            scroll={{ x: true }}
             columns={columns}
             dataSource={currentProject.members}
             size="small"

@@ -11,6 +11,7 @@ import {
 const Object = db.objects;
 const User = db.users;
 const ObjectLocator = db.ObjectLocators;
+const ObjectLog = db.objectLogs;
 
 const saveObject = async (req, res) => {
   /*  #swagger.tags = ["Test Object"] 
@@ -24,7 +25,9 @@ const saveObject = async (req, res) => {
     payload.createdByUser = req.user.id;
 
     const object = await Object.schema(req.database).create(payload);
-
+    createObjectLog(req, res, object.id, [
+      `created the object ${req.body.name}.`,
+    ]);
     return res.status(200).json(object);
   } catch (err) {
     getError(err, res);
@@ -217,6 +220,52 @@ const deleteObjectLocator = async (req, res) => {
   }
 };
 
+const getObjectLogsByObjectId = async (req, res) => {
+  /*  #swagger.tags = ["Test Object"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const objectId = req.params.objectId;
+
+    const { error } = idValidation.validate({ id: objectId });
+    if (error) throw new Error(error.details[0].message);
+
+    const locators = await ObjectLog.schema(req.database).findAll({
+      where: {
+        objectId,
+      },
+      attributes: ["log", "createdAt"],
+    });
+
+    return res.status(200).json(locators);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+const createObjectLog = async (req, res, id, logs = []) => {
+  /*  #swagger.tags = ["Test Object"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const objectId = req.params.objectId || id;
+    const tempLogs = req.body.logs || logs;
+
+    // const { error } = idValidation.validate({ id: objectId });
+    // if (error) throw new Error(error.details[0].message);
+    console.log(req.user);
+    const payload = tempLogs.map((el) => {
+      return { log: req.user.name + " " + el, objectId };
+    });
+    await ObjectLog.schema(req.database).bulkCreate(payload);
+    if (logs.length == 0) return res.status(201);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
 export {
   getAllObject,
   getObjectDetailsById,
@@ -226,4 +275,6 @@ export {
   getObjectLocatorsByObjectId,
   saveObjectLocator,
   deleteObjectLocator,
+  getObjectLogsByObjectId,
+  createObjectLog,
 };

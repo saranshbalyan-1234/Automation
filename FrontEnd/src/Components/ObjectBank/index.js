@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 
 import Details from "./Details";
 import ObjectList from "./ObjectList";
+import ObjectTabs from "./ObjectTabs";
 const ObjectBank = ({
   objectList,
   loading,
@@ -33,7 +34,7 @@ const ObjectBank = ({
             />
           }
         />
-        <Route path="/:objectId/:tab" element={<Details />} />
+        <Route path="/:objectId/:tab" element={<ObjectTabs />} />
       </Routes>
     </>
   );

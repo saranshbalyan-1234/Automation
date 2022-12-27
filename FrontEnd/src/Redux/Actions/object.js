@@ -10,6 +10,7 @@ import {
   ADD_OBJECT_LOCATOR,
   GET_OBJECT_LOCATORS,
   DELETE_OBJECT_LOCATOR,
+  GET_OBJECT_LOGS,
 } from "./action-types";
 
 export const getObjectByProject = (payload) => {
@@ -89,6 +90,20 @@ export const getObjectDetailsById = (objectId) => {
       dispatch({ type: OBJECT_BANK_REQUEST });
       const { data } = await axios.get(`/object/${objectId}/details`);
       dispatch({ type: GET_OBJECT_DETAILS_BY_ID, payload: data });
+      return true;
+    } catch (err) {
+      dispatch({ type: OBJECT_BANK_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const getObjectLogsById = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: OBJECT_BANK_REQUEST });
+      const { data } = await axios.get(`/object/${id}/logs`);
+      dispatch({ type: GET_OBJECT_LOGS, payload: data });
       return true;
     } catch (err) {
       dispatch({ type: OBJECT_BANK_FAILURE });
