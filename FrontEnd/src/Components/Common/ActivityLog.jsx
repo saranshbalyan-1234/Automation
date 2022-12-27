@@ -12,7 +12,26 @@ export default function ActivityLog({ logs = [] }) {
     {
       title: "Message",
       dataIndex: "log",
-      render: (text) => <div style={{ overflow: "auto" }}>{text}</div>,
+      render: (text) => (
+        <div
+          style={{
+            overflow: "auto",
+            display: "flex",
+            alignItems: "center",
+            gap: 7,
+          }}
+        >
+          <div
+            style={{
+              height: 12,
+              width: 12,
+              borderRadius: "100%",
+              background: getColor(text),
+            }}
+          ></div>
+          <div>{text}</div>
+        </div>
+      ),
     },
     {
       title: "Time",
@@ -24,6 +43,16 @@ export default function ActivityLog({ logs = [] }) {
     },
   ];
 
+  const getColor = (log) => {
+    const text = log.toLowerCase();
+    return text.includes("added") || text.includes("created")
+      ? "green"
+      : text.includes("deleted") || text.includes("removed")
+      ? "red"
+      : text.includes("updated") || text.includes("edited")
+      ? "#f7a705"
+      : "";
+  };
   return (
     <Table
       scroll={{ x: true }}
