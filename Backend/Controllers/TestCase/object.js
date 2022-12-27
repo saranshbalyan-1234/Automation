@@ -26,7 +26,7 @@ const saveObject = async (req, res) => {
 
     const object = await Object.schema(req.database).create(payload);
     createObjectLog(req, res, object.id, [
-      `created the object ${req.body.name}.`,
+      `Created the object "${req.body.name}".`,
     ]);
     return res.status(200).json(object);
   } catch (err) {
@@ -187,6 +187,11 @@ const saveObjectLocator = async (req, res) => {
     if (error) throw new Error(error.details[0].message);
 
     const locator = await ObjectLocator.schema(req.database).create(req.body);
+
+    createObjectLog(req, res, req.body.objectId, [
+      `Added the "${req.body.type}" locator "${req.body.locator}".`,
+    ]);
+
     return res.status(200).json(locator);
   } catch (err) {
     getError(err, res);
@@ -255,14 +260,14 @@ const createObjectLog = async (req, res, id, logs = []) => {
 
     // const { error } = idValidation.validate({ id: objectId });
     // if (error) throw new Error(error.details[0].message);
-    console.log(req.user);
     const payload = tempLogs.map((el) => {
       return { log: req.user.name + " " + el, objectId };
     });
     await ObjectLog.schema(req.database).bulkCreate(payload);
     if (logs.length == 0) return res.status(201);
   } catch (err) {
-    getError(err, res);
+    if (logs.length == 0) getError(err, res);
+    else console.log(err);
   }
 };
 

@@ -40,7 +40,6 @@ const UploadProfileImage = ({ visible, setVisible, uploadProfilePic }) => {
         >
           <Dragger
             beforeUpload={(file) => {
-              console.log("saransh", file);
               const format =
                 file.type === "image/png" ||
                 file.type === "image/jpg" ||

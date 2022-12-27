@@ -67,6 +67,7 @@ const objectBankReducer = (state = initState, { type, payload }) => {
         description: payload.description,
         tags: payload.tags,
         createdBy: payload.createdBy,
+        locators: payload.locators,
       };
       return {
         ...state,
