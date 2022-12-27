@@ -243,15 +243,23 @@ const IfObjectVisible = async (step, driver, req, stepHistoryId, stepExtra) => {
     const element = await driver.findElement(
       await findByLocator(step.object.dataValues.locators)
     );
-    await driver.wait(until.elementIsVisible(element), 1);
-
+    try {
+      await driver.wait(until.elementIsVisible(element), 1);
+    } catch (error) {
+      stepExtra.conditionalResult = false;
+      return await updateStepResult(req, stepHistoryId, false, String(error));
+    }
     stepExtra.conditionalResult = true;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
     stepExtra.conditionalResult = false;
-    await updateStepResult(req, stepHistoryId, false, String(err));
-    return;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
@@ -366,6 +374,78 @@ const IfObjectTextEquals = async (
   }
 };
 
+const ifObjectEnabled = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory,
+  stepExtra
+) => {
+  console.log("If Object Enabled");
+  stepExtra.conditional = true;
+  stepExtra.conditionalType = "if";
+
+  try {
+    const element = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+    try {
+      await driver.wait(until.elementIsEnabled(element), 1);
+      stepExtra.conditionalResult = true;
+      return await updateStepResult(req, stepHistoryId, true);
+    } catch (error) {
+      stepExtra.conditionalResult = false;
+      return await updateStepResult(req, stepHistoryId, false, String(error));
+    }
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const ifObjectSelected = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory,
+  stepExtra
+) => {
+  console.log("If Object Selected");
+  stepExtra.conditional = true;
+  stepExtra.conditionalType = "if";
+
+  try {
+    const element = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+    try {
+      await driver.wait(until.elementIsSelected(element), 1);
+      stepExtra.conditionalResult = true;
+      return await updateStepResult(req, stepHistoryId, true);
+    } catch (error) {
+      stepExtra.conditionalResult = false;
+      return await updateStepResult(req, stepHistoryId, false, String(error));
+    }
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
 module.exports = {
   If,
   Else,
@@ -374,4 +454,6 @@ module.exports = {
   IfObjectTextIncludes,
   IfObjectTextNotIncludes,
   IfObjectTextEquals,
+  ifObjectEnabled,
+  ifObjectSelected,
 };

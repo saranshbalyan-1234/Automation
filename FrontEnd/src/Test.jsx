@@ -8,5 +8,9 @@ export default function Test() {
 
     console.log(result);
   }, []);
-  return <div id="test">saranshsss</div>;
+  return (
+    <div>
+      <input disabled={true} id="test" value="saransh" />
+    </div>
+  );
 }

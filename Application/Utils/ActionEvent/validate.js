@@ -3,7 +3,7 @@ const { until } = chromeDriver;
 const {
   updateStepResult,
 } = require("../../Controllers/executionHistoryController");
-
+const { findByLocator, handleActionEventError } = require("./utils");
 const validateObjectTextIncludes = async (
   step,
   driver,
@@ -21,7 +21,7 @@ const validateObjectTextIncludes = async (
 
     const result = text.includes(value);
     if (result) return await updateStepResult(req, stepHistoryId, true);
-    else return await updateStepResult(req, stepHistoryId, false);
+    else throw new Error("Unable to find text in object text!");
   } catch (err) {
     return await handleActionEventError(
       err,
@@ -49,7 +49,7 @@ const validateObjectTextNotIncludes = async (
       .getText();
 
     const result = text.includes(value);
-    if (result) return await updateStepResult(req, stepHistoryId, false);
+    if (result) throw new Error("Text found in object text!");
     else return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -79,7 +79,7 @@ const validateObjectTextEquals = async (
 
     const result = text === value;
     if (result) return await updateStepResult(req, stepHistoryId, true);
-    else return await updateStepResult(req, stepHistoryId, false);
+    else throw new Error("Text not eqauls to object text!");
   } catch (err) {
     return await handleActionEventError(
       err,

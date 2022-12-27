@@ -77,6 +77,8 @@ const {
   IfObjectTextIncludes,
   IfObjectTextNotIncludes,
   IfObjectTextEquals,
+  ifObjectEnabled,
+  ifObjectSelected,
 } = require("./ifElse");
 
 const {
@@ -694,6 +696,28 @@ const handleStep = async (
         stepHistoryId,
         stepExtra,
         executionHistory
+      );
+      break;
+    case "If Object Enabled":
+      return await ifObjectEnabled(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        stepExtra
+      );
+      break;
+    case "If Object Selected":
+      return await ifObjectSelected(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        stepExtra
       );
       break;
     case "Else":
