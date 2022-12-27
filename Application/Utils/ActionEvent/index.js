@@ -13,6 +13,8 @@ const {
   validateObjectTextIncludes,
   validateObjectTextNotIncludes,
   validateObjectTextEquals,
+  validateObjectEnabled,
+  validateObjectSelected,
 } = require("./validate");
 const {
   refreshPage,
@@ -946,6 +948,26 @@ const handleStep = async (
       break;
     case "Validate Object Text Equals":
       return await validateObjectTextEquals(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Validate Object Selected":
+      return await validateObjectSelected(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Validate Object Enabled":
+      return await validateObjectEnabled(
         step,
         driver,
         processResult,
