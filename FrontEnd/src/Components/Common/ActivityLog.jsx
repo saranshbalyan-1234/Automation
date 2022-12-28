@@ -1,6 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 import moment from "moment";
+import UserAvatar from "./Avatar";
 export default function ActivityLog({ logs = [] }) {
   const columns = [
     {
@@ -12,7 +13,7 @@ export default function ActivityLog({ logs = [] }) {
     {
       title: "Message",
       dataIndex: "log",
-      render: (text) => (
+      render: (text, record) => (
         <div
           style={{
             overflow: "auto",
@@ -29,7 +30,10 @@ export default function ActivityLog({ logs = [] }) {
               background: getColor(text),
             }}
           ></div>
-          <div>{text}</div>
+          <div>
+            <UserAvatar user={record.createdBy.id} />
+            {" " + record.createdBy.name + " " + text}
+          </div>
         </div>
       ),
     },

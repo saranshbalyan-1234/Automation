@@ -19,6 +19,17 @@ export default (sequelize, DataTypes) => {
       },
       onDelete: "CASCADE",
     },
+    createdByUser: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
+      references: {
+        model: "users",
+        key: "id",
+      },
+    },
   });
 
   return ObjectLogs;

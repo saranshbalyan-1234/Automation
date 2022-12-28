@@ -244,6 +244,13 @@ const getObjectLogsByObjectId = async (req, res) => {
         objectId,
       },
       attributes: ["log", "createdAt"],
+      include: [
+        {
+          model: User.schema(req.database),
+          as: "createdBy",
+          attributes: ["id", "name", "email", "active", "profileImage"],
+        },
+      ],
     });
 
     return res.status(200).json(locators);
@@ -265,7 +272,7 @@ const createObjectLog = async (req, res, id, logs = []) => {
     // if (error) throw new Error(error.details[0].message);
 
     const payload = tempLogs.map((el) => {
-      return { log: req.user.name + " " + el, objectId };
+      return { log: el, objectId, createdByUser: req.user.id };
     });
     await ObjectLog.schema(req.database).bulkCreate(payload);
     if (logs.length == 0) return res.status(201);

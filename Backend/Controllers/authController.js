@@ -115,7 +115,7 @@ const login = async (req, res) => {
     });
 
     let customerAdmin = email == customer.tenantName;
-    let tokenData = { id, email, tenant: customer.tenantName, name };
+    let tokenData = { id, email, tenant: customer.tenantName };
     const accessToken = await createToken(
       { ...tokenData, customerAdmin, permissions: allPermissions },
       process.env.JWT_ACCESS_SECRET,

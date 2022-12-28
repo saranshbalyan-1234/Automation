@@ -29,16 +29,18 @@ const UserAvatar = ({ userList, user, size = "small", self, log }) => {
           title={
             <div
               style={{
-                display: "flex",
                 gap: "10px",
                 flexWrap: "wrap",
                 marginRight: 60,
               }}
             >
-              {userData.name}
+              <div>
+                <b>User Details</b>
+              </div>
+              <div> Name: {userData.name}</div>
             </div>
           }
-          description={userData.email}
+          description={<div>Email: {userData.email}</div>}
         />
       </Badge.Ribbon>
     );
