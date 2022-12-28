@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Table, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-import { deleteLocator, createObjectLogs } from "../../Redux/Actions/object";
+import { deleteLocator } from "../../Redux/Actions/object";
 export const Locators = ({
   currentObjectId,
   locators,
@@ -10,13 +10,7 @@ export const Locators = ({
   history = false,
 }) => {
   const handleDeleteLocator = async (id, name, type) => {
-    const result = await deleteLocator(id);
-
-    if (result) {
-      createObjectLogs(currentObjectId, [
-        `Deleted the "${type}" locator "${name}"`,
-      ]);
-    }
+    return await deleteLocator(id, name, type);
   };
   const columns = [
     {

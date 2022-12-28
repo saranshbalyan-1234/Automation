@@ -23,8 +23,8 @@ export default function ActivityLog({ logs = [] }) {
         >
           <div
             style={{
-              height: 12,
-              width: 12,
+              height: 10,
+              width: 10,
               borderRadius: "100%",
               background: getColor(text),
             }}
