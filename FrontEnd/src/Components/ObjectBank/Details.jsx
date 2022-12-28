@@ -4,10 +4,11 @@ import Locators from "./Locators";
 import { useParams } from "react-router-dom";
 import { Button, Card, Typography, Tag } from "antd";
 import { getObjectDetailsById, editObject } from "../../Redux/Actions/object";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined } from "@ant-design/icons";
 import AddLocatorsModal from "./AddLocatorsModal";
 import UserAvatar from "../Common/Avatar";
 import moment from "moment";
+import AddEditObjectModal from "./AddEditObjectModal";
 const { Meta } = Card;
 const { Title } = Typography;
 const ObjectDetails = ({
@@ -15,10 +16,13 @@ const ObjectDetails = ({
   getObjectDetailsById,
   newObject,
   history = false,
+  loading,
 }) => {
   const { objectId } = useParams();
   const [currentObject, setCurrentObject] = useState({});
   const [addLocatorModal, setAddLocatorModal] = useState(false);
+  const [addEditModal, setAddEditModal] = useState(false);
+  const [editData, setEditData] = useState({});
 
   useEffect(() => {
     if (history) {
@@ -34,31 +38,58 @@ const ObjectDetails = ({
   useEffect(() => {
     history === false && setCurrentObject(object);
     // eslint-disable-next-line
-  }, [object?.locators]);
+  }, [object]);
 
   return (
     <div style={{ paddingTop: 20 }}>
       {currentObject && (
         <>
           <Card>
-            <Meta
-              title={
-                <div style={{ display: "flex", gap: 20 }}>
-                  <Title style={{ textTransform: "capitalize" }} level={3}>
-                    {`Object: ${currentObject.name}`}
-                  </Title>
-                  <div style={{ color: "black" }}>
-                    Created On &nbsp;
-                    {moment(currentObject.createdAt).format("DD/MM/YY")} By
-                    &nbsp;
-                    {currentObject.createdBy && (
-                      <UserAvatar user={currentObject.createdBy.id} />
-                    )}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+              }}
+            >
+              <Meta
+                title={
+                  <div style={{ display: "flex", gap: 20 }}>
+                    <Title style={{ textTransform: "capitalize" }} level={3}>
+                      {`Object: ${currentObject.name}`}
+                    </Title>
+                    <div style={{ color: "black" }}>
+                      Created On &nbsp;
+                      {moment(currentObject.createdAt).format("DD/MM/YY")} By
+                      &nbsp;
+                      {currentObject.createdBy && (
+                        <UserAvatar user={currentObject.createdBy.id} />
+                      )}
+                    </div>
                   </div>
-                </div>
-              }
-              description={<></>}
-            />
+                }
+                description={<></>}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 25,
+                }}
+              >
+                <Button
+                  type="primary"
+                  ghost
+                  onClick={() => {
+                    setEditData(currentObject);
+                    setAddEditModal(true);
+                  }}
+                >
+                  <EditOutlined />
+                  Edit Object Details
+                </Button>
+              </div>
+            </div>
             {currentObject.description && (
               <Meta
                 title="Description"
@@ -109,6 +140,16 @@ const ObjectDetails = ({
         <AddLocatorsModal
           visible={addLocatorModal}
           setVisible={setAddLocatorModal}
+        />
+      )}
+      {addEditModal && (
+        <AddEditObjectModal
+          visible={addEditModal}
+          setVisible={setAddEditModal}
+          edit={true}
+          editData={editData}
+          setEditData={setEditData}
+          loading={loading}
         />
       )}
     </div>

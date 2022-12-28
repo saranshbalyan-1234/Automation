@@ -81,7 +81,10 @@ const updateObject = async (req, res) => {
 
   try {
     const objectId = req.params.objectId;
-    const { error } = updateObjectValidation.validate({ name, testCaseId });
+    const { error } = updateObjectValidation.validate({
+      ...req.body,
+      objectId,
+    });
     if (error) throw new Error(error.details[0].message);
 
     const updatedObject = await Object.schema(req.database).update(req.body, {

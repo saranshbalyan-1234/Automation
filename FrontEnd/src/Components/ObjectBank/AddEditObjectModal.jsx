@@ -4,6 +4,7 @@ import ViewObjectModal from "../Common/TestStep/ViewObjectModal";
 import { connect } from "react-redux";
 import ReactQuill from "react-quill";
 import Loading from "../Common/Loading";
+import { editObject } from "../../Redux/Actions/object";
 const AddEditObjectModal = ({
   visible,
   setVisible,
@@ -13,15 +14,14 @@ const AddEditObjectModal = ({
   loading,
   edit = false,
   onSave,
-  onEdit,
-  name,
+  editObject,
 }) => {
   const [viewObjectModal, setViewObjectModal] = useState(false);
   const [object, setObject] = useState({});
   const onSubmit = async (data) => {
     let result = false;
     if (edit) {
-      result = await onEdit(data);
+      result = await editObject(data);
       setEditData({});
     } else {
       result = await onSave({
@@ -39,7 +39,7 @@ const AddEditObjectModal = ({
   return (
     <>
       <Modal
-        title={edit ? `Edit ${name}` : `Create New ${name}`}
+        title={edit ? `Edit Object` : `Create New Object`}
         open={visible}
         footer={false}
         onCancel={() => {
@@ -50,7 +50,7 @@ const AddEditObjectModal = ({
       >
         <Loading loading={loading}>
           <Form
-            name={name}
+            name={"Object Bank"}
             onFinish={onSubmit}
             labelCol={{ span: 7 }}
             wrapperCol={{ span: 16 }}
@@ -122,6 +122,6 @@ const AddEditObjectModal = ({
 const mapStateToProps = (state) => ({
   currentProjectId: state.projects.currentProject.id,
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = { editObject };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditObjectModal);
