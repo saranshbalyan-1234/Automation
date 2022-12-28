@@ -260,6 +260,7 @@ const createObjectLog = async (req, res, id, logs = []) => {
 
     // const { error } = idValidation.validate({ id: objectId });
     // if (error) throw new Error(error.details[0].message);
+
     const payload = tempLogs.map((el) => {
       return { log: req.user.name + " " + el, objectId };
     });

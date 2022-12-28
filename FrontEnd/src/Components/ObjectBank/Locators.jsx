@@ -2,8 +2,22 @@ import React from "react";
 import { connect } from "react-redux";
 import { Table, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-import { deleteLocator } from "../../Redux/Actions/object";
-export const Locators = ({ locators, deleteLocator, history = false }) => {
+import { deleteLocator, createObjectLogs } from "../../Redux/Actions/object";
+export const Locators = ({
+  currentObjectId,
+  locators,
+  deleteLocator,
+  history = false,
+}) => {
+  const handleDeleteLocator = async (id, name, type) => {
+    const result = await deleteLocator(id);
+
+    if (result) {
+      createObjectLogs(currentObjectId, [
+        `Deleted the "${type}" locator "${name}"`,
+      ]);
+    }
+  };
   const columns = [
     {
       title: "Type",
@@ -23,7 +37,7 @@ export const Locators = ({ locators, deleteLocator, history = false }) => {
             placement="left"
             title="Are you sure to remove this locator?"
             onConfirm={async () => {
-              await deleteLocator(record.id);
+              await handleDeleteLocator(record.id, record.locator, record.type);
             }}
             okText="Yes, Remove"
             cancelText="No"

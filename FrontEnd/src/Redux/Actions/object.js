@@ -112,6 +112,15 @@ export const getObjectLogsById = (id) => {
   };
 };
 
+export const createObjectLogs = async (id, logs) => {
+  try {
+    await axios.post(`/object/${id}/logs`, { logs });
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
 //locators
 
 export const getObjectLocator = (id) => {

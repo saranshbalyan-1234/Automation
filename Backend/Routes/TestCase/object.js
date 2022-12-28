@@ -35,12 +35,6 @@ Router.get(
 );
 
 Router.get(
-  "/:objectId/logs",
-  validatePermission("Test Case", "view"),
-  getObjectLogsByObjectId
-);
-
-Router.get(
   "/:objectId/locator",
   validatePermission("Test Case", "view"),
   getObjectLocatorsByObjectId
@@ -55,6 +49,11 @@ Router.post(
   "/:objectId/logs",
   validatePermission("Test Case", "edit"),
   createObjectLog
+);
+Router.get(
+  "/:objectId/logs",
+  validatePermission("Test Case", "view"),
+  getObjectLogsByObjectId
 );
 
 export default Router;
