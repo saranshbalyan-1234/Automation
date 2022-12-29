@@ -9,6 +9,7 @@ const Object = db.objects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const ReusableProcess = db.reusableProcess;
+const ReusableProcessLog = db.reusableProcessLogs;
 const saveReusableProcess = async (req, res) => {
   /*  #swagger.tags = ["Reusable Process"] 
      #swagger.security = [{"apiKeyAuth": []}]
@@ -192,6 +193,61 @@ const getTestStepByReusableProcess = async (req, res) => {
   }
 };
 
+const getReusableProcessLogsById = async (req, res) => {
+  /*  #swagger.tags = ["Reusable Process"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const reusableProcessId = req.params.reusableProcessId;
+
+    const { error } = idValidation.validate({ id: reusableProcessId });
+    if (error) throw new Error(error.details[0].message);
+
+    const locators = await ReusableProcessLog.schema(req.database).findAll({
+      where: {
+        testCaseId,
+      },
+      attributes: ["log", "createdAt"],
+      include: [
+        {
+          model: User.schema(req.database),
+          as: "createdBy",
+          attributes: ["id", "name", "email", "active", "profileImage"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
+
+    return res.status(200).json(locators);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+const createReusableProcessLog = async (req, res, id, logs = []) => {
+  /*  #swagger.tags = ["Reusable Process"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const testCaseId = req.params.testCaseId || id;
+    const tempLogs = req.body.logs || logs;
+
+    // const { error } = idValidation.validate({ id: objectId });
+    // if (error) throw new Error(error.details[0].message);
+
+    const payload = tempLogs.map((el) => {
+      return { log: el, testCaseId, createdByUser: req.user.id };
+    });
+    await ReusableProcessLog.schema(req.database).bulkCreate(payload);
+    if (logs.length == 0) return res.status(201);
+  } catch (err) {
+    if (logs.length == 0) getError(err, res);
+    else console.log(err);
+  }
+};
+
 export {
   saveReusableProcess,
   updateReusableProcess,
@@ -199,4 +255,6 @@ export {
   deleteReusableProcess,
   getReusableProcessDetailsById,
   getTestStepByReusableProcess,
+  createReusableProcessLog,
+  getReusableProcessLogsById,
 };

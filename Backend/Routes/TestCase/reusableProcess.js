@@ -6,6 +6,8 @@ import {
   deleteReusableProcess,
   getReusableProcessDetailsById,
   getTestStepByReusableProcess,
+  createReusableProcessLog,
+  getReusableProcessLogsById,
 } from "../../Controllers/TestCase/reusableProcessController.js";
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
@@ -34,6 +36,17 @@ Router.delete(
   "/:reusableProcessId",
   validatePermission("Test Case", "edit"),
   deleteReusableProcess
+);
+
+Router.post(
+  "/:reusableProcessId/logs",
+  validatePermission("Test Case", "edit"),
+  createReusableProcessLog
+);
+Router.get(
+  "/:reusableProcessId/logs",
+  validatePermission("Test Case", "view"),
+  getReusableProcessLogsById
 );
 
 export default Router;

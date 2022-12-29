@@ -11,6 +11,7 @@ import {
   DELETE_REUSABLE_STEP,
   EDIT_REUSABLE_STEP,
   EMPTY_REUSABLE_PROCESS,
+  GET_REUSABLE_PROCESS_LOGS,
 } from "../Actions/action-types";
 import { orderBy } from "lodash";
 const initState = {
@@ -63,6 +64,15 @@ const reusableProcessReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         currentReusableProcess: { ...state.currentReusableProcess, ...payload },
+        loading: false,
+      };
+    case GET_REUSABLE_PROCESS_LOGS:
+      return {
+        ...state,
+        currentReusableProcess: {
+          ...state.currentReusableProcess,
+          logs: payload,
+        },
         loading: false,
       };
     case GET_REUSABLE_PROCESS_STEPS_BY_ID:

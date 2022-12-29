@@ -388,7 +388,7 @@ const getTestCaseLogsById = async (req, res) => {
 };
 
 const createTestCaseLog = async (req, res, id, logs = []) => {
-  /*  #swagger.tags = ["Test Object"] 
+  /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 

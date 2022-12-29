@@ -79,7 +79,7 @@ function ReusableProcessTabs({
           <Tabs.TabPane tab="Test Steps" key="teststeps">
             {activeTab === "teststeps" && (
               <TestStep
-                reusableProcessId={reusableProcessId}
+                reusableProcess={currentReusableProcess}
                 deleteStep={deleteStep}
                 testSteps={testSteps}
               />

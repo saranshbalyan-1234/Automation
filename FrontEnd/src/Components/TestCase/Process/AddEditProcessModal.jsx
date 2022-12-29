@@ -38,7 +38,11 @@ const AddEditProcessModal = ({
     if (edit) {
       result = await editProcess({ data: data, processId: editData.id });
 
-      const logs = await getDetailsEditedLogs(editData, data, "process ");
+      const logs = await getDetailsEditedLogs(
+        editData,
+        data,
+        `process at position ${step} `
+      );
       logs.length > 0 && createTestCaseLogs(currentTestCaseId, logs);
       setEditData({});
     } else {
@@ -50,14 +54,14 @@ const AddEditProcessModal = ({
 
       if (addReusable) {
         const reusableName = reusableProcesses.find((el) => {
-          return el.id == data.reusableProcessId;
+          return el.id === data.reusableProcessId;
         })?.name;
         createTestCaseLogs(currentTestCaseId, [
-          `added new reusableProcess "${reusableName}" as process "${data.name}".`,
+          `added new reusableProcess "${reusableName}" as process "${data.name}" at position ${step}.`,
         ]);
       } else {
         createTestCaseLogs(currentTestCaseId, [
-          `added new process "${data.name}".`,
+          `added new process "${data.name}" at position ${step}.`,
         ]);
       }
       if (step === 1 && edit === false) setEdit(true);

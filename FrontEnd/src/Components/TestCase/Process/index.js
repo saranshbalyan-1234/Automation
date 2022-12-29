@@ -121,8 +121,8 @@ const Process = ({
               >
                 <TestStepTable
                   testSteps={item.testSteps}
-                  processId={item.id}
-                  reusableProcessId={item.reusableProcess?.id}
+                  process={item}
+                  reusableProcess={item.reusableProcess}
                   deleteStep={deleteStep}
                 />
               </Panel>

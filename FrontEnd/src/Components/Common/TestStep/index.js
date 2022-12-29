@@ -11,12 +11,7 @@ import {
 import ViewObjectModal from "./ViewObjectModal";
 import ViewParameterModal from "./ViewParameterModal";
 import ViewCommentModal from "./ViewCommentModal";
-const TestStepTable = ({
-  processId,
-  testSteps,
-  deleteStep,
-  reusableProcessId,
-}) => {
+const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [viewParameterModal, setViewParameterModal] = useState(false);
   const [parameters, setParameters] = useState([]);
@@ -34,8 +29,8 @@ const TestStepTable = ({
       render: (text, record) => (
         <div className="pointer">
           <StepMenu
-            processId={processId}
-            reusableProcessId={reusableProcessId}
+            processId={process?.id}
+            reusableProcessId={reusableProcess?.id}
             testStep={record}
           />
         </div>
@@ -154,8 +149,8 @@ const TestStepTable = ({
             placement="left"
             title="Are you sure to remove this step?"
             onConfirm={async () => {
-              if (processId)
-                await deleteStep(record.id, record.step, processId);
+              if (process?.id)
+                await deleteStep(record.id, record.step, process?.id);
               else deleteStep(record.id, record.step);
             }}
             okText="Yes, Remove"
@@ -199,8 +194,8 @@ const TestStepTable = ({
         <AddEditStepModal
           visible={addEditStepModal}
           setVisible={setAddEditStepModal}
-          processId={processId}
-          reusableProcessId={reusableProcessId}
+          process={process}
+          reusableProcess={reusableProcess}
           step={1}
           edit={edit}
           editData={editData}

@@ -25,8 +25,10 @@ export default function ActivityLog({ logs = [], loading }) {
         >
           <div
             style={{
-              height: 10,
-              width: 10,
+              minHeight: 10,
+              minWidth: 10,
+              maxHeight: 10,
+              maxWidth: 10,
               borderRadius: "100%",
               background: getColor(text),
             }}
@@ -39,7 +41,7 @@ export default function ActivityLog({ logs = [], loading }) {
       ),
     },
     {
-      title: "Time",
+      title: "Date & Time",
       dataIndex: "executedBy",
       render: (_, record) => (
         <div>{moment(record.createdAt).format("DD/MM/YY h:mm:ss a")}</div>
@@ -51,11 +53,11 @@ export default function ActivityLog({ logs = [], loading }) {
   const getColor = (log) => {
     const text = log.toLowerCase();
     return text.includes("added") || text.includes("created")
-      ? "green"
+      ? "#87bc45"
       : text.includes("deleted") || text.includes("removed")
-      ? "red"
+      ? "#ea5545"
       : text.includes("updated") || text.includes("edited")
-      ? "#f7a705"
+      ? "#ef9b20"
       : "";
   };
   return (

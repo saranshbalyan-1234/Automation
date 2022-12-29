@@ -2,11 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Form, Modal, Button, Select, Switch } from "antd";
 import { connect } from "react-redux";
 import { addProcess } from "../../../Redux/Actions/testCase";
-import { addStep, editStep } from "../../../Redux/Actions/testCase";
+import {
+  addStep,
+  editStep,
+  createTestCaseLogs,
+} from "../../../Redux/Actions/testCase";
+import { getDetailsEditedLogs } from "../../../Utils/logs";
 import { getObjectByProject } from "../../../Redux/Actions/object";
 import {
   addReusableStep,
   editReusableStep,
+  createReusableProcessLogs,
 } from "../../../Redux/Actions/reusableProcess";
 import AddEditObjectModal from "../../ObjectBank/AddEditObjectModal";
 import axios from "axios";
@@ -27,15 +33,17 @@ const AddEditStepModal = ({
   step,
   addStep,
   addReusableStep,
-  processId,
-  reusableProcessId,
+  process,
+  reusableProcess,
   currentProjectId,
   objectList,
   getObjectByProject,
   objectLoading,
   saveObject,
   setEdit = () => {},
+  currentTestCaseId,
 }) => {
+  console.log("saransh", process);
   const [actionEvent, setActionEvent] = useState([]);
   const [currentEvent, setCurrentEvent] = useState({});
   const [addObjectModal, setAddObjectModal] = useState(false);
@@ -144,7 +152,7 @@ const AddEditStepModal = ({
     }
 
     if (edit) {
-      if (reusableProcessId && !processId) {
+      if (reusableProcess?.id && !process?.id) {
         result = await editReusableStep({
           data: payload,
           stepId: editData.id,
@@ -153,32 +161,46 @@ const AddEditStepModal = ({
         result = await editStep({
           data: payload,
           stepId: editData.id,
-          reusableProcessId,
-          processId,
+          reusableProcessId: reusableProcess?.id,
+          processId: process?.id,
         });
+        // const logs = await getDetailsEditedLogs(editData, payload, "step ");
+        // logs.length > 0 && createTestCaseLogs(currentTestCaseId, logs);
       }
       setEditData({});
     } else {
-      if (reusableProcessId && !processId) {
+      if (reusableProcess?.id && !process?.id) {
         result = await addReusableStep({
           ...payload,
-          reusableProcessId,
+          reusableProcessId: reusableProcess.id,
           step,
         });
+        createReusableProcessLogs(reusableProcess?.id, [
+          `added new step at position ${step}`,
+        ]);
       } else {
-        if (reusableProcessId && processId) {
+        if (reusableProcess?.id && process?.id) {
           result = await addStep({
             ...payload,
-            reusableProcessId,
+            reusableProcessId: reusableProcess.id,
             step,
-            reusableId: processId,
+            reusableId: process?.id,
           });
+          createReusableProcessLogs(reusableProcess.id, [
+            `added new step at position ${step}`,
+          ]);
+          createTestCaseLogs(currentTestCaseId, [
+            `added new step at position ${step} in reusableProcess "${reusableProcess.name}" or process "${process.name}"`,
+          ]);
         } else {
           result = await addStep({
             ...payload,
-            processId,
+            processId: process?.id,
             step,
           });
+          createTestCaseLogs(currentTestCaseId, [
+            `added new step at position ${step} in process "${process.name}"`,
+          ]);
         }
       }
     }
@@ -344,6 +366,7 @@ const AddEditStepModal = ({
 const mapStateToProps = (state) => ({
   loading: state.testCase.loading,
   currentProjectId: state.projects.currentProject.id,
+  currentTestCaseId: state.testCase.currentTestCase.id,
   objectList: state.objectBank.data,
   objectLoading: state.objectBank.loading,
 });
