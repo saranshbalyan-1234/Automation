@@ -9,6 +9,7 @@ import {
 import { getReusableProcessByProject } from "../../../Redux/Actions/reusableProcess";
 import ReactQuill from "react-quill";
 import Loading from "../../Common/Loading";
+import { getDetailsEditedLogs } from "../../../Utils/logs";
 const { Option } = Select;
 const AddEditProcessModal = ({
   visible,
@@ -36,6 +37,9 @@ const AddEditProcessModal = ({
     let result = false;
     if (edit) {
       result = await editProcess({ data: data, processId: editData.id });
+
+      const logs = await getDetailsEditedLogs(editData, data, "process ");
+      logs.length > 0 && createTestCaseLogs(currentTestCaseId, logs);
       setEditData({});
     } else {
       result = await addProcess({

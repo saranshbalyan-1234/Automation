@@ -1,5 +1,5 @@
 import { difference } from "lodash";
-export const getDetailsEditedLogs = async (oldData, newData) => {
+export const getDetailsEditedLogs = async (oldData, newData, name = "") => {
   //   console.log("saransh", oldData, newData);
   let messages = [];
   await Object.keys(oldData).forEach((key) => {
@@ -10,9 +10,14 @@ export const getDetailsEditedLogs = async (oldData, newData) => {
           (tagDifference.length > 0 ||
             oldData["tags"]?.length !== newData["tags"]?.length) &&
             messages.push(
-              `updated the "${key}" to "${newData[key].join(", ")}"`
+              `updated the ${name}${key} from "${oldData[key]}" to "${newData[
+                key
+              ].join(", ")}"`
             );
-        } else messages.push(`updated the "${key}" to "${newData[key]}"`);
+        } else
+          messages.push(
+            `updated the ${name}${key} from "${oldData[key]}" to "${newData[key]}"`
+          );
       }
   });
   return messages;
