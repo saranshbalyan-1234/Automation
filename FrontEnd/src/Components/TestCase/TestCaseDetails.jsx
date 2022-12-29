@@ -4,7 +4,7 @@ import moment from "moment";
 import { EditOutlined } from "@ant-design/icons";
 import UserAvatar from "../Common/Avatar";
 import AddEditModal from "../Common/AddEditModal";
-import ColumnGraph from "../Common/ColumnGraph";
+import ColumnGraph from "../Common/Graph/ColumnGraph";
 import Loading from "../Common/Loading";
 import axios from "axios";
 import { useParams } from "react-router-dom";

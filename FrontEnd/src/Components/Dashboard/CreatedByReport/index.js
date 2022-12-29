@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, Select } from "antd";
-import ColumnGraph from "../../Common/ColumnGraph";
+import ColumnGraph from "../../Common/Graph/ColumnGraph";
 import { EditOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Loading from "../../Common/Loading";

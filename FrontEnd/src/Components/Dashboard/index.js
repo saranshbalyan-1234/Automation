@@ -8,7 +8,7 @@ import {
   ClockCircleOutlined,
 } from "@ant-design/icons";
 import styled from "styled-components";
-import ColumnGraph from "../Common/ColumnGraph";
+import ColumnGraph from "../Common/Graph/ColumnGraph";
 import Loading from "../Common/Loading";
 import ExecutedByReport from "./ExecutedByReport";
 import CreatedByReport from "./CreatedByReport";

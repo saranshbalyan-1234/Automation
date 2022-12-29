@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Card, Tag, Select } from "antd";
 import axios from "axios";
 import { ClockCircleOutlined } from "@ant-design/icons";
-import ColumnGraph from "../../Common/ColumnGraph";
+import ColumnGraph from "../../Common/Graph/ColumnGraph";
 import Loading from "../../Common/Loading";
 import DetailedExecutionReportModal from "./DetailedExecutionReportModal";
 export const ExecutedByReport = ({ user, team }) => {

@@ -18,7 +18,7 @@ import { getProjectById, removeMember } from "../../Redux/Actions/project";
 import AddEditProjectModal from "./AddEditProjectModal";
 import AddProjectMemberModal from "./AddProjectMemberModal";
 import MemberBadge from "../Common/MemberBadge";
-import ColumnGraph from "../Common/ColumnGraph";
+import ColumnGraph from "../Common/Graph/ColumnGraph";
 import Loading from "../Common/Loading";
 const { Title } = Typography;
 const { Meta } = Card;
