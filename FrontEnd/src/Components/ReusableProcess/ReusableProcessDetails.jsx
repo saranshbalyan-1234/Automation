@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Typography, Card, Button } from "antd";
+import { Typography, Card, Button, Tag } from "antd";
 import moment from "moment";
 import { EditOutlined } from "@ant-design/icons";
 import UserAvatar from "../Common/Avatar";
@@ -38,7 +38,7 @@ const ReusableProcessDetails = ({
                     Created On &nbsp;
                     {moment(details.createdAt).format("DD/MM/YY")} By &nbsp;
                     {details.createdBy && (
-                      <UserAvatar user={details.createdBy} />
+                      <UserAvatar user={details.createdBy.id} />
                     )}
                   </div>
                 </div>
@@ -56,7 +56,7 @@ const ReusableProcessDetails = ({
                     <Card>
                       <Meta
                         title="Total Steps"
-                        description={details.totalSteps || "0"}
+                        description={details.totalSteps || "N/A"}
                       />
                     </Card>
                   </div>
@@ -104,6 +104,16 @@ const ReusableProcessDetails = ({
               />
             </div>
           )}
+          <div style={{ display: "flex", gap: 10, maxWidth: 500 }}>
+            <div>Tags:</div>
+            <div>
+              {details.tags?.length > 0
+                ? details.tags.map((el) => {
+                    return <Tag>{el}</Tag>;
+                  })
+                : "N/A"}
+            </div>
+          </div>
         </Card>
       </Loading>
       {addEditModal && (

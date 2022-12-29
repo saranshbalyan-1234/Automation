@@ -1,11 +1,12 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-import { projectByIdValidation } from "../../Utils/Validations/project.js";
+import { idValidation } from "../../Utils/Validations/index.js";
 import {
-  saveTestCaseValidation,
   updateTestCaseValidation,
-  testCaseIdValidation,
+  saveProcesValidation,
+  updateProcessValidation,
 } from "../../Utils/Validations/testCase.js";
+import { nameDesTagPrjValidation } from "../../Utils/Validations/index.js";
 import { Op } from "sequelize";
 const TestCase = db.testCases;
 const User = db.users;
@@ -14,17 +15,23 @@ const Object = db.objects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const ReusableProcess = db.reusableProcess;
+const TestCaseLog = db.testCaseLogs;
 const saveTestCase = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
   try {
-    const { error } = saveTestCaseValidation.validate(req.body);
+    const { error } = nameDesTagPrjValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
     const payload = { ...req.body };
     payload.createdByUser = req.user.id;
     const data = await TestCase.schema(req.database).create(payload);
+
+    createTestCaseLog(req, res, data.id, [
+      `created the TestCase "${req.body.name}".`,
+    ]);
+
     return res
       .status(200)
       .json({ ...data.dataValues, message: "TestCase created successfully!" });
@@ -39,13 +46,16 @@ const updateTestCase = async (req, res) => {
   */
 
   try {
-    const name = req.body.name;
+    // const { name, tags } = req.body;
     const testCaseId = req.params.testCaseId;
-    const { error } = updateTestCaseValidation.validate({ name, testCaseId });
+    const { error } = updateTestCaseValidation.validate({
+      ...req.body,
+      testCaseId,
+    });
     if (error) throw new Error(error.details[0].message);
 
     const updatedTestCase = await TestCase.schema(req.database).update(
-      { name },
+      req.body,
       {
         where: {
           id: testCaseId,
@@ -72,14 +82,14 @@ const getAllTestCase = async (req, res) => {
 
   try {
     const projectId = req.headers["x-project-id"];
-    const { error } = projectByIdValidation.validate({ projectId });
+    const { error } = idValidation.validate({ id: projectId });
     if (error) throw new Error(error.details[0].message);
 
     const testCases = await TestCase.schema(req.database).findAll({
       where: {
         projectId,
       },
-      attributes: ["id", "name", "updatedAt"],
+      attributes: ["id", "name", "updatedAt", "createdAt", "tags"],
       include: [
         {
           model: User.schema(req.database),
@@ -102,7 +112,7 @@ const deleteTestCase = async (req, res) => {
 
   try {
     const testCaseId = req.params.testCaseId;
-    const { error } = testCaseIdValidation.validate({ testCaseId });
+    const { error } = idValidation.validate({ id: testCaseId });
     if (error) throw new Error(error.details[0].message);
 
     const deletedTestCase = await TestCase.schema(req.database).destroy({
@@ -125,14 +135,22 @@ const getTestCaseDetailsById = async (req, res) => {
 
   try {
     const testCaseId = req.params.testCaseId;
-    // const { error } = projectByIdValidation.validate({ projectId });
-    // if (error) throw new Error(error.details[0].message);
+
+    const { error } = idValidation.validate({ id: testCaseId });
+    if (error) throw new Error(error.details[0].message);
 
     const testCase = await TestCase.schema(req.database).findOne({
       where: {
         id: testCaseId,
       },
-      attributes: ["id", "name", "createdAt", "updatedAt", "description"],
+      attributes: [
+        "id",
+        "name",
+        "createdAt",
+        "updatedAt",
+        "description",
+        "tags",
+      ],
       include: [
         {
           model: User.schema(req.database),
@@ -167,7 +185,7 @@ const getTestCaseDetailsById = async (req, res) => {
     return res.status(200).json({
       ...testCase.dataValues,
       reusableProcessCount,
-      processCount,
+      totalProcess: totalProcess.length,
       stepCount,
     });
   } catch (err) {
@@ -185,6 +203,9 @@ const getTestStepByTestCase = async (req, res) => {
     // if (error) throw new Error(error.details[0].message);
 
     const testCaseId = req.params.testCaseId;
+    const { error } = idValidation.validate({ id: testCaseId });
+    if (error) throw new Error(error.details[0].message);
+
     const data = await Process.schema(req.database).findAll({
       where: { testCaseId },
       include: [
@@ -236,8 +257,8 @@ const saveProcess = async (req, res) => {
   */
 
   try {
-    // const { error } = nameValidation.validate(req.body);
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = saveProcesValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
 
     const { testCaseId, step } = req.body;
 
@@ -259,7 +280,6 @@ const saveProcess = async (req, res) => {
         },
       ],
     });
-
     return res.status(200).json(process);
   } catch (err) {
     getError(err, res);
@@ -273,8 +293,11 @@ const updateProcess = async (req, res) => {
 
   try {
     const processId = req.params.processId;
-    // const { error } = updateTestCaseValidation.validate({ name, testCaseId });
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = updateProcessValidation.validate({
+      ...req.body,
+      processId,
+    });
+    if (error) throw new Error(error.details[0].message);
 
     const updatedProcess = await Process.schema(req.database).update(req.body, {
       where: {
@@ -300,8 +323,10 @@ const deleteProcess = async (req, res) => {
 
   try {
     const processId = req.params.processId;
-    // const { error } = testCaseIdValidation.validate({ testCaseId });
-    // if (error) throw new Error(error.details[0].message);
+
+    const { error } = idValidation.validate({ id: processId });
+    if (error) throw new Error(error.details[0].message);
+
     const deletingProcess = await Process.schema(req.database).findByPk(
       processId
     );
@@ -330,6 +355,61 @@ const deleteProcess = async (req, res) => {
   }
 };
 
+const getTestCaseLogsById = async (req, res) => {
+  /*  #swagger.tags = ["Test Case"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const testCaseId = req.params.testCaseId;
+
+    const { error } = idValidation.validate({ id: testCaseId });
+    if (error) throw new Error(error.details[0].message);
+
+    const locators = await TestCaseLog.schema(req.database).findAll({
+      where: {
+        testCaseId,
+      },
+      attributes: ["log", "createdAt"],
+      include: [
+        {
+          model: User.schema(req.database),
+          as: "createdBy",
+          attributes: ["id", "name", "email", "active", "profileImage"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
+
+    return res.status(200).json(locators);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+const createTestCaseLog = async (req, res, id, logs = []) => {
+  /*  #swagger.tags = ["Test Case"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const testCaseId = req.params.testCaseId || id;
+    const tempLogs = req.body.logs || logs;
+
+    // const { error } = idValidation.validate({ id: objectId });
+    // if (error) throw new Error(error.details[0].message);
+
+    const payload = tempLogs.map((el) => {
+      return { log: el, testCaseId, createdByUser: req.user.id };
+    });
+    await TestCaseLog.schema(req.database).bulkCreate(payload);
+    if (logs.length == 0) return res.status(201);
+  } catch (err) {
+    if (logs.length == 0) getError(err, res);
+    else console.log(err);
+  }
+};
+
 export {
   saveTestCase,
   updateTestCase,
@@ -340,4 +420,6 @@ export {
   saveProcess,
   updateProcess,
   deleteProcess,
+  getTestCaseLogsById,
+  createTestCaseLog,
 };

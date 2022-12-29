@@ -33,7 +33,7 @@ const Details = ({ loading, details, name, onEdit = () => {} }) => {
                     Created On &nbsp;
                     {moment(details.createdAt).format("DD/MM/YY")} By &nbsp;
                     {details.createdBy && (
-                      <UserAvatar user={details.createdBy} />
+                      <UserAvatar user={details.createdBy.id} />
                     )}
                   </div>
                 </div>
@@ -74,6 +74,16 @@ const Details = ({ loading, details, name, onEdit = () => {} }) => {
               }
             />
           )}
+          <div style={{ display: "flex", gap: 10, maxWidth: 500 }}>
+            <div>Tags:</div>
+            <div>
+              {details.tags?.length > 0
+                ? details.tags.map((el) => {
+                    return <Tag>{el}</Tag>;
+                  })
+                : "N/A"}
+            </div>
+          </div>
         </Card>
       </Loading>
       {addEditModal && (

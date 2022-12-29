@@ -9,17 +9,17 @@ const Router = express.Router();
 
 Router.delete(
   "/:executionHistoryId",
-  validatePermission("testcase", "delete"),
+  validatePermission("Test Case", "delete"),
   deleteExecutionHistory
 );
 Router.get(
   "/:executionHistoryId",
-  validatePermission("testcase", "delete"),
+  validatePermission("Test Case", "view"),
   getExecutionHistoryById
 );
 Router.get(
   "/testCase/:testCaseId",
-  validatePermission("testcase", "add"),
+  validatePermission("Test Case", "view"),
   getAllExecutionHistoryByTestCase
 );
 

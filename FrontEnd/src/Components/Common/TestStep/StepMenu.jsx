@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Dropdown, Menu } from "antd";
 import { PlusOutlined, SettingOutlined } from "@ant-design/icons";
 import AddEditStepModal from "./AddEditStepModal";
+
 export default function StepMenu({ processId, testStep, reusableProcessId }) {
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [step, setStep] = useState(0);
   const menu = (
     <Menu
-      theme="dark"
+      dark
       items={[
         {
           label: (

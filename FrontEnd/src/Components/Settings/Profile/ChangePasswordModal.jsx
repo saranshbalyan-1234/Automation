@@ -21,10 +21,10 @@ const ChangePasswordModal = ({
     <Modal
       centered
       title="Change Password"
-      visible={changePasswordModal}
+      open={changePasswordModal}
       onCancel={() => setChangePasswordModal(false)}
       footer={false}
-      closable={false}
+      // closable={false}
     >
       <Loading loading={loading}>
         <Form
@@ -44,7 +44,7 @@ const ChangePasswordModal = ({
               },
             ]}
           >
-            <Input.Password />
+            <Input.Password showCount maxLength={15} />
           </Form.Item>
 
           <Form.Item
@@ -57,7 +57,7 @@ const ChangePasswordModal = ({
               },
             ]}
           >
-            <Input.Password />
+            <Input.Password showCount maxLength={15} />
           </Form.Item>
 
           <Form.Item

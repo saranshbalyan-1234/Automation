@@ -9,9 +9,6 @@
 .space-between {
   justify-content: space-between;
 }
-/* .ant-modal-content {
-  border-radius: 12px;
-} */
 
 .star::before {
   display: inline-block;
@@ -21,4 +18,35 @@
   font-family: SimSun, sans-serif;
   line-height: 1;
   content: "*";
+}
+
+body {
+  margin: 0px;
+}
+
+h3,
+h4,
+h5 {
+  margin-top: 0px;
+}
+
+.ant-menu-item,
+.ant-menu-title-content {
+  transition: none !important;
+}
+
+.show-boundary:hover {
+  border: 1px solid grey;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.show-boundary {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.profileMenu:hover {
+  background-color: #021d36;
+  border-radius: 15px;
 }

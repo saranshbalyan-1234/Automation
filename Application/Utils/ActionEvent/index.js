@@ -1,8 +1,43 @@
 const chromeDriver = require("selenium-webdriver");
-const { findByLocator, takeScreenshot } = require("./utils");
+const { findByLocator, handleActionEventError } = require("./utils");
 const { By } = chromeDriver;
-const moment = require("moment");
-const { createFolder } = require("../../Controllers/awsController");
+const {
+  ConvertToString,
+  ConvertToNumber,
+  ConvertToDateTime,
+  ConvertToInteger,
+  ConvertToFloat,
+  ConvertToHex,
+} = require("./convert");
+const {
+  validateObjectTextIncludes,
+  validateObjectTextNotIncludes,
+  validateObjectTextEquals,
+  validateObjectEnabled,
+  validateObjectSelected,
+} = require("./validate");
+const {
+  refreshPage,
+  backPage,
+  forwardPage,
+  newTab,
+  newWindow,
+  closeBrowser,
+  maximizeBrowser,
+} = require("./browser");
+const {
+  enterDateTime,
+  getCurrentDateTime,
+  getDateTime,
+  addDateTime,
+  subtractDateTime,
+} = require("./dateTime");
+const {
+  collectObjectText,
+  collectObjectCSSProperty,
+  collectObjectProperty,
+  scrollToObject,
+} = require("./object");
 const {
   implicitWait,
   waitUntilObjectLocated,
@@ -23,10 +58,28 @@ const {
   waitUntilUrlContains,
   waitUntilUrlIs,
   waitUntilUrlMatches,
-  waitUntilAlertPresent,
   waitUntilAbleToSwitchToFrame,
+  waitUntilObjectClickable,
+  waitUntilObjectNotClickable,
 } = require("./wait");
-const { If, Else, EndCondition } = require("./ifElse");
+const {
+  waitUntilAlertPresent,
+  acceptAlert,
+  dismissAlert,
+  enterTextInAlert,
+  getAlertMessage,
+} = require("./alert");
+const {
+  If,
+  Else,
+  EndCondition,
+  IfObjectVisible,
+  IfObjectTextIncludes,
+  IfObjectTextNotIncludes,
+  IfObjectTextEquals,
+  ifObjectEnabled,
+  ifObjectSelected,
+} = require("./ifElse");
 
 const {
   updateStepResult,
@@ -41,300 +94,930 @@ const handleStep = async (
   stepHistoryId,
   processResult,
   executionHistory,
-  canCreateS3Folder,
   stepExtra
 ) => {
   switch (step.actionEvent) {
     case "Launch Website":
-      await launchWebsite(step, driver, req, stepHistoryId, processResult);
+      return await launchWebsite(
+        step,
+        driver,
+        req,
+        stepHistoryId,
+        processResult,
+        executionHistory
+      );
       break;
     case "Click":
-      await click(step, driver, processResult, req, stepHistoryId);
-      break;
-    case "Double Click":
-      await doubleClick(step, driver, processResult, req, stepHistoryId);
-      break;
-    case "Right Click":
-      await rightClick(step, driver, processResult, req, stepHistoryId);
-      break;
-    case "Enter Text":
-      await enterText(step, driver, processResult, req, stepHistoryId);
-      break;
-    case "Clear Input":
-      await clearInput(step, driver, processResult, req, stepHistoryId);
-      break;
-    case "Enter Password":
-      await enterPassword(step, driver, processResult, req, stepHistoryId);
-      break;
-    case "Press Button":
-      await pressButton(step, driver, processResult, req, stepHistoryId);
-      break;
-    case "Maximize Browser":
-      await await maximizeBrowser(driver, processResult, req, stepHistoryId);
-      break;
-    case "Close Browser":
-      await closeBrowser(driver, processResult, req, stepHistoryId);
-    case "Wait":
-      await implicitWait(step, driver, processResult, req, stepHistoryId);
-      break;
-    case "Wait Until Object Located":
-      await waitUntilObjectLocated(
+      return await click(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Double Click":
+      return await doubleClick(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Right Click":
+      return await rightClick(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Enter Text":
+      return await enterText(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Enter Date Time":
+      return await enterDateTime(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Clear Input":
+      return await clearInput(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Enter Password":
+      return await enterPassword(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Press Button":
+      return await pressButton(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Maximize Browser":
+      return await await maximizeBrowser(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Close Browser":
+      return await closeBrowser(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+    case "Wait":
+      return await implicitWait(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Wait Until Object Located":
+      return await waitUntilObjectLocated(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Wait Until Object Clickable":
+      return await waitUntilObjectClickable(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Wait Until Object Not Clickable":
+      return await waitUntilObjectNotClickable(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Objects Located":
-      await waitUntilObjectsLocated(
+      return await waitUntilObjectsLocated(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Object Enabled":
-      await waitUntilObjectEnabled(
+      return await waitUntilObjectEnabled(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Object Disabled":
-      await waitUntilObjectDisabled(
+      return await waitUntilObjectDisabled(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Object Selected":
-      await waitUntilObjectSelected(
+      return await waitUntilObjectSelected(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Object Not Selected":
-      await waitUntilObjectNotSelected(
+      return await waitUntilObjectNotSelected(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Object Visible":
-      await waitUntilObjectVisible(
+      return await waitUntilObjectVisible(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Object Not Visible":
-      await waitUntilObjectNotVisible(
+      return await waitUntilObjectNotVisible(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Alert Present":
-      await waitUntilAlertPresent(
+      return await waitUntilAlertPresent(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Accept Alert":
+      return await acceptAlert(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Dismiss Alert":
+      return await dismissAlert(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Get Alert Message":
+      return await getAlertMessage(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        output
+      );
+      break;
+    case "Enter Text In Alert":
+      return await enterTextInAlert(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Object Text Contains":
-      await waitUntilObjectTextContains(
+      return await waitUntilObjectTextContains(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Object Text Is":
-      await waitUntilObjectTextIs(
+      return await waitUntilObjectTextIs(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Object Text Matches":
-      await waitUntilObjectTextMatches(
+      return await waitUntilObjectTextMatches(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Title Contains":
-      await waitUntilTitleContains(
+      return await waitUntilTitleContains(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Title Is":
-      await waitUntilTitleIs(step, driver, processResult, req, stepHistoryId);
-      break;
-    case "Wait Until Title Matches":
-      await waitUntilTitleMatches(
+      return await waitUntilTitleIs(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Wait Until Title Matches":
+      return await waitUntilTitleMatches(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Url Contains":
-      await waitUntilUrlContains(
+      return await waitUntilUrlContains(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Url Is":
-      await waitUntilUrlIs(step, driver, processResult, req, stepHistoryId);
-      break;
-    case "Wait Until Url Matches":
-      await waitUntilUrlMatches(
+      return await waitUntilUrlIs(
         step,
         driver,
         processResult,
         req,
         stepHistoryId
+      );
+      break;
+    case "Wait Until Url Matches":
+      return await waitUntilUrlMatches(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Object Staleness Of":
-      await waitUntilObjectStalenessOf(
+      return await waitUntilObjectStalenessOf(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Wait Until Able To Switch Frame":
-      await waitUntilAbleToSwitchToFrame(
+      return await waitUntilAbleToSwitchToFrame(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Refresh Page":
-      await refreshPage(driver, processResult, req, stepHistoryId);
+      return await refreshPage(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Back Page":
+      return await backPage(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Forward Page":
+      return await forwardPage(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "New Tab":
+      return await newTab(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "New Window":
+      return await newWindow(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
       break;
     case "Generate Random Number":
-      await generateRandomNumber(
+      return await generateRandomNumber(
         step,
         output,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Get Page Title":
-      await getPageTitle(
+      return await getPageTitle(
         step,
         driver,
         output,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Get Page URL":
+      return await getPageUrl(
+        step,
+        driver,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Console Log":
-      await console.log(
+      return await printLog(
         step.testParameters.Value,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Scroll To Object":
-      await scrollToObject(step, driver, processResult, req, stepHistoryId);
-      break;
-    case "Scroll To End":
-      await scrollToEnd(driver, processResult, req, stepHistoryId);
-      break;
-    case "Scroll To Top":
-      await scrollToTop(driver, processResult, req, stepHistoryId);
-      break;
-    case "Click By Javascript":
-      await clickByJs(step, driver, processResult, req, stepHistoryId);
-      break;
-    case "Click Link By Text":
-      await clickLinkByText(step, driver, processResult, req, stepHistoryId);
-      break;
-    case "Click Link By Partial Text":
-      await clickLinkByPartialText(
+      return await scrollToObject(
         step,
         driver,
         processResult,
         req,
-        stepHistoryId
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Scroll To End":
+      return await scrollToEnd(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Scroll To Top":
+      return await scrollToTop(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Click By Javascript":
+      return await clickByJs(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Click Link By Text":
+      return await clickLinkByText(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Click Link By Partial Text":
+      return await clickLinkByPartialText(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
       );
       break;
     case "Hover Mouse":
-      await hoverMouse(step, driver, processResult, req, stepHistoryId);
+      return await hoverMouse(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
       break;
-    case "Copy Test":
-      await copyText(step, output, processResult, req, stepHistoryId);
+    case "Copy Text":
+      return await copyText(
+        step,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Copy Substring":
+      return await copySubstring(
+        step,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
       break;
     case "Copy Password":
-      await copyPassword(step, output, processResult, req, stepHistoryId);
+      return await copyPassword(
+        step,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
       break;
     case "Combine String":
-      await combineString(step, output, processResult, req, stepHistoryId);
+      return await combineString(
+        step,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
       break;
     case "Get Current Date Time":
-      await getCurrentDateTime(step, output, processResult, req, stepHistoryId);
+      return await getCurrentDateTime(
+        step,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
       break;
     case "If":
-      await If(step, processResult, req, stepHistoryId, stepExtra);
+      return await If(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        stepExtra,
+        executionHistory
+      );
       break;
     case "Else If":
-      await If(step, processResult, req, stepHistoryId, stepExtra);
+      return await If(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        stepExtra,
+        executionHistory
+      );
+      break;
+    case "If Object Enabled":
+      return await ifObjectEnabled(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        stepExtra
+      );
+      break;
+    case "If Object Selected":
+      return await ifObjectSelected(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        stepExtra
+      );
       break;
     case "Else":
-      await Else(step, processResult, req, stepHistoryId, stepExtra);
+      return await Else(
+        processResult,
+        req,
+        stepHistoryId,
+        stepExtra,
+        executionHistory
+      );
       break;
     case "End Condition":
-      await EndCondition(step, processResult, req, stepHistoryId, stepExtra);
+      return await EndCondition(
+        processResult,
+        req,
+        stepHistoryId,
+        stepExtra,
+        executionHistory
+      );
+      break;
+    case "Collect Object Text":
+      return await collectObjectText(
+        step,
+        driver,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Collect Object CSS Property":
+      return await collectObjectCSSProperty(
+        step,
+        driver,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Collect Object Property":
+      return await collectObjectProperty(
+        step,
+        driver,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Convert To String":
+      return await ConvertToString(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        output
+      );
+      break;
+    case "Convert To Number":
+      return await ConvertToNumber(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Convert To DateTime":
+      return await ConvertToDateTime(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Convert To Integer":
+      return await ConvertToInteger(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Convert To Float":
+      return await ConvertToFloat(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Convert To Hex":
+      return await ConvertToHex(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Select Option By Value":
+      return await selectOptionByValue(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Select Option By Position":
+      return await selectOptionByPosition(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Switch To Frame":
+      return await switchToFrame(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Switch To Default Frame":
+      return await switchToDefaultFrame(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Collect Cell Value From Table":
+      return await collectCellValueFromTable(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        output
+      );
+      break;
+    case "Get Date Time":
+      return await getDateTime(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        output
+      );
+      break;
+    case "Add Date Time":
+      return await addDateTime(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        output
+      );
+      break;
+    case "Subtract Date Time":
+      return await subtractDateTime(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        output
+      );
+      break;
+    case "Upload File":
+      return await uploadFile(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "If Object Visible":
+      return await IfObjectVisible(step, driver, req, stepHistoryId, stepExtra);
+      break;
+    case "If Object Text Includes":
+      return await IfObjectTextIncludes(
+        step,
+        driver,
+        req,
+        stepHistoryId,
+        executionHistory,
+        stepExtra
+      );
+      break;
+    case "If Object Text Not Includes":
+      return await IfObjectTextNotIncludes(
+        step,
+        driver,
+        req,
+        stepHistoryId,
+        executionHistory,
+        stepExtra
+      );
+      break;
+    case "If Object Text Equals":
+      return await IfObjectTextEquals(
+        step,
+        driver,
+        req,
+        stepHistoryId,
+        executionHistory,
+        stepExtra
+      );
+      break;
+    case "Validate Object Text Includes":
+      return await validateObjectTextIncludes(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Validate Object Text Not Includes":
+      return await validateObjectTextNotIncludes(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Validate Object Text Equals":
+      return await validateObjectTextEquals(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Validate Object Selected":
+      return await validateObjectSelected(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Validate Object Enabled":
+      return await validateObjectEnabled(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Calculate And Store":
+      return await calculateAndStore(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        output
+      );
       break;
     default:
       break;
   }
-  if (step.screenshot) {
-    await createFolder(req.database, executionHistory.id);
-    canCreateS3Folder = false;
-    await takeScreenshot(driver, req, step, executionHistory);
-  }
-  return true;
+  // if (step.screenshot) {
+  //   await createFolder(req.database, executionHistory.id);
+  //   canCreateS3Folder = false;
+  //   await takeScreenshot(driver, req, step, executionHistory.id);
+  // }
 };
 
 const launchWebsite = async (
@@ -342,7 +1025,8 @@ const launchWebsite = async (
   driver,
   req,
   stepHistoryId,
-  processResult
+  processResult,
+  executionHistory
 ) => {
   console.log("Launching Website: " + step.testParameters.URL);
   try {
@@ -351,12 +1035,24 @@ const launchWebsite = async (
     else await driver.get("http://" + step.testParameters.URL);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
-const click = async (step, driver, processResult, req, stepHistoryId) => {
+const click = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
   console.log("Clicking");
   try {
     await driver
@@ -364,11 +1060,23 @@ const click = async (step, driver, processResult, req, stepHistoryId) => {
       .click();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
-const doubleClick = async (step, driver, processResult, req, stepHistoryId) => {
+const doubleClick = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
   console.log("Double Clicking");
   try {
     await driver
@@ -381,11 +1089,23 @@ const doubleClick = async (step, driver, processResult, req, stepHistoryId) => {
       .perform();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
-const hoverMouse = async (step, driver, processResult, req, stepHistoryId) => {
+const hoverMouse = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
   console.log("Hovering Mouse");
   try {
     const el = await driver.findElement(
@@ -394,11 +1114,23 @@ const hoverMouse = async (step, driver, processResult, req, stepHistoryId) => {
     await driver.actions().move({ origin: el, x: 0, y: 0 }).perform();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
-const rightClick = async (step, driver, processResult, req, stepHistoryId) => {
+const rightClick = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
   console.log("Right Clicking");
   try {
     await driver
@@ -411,88 +1143,115 @@ const rightClick = async (step, driver, processResult, req, stepHistoryId) => {
       .perform();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
-const enterText = async (step, driver, processResult, req, stepHistoryId) => {
-  console.log("Entering text " + text);
+const enterText = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Entering text ");
+  const text = step.testParameters.Text;
+  if (!text) {
+    console.log("No Text Found");
+    if (processResult.result) {
+      processResult.result = false;
+    }
+    return await updateStepResult(req, stepHistoryId, false);
+  }
+
   try {
-    const text = step.testParameters.Text;
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .sendKeys(text);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
-const enterPassword = async (step, driver, processResult, stepHistoryId) => {
+const enterPassword = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
   console.log("Entering Password");
   try {
     const password = step.testParameters.Password;
+    if (!password) {
+      console.log("No Password Found");
+      if (processResult.result) {
+        processResult.result = false;
+      }
+      return await updateStepResult(req, stepHistoryId, false);
+    }
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .sendKeys(password);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
-const pressButton = async (step, driver, processResult, req, stepHistoryId) => {
+const pressButton = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  const Button = step.testParameters.Button;
   console.log("pressing button " + Button);
   try {
-    const Button = step.testParameters.Button;
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .sendKeys(Key[Button]);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
-  }
-};
-const maximizeBrowser = async (driver, processResult, req, stepHistoryId) => {
-  console.log("Maximize Browser");
-  try {
-    await driver.manage().window().maximize();
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
-const closeBrowser = async (driver, processResult, req, stepHistoryId) => {
-  console.log("Browser Closed");
-  try {
-    await driver.quit();
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
-  }
-};
-
-const refreshPage = async (driver, processResult, req, stepHistoryId) => {
-  try {
-    await driver.navigate().refresh();
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
-  }
-};
 const generateRandomNumber = async (
   step,
   output,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   console.log("generating random number");
   try {
@@ -502,8 +1261,13 @@ const generateRandomNumber = async (
     output[step.testParameters.Output] = randomNumber;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const getPageTitle = async (
@@ -512,7 +1276,8 @@ const getPageTitle = async (
   output,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   console.log("Getting Page Title");
   try {
@@ -520,12 +1285,48 @@ const getPageTitle = async (
     output[step.testParameters.Output] = title;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+const getPageUrl = async (
+  step,
+  driver,
+  output,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Getting Page URL");
+  try {
+    const title = await driver.getCurrentUrl();
+    output[step.testParameters.Output] = title;
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
-const clearInput = async (step, driver, processResult, req, stepHistoryId) => {
+const clearInput = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
   console.log("Clearning Input");
   try {
     await driver
@@ -533,52 +1334,67 @@ const clearInput = async (step, driver, processResult, req, stepHistoryId) => {
       .clear();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
-  }
-};
-const scrollToObject = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId
-) => {
-  console.log("Scrolling To Object");
-  try {
-    const element = await driver.findElement(
-      await findByLocator(step.object.dataValues.locators)
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
     );
-    await driver.executeScript("arguments[0].scrollIntoView()", element);
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
   }
 };
 
-const scrollToEnd = async (driver, processResult, req, stepHistoryId) => {
+const scrollToEnd = async (
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
   console.log("Scrolling To End");
   try {
     await driver.executeScript("window.scrollBy(0,document.body.scrollHeight)");
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
-const scrollToTop = async (driver, processResult, req, stepHistoryId) => {
+const scrollToTop = async (
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
   console.log("Scrolling To Top");
   try {
     await driver.executeScript("window.scrollTo(0,0)");
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
-const clickByJs = async (step, driver, processResult, req, stepHistoryId) => {
+const clickByJs = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
   console.log("Clicking By Javascript");
   try {
     const element = await driver.findElement(
@@ -587,8 +1403,13 @@ const clickByJs = async (step, driver, processResult, req, stepHistoryId) => {
     await driver.executeScript("arguments[0].click();", element);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
@@ -597,15 +1418,21 @@ const clickLinkByText = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
-  console.log("Clicking Link By Text");
+  console.log(`Clicking Link By Text ${step.testParameters.Text}`);
   try {
     await driver.findElement(By.linkText(step.testParameters.Text)).click();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const clickLinkByPartialText = async (
@@ -613,7 +1440,8 @@ const clickLinkByPartialText = async (
   driver,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   console.log("Clicking Link By Partial Text");
   try {
@@ -622,19 +1450,62 @@ const clickLinkByPartialText = async (
       .click();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
-const copyText = async (step, output, processResult, req, stepHistoryId) => {
+const copyText = async (
+  step,
+  output,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
   console.log("Copying Text");
   try {
     const value = step.testParameters.Value;
     output[step.testParameters.Output] = value;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+const copySubstring = async (
+  step,
+  output,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Copying Substring");
+  try {
+    const value = step.testParameters.Value;
+    const start = parseInt(step.testParameters.StartIndex);
+    const end = parseInt(step.testParameters.EndIndex);
+    const newValue = value.substring(start, end);
+    output[step.testParameters.Output] = newValue;
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const copyPassword = async (
@@ -642,7 +1513,8 @@ const copyPassword = async (
   output,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   console.log("Copying Password");
   try {
@@ -650,8 +1522,13 @@ const copyPassword = async (
     output[step.testParameters.Output] = value;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const combineString = async (
@@ -659,7 +1536,8 @@ const combineString = async (
   output,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
   console.log("Combining String");
   try {
@@ -668,26 +1546,279 @@ const combineString = async (
     output[step.testParameters.Output] = value1 + value2;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
-const getCurrentDateTime = async (
-  step,
-  output,
+
+const printLog = async (
+  value,
   processResult,
   req,
-  stepHistoryId
+  stepHistoryId,
+  executionHistory
 ) => {
-  console.log("Getting Current Time");
   try {
-    const format = step.testParameters.Format;
-    const dateTime = moment(new Date()).format(format);
-    output[step.testParameters.Output] = dateTime;
+    console.log("Log: " + value);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const selectOptionByValue = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Selecting Option By Value");
+  const value = step.testParameters.Value;
+  if (!value) {
+    console.log("No Value Found");
+    if (processResult.result) {
+      processResult.result = false;
+    }
+    return await updateStepResult(req, stepHistoryId, false);
+  }
+
+  try {
+    // other possible solution => #select > option[value=value]
+    await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .sendKeys(value);
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const selectOptionByPosition = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Selecting Option By Position");
+  let position = parseInt(step.testParameters.Position);
+  if (!position) {
+    console.log("Invalid Position Found");
+    if (processResult.result) {
+      processResult.result = false;
+    }
+    return await updateStepResult(req, stepHistoryId, false);
+  }
+  try {
+    const select = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+    const options = await select.findElements(
+      await findByLocator([
+        {
+          dataValues: { type: "TagName", locator: "option" },
+        },
+      ])
+    );
+    await options[position - 1].click();
+
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const switchToFrame = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Switching To Frame");
+
+  try {
+    const element = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+    await driver.switchTo().frame(element);
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+const switchToDefaultFrame = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Switching To Default Frame");
+
+  try {
+    await driver.switchTo().defaultContent();
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const collectCellValueFromTable = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory,
+  output
+) => {
+  console.log("Collecting Cell Value From Table");
+  let row = parseInt(step.testParameters.Row);
+  let column = parseInt(step.testParameters.Column) - 1;
+  if (isNaN(row) || isNaN(column)) {
+    console.log("Invalid Position Found");
+    if (processResult.result) {
+      processResult.result = false;
+    }
+    return await updateStepResult(req, stepHistoryId, false);
+  }
+  try {
+    const table = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+    const rows = await table.findElements(
+      await findByLocator([
+        {
+          dataValues: { type: "TagName", locator: "tr" },
+        },
+      ])
+    );
+    const col = await rows[row].findElements(
+      await findByLocator([
+        {
+          dataValues: { type: "TagName", locator: "td" },
+        },
+      ])
+    );
+    const cell = await col[column].getText();
+    output[step.testParameters.Output] = cell;
+
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const uploadFile = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  try {
+    const path = step.testParameters.Path;
+    console.log("Uploading File " + path);
+
+    let newPath = "";
+    let oldPath = process.execPath.split("/");
+    oldPath[oldPath.length - 1] = path;
+    newPath = oldPath.join("/");
+
+    //  newPath= process.cwd() + path;
+
+    if (newPath[0] !== "/") newPath = newPath + "/";
+
+    await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .sendKeys(newPath);
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const calculateAndStore = async (
+  step,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory,
+  output
+) => {
+  try {
+    const value1 = step.testParameters.Value1;
+    const value2 = step.testParameters.Value2;
+    const operand = step.testParameters.Operand;
+
+    console.log("Calculating " + value1 + " " + value2 + " with " + operand);
+    const result = eval(value1 + operand + value2);
+
+    output[step.testParameters.Output] = result;
+
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 

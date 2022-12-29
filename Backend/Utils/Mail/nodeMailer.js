@@ -74,6 +74,7 @@ const sendMail = async (data, type) => {
     { ...mailOption, from: process.env.MAILER_FROM },
     function (error, info) {
       if (error) {
+        console.log(error);
         console.log("Failed to send email");
       } else {
         console.log("Email Sent");

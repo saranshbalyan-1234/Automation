@@ -9,11 +9,13 @@ import {
   GET_OBJECT_LOCATORS,
   ADD_OBJECT_LOCATOR,
   DELETE_OBJECT_LOCATOR,
+  EMPTY_OBJECT_BANK,
+  GET_OBJECT_LOGS,
 } from "../Actions/action-types";
 const initState = {
   loading: false,
   data: [],
-  currentObject: { locators: [] },
+  currentObject: { locators: [], logs: [] },
 };
 
 const objectBankReducer = (state = initState, { type, payload }) => {
@@ -59,7 +61,7 @@ const objectBankReducer = (state = initState, { type, payload }) => {
     case GET_OBJECT_DETAILS_BY_ID:
       return {
         ...state,
-        currentObject: { ...payload },
+        currentObject: { ...state.currentObject, ...payload },
         loading: false,
       };
     case GET_OBJECT_LOCATORS:
@@ -68,6 +70,15 @@ const objectBankReducer = (state = initState, { type, payload }) => {
         currentObject: {
           ...state.currentObject,
           locators: payload,
+        },
+        loading: false,
+      };
+    case GET_OBJECT_LOGS:
+      return {
+        ...state,
+        currentObject: {
+          ...state.currentObject,
+          logs: payload,
         },
         loading: false,
       };
@@ -94,6 +105,12 @@ const objectBankReducer = (state = initState, { type, payload }) => {
           locators: deletedLocator,
         },
         loading: false,
+      };
+    case EMPTY_OBJECT_BANK:
+      return {
+        loading: false,
+        data: [],
+        currentObject: { locators: [], logs: [] },
       };
     default:
       return state;

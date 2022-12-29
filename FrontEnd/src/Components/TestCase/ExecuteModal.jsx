@@ -1,9 +1,11 @@
-import React from "react";
-import { Form, Input, Modal, Button } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Input, Modal, Button, Select, Switch } from "antd";
 import { connect } from "react-redux";
 import { executeTestCase } from "../../Redux/Actions/testCase";
 import ReactQuill from "react-quill";
 import Loading from "../Common/Loading";
+import axios from "axios";
+const { Option } = Select;
 const ExecuteModal = ({
   visible,
   setVisible,
@@ -11,6 +13,26 @@ const ExecuteModal = ({
   executeTestCase,
   currentTestCaseId,
 }) => {
+  const [form] = Form.useForm();
+  const [allEnvironments, setAllEnvironments] = useState([]);
+  const [envLoading, setEnvLoading] = useState(false);
+  useEffect(() => {
+    getEnvironment();
+    // eslint-disable-next-line
+  }, []);
+
+  const getEnvironment = async () => {
+    setEnvLoading(true);
+    const { data } = await axios.get(
+      `/environment/names/testCase/${currentTestCaseId}`
+    );
+    data.length > 0 &&
+      form.setFieldsValue({
+        environment: data[0].id,
+      });
+    setEnvLoading(false);
+    setAllEnvironments(data);
+  };
   const handleExecute = async (data) => {
     await executeTestCase(currentTestCaseId, data);
     setVisible(false);
@@ -19,19 +41,23 @@ const ExecuteModal = ({
     <Modal
       centered
       title={`Execute`}
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);
       }}
-      closable={false}
     >
-      <Loading loading={loading}>
+      <Loading loading={loading || envLoading}>
         <Form
+          form={form}
           name="execute"
           onFinish={handleExecute}
-          labelCol={{ span: 5 }}
+          labelCol={{ span: 7 }}
           wrapperCol={{ span: 16 }}
+          initialValues={{
+            continueOnError: false,
+            recordAllSteps: false,
+          }}
         >
           <Form.Item
             name="name"
@@ -43,9 +69,44 @@ const ExecuteModal = ({
               },
             ]}
           >
-            <Input name="name" />
+            <Input name="name" showCount maxLength={50} />
           </Form.Item>
-
+          {allEnvironments.length > 0 && (
+            <Form.Item
+              name="environment"
+              label="Environment"
+              rules={[
+                {
+                  required: true,
+                  message: "Please Select Environment!",
+                },
+              ]}
+            >
+              <Select showSearch style={{ minWidth: "160px" }}>
+                {allEnvironments.map((el, i) => {
+                  return (
+                    <Option value={el.id} key={i}>
+                      {el.name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          )}
+          <Form.Item
+            name="continueOnError"
+            label="Continue On Error"
+            valuePropName="checked"
+          >
+            <Switch checkedChildren="Yes" unCheckedChildren="No" />
+          </Form.Item>
+          <Form.Item
+            name="recordAllSteps"
+            label="Record All Steps"
+            valuePropName="checked"
+          >
+            <Switch checkedChildren="Yes" unCheckedChildren="No" />
+          </Form.Item>
           <Form.Item name="description" label="">
             <ReactQuill
               style={{ width: 450 }}

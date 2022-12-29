@@ -4,7 +4,6 @@ import {
   UPDATE_USER_DETAIL_REQUEST,
   UPDATE_USER_DETAIL_SUCCESS,
 } from "./action-types";
-import { fetchAwsObject } from "./image";
 export const changePassword = (payload) => {
   return async (dispatch) => {
     try {
@@ -34,9 +33,13 @@ export const uploadProfilePic = (formData) => {
     try {
       dispatch({ type: UPDATE_USER_DETAIL_REQUEST });
       await axios.put(`/user/uploadProfileImage`, formData);
-      let payload = { profileImage: true };
-      const file = getState().auth.user.email.replace(/[^a-zA-Z0-9 ]/g, "");
-      dispatch(fetchAwsObject(file));
+
+      let fileName = getState().auth.user.email.replace(/[^a-zA-Z0-9 ]/g, "");
+      const { data } = await axios.post("/aws/object", {
+        fileName,
+      });
+
+      let payload = { profileImage: data };
       dispatch({ type: UPDATE_USER_DETAIL_SUCCESS, payload });
       return true;
     } catch (err) {
@@ -44,4 +47,7 @@ export const uploadProfilePic = (formData) => {
       return false;
     }
   };
+};
+export const myStatus = () => {
+  axios.get("/user/my-status");
 };

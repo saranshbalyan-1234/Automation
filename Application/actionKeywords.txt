@@ -1,41 +1,17 @@
 Action Keyword
 
-Add DateTime
-AddDaysToDate
-AddNumbersAndStore
-AlertSuccess
-CollectBackgroundColor
-CollectCellValueFromTable
-CollectObjectAttributeValue
-CollectText
-CompareText
-ConvertToDateTime
-ConvertToHex
-ConvertToInteger
-ConvertToNumber
-ConvertToString
-CopySubString
-DivideNumbersAndStore
-Else
-ElseIf
-EndIf
-EndLoopf
+// Add DateTime
+// AddDaysToDate
+// AddNumbersAndStore
+// DivideNumbersAndStore
 ExcelConfigure
-ExitForLoop
-ForLoop
 GetValueFromList
-IF
 IfElementVisible
-MultiplyNumbersAndStore
-RemoveCharacter
+// MultiplyNumbersAndStore
+// RemoveCharacter
 SaveValueToList
-SelectOptionByPosition
-SelectOptionByValue
-SkipIteration
-Subtract DateTime
-SubtractNumbersAndStore
-SwitchToDefaultFrame
-SwitchToFrame
+//Subtract DateTime
+//SubtractNumbersAndStore
 ValidateObjectAttributeValue
 ValidateObjectClickable
 ValidateObjectDisabled
@@ -48,5 +24,4 @@ ValidateObjectValueContain
 ValidateObjectValueIsEmpty
 ValidateObjectValueNotContain
 ValidateObjectVisible
-ValidatePageTitle
-VerifyEqual
+Create file

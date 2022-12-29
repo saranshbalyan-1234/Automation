@@ -15,19 +15,29 @@ import User from "../Models/User.js";
 import UserRole from "../Models/RolePermission/UserRole.js";
 import Project from "../Models/Project/Project.js";
 import UserProject from "../Models/Project/UserProject.js";
+
+//TestCase
 import TestCase from "../Models/TestCase/TestCase.js";
-import Object from "../Models/TestCase/Object/Object.js";
-import ObjectLocator from "../Models/TestCase/Object/ObjectLocator.js";
 import TestParameter from "../Models/TestCase/TestParameter.js";
 import TestStep from "../Models/TestCase/TestStep.js";
 import Process from "../Models/TestCase/Process.js";
 import ReusableProcess from "../Models/TestCase/ReusableProcess.js";
+import ReusableProcessLog from "../Models/TestCase/ReusableProcessLog.js";
+import TestCaseLog from "../Models/TestCase/TestCaseLog.js";
+
+//Object
+import Object from "../Models/TestCase/Object/Object.js";
+import ObjectLocator from "../Models/TestCase/Object/ObjectLocator.js";
+import ObjectLog from "../Models/TestCase/Object/ObjectLog.js";
 
 //Execution History
 import ExecutionHistory from "../Models/TestCase/ExecutionHistory/ExecutionHistory.js";
 import ProcessHistory from "../Models/TestCase/ExecutionHistory/ProcessHistory.js";
 import TestStepHistory from "../Models/TestCase/ExecutionHistory/TestStepHistory.js";
 
+//Env Table
+import Environment from "../Models/TestCase/Environment/Environment.js";
+import Column from "../Models/TestCase/Environment/Column.js";
 dotenv.config();
 
 const sequelize = new Sequelize(
@@ -69,18 +79,29 @@ db.userRoles = UserRole(sequelize, DataTypes);
 db.userProjects = UserProject(sequelize, DataTypes);
 db.projects = Project(sequelize, DataTypes);
 db.roles = Role(sequelize, DataTypes);
+
+//TestCase
 db.testParameters = TestParameter(sequelize, DataTypes);
-db.objects = Object(sequelize, DataTypes);
-db.ObjectLocators = ObjectLocator(sequelize, DataTypes);
 db.testSteps = TestStep(sequelize, DataTypes);
 db.testCases = TestCase(sequelize, DataTypes);
 db.process = Process(sequelize, DataTypes);
 db.reusableProcess = ReusableProcess(sequelize, DataTypes);
+db.reusableProcessLogs = ReusableProcessLog(sequelize, DataTypes);
+db.testCaseLogs = TestCaseLog(sequelize, DataTypes);
+
+//Object
+db.objects = Object(sequelize, DataTypes);
+db.ObjectLocators = ObjectLocator(sequelize, DataTypes);
+db.objectLogs = ObjectLog(sequelize, DataTypes);
 
 //executionHistory
 db.executionHistory = ExecutionHistory(sequelize, DataTypes);
 db.processHistory = ProcessHistory(sequelize, DataTypes);
 db.testStepHistory = TestStepHistory(sequelize, DataTypes);
+
+//Environment
+db.enviroments = Environment(sequelize, DataTypes);
+db.columns = Column(sequelize, DataTypes);
 
 db.users = User(sequelize, DataTypes); //all associations
 
@@ -90,13 +111,7 @@ db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
 
-// await db.testStepHistory
-//   .schema("saranshbalyan123gmailcom")
-//   .sync({ force: true });
-// await db.processHistory
-//   .schema("saranshbalyan123gmailcom")
-//   .sync({ force: true });
-// await db.testStepHistory
+// await db.reusableProcessLogs
 //   .schema("saranshbalyan123gmailcom")
 //   .sync({ force: true });
 

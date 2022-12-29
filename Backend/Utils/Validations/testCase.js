@@ -1,19 +1,22 @@
 import joi from "@hapi/joi";
 
-const saveTestCaseValidation = joi.object({
-  name: joi.string().min(3).required(),
-  description: joi.string().allow(null, ""),
-  projectId: joi.number().integer().required(),
-});
-const updateTestCaseValidation = joi.object({
-  name: joi.string().min(3).required(),
+export const updateTestCaseValidation = joi.object({
+  name: joi.string().min(3).max(30).required(),
+  tags: joi.array().allow(null, ""),
+  description: joi.string().allow(null, "").required(),
   testCaseId: joi.number().integer().required(),
 });
-const testCaseIdValidation = joi.object({
+
+export const saveProcesValidation = joi.object({
+  step: joi.number().integer().required(),
+  name: joi.string().min(3).max(30).required(),
+  comment: joi.string().allow(null, "").required(),
   testCaseId: joi.number().integer().required(),
+  reusableProcessId: joi.number().integer(),
 });
-export {
-  saveTestCaseValidation,
-  updateTestCaseValidation,
-  testCaseIdValidation,
-};
+
+export const updateProcessValidation = joi.object({
+  name: joi.string().min(3).max(30).required(),
+  comment: joi.string().allow(null, "").required(),
+  processId: joi.number().integer().required(),
+});

@@ -1,49 +1,53 @@
 export default (sequelize, DataTypes) => {
-  const User = sequelize.define("users", {
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+  const User = sequelize.define(
+    "users",
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
 
-      validate: {
-        notNull: true,
+        validate: {
+          notNull: true,
+        },
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: true,
+          notNull: true,
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: true,
+        },
+      },
+      profileImage: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 0,
+        values: [0, 1],
+      },
+      verifiedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 1,
+        values: [0, 1],
+      },
+      defaultProjectId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        default: null,
       },
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
-        notNull: true,
-      },
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: true,
-      },
-    },
-    profileImage: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: 1,
-      values: [0, 1],
-    },
-    verifiedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    active: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: 1,
-      values: [0, 1],
-    },
-    defaultProjectId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      default: null,
-    },
-  });
+    { paranoid: true }
+  );
 
   sequelize.models.users.hasMany(sequelize.models.userRoles, {
     foreignKey: "userId",
@@ -112,6 +116,25 @@ export default (sequelize, DataTypes) => {
     constraints: false,
   });
 
+  sequelize.models.objectLogs.hasOne(sequelize.models.users, {
+    as: "createdBy",
+    sourceKey: "createdByUser",
+    foreignKey: "id",
+    constraints: false,
+  });
+  sequelize.models.testCaseLogs.hasOne(sequelize.models.users, {
+    as: "createdBy",
+    sourceKey: "createdByUser",
+    foreignKey: "id",
+    constraints: false,
+  });
+  sequelize.models.reusableProcessLogs.hasOne(sequelize.models.users, {
+    as: "createdBy",
+    sourceKey: "createdByUser",
+    foreignKey: "id",
+    constraints: false,
+  });
+
   sequelize.models.reusableProcesses.hasOne(sequelize.models.users, {
     as: "createdBy",
     sourceKey: "createdByUser",
@@ -170,5 +193,10 @@ export default (sequelize, DataTypes) => {
       constraints: false,
     }
   );
+  sequelize.models.environments.hasMany(sequelize.models.columns, {
+    sourceKey: "id",
+    foreignKey: "envId",
+    constraints: false,
+  });
   return User;
 };

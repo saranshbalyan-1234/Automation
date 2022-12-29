@@ -1,10 +1,15 @@
 import React, { useEffect } from "react";
 import { Form, Input, Modal, Button, Select } from "antd";
 import { connect } from "react-redux";
-import { addProcess, editProcess } from "../../../Redux/Actions/testCase";
+import {
+  addProcess,
+  editProcess,
+  createTestCaseLogs,
+} from "../../../Redux/Actions/testCase";
 import { getReusableProcessByProject } from "../../../Redux/Actions/reusableProcess";
 import ReactQuill from "react-quill";
 import Loading from "../../Common/Loading";
+import { getDetailsEditedLogs } from "../../../Utils/logs";
 const { Option } = Select;
 const AddEditProcessModal = ({
   visible,
@@ -25,12 +30,20 @@ const AddEditProcessModal = ({
 }) => {
   useEffect(() => {
     addReusable && getReusableProcessByProject();
-  }, []);
+    // eslint-disable-next-line
+  }, [addReusable]);
 
   const onSubmit = async (data) => {
     let result = false;
     if (edit) {
       result = await editProcess({ data: data, processId: editData.id });
+
+      const logs = await getDetailsEditedLogs(
+        editData,
+        data,
+        `process at position ${step} `
+      );
+      logs.length > 0 && createTestCaseLogs(currentTestCaseId, logs);
       setEditData({});
     } else {
       result = await addProcess({
@@ -38,6 +51,19 @@ const AddEditProcessModal = ({
         testCaseId: currentTestCaseId,
         step,
       });
+
+      if (addReusable) {
+        const reusableName = reusableProcesses.find((el) => {
+          return el.id === data.reusableProcessId;
+        })?.name;
+        createTestCaseLogs(currentTestCaseId, [
+          `added new reusableProcess "${reusableName}" as process "${data.name}" at position ${step}.`,
+        ]);
+      } else {
+        createTestCaseLogs(currentTestCaseId, [
+          `added new process "${data.name}" at position ${step}.`,
+        ]);
+      }
       if (step === 1 && edit === false) setEdit(true);
     }
     result && setVisible(false);
@@ -52,13 +78,13 @@ const AddEditProcessModal = ({
       <Modal
         centered
         title={edit ? "Edit Process" : "Create New Process"}
-        visible={visible}
+        open={visible}
         footer={false}
         onCancel={() => {
           setVisible(false);
         }}
         width={600}
-        closable={false}
+        // closable={false}
       >
         <Loading loading={loading || reusableLoading}>
           <Form
@@ -81,7 +107,7 @@ const AddEditProcessModal = ({
                 },
               ]}
             >
-              <Input name="name" />
+              <Input name="name" showCount maxlength={50} />
             </Form.Item>
             {addReusable && (
               <Form.Item

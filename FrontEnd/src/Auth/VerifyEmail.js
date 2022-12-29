@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getError } from "../Utils/error";
-import { message } from "antd";
+import { Alert } from "antd";
 import ErrorPage from "../Views/ErrorPage";
 export default function VerifyEmail() {
   const [error, setError] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    message.info("Verifying, please wait!");
     axios
       .get(location.pathname)
       .then(() => {
@@ -28,6 +27,7 @@ export default function VerifyEmail() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        paddingTop: 30,
       }}
     >
       <center>
@@ -39,10 +39,21 @@ export default function VerifyEmail() {
             showBtn={false}
           />
         ) : (
-          <img
-            alt="verifying"
-            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/verifying.gif"
-          />
+          <>
+            <Alert
+              message={
+                <div style={{ fontWeight: 500, fontSize: 18 }}>
+                  Verifying, Please Wait!
+                </div>
+              }
+              type="info"
+              showIcon
+            />
+            <img
+              alt="verifying"
+              src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/verifying.gif"
+            />
+          </>
         )}
       </center>
     </div>

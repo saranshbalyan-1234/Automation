@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Modal, Button } from "antd";
+import { Form, Input, Modal, Button, Select } from "antd";
 import ReactQuill from "react-quill";
 import { connect } from "react-redux";
 import Loading from "./Loading";
@@ -34,12 +34,12 @@ const AddEditModal = ({
       centered
       width={500}
       title={edit ? `Edit ${name}` : `Create New ${name}`}
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);
       }}
-      closable={false}
+      // closable={false}
     >
       <Loading loading={loading}>
         <Form
@@ -50,6 +50,11 @@ const AddEditModal = ({
           initialValues={{
             name: edit ? editData.name : "",
             description: edit ? editData.description : "",
+            tags: edit
+              ? editData.tags
+                ? editData.tags
+                : undefined
+              : undefined,
           }}
         >
           <Form.Item
@@ -62,7 +67,10 @@ const AddEditModal = ({
               },
             ]}
           >
-            <Input name="name" />
+            <Input name="name" showCount maxlength={50} />
+          </Form.Item>
+          <Form.Item name="tags" label="Tags">
+            <Select mode="tags" placeholder="Tags" />
           </Form.Item>
           <Form.Item name="description" label="">
             <ReactQuill

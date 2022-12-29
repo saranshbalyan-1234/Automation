@@ -1,52 +1,57 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Popover, Card, Badge } from "antd";
 import { connect } from "react-redux";
-import { fetchAwsObject } from "../../Redux/Actions/image";
-export const UserAvatar = ({
-  user,
-  size = "small",
-  images,
-  fetchAwsObject,
-}) => {
-  const imageName = user.email.replace(/[^a-zA-Z0-9 ]/g, "");
+
+const UserAvatar = ({ userList, user, size = "small", self, log }) => {
+  const [userData, setUserData] = useState({});
+
   useEffect(() => {
-    if (user.profileImage && !images[imageName]) {
-      fetchAwsObject(imageName);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const temp = [...userList, self]?.find((el) => {
+      return el.id === user;
+    });
+    temp.id && setUserData(temp);
+    // eslint-disable-next-line
+  }, [userList, user]);
 
   const getUserData = () => {
     return (
       <Badge.Ribbon
-        text={user.active ? "Active" : "Inactive"}
+        text={
+          userData.verifiedAt
+            ? userData.active
+              ? "Active"
+              : "Inactive"
+            : "Verification Pending"
+        }
         style={{ marginTop: "-10px" }}
       >
-        {/* <Card> */}
         <Card.Meta
           title={
             <div
               style={{
-                display: "flex",
                 gap: "10px",
                 flexWrap: "wrap",
                 marginRight: 60,
               }}
             >
-              {user.name}
+              <div>
+                <b>User Details</b>
+              </div>
+              <div> Name: {userData.name}</div>
             </div>
           }
-          description={user.email}
+          description={<div>Email: {userData.email}</div>}
         />
-        {/* </Card> */}
       </Badge.Ribbon>
     );
   };
+  if (!userData.id || !user) return;
+
   return (
     <Popover content={getUserData}>
-      {images[imageName] && false ? (
+      {userData.profileImage ? (
         <Avatar
-          src={"data:image/jpeg;base64," + images[imageName]}
+          src={"data:image/jpeg;base64," + userData.profileImage}
           size={size}
           style={{
             backgroundColor: "#f56a00",
@@ -66,7 +71,7 @@ export const UserAvatar = ({
           }}
         >
           <div style={{ marginTop: "-1px", textTransform: "uppercase" }}>
-            {handleAvatarInitials(user)}
+            {userData.id && handleAvatarInitials(userData)}
           </div>
         </Avatar>
       )}
@@ -75,12 +80,18 @@ export const UserAvatar = ({
 };
 export const handleAvatarInitials = (user) => {
   const temp = user.name?.split(" ");
-  if (temp.length > 1) return temp[0][0] + temp[1][0];
-  else return temp[0][0];
+  const initials = temp
+    ?.map((el) => {
+      return el[0];
+    })
+    .join("");
+
+  return initials;
 };
 
-const mapStateToProps = (state) => ({ images: state.image });
-
-const mapDispatchToProps = { fetchAwsObject };
-
+const mapStateToProps = (state) => ({
+  userList: state.team.data,
+  self: state.auth.user,
+});
+const mapDispatchToProps = {};
 export default connect(mapStateToProps, mapDispatchToProps)(UserAvatar);

@@ -5,7 +5,7 @@ export default function ViewCommentModal({ comment, visible, setVisible }) {
     <Modal
       title="Comment"
       centered
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);

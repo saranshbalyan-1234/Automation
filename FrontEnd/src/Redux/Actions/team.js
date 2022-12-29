@@ -6,9 +6,9 @@ import {
   ADD_TEAM_MEMBER_SUCCESS,
   REMOVE_TEAM_MEMBER_SUCCESS,
   TOGGLE_TEAM_USER_STATUS,
-  LOGOUT,
 } from "./action-types";
 
+import { logout } from "./auth";
 export const getTeam = (payload) => {
   return async (dispatch) => {
     try {
@@ -86,7 +86,7 @@ export const deleteCustomer = () => {
   return async (dispatch) => {
     try {
       const { data } = await axios.delete(`/user/customer`);
-      if (data) dispatch({ type: LOGOUT });
+      if (data) dispatch(logout());
       return true;
     } catch (err) {
       return false;

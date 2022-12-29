@@ -18,7 +18,7 @@ import { getProjectById, removeMember } from "../../Redux/Actions/project";
 import AddEditProjectModal from "./AddEditProjectModal";
 import AddProjectMemberModal from "./AddProjectMemberModal";
 import MemberBadge from "../Common/MemberBadge";
-import ColumnGraph from "../Common/ColumnGraph";
+import ColumnGraph from "../Common/Graph/ColumnGraph";
 import Loading from "../Common/Loading";
 const { Title } = Typography;
 const { Meta } = Card;
@@ -35,6 +35,7 @@ export const ProjectDetails = ({
   const [graphCount, setGraphCount] = useState([]);
   useEffect(() => {
     getProject();
+    // eslint-disable-next-line
   }, [projectId]);
 
   const getProject = async () => {
@@ -117,6 +118,7 @@ export const ProjectDetails = ({
       key: "delete",
       render: (_, record) => (
         <Popconfirm
+          placement="left"
           title="Are you sure to remove this user?"
           onConfirm={async () => {
             await removeMember({
@@ -160,7 +162,7 @@ export const ProjectDetails = ({
                       {moment(currentProject.createdAt).format("DD/MM/YY")} By
                       &nbsp;
                       {currentProject.createdBy && (
-                        <UserAvatar user={currentProject.createdBy} />
+                        <UserAvatar user={currentProject.createdBy.id} />
                       )}
                     </div>
                   </div>
@@ -262,6 +264,7 @@ export const ProjectDetails = ({
             </div>
           )}
           <Table
+            scroll={{ x: true }}
             columns={columns}
             dataSource={currentProject.members}
             size="small"

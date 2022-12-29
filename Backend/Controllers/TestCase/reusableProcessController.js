@@ -1,25 +1,23 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-import { projectByIdValidation } from "../../Utils/Validations/project.js";
-import {
-  saveTestCaseValidation,
-  updateTestCaseValidation,
-  testCaseIdValidation,
-} from "../../Utils/Validations/testCase.js";
+import { idValidation } from "../../Utils/Validations/index.js";
+import { updateReusableProcessValidation } from "../../Utils/Validations/reusableProcess.js";
+import { nameDesTagPrjValidation } from "../../Utils/Validations/index.js";
 
 const User = db.users;
 const Object = db.objects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const ReusableProcess = db.reusableProcess;
+const ReusableProcessLog = db.reusableProcessLogs;
 const saveReusableProcess = async (req, res) => {
   /*  #swagger.tags = ["Reusable Process"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
 
   try {
-    // const { error } = saveTestCaseValidation.validate(req.body);
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = nameDesTagPrjValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
     const payload = { ...req.body };
     payload.createdByUser = req.user.id;
     const data = await ReusableProcess.schema(req.database).create(payload);
@@ -38,21 +36,20 @@ const updateReusableProcess = async (req, res) => {
   */
 
   try {
-    const name = req.body.name;
     const reusableProcessId = req.params.reusableProcessId;
-    // const { error } = updateTestCaseValidation.validate({ name, reusableProcessId });
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = updateReusableProcessValidation.validate({
+      ...req.body,
+      reusableProcessId,
+    });
+    if (error) throw new Error(error.details[0].message);
 
     const updatedReusableProcess = await ReusableProcess.schema(
       req.database
-    ).update(
-      { name },
-      {
-        where: {
-          id: reusableProcessId,
-        },
-      }
-    );
+    ).update(req.body, {
+      where: {
+        id: reusableProcessId,
+      },
+    });
 
     if (updatedReusableProcess[0]) {
       return res
@@ -73,7 +70,7 @@ const getAllReusableProcess = async (req, res) => {
 
   try {
     const projectId = req.headers["x-project-id"];
-    const { error } = projectByIdValidation.validate({ projectId });
+    const { error } = idValidation.validate({ id: projectId });
     if (error) throw new Error(error.details[0].message);
 
     const reusableProcesses = await ReusableProcess.schema(
@@ -82,7 +79,7 @@ const getAllReusableProcess = async (req, res) => {
       where: {
         projectId,
       },
-      attributes: ["id", "name", "updatedAt"],
+      attributes: ["id", "name", "updatedAt", "createdAt", "tags"],
       include: [
         {
           model: User.schema(req.database),
@@ -105,8 +102,10 @@ const deleteReusableProcess = async (req, res) => {
 
   try {
     const reusableProcessId = req.params.reusableProcessId;
-    // const { error } = testCaseIdValidation.validate({ reusableProcessId });
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = idValidation.validate({
+      id: reusableProcessId,
+    });
+    if (error) throw new Error(error.details[0].message);
 
     const deletedReusableProcess = await ReusableProcess.schema(
       req.database
@@ -132,14 +131,22 @@ const getReusableProcessDetailsById = async (req, res) => {
 
   try {
     const reusableProcessId = req.params.reusableProcessId;
-    // const { error } = projectByIdValidation.validate({ projectId });
-    // if (error) throw new Error(error.details[0].message);
-
+    const { error } = idValidation.validate({
+      id: reusableProcessId,
+    });
+    if (error) throw new Error(error.details[0].message);
     const reusableProcess = await ReusableProcess.schema(req.database).findOne({
       where: {
         id: reusableProcessId,
       },
-      attributes: ["id", "name", "createdAt", "updatedAt", "description"],
+      attributes: [
+        "id",
+        "name",
+        "createdAt",
+        "updatedAt",
+        "description",
+        "tags",
+      ],
       include: [
         {
           model: User.schema(req.database),
@@ -164,10 +171,12 @@ const getTestStepByReusableProcess = async (req, res) => {
   */
 
   try {
-    // const { error } = nameValidation.validate(req.body);
-    // if (error) throw new Error(error.details[0].message);
-
     const reusableProcessId = req.params.reusableProcessId;
+    const { error } = idValidation.validate({
+      id: reusableProcessId,
+    });
+    if (error) throw new Error(error.details[0].message);
+
     const data = await TestStep.schema(req.database).findAll({
       where: { reusableProcessId },
 
@@ -184,6 +193,61 @@ const getTestStepByReusableProcess = async (req, res) => {
   }
 };
 
+const getReusableProcessLogsById = async (req, res) => {
+  /*  #swagger.tags = ["Reusable Process"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const reusableProcessId = req.params.reusableProcessId;
+
+    const { error } = idValidation.validate({ id: reusableProcessId });
+    if (error) throw new Error(error.details[0].message);
+
+    const locators = await ReusableProcessLog.schema(req.database).findAll({
+      where: {
+        testCaseId,
+      },
+      attributes: ["log", "createdAt"],
+      include: [
+        {
+          model: User.schema(req.database),
+          as: "createdBy",
+          attributes: ["id", "name", "email", "active", "profileImage"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
+
+    return res.status(200).json(locators);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+const createReusableProcessLog = async (req, res, id, logs = []) => {
+  /*  #swagger.tags = ["Reusable Process"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const testCaseId = req.params.testCaseId || id;
+    const tempLogs = req.body.logs || logs;
+
+    // const { error } = idValidation.validate({ id: objectId });
+    // if (error) throw new Error(error.details[0].message);
+
+    const payload = tempLogs.map((el) => {
+      return { log: el, testCaseId, createdByUser: req.user.id };
+    });
+    await ReusableProcessLog.schema(req.database).bulkCreate(payload);
+    if (logs.length == 0) return res.status(201);
+  } catch (err) {
+    if (logs.length == 0) getError(err, res);
+    else console.log(err);
+  }
+};
+
 export {
   saveReusableProcess,
   updateReusableProcess,
@@ -191,4 +255,6 @@ export {
   deleteReusableProcess,
   getReusableProcessDetailsById,
   getTestStepByReusableProcess,
+  createReusableProcessLog,
+  getReusableProcessLogsById,
 };

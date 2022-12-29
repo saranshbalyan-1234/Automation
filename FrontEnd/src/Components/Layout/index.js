@@ -1,5 +1,5 @@
 import { StyledLayout } from "./style";
-
+import { FloatButton } from "antd";
 import { Layout } from "antd";
 import React, { useState } from "react";
 
@@ -14,12 +14,12 @@ export default function LayOut({ children }) {
   return (
     <StyledLayout>
       <Layout>
-        <Layout>
+        <Layout style={{ maxHeight: "100vh" }}>
           <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
           <div
             style={{
               width: "100%",
-              maxHeight: "100vh",
+              minHeight: "100vh",
               overflow: "scroll",
             }}
           >
@@ -32,6 +32,7 @@ export default function LayOut({ children }) {
               <Container children={children} />
               <Footer />
             </Content>
+            <FloatButton.BackTop />
           </div>
         </Layout>
       </Layout>

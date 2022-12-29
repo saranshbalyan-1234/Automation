@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
-import { Modal, Card, Typography } from "antd";
+import React, { useEffect, useState } from "react";
+import { Modal, Card, Typography, Tag } from "antd";
 import { getExecutionHistoryById } from "../../../Redux/Actions/executionHistory";
 import { connect } from "react-redux";
 import moment from "moment";
 import UserAvatar from "../../Common/Avatar";
 import Process from "./Process";
 import Loading from "../../Common/Loading";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import ViewExecutionVideoModal from "./ViewExecutionVideoModal";
 const { Meta } = Card;
 const { Title } = Typography;
 const ViewExecutionHistoryModal = ({
@@ -15,15 +17,17 @@ const ViewExecutionHistoryModal = ({
   getExecutionHistoryById,
   loading,
 }) => {
+  const [viewExecutionViewModal, setViewExecutionVideoModal] = useState(false);
   useEffect(() => {
     getExecutionHistoryById(visible);
-  }, []);
+    // eslint-disable-next-line
+  }, [visible]);
 
   return (
     <Modal
       width={1200}
       centered
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);
@@ -45,10 +49,12 @@ const ViewExecutionHistoryModal = ({
                   <Title style={{ textTransform: "capitalize" }} level={3}>
                     {`Execution History: ${currentExecutionHistory.name}`}
                   </Title>
-                  <div style={{ color: "black" }}>
+                  <div style={{ color: "black", fontWeight: 600 }}>
                     Executed By &nbsp;
                     {currentExecutionHistory.executedBy && (
-                      <UserAvatar user={currentExecutionHistory.executedBy} />
+                      <UserAvatar
+                        user={currentExecutionHistory.executedBy.id}
+                      />
                     )}
                   </div>
                 </div>
@@ -119,15 +125,58 @@ const ViewExecutionHistoryModal = ({
             </div>
           )}
 
+          <div className="row">
+            <Tag
+              color={
+                currentExecutionHistory.recordAllSteps ? "#1677ff" : "#cd201f"
+              }
+              className="row"
+              style={{
+                cursor: currentExecutionHistory.recordAllSteps
+                  ? "pointer"
+                  : "not-allowed",
+              }}
+              onClick={() => {
+                currentExecutionHistory.recordAllSteps &&
+                  setViewExecutionVideoModal(true);
+              }}
+            >
+              <div>Record All Steps</div>
+              <div>
+                {currentExecutionHistory.recordAllSteps ? (
+                  <CheckOutlined />
+                ) : (
+                  <CloseOutlined />
+                )}
+              </div>
+            </Tag>
+            <Tag
+              color={
+                currentExecutionHistory.continueOnError ? "#1677ff" : "#cd201f"
+              }
+              className="row"
+            >
+              <div> Continue On Error</div>
+              <div>
+                {currentExecutionHistory.continueOnError ? (
+                  <CheckOutlined />
+                ) : (
+                  <CloseOutlined />
+                )}
+              </div>
+            </Tag>
+          </div>
           <div style={{ marginTop: 20 }}>
-            {/* <Table
-            columns={columns}
-            dataSource={currentExecutionHistory.testSteps}
-          /> */}
             <Process />
           </div>
         </div>
       </Loading>
+      {viewExecutionViewModal && (
+        <ViewExecutionVideoModal
+          visible={viewExecutionViewModal}
+          setVisible={setViewExecutionVideoModal}
+        />
+      )}
     </Modal>
   );
 };

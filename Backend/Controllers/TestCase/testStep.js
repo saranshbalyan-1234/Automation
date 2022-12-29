@@ -1,5 +1,10 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
+import {
+  saveTestStepValidation,
+  updateTestStepValidation,
+} from "../../Utils/Validations/testStep.js";
+import { idValidation } from "../../Utils/Validations/index.js";
 import { Op } from "sequelize";
 const TestStep = db.testSteps;
 const Object = db.objects;
@@ -10,8 +15,8 @@ const saveTestStep = async (req, res) => {
   */
 
   try {
-    // const { error } = nameValidation.validate(req.body);
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = saveTestStepValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
 
     const { processId, reusableProcessId, step } = req.body;
 
@@ -61,8 +66,11 @@ const updateTestStep = async (req, res) => {
 
   try {
     const testStepId = req.params.testStepId;
-    // const { error } = updateTestCaseValidation.validate({ name, testCaseId });
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = updateTestStepValidation.validate({
+      ...req.body,
+      testStepId,
+    });
+    if (error) throw new Error(error.details[0].message);
 
     const updatedTestStep = await TestStep.schema(req.database).update(
       req.body,
@@ -111,8 +119,8 @@ const deleteTestStep = async (req, res) => {
 
   try {
     const testStepId = req.params.testStepId;
-    // const { error } = testCaseIdValidation.validate({ testCaseId });
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = idValidation.validate({ id: testStepId });
+    if (error) throw new Error(error.details[0].message);
     const deletingTestStep = await TestStep.schema(req.database).findByPk(
       testStepId
     );

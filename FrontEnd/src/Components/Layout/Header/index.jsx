@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { Layout, Dropdown, Menu, message } from "antd";
 import ProfileMenu from "./ProfileMenu";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { CaretDownOutlined, ProjectOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { getAllProject, getProjectById } from "../../../Redux/Actions/project";
+import { getTeam } from "../../../Redux/Actions/team";
+import { myStatus } from "../../../Redux/Actions/user";
 import Loading from "../../Common/Loading";
 const { Header } = Layout;
 
@@ -13,9 +15,14 @@ const Headers = ({
   projects,
   defaultProjectId,
   getProjectById,
+  getTeam,
 }) => {
+  const location = useLocation();
   useEffect(() => {
     getProject();
+    getTeam();
+    myStatus();
+    // eslint-disable-next-line
   }, []);
 
   const getProject = async () => {
@@ -57,23 +64,28 @@ const Headers = ({
       >
         <div></div>
 
-        <Dropdown overlay={ProjectMenu} arrow trigger={"click"}>
-          <div
-            style={{
-              color: "white",
-              cursor: "pointer",
-            }}
-          >
-            <ProjectOutlined style={{ marginRight: 7 }} />
-            Current Project:
-            {projects.currentProject.name ? (
-              <>&nbsp;&nbsp;{projects.currentProject.name}</>
-            ) : (
-              " No Project Selected"
-            )}
-            <CaretDownOutlined style={{ marginLeft: 5 }} />
-          </div>
-        </Dropdown>
+        {location.pathname === "/" ||
+        location.pathname.toLowerCase().includes("settings") ? (
+          <div></div>
+        ) : (
+          <Dropdown overlay={ProjectMenu} arrow trigger={"click"}>
+            <div
+              style={{
+                color: "white",
+                cursor: "pointer",
+              }}
+            >
+              <ProjectOutlined style={{ marginRight: 7 }} />
+              Current Project:
+              {projects.currentProject.name ? (
+                <>&nbsp;&nbsp;{projects.currentProject.name}</>
+              ) : (
+                " No Project Selected"
+              )}
+              <CaretDownOutlined style={{ marginLeft: 5 }} />
+            </div>
+          </Dropdown>
+        )}
         <div style={{ marginRight: "20px" }}>
           <ProfileMenu />
         </div>
@@ -87,6 +99,6 @@ const mapStateToProps = (state) => ({
   defaultProjectId: state.auth.user.defaultProjectId,
 });
 
-const mapDispatchToProps = { getAllProject, getProjectById };
+const mapDispatchToProps = { getAllProject, getProjectById, getTeam };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Headers);

@@ -1,7 +1,17 @@
 const {
   updateStepResult,
 } = require("../../Controllers/executionHistoryController");
-const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
+const chromeDriver = require("selenium-webdriver");
+const { findByLocator, handleActionEventError } = require("./utils");
+const { until } = chromeDriver;
+const If = async (
+  step,
+  processResult,
+  req,
+  stepHistoryId,
+  stepExtra,
+  executionHistory
+) => {
   console.log("If");
   stepExtra.conditional = true;
   stepExtra.conditionalType = "if";
@@ -25,6 +35,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
             stepExtra.conditionalResult = true;
             return await updateStepResult(req, stepHistoryId, true);
           } else {
+            await updateStepResult(req, stepHistoryId, false);
             stepExtra.conditionalResult = false;
           }
         }
@@ -32,6 +43,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
           stepExtra.conditionalResult = true;
           return await updateStepResult(req, stepHistoryId, true);
         } else {
+          await updateStepResult(req, stepHistoryId, false);
           stepExtra.conditionalResult = false;
         }
       } else if (condition == "!=") {
@@ -49,6 +61,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
             stepExtra.conditionalResult = true;
             return await updateStepResult(req, stepHistoryId, true);
           } else {
+            await updateStepResult(req, stepHistoryId, false);
             stepExtra.conditionalResult = false;
           }
         }
@@ -56,6 +69,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
           stepExtra.conditionalResult = true;
           return await updateStepResult(req, stepHistoryId, true);
         } else {
+          await updateStepResult(req, stepHistoryId, false);
           stepExtra.conditionalResult = false;
         }
       } else if (condition == ">=") {
@@ -63,6 +77,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
           stepExtra.conditionalResult = true;
           return await updateStepResult(req, stepHistoryId, true);
         } else {
+          await updateStepResult(req, stepHistoryId, false);
           stepExtra.conditionalResult = false;
         }
       } else if (condition == "<=") {
@@ -70,6 +85,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
           stepExtra.conditionalResult = true;
           return await updateStepResult(req, stepHistoryId, true);
         } else {
+          await updateStepResult(req, stepHistoryId, false);
           stepExtra.conditionalResult = false;
         }
       } else if (condition == ">") {
@@ -77,6 +93,7 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
           stepExtra.conditionalResult = true;
           return await updateStepResult(req, stepHistoryId, true);
         } else {
+          await updateStepResult(req, stepHistoryId, false);
           stepExtra.conditionalResult = false;
         }
       } else if (condition == "<") {
@@ -84,28 +101,101 @@ const If = async (step, processResult, req, stepHistoryId, stepExtra) => {
           stepExtra.conditionalResult = true;
           return await updateStepResult(req, stepHistoryId, true);
         } else {
+          await updateStepResult(req, stepHistoryId, false);
           stepExtra.conditionalResult = false;
         }
+      }
+    }
+    if (condition == "==") {
+      if (Number(value1) == Number(value2)) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == "!=") {
+      if (Number(value1) != Number(value2)) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == ">=") {
+      if (Number(value1) >= Number(value2)) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == "<=") {
+      if (Number(value1) <= Number(value2.length)) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == ">") {
+      if (Number(value1) > Number(value2)) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == "<") {
+      if (Number(value1) < Number(value2)) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == "Not Empty") {
+      if (value1) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
+      }
+    } else if (condition == "Empty") {
+      if (!value1) {
+        stepExtra.conditionalResult = true;
+        return await updateStepResult(req, stepHistoryId, true);
+      } else {
+        await updateStepResult(req, stepHistoryId, false);
+        stepExtra.conditionalResult = false;
       }
     } else {
       if (eval(value1 + condition + value2)) {
         stepExtra.conditionalResult = true;
         return await updateStepResult(req, stepHistoryId, true);
       } else {
+        await updateStepResult(req, stepHistoryId, false);
         stepExtra.conditionalResult = false;
       }
     }
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    stepExtra.conditionalResult = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 const EndCondition = async (
-  step,
   processResult,
   req,
   stepHistoryId,
-  stepExtra
+  stepExtra,
+  executionHistory
 ) => {
   console.log("End Condition");
   try {
@@ -114,19 +204,256 @@ const EndCondition = async (
     stepExtra.conditionalType = "";
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
-const Else = async (step, processResult, req, stepHistoryId, stepExtra) => {
+const Else = async (
+  processResult,
+  req,
+  stepHistoryId,
+  stepExtra,
+  executionHistory
+) => {
   console.log("Else");
   try {
     stepExtra.conditionalType = "else";
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    console.log(err);
-    if (processResult.result) processResult.result = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
   }
 };
 
-module.exports = { If, Else, EndCondition };
+const IfObjectVisible = async (step, driver, req, stepHistoryId, stepExtra) => {
+  console.log("If Object Visible");
+  stepExtra.conditional = true;
+  stepExtra.conditionalType = "if";
+  try {
+    const element = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+    try {
+      await driver.wait(until.elementIsVisible(element), 1);
+    } catch (error) {
+      stepExtra.conditionalResult = false;
+      return await updateStepResult(req, stepHistoryId, false, String(error));
+    }
+    stepExtra.conditionalResult = true;
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    stepExtra.conditionalResult = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const IfObjectTextIncludes = async (
+  step,
+  driver,
+  req,
+  stepHistoryId,
+  executionHistory,
+  stepExtra
+) => {
+  console.log("If Object Text Includes");
+  stepExtra.conditional = true;
+  stepExtra.conditionalType = "if";
+  try {
+    const value = step.testParameters.Value;
+    const text = await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .getText();
+
+    const result = text.includes(value);
+    if (result) {
+      stepExtra.conditionalResult = true;
+      await updateStepResult(req, stepHistoryId, true);
+    } else {
+      stepExtra.conditionalResult = false;
+      await updateStepResult(req, stepHistoryId, false);
+    }
+  } catch (err) {
+    stepExtra.conditionalResult = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const IfObjectTextNotIncludes = async (
+  step,
+  driver,
+  req,
+  stepHistoryId,
+  executionHistory,
+  stepExtra
+) => {
+  console.log("If Object Text Not Includes");
+  stepExtra.conditional = true;
+  stepExtra.conditionalType = "if";
+  try {
+    const value = step.testParameters.Value;
+    const text = await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .getText();
+
+    const result = text.includes(value);
+    if (result) {
+      stepExtra.conditionalResult = false;
+      await updateStepResult(req, stepHistoryId, false);
+    } else {
+      stepExtra.conditionalResult = true;
+      await updateStepResult(req, stepHistoryId, true);
+    }
+  } catch (err) {
+    stepExtra.conditionalResult = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const IfObjectTextEquals = async (
+  step,
+  driver,
+  req,
+  stepHistoryId,
+  executionHistory,
+  stepExtra
+) => {
+  console.log("If Object Text Equals");
+  stepExtra.conditional = true;
+  stepExtra.conditionalType = "if";
+  try {
+    const value = step.testParameters.Value;
+    const text = await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .getText();
+
+    const result = text === value;
+    if (result) {
+      stepExtra.conditionalResult = true;
+      return await updateStepResult(req, stepHistoryId, true);
+    } else {
+      stepExtra.conditionalResult = false;
+      return await updateStepResult(req, stepHistoryId, false);
+    }
+  } catch (err) {
+    stepExtra.conditionalResult = false;
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const ifObjectEnabled = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory,
+  stepExtra
+) => {
+  console.log("If Object Enabled");
+  stepExtra.conditional = true;
+  stepExtra.conditionalType = "if";
+
+  try {
+    const element = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+    try {
+      await driver.wait(until.elementIsEnabled(element), 1);
+      stepExtra.conditionalResult = true;
+      return await updateStepResult(req, stepHistoryId, true);
+    } catch (error) {
+      stepExtra.conditionalResult = false;
+      return await updateStepResult(req, stepHistoryId, false, String(error));
+    }
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const ifObjectSelected = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory,
+  stepExtra
+) => {
+  console.log("If Object Selected");
+  stepExtra.conditional = true;
+  stepExtra.conditionalType = "if";
+
+  try {
+    const element = await driver.findElement(
+      await findByLocator(step.object.dataValues.locators)
+    );
+    try {
+      await driver.wait(until.elementIsSelected(element), 1);
+      stepExtra.conditionalResult = true;
+      return await updateStepResult(req, stepHistoryId, true);
+    } catch (error) {
+      stepExtra.conditionalResult = false;
+      return await updateStepResult(req, stepHistoryId, false, String(error));
+    }
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+module.exports = {
+  If,
+  Else,
+  EndCondition,
+  IfObjectVisible,
+  IfObjectTextIncludes,
+  IfObjectTextNotIncludes,
+  IfObjectTextEquals,
+  ifObjectEnabled,
+  ifObjectSelected,
+};

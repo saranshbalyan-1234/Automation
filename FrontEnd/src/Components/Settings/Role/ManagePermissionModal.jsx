@@ -21,10 +21,12 @@ const ManagePermissionModal = ({
   const [allPermission, setAllPermission] = useState([]);
   useEffect(() => {
     getAvailablePermission();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     checkAvailablePermission(allPermission);
+    // eslint-disable-next-line
   }, [addedPermission]);
 
   const getAvailablePermission = async () => {
@@ -84,12 +86,12 @@ const ManagePermissionModal = ({
     <Modal
       centered
       title="Manage Permissions"
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);
       }}
-      closable={false}
+      // closable={false}
       width={550}
     >
       <Loading loading={roles.loading || loading}>

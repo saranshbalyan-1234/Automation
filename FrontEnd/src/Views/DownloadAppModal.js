@@ -9,7 +9,7 @@ const DownloadAppModal = ({ visible, setVisible }) => {
   };
   return (
     <Modal
-      visible={visible}
+      open={visible}
       onCancel={() => {
         setVisible(false);
       }}

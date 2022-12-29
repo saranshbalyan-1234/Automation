@@ -2,7 +2,7 @@ import {
   SIGNIN_REQUEST,
   SIGNIN_SUCCESS,
   SIGNIN_FAILURE,
-  LOGOUT,
+  EMPTY_USER,
   UPDATE_USER_DETAIL_REQUEST,
   UPDATE_USER_DETAIL_SUCCESS,
   UPDATE_USER_DETAIL_FAILURE,
@@ -49,7 +49,7 @@ const authReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: false,
       };
-    case LOGOUT:
+    case EMPTY_USER:
       return {
         ...state,
         loading: false,

@@ -34,6 +34,20 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: true,
     },
+    result: {
+      type: DataTypes.BOOLEAN,
+      values: [0, 1],
+    },
+    continueOnError: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
+      values: [0, 1],
+    },
+    recordAllSteps: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
+      values: [0, 1],
+    },
   });
 
   return ExecutionHistory;

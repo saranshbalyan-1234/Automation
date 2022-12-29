@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import StepMenu from "./StepMenu";
 import { Table, Tag, Popconfirm } from "antd";
 import AddEditStepModal from "./AddEditStepModal";
@@ -12,12 +11,7 @@ import {
 import ViewObjectModal from "./ViewObjectModal";
 import ViewParameterModal from "./ViewParameterModal";
 import ViewCommentModal from "./ViewCommentModal";
-const TestStepTable = ({
-  processId,
-  testSteps,
-  deleteStep,
-  reusableProcessId,
-}) => {
+const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [viewParameterModal, setViewParameterModal] = useState(false);
   const [parameters, setParameters] = useState([]);
@@ -30,15 +24,25 @@ const TestStepTable = ({
   const columns = [
     {
       title: "",
-      width: 30,
+      width: 50,
       dataIndex: "action",
       render: (text, record) => (
-        <div style={{ cursor: "pointer" }}>
+        <div className="pointer">
           <StepMenu
-            processId={processId}
-            reusableProcessId={reusableProcessId}
+            processId={process?.id}
+            reusableProcessId={reusableProcess?.id}
             testStep={record}
           />
+        </div>
+      ),
+    },
+    {
+      title: "",
+      width: 40,
+      dataIndex: "index",
+      render: (text, record, index) => (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          {index + 1}
         </div>
       ),
     },
@@ -142,10 +146,11 @@ const TestStepTable = ({
             }}
           />
           <Popconfirm
+            placement="left"
             title="Are you sure to remove this step?"
             onConfirm={async () => {
-              if (processId)
-                await deleteStep(record.id, record.step, processId);
+              if (process?.id)
+                await deleteStep(record.id, record.step, process?.id);
               else deleteStep(record.id, record.step);
             }}
             okText="Yes, Remove"
@@ -161,6 +166,7 @@ const TestStepTable = ({
   return (
     <>
       <Table
+        scroll={{ x: true }}
         locale={{
           emptyText: (
             <div
@@ -188,8 +194,8 @@ const TestStepTable = ({
         <AddEditStepModal
           visible={addEditStepModal}
           setVisible={setAddEditStepModal}
-          processId={processId}
-          reusableProcessId={reusableProcessId}
+          process={process}
+          reusableProcess={reusableProcess}
           step={1}
           edit={edit}
           editData={editData}
@@ -224,8 +230,4 @@ const TestStepTable = ({
   );
 };
 
-const mapStateToProps = (state) => ({});
-
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(TestStepTable);
+export default TestStepTable;

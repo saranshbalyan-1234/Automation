@@ -29,6 +29,7 @@ const Process = ({
 
   useEffect(() => {
     testCaseId && getTestCaseStepsById(testCaseId);
+    // eslint-disable-next-line
   }, [testCaseId]);
 
   return (
@@ -64,7 +65,7 @@ const Process = ({
                           gap: "5px",
                         }}
                       >
-                        Process: {item.name}
+                        Process {index + 1} : {item.name}
                       </div>
                       {item.reusableProcess && (
                         <Tag color="blue">
@@ -98,9 +99,16 @@ const Process = ({
                         }}
                       />
                       <Popconfirm
+                        placement="left"
                         title="Are you sure to remove this process?"
                         onConfirm={async () => {
-                          await deleteProcess(item.id, item.step);
+                          await deleteProcess(
+                            item.id,
+                            item.step,
+                            testCaseId,
+                            item.name,
+                            item.reusableProcess
+                          );
                         }}
                         okText="Yes, Remove"
                         cancelText="No"
@@ -113,8 +121,8 @@ const Process = ({
               >
                 <TestStepTable
                   testSteps={item.testSteps}
-                  processId={item.id}
-                  reusableProcessId={item.reusableProcess?.id}
+                  process={item}
+                  reusableProcess={item.reusableProcess}
                   deleteStep={deleteStep}
                 />
               </Panel>

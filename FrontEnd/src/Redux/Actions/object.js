@@ -10,8 +10,9 @@ import {
   ADD_OBJECT_LOCATOR,
   GET_OBJECT_LOCATORS,
   DELETE_OBJECT_LOCATOR,
+  GET_OBJECT_LOGS,
 } from "./action-types";
-
+import { getDetailsEditedLogs } from "../../Utils/logs";
 export const getObjectByProject = (payload) => {
   return async (dispatch, getState) => {
     try {
@@ -52,6 +53,10 @@ export const editObject = (payload) => {
       dispatch({ type: OBJECT_BANK_REQUEST });
 
       let currentObjectId = getState().objectBank.currentObject?.id;
+      let oldData = getState().objectBank.currentObject;
+
+      const logs = await getDetailsEditedLogs(oldData, payload);
+      logs.length > 0 && createObjectLogs(currentObjectId, logs);
       let editedObject = { ...payload };
 
       await axios.put(`/object/${currentObjectId}`, payload);
@@ -97,6 +102,20 @@ export const getObjectDetailsById = (objectId) => {
   };
 };
 
+export const getObjectLogsById = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: OBJECT_BANK_REQUEST });
+      const { data } = await axios.get(`/object/${id}/logs`);
+      dispatch({ type: GET_OBJECT_LOGS, payload: data });
+      return true;
+    } catch (err) {
+      dispatch({ type: OBJECT_BANK_FAILURE });
+      return false;
+    }
+  };
+};
+
 //locators
 
 export const getObjectLocator = (id) => {
@@ -127,9 +146,11 @@ export const addObjectLocator = (payload) => {
   };
 };
 
-export const deleteLocator = (locatorId) => {
-  return async (dispatch) => {
+export const deleteLocator = (locatorId, name, type) => {
+  return async (dispatch, getState) => {
     try {
+      let currentObjectId = getState().objectBank.currentObject?.id;
+
       dispatch({ type: OBJECT_BANK_REQUEST });
 
       await axios.delete(`/object/locator/${locatorId}`);
@@ -138,6 +159,10 @@ export const deleteLocator = (locatorId) => {
         payload: locatorId,
       });
 
+      createObjectLogs(currentObjectId, [
+        `Deleted the "${type}" locator "${name}"`,
+      ]);
+
       return true;
     } catch (err) {
       console.log(err);
@@ -145,4 +170,14 @@ export const deleteLocator = (locatorId) => {
       return false;
     }
   };
+};
+
+//utils
+export const createObjectLogs = async (id, logs) => {
+  try {
+    await axios.post(`/object/${id}/logs`, { logs });
+    return true;
+  } catch (err) {
+    return false;
+  }
 };

@@ -3,8 +3,10 @@ import { connect } from "react-redux";
 import { Card, Tag, Badge, Empty, Button, Popconfirm } from "antd";
 import { deleteCustomer } from "../../../Redux/Actions/team";
 import Role from "../Role";
+import { UploadOutlined } from "@ant-design/icons";
 import UploadProfileImage from "./UploadProfileImage";
 import UserAvatar from "../../Common/Avatar";
+import styled from "styled-components";
 const { Meta } = Card;
 function Profile({ user, deleteCustomer }) {
   const [editProfileImage, setEditProfileImage] = useState(false);
@@ -17,14 +19,18 @@ function Profile({ user, deleteCustomer }) {
         <Card>
           <Meta
             avatar={
-              <div
+              <StyledUploadImage
                 onClick={() => {
                   setEditProfileImage(true);
                 }}
-                style={{ cursor: "pointer" }}
               >
-                <UserAvatar user={user} />
-              </div>
+                <div className="profileImage">
+                  <UserAvatar user={user.id} key={user.profileImage} />
+                </div>
+                <div className="uploadImage">
+                  <UploadOutlined />
+                </div>
+              </StyledUploadImage>
             }
             title={
               <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
@@ -45,7 +51,7 @@ function Profile({ user, deleteCustomer }) {
             >
               {" "}
               <Button
-                type="danger"
+                danger
                 ghost
                 style={{ marginTop: "20px", marginLeft: "45px" }}
               >
@@ -83,3 +89,23 @@ const mapStateToProps = (state) => ({ user: state.auth?.user });
 const mapDispatchToProps = { deleteCustomer };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+
+const StyledUploadImage = styled.div`
+  cursor: pointer;
+  position: relative;
+
+  .uploadImage {
+    display: none;
+    position: absolute;
+    font-size: 15px;
+  }
+  .profileImage:hover {
+    opacity: 0.2;
+  }
+
+  .profileImage:hover + .uploadImage {
+    display: block;
+    position: absolute;
+    margin-left: 5px;
+  }
+`;

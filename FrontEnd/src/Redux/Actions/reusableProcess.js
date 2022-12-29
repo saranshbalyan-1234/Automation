@@ -11,6 +11,7 @@ import {
   ADD_REUSABLE_STEP,
   EDIT_REUSABLE_STEP,
   DELETE_REUSABLE_STEP,
+  GET_REUSABLE_PROCESS_LOGS,
 } from "./action-types";
 
 export const getReusableProcessByProject = (payload) => {
@@ -167,4 +168,28 @@ export const deleteStep = (testStepId, step) => {
       return false;
     }
   };
+};
+
+export const getReusableProcessLogsById = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: REUSABLE_PROCESS_REQUEST });
+      const { data } = await axios.get(`/reusableProcess/${id}/logs`);
+      dispatch({ type: GET_REUSABLE_PROCESS_LOGS, payload: data });
+      return true;
+    } catch (err) {
+      dispatch({ type: REUSABLE_PROCESS_FAILURE });
+      return false;
+    }
+  };
+};
+
+//utils
+export const createReusableProcessLogs = async (id, logs) => {
+  try {
+    await axios.post(`/reusableProcess/${id}/logs`, { logs });
+    return true;
+  } catch (err) {
+    return false;
+  }
 };

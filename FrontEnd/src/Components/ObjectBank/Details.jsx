@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Locators from "./Locators";
 import { useParams } from "react-router-dom";
-import { Button, Card, Typography } from "antd";
+import { Button, Card, Typography, Tag } from "antd";
 import { getObjectDetailsById, editObject } from "../../Redux/Actions/object";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined } from "@ant-design/icons";
 import AddLocatorsModal from "./AddLocatorsModal";
 import UserAvatar from "../Common/Avatar";
 import moment from "moment";
+import AddEditObjectModal from "./AddEditObjectModal";
 const { Meta } = Card;
 const { Title } = Typography;
 const ObjectDetails = ({
@@ -15,57 +16,104 @@ const ObjectDetails = ({
   getObjectDetailsById,
   newObject,
   history = false,
+  loading,
 }) => {
   const { objectId } = useParams();
   const [currentObject, setCurrentObject] = useState({});
   const [addLocatorModal, setAddLocatorModal] = useState(false);
+  const [addEditModal, setAddEditModal] = useState(false);
+  const [editData, setEditData] = useState({});
 
   useEffect(() => {
     if (history) {
       setCurrentObject(newObject);
     } else {
       objectId && getObjectDetailsById(objectId);
-      newObject.id && getObjectDetailsById(newObject.id);
+      newObject?.id && getObjectDetailsById(newObject?.id);
       setCurrentObject(object);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [objectId, newObject.id, object.id, history]);
+  }, [objectId, newObject?.id, object?.id, history]);
+
+  useEffect(() => {
+    history === false && setCurrentObject(object);
+    // eslint-disable-next-line
+  }, [object]);
 
   return (
-    <div>
+    <div style={{ paddingTop: 20 }}>
       {currentObject && (
         <>
-          <Meta
-            title={
-              <div style={{ display: "flex", gap: 20 }}>
-                <Title style={{ textTransform: "capitalize" }} level={3}>
-                  {`Object: ${currentObject.name}`}
-                </Title>
-                <div style={{ color: "black" }}>
-                  Created On &nbsp;
-                  {moment(currentObject.createdAt).format("DD/MM/YY")} By &nbsp;
-                  {currentObject.createdBy && (
-                    <UserAvatar user={currentObject.createdBy} />
-                  )}
-                </div>
-              </div>
-            }
-            description={<></>}
-          />
-          {currentObject.description && (
-            <Meta
-              title="Description"
-              description={
-                <div
-                  style={{ marginTop: "5px" }}
-                  dangerouslySetInnerHTML={{
-                    __html: currentObject.description,
+          <Card>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+              }}
+            >
+              <Meta
+                title={
+                  <div style={{ display: "flex", gap: 20 }}>
+                    <Title style={{ textTransform: "capitalize" }} level={3}>
+                      {`Object: ${currentObject.name}`}
+                    </Title>
+                    <div style={{ color: "black" }}>
+                      Created On &nbsp;
+                      {moment(currentObject.createdAt).format("DD/MM/YY")} By
+                      &nbsp;
+                      {currentObject.createdBy && (
+                        <UserAvatar user={currentObject.createdBy.id} />
+                      )}
+                    </div>
+                  </div>
+                }
+                description={<></>}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 25,
+                }}
+              >
+                <Button
+                  type="primary"
+                  ghost
+                  onClick={() => {
+                    setEditData(currentObject);
+                    setAddEditModal(true);
                   }}
-                ></div>
-              }
-            />
-          )}
-
+                >
+                  <EditOutlined />
+                  Edit Object Details
+                </Button>
+              </div>
+            </div>
+            {currentObject.description && (
+              <Meta
+                title="Description"
+                description={
+                  <div
+                    style={{ marginTop: "5px" }}
+                    dangerouslySetInnerHTML={{
+                      __html: currentObject.description,
+                    }}
+                  ></div>
+                }
+              />
+            )}
+            <div style={{ display: "flex", gap: 10, maxWidth: 500 }}>
+              <div>Tags:</div>
+              <div>
+                {currentObject.tags?.length > 0
+                  ? currentObject.tags.map((el) => {
+                      return <Tag>{el}</Tag>;
+                    })
+                  : "N/A"}
+              </div>
+            </div>
+          </Card>
           <div style={{ display: "flex", flexDirection: "column" }}>
             {!history && (
               <Button
@@ -92,6 +140,16 @@ const ObjectDetails = ({
         <AddLocatorsModal
           visible={addLocatorModal}
           setVisible={setAddLocatorModal}
+        />
+      )}
+      {addEditModal && (
+        <AddEditObjectModal
+          visible={addEditModal}
+          setVisible={setAddEditModal}
+          edit={true}
+          editData={editData}
+          setEditData={setEditData}
+          loading={loading}
         />
       )}
     </div>

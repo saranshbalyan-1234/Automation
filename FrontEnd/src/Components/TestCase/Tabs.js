@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Button } from "antd";
-import { PlayCircleFilled } from "@ant-design/icons";
+import { PlayCircleFilled, TableOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   getTestCaseDetailsById,
   editTestCase,
+  getTestCaseLogsById,
 } from "../../Redux/Actions/testCase";
+import Environment from "./Environment";
 import Process from "./Process";
 import Details from "./TestCaseDetails";
-import ComingSoon from "../../Views/ComingSoon";
+import ActivityLog from "../Common/ActivityLog";
 import ExecuteModal from "./ExecuteModal";
 import ExecutionHistory from "./ExecutionHistory/List";
 function TestCaseTabs({
@@ -17,11 +19,14 @@ function TestCaseTabs({
   currentTestCase,
   loading,
   editTestCase,
+  logs,
+  getTestCaseLogsById,
 }) {
   const { tab, testCaseId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
   const [executeModal, setExecuteModal] = useState(false);
+  const [envModal, setEnvModal] = useState(false);
 
   const handleActiveTab = (value) => {
     navigate(`/TestCase/${testCaseId}/${value}`);
@@ -32,27 +37,49 @@ function TestCaseTabs({
   }, [tab]);
 
   useEffect(() => {
+    tab === "logs" && getTestCaseLogsById(testCaseId);
+    // eslint-disable-next-line
+  }, [tab]);
+
+  useEffect(() => {
     testCaseId && getTestCaseDetailsById(testCaseId);
+    // eslint-disable-next-line
   }, [testCaseId]);
 
   const renderButton = () => {
     if (activeTab === "teststeps")
       return (
-        <Button
-          type="primary"
+        <div
           style={{
             position: "absolute",
             right: 0,
             top: 5,
-            width: 100,
-          }}
-          onClick={() => {
-            setExecuteModal(true);
+            width: 250,
+            display: "flex",
+            gap: 10,
           }}
         >
-          <PlayCircleFilled />
-          Execute
-        </Button>
+          <Button
+            type="primary"
+            ghost
+            onClick={() => {
+              setEnvModal(true);
+            }}
+          >
+            <TableOutlined />
+            Environments
+          </Button>
+
+          <Button
+            type="primary"
+            onClick={() => {
+              setExecuteModal(true);
+            }}
+          >
+            <PlayCircleFilled />
+            Execute
+          </Button>
+        </div>
       );
   };
   return (
@@ -79,8 +106,10 @@ function TestCaseTabs({
           <Tabs.TabPane tab="Execution History" key="executionhistory">
             {activeTab === "executionhistory" && <ExecutionHistory />}
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Activity Log" key="activitylog">
-            <ComingSoon />
+          <Tabs.TabPane tab="Logs" key="logs">
+            {activeTab === "logs" && (
+              <ActivityLog logs={logs} loading={loading} />
+            )}
           </Tabs.TabPane>
         </Tabs>
         {renderButton()}
@@ -88,14 +117,20 @@ function TestCaseTabs({
       {executeModal && (
         <ExecuteModal setVisible={setExecuteModal} visible={executeModal} />
       )}
+      {envModal && <Environment setVisible={setEnvModal} visible={envModal} />}
     </>
   );
 }
 const mapStateToProps = (state) => ({
   loading: state.testCase.loading,
   currentTestCase: state.testCase.currentTestCase,
+  logs: state.testCase.currentTestCase.logs,
 });
 
-const mapDispatchToProps = { getTestCaseDetailsById, editTestCase };
+const mapDispatchToProps = {
+  getTestCaseDetailsById,
+  editTestCase,
+  getTestCaseLogsById,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestCaseTabs);

@@ -26,6 +26,7 @@ export const Role = ({
 
   useEffect(() => {
     getAllRole();
+    // eslint-disable-next-line
   }, []);
 
   const handleRoleEdit = (item) => {
@@ -132,6 +133,7 @@ export const Role = ({
                         <SettingOutlined /> Manage Permmission
                       </Button>
                       <Popconfirm
+                        placement="left"
                         title="Are you sure to delete this Role?"
                         onConfirm={(e) => {
                           e.stopPropagation();
@@ -143,7 +145,7 @@ export const Role = ({
                           e.stopPropagation();
                         }}
                       >
-                        <Button type="danger" ghost size="small">
+                        <Button danger ghost size="small">
                           <DeleteOutlined /> Delete Role
                         </Button>
                       </Popconfirm>

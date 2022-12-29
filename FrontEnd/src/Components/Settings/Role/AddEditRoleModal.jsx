@@ -32,12 +32,12 @@ const AddEditRoleModal = ({
     <Modal
       centered
       title={edit ? "Edit Role" : "Add Role"}
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);
       }}
-      closable={false}
+      // closable={false}
     >
       <Loading loading={roles.loading}>
         <Form
@@ -57,7 +57,7 @@ const AddEditRoleModal = ({
               },
             ]}
           >
-            <Input name="name" />
+            <Input name="name" showCount maxlength={50} />
           </Form.Item>
 
           <div style={{ display: "flex", justifyContent: "center" }}>

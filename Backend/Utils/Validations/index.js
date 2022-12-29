@@ -1,7 +1,15 @@
 import joi from "@hapi/joi";
 
-const nameValidation = joi.object({
-  name: joi.string().min(3).required(),
+export const nameValidation = joi.object({
+  name: joi.string().min(3).max(30).required(),
+});
+export const idValidation = joi.object({
+  id: joi.number().integer().required(),
 });
 
-export { nameValidation };
+export const nameDesTagPrjValidation = joi.object({
+  name: joi.string().min(3).max(30).required(),
+  description: joi.string().allow(null, "").required(),
+  tags: joi.array().allow(null, ""),
+  projectId: joi.number().integer().required(),
+});

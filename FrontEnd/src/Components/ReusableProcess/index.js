@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import List from "../Common/List";
 import ReusableProcessTabs from "./Tabs";
 import { Routes, Route } from "react-router-dom";
@@ -13,13 +13,8 @@ const ReusableProcess = ({
   getReusableProcessByProject,
   deleteReusableProcess,
   reusableProcess,
-  currentProjectId,
   saveReusableProcess,
 }) => {
-  useEffect(() => {
-    currentProjectId && getReusableProcessByProject();
-  }, [currentProjectId]);
-
   return (
     <>
       <Routes>
@@ -33,6 +28,7 @@ const ReusableProcess = ({
               name="Reusable Process"
               link="ReusableProcess"
               onSave={saveReusableProcess}
+              getList={getReusableProcessByProject}
             />
           }
         />
@@ -45,7 +41,6 @@ const ReusableProcess = ({
   );
 };
 const mapStateToProps = (state) => ({
-  currentProjectId: state.projects.currentProject.id,
   reusableProcess: state.reusableProcess.data,
   loading: state.reusableProcess.loading,
 });

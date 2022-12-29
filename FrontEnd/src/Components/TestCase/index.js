@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 // import TestCaseList from "./TestCaseList";
 import List from "../Common/List";
 import TestCaseTabs from "./Tabs";
@@ -12,14 +12,10 @@ import {
 const TestCase = ({
   getTestCaseByProject,
   deleteTestCase,
-  currentProjectId,
   testCases,
   loading,
   saveTestCase,
 }) => {
-  useEffect(() => {
-    getTestCaseByProject();
-  }, [currentProjectId]);
   return (
     <>
       <Routes>
@@ -33,6 +29,7 @@ const TestCase = ({
               onSave={saveTestCase}
               name="Test Case"
               link="TestCase"
+              getList={getTestCaseByProject}
             />
           }
         />
@@ -42,7 +39,6 @@ const TestCase = ({
   );
 };
 const mapStateToProps = (state) => ({
-  currentProjectId: state.projects.currentProject.id,
   testCases: state.testCase.data,
   loading: state.testCase.loading,
 });

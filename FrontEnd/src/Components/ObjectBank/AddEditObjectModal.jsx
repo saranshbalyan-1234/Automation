@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Form, Input, Modal, Button } from "antd";
+import { Form, Input, Modal, Button, Select } from "antd";
 import ViewObjectModal from "../Common/TestStep/ViewObjectModal";
 import { connect } from "react-redux";
 import ReactQuill from "react-quill";
 import Loading from "../Common/Loading";
+import { editObject } from "../../Redux/Actions/object";
 const AddEditObjectModal = ({
   visible,
   setVisible,
@@ -13,15 +14,14 @@ const AddEditObjectModal = ({
   loading,
   edit = false,
   onSave,
-  onEdit,
-  name,
+  editObject,
 }) => {
   const [viewObjectModal, setViewObjectModal] = useState(false);
   const [object, setObject] = useState({});
   const onSubmit = async (data) => {
     let result = false;
     if (edit) {
-      result = await onEdit(data);
+      result = await editObject(data);
       setEditData({});
     } else {
       result = await onSave({
@@ -39,24 +39,29 @@ const AddEditObjectModal = ({
   return (
     <>
       <Modal
-        title={edit ? `Edit ${name}` : `Create New ${name}`}
-        visible={visible}
+        title={edit ? `Edit Object` : `Create New Object`}
+        open={visible}
         footer={false}
         onCancel={() => {
           setVisible(false);
         }}
         width={500}
-        closable={false}
+        // closable={false}
       >
         <Loading loading={loading}>
           <Form
-            name={name}
+            name={"Object Bank"}
             onFinish={onSubmit}
             labelCol={{ span: 7 }}
             wrapperCol={{ span: 16 }}
             initialValues={{
               name: edit ? editData.name : "",
               description: edit ? editData.description : "",
+              tags: edit
+                ? editData.tags
+                  ? editData.tags
+                  : undefined
+                : undefined,
             }}
           >
             <Form.Item
@@ -69,7 +74,10 @@ const AddEditObjectModal = ({
                 },
               ]}
             >
-              <Input name="name" />
+              <Input name="name" showCount maxlength={50} />
+            </Form.Item>
+            <Form.Item name="tags" label="Tags">
+              <Select mode="tags" placeholder="Tags" />
             </Form.Item>
             <Form.Item name="description" label="">
               {/* <Input.TextArea name="description" /> */}
@@ -114,6 +122,6 @@ const AddEditObjectModal = ({
 const mapStateToProps = (state) => ({
   currentProjectId: state.projects.currentProject.id,
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = { editObject };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditObjectModal);

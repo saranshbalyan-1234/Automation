@@ -14,10 +14,10 @@ import projectRoutes from "./Routes/projectRoutes.js";
 import testCaseRoutes from "./Routes/TestCase/testCase.js";
 import objectRoutes from "./Routes/TestCase/object.js";
 import testStepRoutes from "./Routes/TestCase/testStep.js";
-import testParameterRoutes from "./Routes/TestCase/testParameter.js";
 import reusableProcessRoutes from "./Routes/TestCase/reusableProcess.js";
 import executionHistoryRoutes from "./Routes/TestCase/executionHistory.js";
 import awsRoutes from "./Routes/awsRoutes.js";
+import environmentRoutes from "./Routes/TestCase/environment.js";
 
 import dashboardRoutes from "./Routes/dashboardRoutes.js";
 
@@ -57,11 +57,11 @@ app.use("/project", projectRoutes);
 app.use("/testcase", testCaseRoutes);
 app.use("/object", objectRoutes);
 app.use("/teststep", testStepRoutes);
-app.use("/testparameter", testParameterRoutes);
 app.use("/reusableProcess", reusableProcessRoutes);
 app.use("/executionHistory", executionHistoryRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/aws", awsRoutes);
+app.use("/environment", environmentRoutes);
 
 app.use((req, res) => {
   return res.status(404).json({ error: "Endpoint Not Found" });

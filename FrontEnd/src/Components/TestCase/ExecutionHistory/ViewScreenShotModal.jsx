@@ -29,7 +29,7 @@ const ViewScreenShotModal = ({ visible, setVisible }) => {
     <Modal
       width={1200}
       centered
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);
@@ -47,7 +47,7 @@ const ViewScreenShotModal = ({ visible, setVisible }) => {
             <img
               alt="screenshot"
               src={"data:image/jpeg;base64," + imgData}
-              style={{ maxWidth: "75vw" }}
+              style={{ maxWidth: "85vw" }}
             />
           )}
         </div>

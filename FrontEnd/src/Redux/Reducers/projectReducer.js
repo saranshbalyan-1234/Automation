@@ -8,6 +8,7 @@ import {
   DELETE_PROJECT,
   ADD_CURRENT_PROJECT_MEMBER,
   EDIT_PROJECT_DETAILS,
+  EMPTY_PROJECT,
 } from "../Actions/action-types";
 
 const initState = {
@@ -80,6 +81,12 @@ const projectReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: false,
         currentProject: { ...state.currentProject, ...updatedProject },
+      };
+    case EMPTY_PROJECT:
+      return {
+        loading: false,
+        data: [],
+        currentProject: {},
       };
     default:
       return state;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Modal, Button, Select } from "antd";
 import { addMember } from "../../Redux/Actions/project";
-import axios from "axios";
 import { connect } from "react-redux";
 import Loading from "../Common/Loading";
 const { Option } = Select;
@@ -11,23 +10,27 @@ const AddProjectMemberModal = ({
   currentProject,
   loading,
   addMember,
+  allUsers,
 }) => {
   const [availableMembers, setAvailableMembers] = useState([]);
 
-  const checkAvailableMember = async (allUsers) => {
-    const difference = await allUsers.filter((user) => {
-      const addedMembers = currentProject.members;
-      return !addedMembers.some((el) => {
-        return el.id === user.id;
+  const checkAvailableMember = async () => {
+    const difference = await allUsers
+      .filter((el) => {
+        return el.deletedAt === null;
+      })
+      .filter((user) => {
+        const addedMembers = currentProject.members;
+        return !addedMembers.some((el) => {
+          return el.id === user.id;
+        });
       });
-    });
     setAvailableMembers(difference);
   };
 
   useEffect(() => {
-    axios.get("/user").then((res) => {
-      checkAvailableMember(res.data);
-    });
+    checkAvailableMember();
+    // eslint-disable-next-line
   }, []);
 
   const onSubmit = async (data) => {
@@ -41,28 +44,18 @@ const AddProjectMemberModal = ({
 
     const result = await addMember(payload);
     result && setVisible(false);
-
-    // const { name, description } = data;
-    // const payload = { name, description, startDate, endDate };
-    // if (edit) {
-    //   let result = await editRole({ ...data, id: roleData.id });
-    //   result && setVisible(false);
-    // } else {
-    //   let result = await addProject(payload);
-    //   result && setVisible(false);
-    // }
   };
 
   return (
     <Modal
       centered
       title={"Add Project Memer"}
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);
       }}
-      closable={false}
+      // closable={false}
     >
       <Loading loading={loading}>
         <Form
@@ -122,6 +115,7 @@ const AddProjectMemberModal = ({
 const mapStateToProps = (state) => ({
   currentProject: state.projects.currentProject,
   loading: state.projects.loading,
+  allUsers: state.team.data,
 });
 const mapDispatchToProps = { addMember };
 

@@ -22,6 +22,7 @@ export const List = ({
   const [executionHistoryId, setExecutionHistoryId] = useState(0);
   useEffect(() => {
     getAllExecutionHistoryByTestCase(testCaseId);
+    // eslint-disable-next-line
   }, [testCaseId]);
 
   const columns = [
@@ -35,39 +36,44 @@ export const List = ({
       dataIndex: "executedBy",
       render: (_, record) => (
         <div>
-          {moment(record.createdAt).format("DD/MM/YY")} By &nbsp;
-          {record.executedBy && <UserAvatar user={record.executedBy} />}
+          {moment(record.createdAt).format("DD/MM/YY h:mm:ss a")} By &nbsp;
+          {record.executedBy && <UserAvatar user={record.executedBy.id} />}
         </div>
       ),
-      width: 130,
+      width: 180,
     },
     {
       title: "Result",
       width: 100,
-      dataIndex: "finishedAt",
-      render: (text, record) =>
-        text ? (
-          <div
-            style={{
-              color: "green",
-              fontWeight: 600,
-              width: 40,
-            }}
-          >
-            PASS
-          </div>
-        ) : (
-          <div style={{ color: "red", fontWeight: 600, width: 40 }}>FAIL</div>
-        ),
+      dataIndex: "result",
+      render: (text, record) => (
+        <div style={{ width: 100 }}>
+          {text === true ? (
+            <div
+              style={{
+                color: "green",
+                fontWeight: 600,
+              }}
+            >
+              PASS
+            </div>
+          ) : text === false ? (
+            <div style={{ color: "red", fontWeight: 600 }}>FAIL</div>
+          ) : (
+            <div style={{ color: "grey", fontWeight: 600 }}>INCOMPLETE</div>
+          )}
+        </div>
+      ),
     },
 
     {
-      title: "Actions",
+      title: "",
       key: "actions",
-      width: 100,
+      width: 50,
       render: (_, record) => (
         <div style={{ display: "flex", gap: 10 }}>
           <Popconfirm
+            placement="left"
             title={`Are you sure to delete this Execution History?`}
             onConfirm={async (e) => {
               e.stopPropagation();
@@ -90,6 +96,7 @@ export const List = ({
     <>
       <Loading loading={loading}>
         <Table
+          sticky
           columns={columns}
           dataSource={data}
           rowClassName="pointer"

@@ -4,6 +4,7 @@ import {
   GET_ALL_EXECUTION_HISTORY,
   DELETE_EXECUTION_HISTORY,
   GET_EXECUTION_HISTORY_BY_ID,
+  EMPTY_EXECUTION_HISTORY,
 } from "../Actions/action-types";
 
 const initState = {
@@ -42,6 +43,12 @@ const executionHistoryReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: false,
         currentExecutionHistory: payload,
+      };
+    case EMPTY_EXECUTION_HISTORY:
+      return {
+        loading: false,
+        data: [],
+        currentExecutionHistory: { process: [] },
       };
     default:
       return state;

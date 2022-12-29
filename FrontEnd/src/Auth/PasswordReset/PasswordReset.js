@@ -65,6 +65,8 @@ const PasswordReset = () => {
                   hasFeedback
                 >
                   <Input.Password
+                    showCount
+                    maxLength={15}
                     name="password"
                     onChange={(e) => {
                       setPassword(e.target.value);
@@ -93,7 +95,7 @@ const PasswordReset = () => {
                     }),
                   ]}
                 >
-                  <Input.Password />
+                  <Input.Password showCount maxLength={15} />
                 </Form.Item>
 
                 <Form.Item {...tailFormItemLayout}>

@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Modal, Button, Select, Switch } from "antd";
+import { Form, Modal, Button, Select, Switch } from "antd";
 import { connect } from "react-redux";
 import { addProcess } from "../../../Redux/Actions/testCase";
-import { addStep, editStep } from "../../../Redux/Actions/testCase";
+import {
+  addStep,
+  editStep,
+  createTestCaseLogs,
+} from "../../../Redux/Actions/testCase";
+import { getDetailsEditedLogs } from "../../../Utils/logs";
 import { getObjectByProject } from "../../../Redux/Actions/object";
 import {
   addReusableStep,
   editReusableStep,
+  createReusableProcessLogs,
 } from "../../../Redux/Actions/reusableProcess";
-import KeyboardButtonList from "./KeyboardButtonList";
 import AddEditObjectModal from "../../ObjectBank/AddEditObjectModal";
 import axios from "axios";
 import { saveObject } from "../../../Redux/Actions/object";
 import ReactQuill from "react-quill";
 import Loading from "../Loading";
+import Parameter from "./Parameter";
 const Option = { Select };
 const AddEditStepModal = ({
   visible,
@@ -27,15 +33,17 @@ const AddEditStepModal = ({
   step,
   addStep,
   addReusableStep,
-  processId,
-  reusableProcessId,
+  process,
+  reusableProcess,
   currentProjectId,
   objectList,
   getObjectByProject,
   objectLoading,
   saveObject,
   setEdit = () => {},
+  currentTestCaseId,
 }) => {
+  console.log("saransh", process);
   const [actionEvent, setActionEvent] = useState([]);
   const [currentEvent, setCurrentEvent] = useState({});
   const [addObjectModal, setAddObjectModal] = useState(false);
@@ -73,6 +81,9 @@ const AddEditStepModal = ({
         parameter3: editData.testParameters.find((el) => {
           return el.type === currentEvent.parameter3;
         })?.property,
+        parameter4: editData.testParameters.find((el) => {
+          return el.type === currentEvent.parameter4;
+        })?.property,
       });
 
     form.setFieldsValue({
@@ -87,6 +98,10 @@ const AddEditStepModal = ({
       type3:
         editData?.testParameters?.find((el) => {
           return el.type === currentEvent.parameter3;
+        })?.method || "Static",
+      type4:
+        editData?.testParameters?.find((el) => {
+          return el.type === currentEvent.parameter4;
         })?.method || "Static",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,22 +122,37 @@ const AddEditStepModal = ({
       const value = data.parameter1;
       const method = data.type1;
       payload.parameters.push({ type: key, property: value, method });
+      delete payload.parameter1;
+      delete payload.type1;
     }
     if (currentEvent.parameter2) {
       const key = currentEvent.parameter2;
       const value = data.parameter2;
       const method = data.type2;
       payload.parameters.push({ type: key, property: value, method });
+      delete payload.parameter2;
+      delete payload.type2;
     }
     if (currentEvent.parameter3) {
       const key = currentEvent.parameter3;
       const value = data.parameter3;
       const method = data.type3;
       payload.parameters.push({ type: key, property: value, method });
+      delete payload.parameter3;
+      delete payload.type3;
+    }
+
+    if (currentEvent.parameter4) {
+      const key = currentEvent.parameter4;
+      const value = data.parameter4;
+      const method = data.type4;
+      payload.parameters.push({ type: key, property: value, method });
+      delete payload.parameter4;
+      delete payload.type4;
     }
 
     if (edit) {
-      if (reusableProcessId && !processId) {
+      if (reusableProcess?.id && !process?.id) {
         result = await editReusableStep({
           data: payload,
           stepId: editData.id,
@@ -131,32 +161,46 @@ const AddEditStepModal = ({
         result = await editStep({
           data: payload,
           stepId: editData.id,
-          reusableProcessId,
-          processId,
+          reusableProcessId: reusableProcess?.id,
+          processId: process?.id,
         });
+        // const logs = await getDetailsEditedLogs(editData, payload, "step ");
+        // logs.length > 0 && createTestCaseLogs(currentTestCaseId, logs);
       }
       setEditData({});
     } else {
-      if (reusableProcessId && !processId) {
+      if (reusableProcess?.id && !process?.id) {
         result = await addReusableStep({
           ...payload,
-          reusableProcessId,
+          reusableProcessId: reusableProcess.id,
           step,
         });
+        createReusableProcessLogs(reusableProcess?.id, [
+          `added new step at position ${step}`,
+        ]);
       } else {
-        if (reusableProcessId && processId) {
+        if (reusableProcess?.id && process?.id) {
           result = await addStep({
             ...payload,
-            reusableProcessId,
+            reusableProcessId: reusableProcess.id,
             step,
-            reusableId: processId,
+            reusableId: process?.id,
           });
+          createReusableProcessLogs(reusableProcess.id, [
+            `added new step at position ${step}`,
+          ]);
+          createTestCaseLogs(currentTestCaseId, [
+            `added new step at position ${step} in reusableProcess "${reusableProcess.name}" or process "${process.name}"`,
+          ]);
         } else {
           result = await addStep({
             ...payload,
-            processId,
+            processId: process?.id,
             step,
           });
+          createTestCaseLogs(currentTestCaseId, [
+            `added new step at position ${step} in process "${process.name}"`,
+          ]);
         }
       }
     }
@@ -174,7 +218,13 @@ const AddEditStepModal = ({
         width={700}
         centered
         title={
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginRight: 27,
+            }}
+          >
             <div>{edit ? "Edit Step" : "Create New Step"}</div>
             {currentEvent.object && (
               <Button
@@ -189,12 +239,12 @@ const AddEditStepModal = ({
             )}
           </div>
         }
-        visible={visible}
+        open={visible}
         footer={false}
         onCancel={() => {
           setVisible(false);
         }}
-        closable={false}
+        // closable={false}
       >
         <Loading loading={loading}>
           <Form
@@ -265,164 +315,7 @@ const AddEditStepModal = ({
               </Form.Item>
             )}
 
-            {currentEvent.parameter1 && (
-              <Form.Item
-                label={<div className="star">{currentEvent.parameter1}</div>}
-              >
-                <Form.Item
-                  name="type1"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please Select Parameter Type",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(30% - 8px)",
-                  }}
-                >
-                  <Select>
-                    <Option value="Static">Static</Option>
-                    <Option value="Dynamic">Dynamic</Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  name="parameter1"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Parameter!",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(70% - 8px)",
-                    margin: "0 8px",
-                  }}
-                >
-                  {currentEvent.parameter1 === "Button" ? (
-                    <Select style={{ minWidth: "160px" }} showSearch>
-                      {KeyboardButtonList.map((el, i) => {
-                        return (
-                          <Option value={el} key={i}>
-                            {el}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  ) : (
-                    <Input name="parameter1" showCount maxLength={50} />
-                  )}
-                </Form.Item>
-              </Form.Item>
-            )}
-
-            {currentEvent.parameter2 && (
-              <Form.Item
-                label={<div className="star">{currentEvent.parameter2}</div>}
-              >
-                <Form.Item
-                  name="type2"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please Select Parameter Type",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(30% - 8px)",
-                  }}
-                >
-                  <Select>
-                    <Option value="Static">Static</Option>
-                    <Option value="Dynamic">Dynamic</Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  name="parameter2"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Parameter!",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(70% - 8px)",
-                    margin: "0 8px",
-                  }}
-                >
-                  {currentEvent.parameter2 === "Button" ? (
-                    <Select style={{ minWidth: "160px" }} showSearch>
-                      {KeyboardButtonList.map((el, i) => {
-                        return (
-                          <Option value={el} key={i}>
-                            {el}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  ) : (
-                    <Input name="parameter2" showCount maxLength={50} />
-                  )}
-                </Form.Item>
-              </Form.Item>
-            )}
-
-            {currentEvent.parameter3 && (
-              <Form.Item
-                label={<div className="star">{currentEvent.parameter3}</div>}
-              >
-                <Form.Item
-                  name="type3"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please Select Parameter Type",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(30% - 8px)",
-                  }}
-                >
-                  <Select>
-                    <Option value="Static">Static</Option>
-                    <Option value="Dynamic">Dynamic</Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  name="parameter3"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Parameter!",
-                    },
-                  ]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(70% - 8px)",
-                    margin: "0 8px",
-                  }}
-                >
-                  {currentEvent.parameter3 === "Button" ? (
-                    <Select style={{ minWidth: "160px" }} showSearch>
-                      {KeyboardButtonList.map((el, i) => {
-                        return (
-                          <Option value={el} key={i}>
-                            {el}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  ) : (
-                    <Input name="parameter3" showCount maxLength={50} />
-                  )}
-                </Form.Item>
-              </Form.Item>
-            )}
+            <Parameter currentEvent={currentEvent} />
 
             <Form.Item
               name="screenshot"
@@ -473,6 +366,7 @@ const AddEditStepModal = ({
 const mapStateToProps = (state) => ({
   loading: state.testCase.loading,
   currentProjectId: state.projects.currentProject.id,
+  currentTestCaseId: state.testCase.currentTestCase.id,
   objectList: state.objectBank.data,
   objectLoading: state.objectBank.loading,
 });

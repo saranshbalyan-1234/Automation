@@ -1,9 +1,17 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-import { projectByIdValidation } from "../../Utils/Validations/project.js";
+import {
+  idValidation,
+  nameDesTagPrjValidation,
+} from "../../Utils/Validations/index.js";
+import {
+  updateObjectValidation,
+  saveObjectLocatorValidation,
+} from "../../Utils/Validations/object.js";
 const Object = db.objects;
 const User = db.users;
 const ObjectLocator = db.ObjectLocators;
+const ObjectLog = db.objectLogs;
 
 const saveObject = async (req, res) => {
   /*  #swagger.tags = ["Test Object"] 
@@ -11,13 +19,15 @@ const saveObject = async (req, res) => {
   */
 
   try {
-    // const { error } = nameValidation.validate(req.body);
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = nameDesTagPrjValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
     const payload = { ...req.body };
     payload.createdByUser = req.user.id;
 
     const object = await Object.schema(req.database).create(payload);
-
+    createObjectLog(req, res, object.id, [
+      `created the object "${req.body.name}".`,
+    ]);
     return res.status(200).json(object);
   } catch (err) {
     getError(err, res);
@@ -30,14 +40,21 @@ const getObjectDetailsById = async (req, res) => {
 
   try {
     const objectId = req.params.objectId;
-    // const { error } = projectByIdValidation.validate({ projectId });
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = idValidation.validate({ id: objectId });
+    if (error) throw new Error(error.details[0].message);
 
     const testCase = await Object.schema(req.database).findOne({
       where: {
         id: objectId,
       },
-      // attributes: ["id", "name", "createdAt", "updatedAt", "description"],
+      attributes: [
+        "id",
+        "name",
+        "createdAt",
+        "updatedAt",
+        "description",
+        "tags",
+      ],
       include: [
         {
           model: User.schema(req.database),
@@ -64,8 +81,11 @@ const updateObject = async (req, res) => {
 
   try {
     const objectId = req.params.objectId;
-    // const { error } = updateTestCaseValidation.validate({ name, testCaseId });
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = updateObjectValidation.validate({
+      ...req.body,
+      objectId,
+    });
+    if (error) throw new Error(error.details[0].message);
 
     const updatedObject = await Object.schema(req.database).update(req.body, {
       where: {
@@ -90,8 +110,9 @@ const deleteObject = async (req, res) => {
 
   try {
     const objectId = req.params.objectId;
-    // const { error } = testCaseIdValidation.validate({ testCaseId });
-    // if (error) throw new Error(error.details[0].message);
+
+    const { error } = idValidation.validate({ id: objectId });
+    if (error) throw new Error(error.details[0].message);
 
     const deletedObject = await Object.schema(req.database).destroy({
       where: { id: objectId },
@@ -114,14 +135,14 @@ const getAllObject = async (req, res) => {
 
   try {
     const projectId = req.headers["x-project-id"];
-    const { error } = projectByIdValidation.validate({ projectId });
+    const { error } = idValidation.validate({ id: projectId });
     if (error) throw new Error(error.details[0].message);
 
     const objects = await Object.schema(req.database).findAll({
       where: {
         projectId,
       },
-      // attributes: ["id", "name", "updatedAt"],
+      attributes: ["id", "name", "createdAt", "updatedAt", "tags"],
       include: [
         {
           model: User.schema(req.database),
@@ -143,8 +164,9 @@ const getObjectLocatorsByObjectId = async (req, res) => {
 
   try {
     const objectId = req.params.objectId;
-    // const { error } = projectByIdValidation.validate({ projectId });
-    // if (error) throw new Error(error.details[0].message);
+
+    const { error } = idValidation.validate({ id: objectId });
+    if (error) throw new Error(error.details[0].message);
 
     const locators = await ObjectLocator.schema(req.database).findAll({
       where: {
@@ -164,10 +186,15 @@ const saveObjectLocator = async (req, res) => {
   */
 
   try {
-    // const { error } = nameValidation.validate(req.body);
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = saveObjectLocatorValidation.validate(req.body);
+    if (error) throw new Error(error.details[0].message);
 
     const locator = await ObjectLocator.schema(req.database).create(req.body);
+
+    createObjectLog(req, res, req.body.objectId, [
+      `added new "${req.body.type}" locator "${req.body.locator}".`,
+    ]);
+
     return res.status(200).json(locator);
   } catch (err) {
     getError(err, res);
@@ -181,8 +208,9 @@ const deleteObjectLocator = async (req, res) => {
 
   try {
     const locatorId = req.params.locatorId;
-    // const { error } = testCaseIdValidation.validate({ testCaseId });
-    // if (error) throw new Error(error.details[0].message);
+
+    const { error } = idValidation.validate({ id: locatorId });
+    if (error) throw new Error(error.details[0].message);
 
     const deletedLocator = await ObjectLocator.schema(req.database).destroy({
       where: { id: locatorId },
@@ -200,6 +228,61 @@ const deleteObjectLocator = async (req, res) => {
   }
 };
 
+const getObjectLogsByObjectId = async (req, res) => {
+  /*  #swagger.tags = ["Test Object"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const objectId = req.params.objectId;
+
+    const { error } = idValidation.validate({ id: objectId });
+    if (error) throw new Error(error.details[0].message);
+
+    const locators = await ObjectLog.schema(req.database).findAll({
+      where: {
+        objectId,
+      },
+      attributes: ["log", "createdAt"],
+      include: [
+        {
+          model: User.schema(req.database),
+          as: "createdBy",
+          attributes: ["id", "name", "email", "active", "profileImage"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
+
+    return res.status(200).json(locators);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+const createObjectLog = async (req, res, id, logs = []) => {
+  /*  #swagger.tags = ["Test Object"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const objectId = req.params.objectId || id;
+    const tempLogs = req.body.logs || logs;
+
+    // const { error } = idValidation.validate({ id: objectId });
+    // if (error) throw new Error(error.details[0].message);
+
+    const payload = tempLogs.map((el) => {
+      return { log: el, objectId, createdByUser: req.user.id };
+    });
+    await ObjectLog.schema(req.database).bulkCreate(payload);
+    if (logs.length == 0) return res.status(201);
+  } catch (err) {
+    if (logs.length == 0) getError(err, res);
+    else console.log(err);
+  }
+};
+
 export {
   getAllObject,
   getObjectDetailsById,
@@ -209,4 +292,6 @@ export {
   getObjectLocatorsByObjectId,
   saveObjectLocator,
   deleteObjectLocator,
+  getObjectLogsByObjectId,
+  createObjectLog,
 };

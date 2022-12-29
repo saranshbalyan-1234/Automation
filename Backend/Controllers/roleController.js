@@ -1,13 +1,11 @@
 import db from "../Utils/dataBaseConnection.js";
 import getError from "../Utils/sequelizeError.js";
-import { userIdValidation } from "../Utils/Validations/user.js";
 import {
   updateNameValidation,
-  roleIdValidation,
   updatePermissionValidation,
 } from "../Utils/Validations/role.js";
-import { nameValidation } from "../Utils/Validations/index.js";
-import { paginate, pageInfo } from "../Utils/pagination.js";
+import { nameValidation, idValidation } from "../Utils/Validations/index.js";
+// import { paginate, pageInfo } from "../Utils/pagination.js";
 const Role = db.roles;
 const UserRole = db.userRoles;
 const Permission = db.permissions;
@@ -90,7 +88,7 @@ const deleteRole = async (req, res) => {
   try {
     const roleId = req.params.roleId;
 
-    const { error } = roleIdValidation.validate({ roleId });
+    const { error } = idValidation.validate({ id: roleId });
     if (error) throw new Error(error.details[0].message);
 
     const assignedRole = await UserRole.schema(req.database).findOne({
@@ -121,8 +119,8 @@ const updateRolePermission = async (req, res) => {
   try {
     const roleId = req.params.roleId;
 
-    const { error } = roleIdValidation.validate({
-      roleId,
+    const { error } = idValidation.validate({
+      id: roleId,
     });
     if (error) throw new Error(error.details[0].message);
 
@@ -174,7 +172,7 @@ const getUserRole = async (req, res) => {
   */
   try {
     const userId = req.params.userId;
-    const { error } = userIdValidation.validate({ userId });
+    const { error } = idValidation.validate({ id: userId });
     if (error) throw new Error(error.details[0].message);
 
     const roles = await UserRole.schema(req.database).findAll({
@@ -204,7 +202,7 @@ const updateUserRole = async (req, res) => {
   */
   try {
     const userId = req.params.userId;
-    const { error } = userIdValidation.validate({ userId });
+    const { error } = idValidation.validate({ id: userId });
     if (error) throw new Error(error.details[0].message);
 
     await UserRole.schema(req.database).destroy({

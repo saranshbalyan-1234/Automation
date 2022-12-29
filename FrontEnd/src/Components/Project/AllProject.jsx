@@ -7,15 +7,8 @@ import {
 } from "../../Redux/Actions/project";
 import { editDetails } from "../../Redux/Actions/user";
 import AddEditProjectModal from "./AddEditProjectModal";
-import {
-  Avatar,
-  Popconfirm,
-  List,
-  Tooltip,
-  Button,
-  Typography,
-  Progress,
-} from "antd";
+import { Avatar, Popconfirm, List, Tooltip, Button, Progress } from "antd";
+import CustomSearch from "../Common/Search";
 import { AiFillCheckCircle, AiTwotoneCheckCircle } from "react-icons/ai";
 import UserAvatar from "../Common/Avatar";
 import moment from "moment";
@@ -27,7 +20,6 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Common/Loading";
-const { Title } = Typography;
 export const AllProject = ({
   getAllProject,
   getProjectById,
@@ -38,8 +30,23 @@ export const AllProject = ({
 }) => {
   const navigate = useNavigate();
   const [addEditProjectModal, setAddEditProjectModal] = useState(false);
+  const [searchedData, setSearchedData] = useState([]);
+  useEffect(() => {
+    setSearchedData(projects.data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projects.data]);
+
+  const handleSearch = (e) => {
+    let value = e.target.value.toLowerCase();
+    const temp = projects.data.filter((el) => {
+      return el.name.toLowerCase().includes(value);
+    });
+    setSearchedData(temp);
+  };
+
   useEffect(() => {
     getAllProject();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const formatDates = (startDate, endDate) => {
@@ -81,10 +88,11 @@ export const AllProject = ({
           display: "flex",
           justifyContent: "space-between",
           flexWrap: "wrap",
-          paddingTop: "10px",
+          paddingTop: 10,
+          marginBottom: 10,
         }}
       >
-        <Title level={3}>All Projects</Title>
+        <CustomSearch placeholder={`Search Projects`} onSearch={handleSearch} />
         <Button
           type="primary"
           ghost
@@ -106,7 +114,7 @@ export const AllProject = ({
       >
         <Loading loading={projects.loading}>
           <List
-            dataSource={projects.data}
+            dataSource={searchedData}
             renderItem={(item) => (
               <List.Item key={`project_${item.id}`}>
                 <List.Item.Meta
@@ -185,7 +193,7 @@ export const AllProject = ({
                               }}
                             >
                               {item.members.map((el) => {
-                                return <UserAvatar user={el} />;
+                                return <UserAvatar user={el.id} />;
                               })}
                             </Avatar.Group>
                           </div>
@@ -213,7 +221,7 @@ export const AllProject = ({
                 >
                   <div style={{ display: "flex", gap: "5px" }}>
                     <div>Author</div>
-                    <UserAvatar user={item.createdBy} />
+                    <UserAvatar user={item.createdBy.id} />
                   </div>
 
                   <div
@@ -250,6 +258,7 @@ export const AllProject = ({
                         <EditOutlined />
                       </Button> */}
                     <Popconfirm
+                      placement="left"
                       title="Are you sure to delete this project?"
                       onConfirm={async () => {
                         await deleteProject(item.id);
@@ -257,7 +266,7 @@ export const AllProject = ({
                       okText="Yes, Remove"
                       cancelText="No"
                     >
-                      <Button type="danger" ghost size="small">
+                      <Button danger ghost size="small">
                         <DeleteOutlined />
                       </Button>
                     </Popconfirm>
@@ -268,7 +277,6 @@ export const AllProject = ({
                       display: "flex",
                       justifyContent: "space-between",
                       gap: "10px",
-
                       color: "grey",
                     }}
                   ></div>

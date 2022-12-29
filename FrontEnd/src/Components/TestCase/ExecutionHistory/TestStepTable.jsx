@@ -6,12 +6,14 @@ import ViewObjectModal from "../../Common/TestStep/ViewObjectModal";
 import ViewParameterModal from "../../Common/TestStep/ViewParameterModal";
 import ViewCommentModal from "../../Common/TestStep/ViewCommentModal";
 import ViewScreenShotModal from "./ViewScreenShotModal";
+import ViewFailedLogModal from "./ViewFailedLogModal";
 const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
   const [viewParameterModal, setViewParameterModal] = useState(false);
   const [parameters, setParameters] = useState([]);
   const [viewObjectModal, setViewObjectModal] = useState(false);
   const [object, setObject] = useState({});
   const [viewCommentModal, setViewCommentModal] = useState(false);
+  const [viewFailedLogModal, setViewFailedLogModal] = useState("");
   const [comment, setComment] = useState("");
   const [screenShotKey, setScreenshotKey] = useState("");
   const columns = [
@@ -111,7 +113,7 @@ const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
       width: 100,
       dataIndex: "result",
       render: (text, record) =>
-        text == true ? (
+        text === true ? (
           <div
             style={{
               color: "green",
@@ -121,8 +123,20 @@ const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
           >
             PASS
           </div>
-        ) : text == false ? (
-          <div style={{ color: "red", fontWeight: 600, width: 40 }}>FAIL</div>
+        ) : text === false ? (
+          <div
+            style={{
+              color: "red",
+              fontWeight: 600,
+              width: 40,
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              setViewFailedLogModal(record.failedLog);
+            }}
+          >
+            FAIL
+          </div>
         ) : (
           <div style={{ color: "grey", fontWeight: 600, width: 40 }}>N/A</div>
         ),
@@ -132,6 +146,7 @@ const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
   return (
     <>
       <Table
+        scroll={{ x: true }}
         size="small"
         columns={columns}
         dataSource={testSteps}
@@ -167,6 +182,12 @@ const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
         <ViewScreenShotModal
           visible={screenShotKey}
           setVisible={setScreenshotKey}
+        />
+      )}
+      {viewFailedLogModal && (
+        <ViewFailedLogModal
+          visible={viewFailedLogModal}
+          setVisible={setViewFailedLogModal}
         />
       )}
     </>

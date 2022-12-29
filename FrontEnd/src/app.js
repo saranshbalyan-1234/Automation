@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "antd/dist/antd.min.css";
 import "./global.css";
 import Register from "./Auth/Register";
 import Routess from "./Routess";
@@ -9,7 +8,7 @@ import { store, persister } from "./Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import SignIn from "./Auth/SignIn";
 import SendResetMail from "./Auth/PasswordReset/SendResetMail";
-// import Agreement from "./Views/Agreement";
+import Test from "./Test";
 import VerifyEmail from "./Auth/VerifyEmail";
 import PasswordReset from "./Auth/PasswordReset/PasswordReset";
 
@@ -20,6 +19,7 @@ export default function App() {
         <PersistGate loading={null} persistor={persister}>
           <Routes>
             <Route exact path="signin" element={<SignIn />} />
+            <Route exact path="test" element={<Test />} />
             <Route exact path="register" element={<Register />} />
             <Route
               exact

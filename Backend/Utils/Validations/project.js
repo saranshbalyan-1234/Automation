@@ -1,14 +1,17 @@
 import joi from "@hapi/joi";
 
-const projectByIdValidation = joi.object({
-  projectId: joi.number().integer().required(),
-});
-
 const addProjectValidation = joi.object({
-  name: joi.string().min(3).required(),
-  description: joi.string(),
+  name: joi.string().min(3).max(30).required(),
+  description: joi.string().allow(null, "").required(),
   startDate: joi.string().required(),
   endDate: joi.string().required(),
+});
+const updateProjectValidation = joi.object({
+  name: joi.string().min(3).max(30),
+  description: joi.string().allow(null, "").required(),
+  startDate: joi.string(),
+  endDate: joi.string(),
+  projectId: joi.number().integer().required(),
 });
 
 const memberProjectValidation = joi.object({
@@ -16,4 +19,8 @@ const memberProjectValidation = joi.object({
   userId: joi.number().integer().required(),
 });
 
-export { projectByIdValidation, addProjectValidation, memberProjectValidation };
+export {
+  addProjectValidation,
+  memberProjectValidation,
+  updateProjectValidation,
+};

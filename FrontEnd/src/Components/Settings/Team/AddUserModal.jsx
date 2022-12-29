@@ -39,12 +39,12 @@ const AddUserModal = ({
     <Modal
       centered
       title="Add User"
-      visible={addUserModal}
+      open={addUserModal}
       footer={false}
       onCancel={() => {
         setAddUserModal(false);
       }}
-      closable={false}
+      // closable={false}
     >
       <Loading loading={loading}>
         <Form
@@ -68,6 +68,8 @@ const AddUserModal = ({
               onChange={(e) => {
                 handleDetails(e);
               }}
+              showCount
+              maxlength={50}
             />
           </Form.Item>
           <Form.Item
@@ -107,6 +109,8 @@ const AddUserModal = ({
               onChange={(e) => {
                 handleDetails(e);
               }}
+              showCount
+              maxLength={15}
             />
           </Form.Item>
           <Form.Item
@@ -129,7 +133,7 @@ const AddUserModal = ({
               }),
             ]}
           >
-            <Input.Password />
+            <Input.Password showCount maxLength={15} />
           </Form.Item>
 
           <div style={{ display: "flex", justifyContent: "center" }}>

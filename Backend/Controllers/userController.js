@@ -7,8 +7,10 @@ import {
   changeDetailsValidation,
   activeInactiveValidation,
   resendVerificationMailValidation,
-  userIdValidation,
 } from "../Utils/Validations/user.js";
+import { s3 } from "./awsController.js";
+import { idValidation } from "../Utils/Validations/index.js";
+
 import { deleteBucket } from "./awsController.js";
 import { registerValidation } from "../Utils/Validations/auth.js";
 import { uploadFile } from "./awsController.js";
@@ -22,11 +24,60 @@ const getTeam = async (req, res) => {
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const team = await User.schema(req.database).findAll({});
+    const team = await User.schema(req.database).findAll({
+      attributes: [
+        "id",
+        "name",
+        "email",
+        "profileImage",
+        "verifiedAt",
+        "deletedAt",
+        "active",
+        "defaultProjectId",
+      ],
+      paranoid: false,
+    });
     const filteredTeam = team.filter((el) => {
       return el.id !== req.user.id;
     });
-    return res.status(200).json(filteredTeam);
+
+    const teamWithImages = await filteredTeam.map(async (user) => {
+      let base64ProfileImage = "";
+      if (user.dataValues.profileImage) {
+        try {
+          var getParams = {
+            Bucket: req.database,
+            Key: user.email.replace(/[^a-zA-Z0-9 ]/g, ""),
+          };
+
+          const data = await s3.getObject(getParams).promise();
+
+          if (data?.Body) {
+            base64ProfileImage = data.Body.toString("base64");
+          } else {
+            base64ProfileImage = data;
+          }
+          return {
+            ...user.dataValues,
+            profileImage: user.dataValues.profileImage
+              ? base64ProfileImage
+              : "",
+          };
+        } catch (err) {
+          return {
+            ...user.dataValues,
+            profileImage: "",
+          };
+        }
+      } else
+        return {
+          ...user.dataValues,
+          profileImage: base64ProfileImage,
+        };
+    });
+    Promise.all(teamWithImages).then((data) => {
+      return res.status(200).json(data);
+    });
   } catch (error) {
     getError(error, res);
   }
@@ -95,7 +146,7 @@ const deleteUser = async (req, res) => {
   try {
     const userId = req.params.userId;
 
-    const { error } = userIdValidation.validate({ userId });
+    const { error } = idValidation.validate({ id: userId });
     if (error) throw new Error(error.details[0].message);
 
     const user = await User.schema(req.database).findByPk(userId);
@@ -142,7 +193,9 @@ const deleteCustomerUser = async (req, res) => {
     const database = req.database;
     await db.sequelize.query(`drop database ${database}`);
     deleteBucket(database);
-    await Customer.schema("Main").destroy({ tenant: req.user.tenant });
+    await Customer.schema("Main").destroy({
+      where: { tenant: req.user.tenant },
+    });
     const deletedTenant = await Tenant.schema("Main").destroy({
       where: {
         name: req.user.tenant,
@@ -213,10 +266,8 @@ const uploadProfileImage = async (req, res) => {
   */
   try {
     const file = req.files.image;
-    // const { error } = changeDetailsValidation.validate(req.body);
-    // if (error) throw new Error(error.details[0].message);
+    if (!file) throw new Error("Inavlid Image");
     const bucketName = req.database;
-    // const file = req.body.file;
     const fileName = req.user.email.replace(/[^a-zA-Z0-9 ]/g, "");
     const result = await uploadFile(file, bucketName, fileName);
     if (result) {
@@ -263,13 +314,26 @@ const toggleUserActiveInactive = async (req, res) => {
   }
 };
 
-const getAllUser = async (req, res) => {
+const myStatus = async (req, res) => {
   /*  #swagger.tags = ["User"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
   try {
-    const allUsers = await User.schema(req.database).findAll();
-    return res.status(200).json(allUsers);
+    const user = await User.schema(req.database).findOne({
+      where: { email: req.user.email },
+    });
+    if (!user.active)
+      return res
+        .status(403)
+        .json({ error: "Account Inactive, Please Contact Your Admin!" });
+    const customer = await Customer.schema("Main").findOne({
+      where: { email: req.user.email },
+    });
+
+    if (customer.blocked)
+      return res.status(403).json({ error: "Account Blocked!" });
+
+    return res.status(200).json("Active");
   } catch (error) {
     getError(error, res);
   }
@@ -284,6 +348,6 @@ export {
   toggleUserActiveInactive,
   resentVerificationEmail,
   deleteCustomerUser,
-  getAllUser,
   uploadProfileImage,
+  myStatus,
 };

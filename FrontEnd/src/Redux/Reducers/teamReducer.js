@@ -5,6 +5,7 @@ import {
   ADD_TEAM_MEMBER_SUCCESS,
   REMOVE_TEAM_MEMBER_SUCCESS,
   TOGGLE_TEAM_USER_STATUS,
+  EMPTY_TEAM,
 } from "../Actions/action-types";
 
 const initState = {
@@ -54,6 +55,11 @@ const teamReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: false,
         data: updatedStatus,
+      };
+    case EMPTY_TEAM:
+      return {
+        loading: false,
+        data: [],
       };
     default:
       return state;

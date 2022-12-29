@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Avatar, Popconfirm, List, Tag, Button, Switch } from "antd";
+import { Popconfirm, List, Tag, Button, Switch } from "antd";
+import UserAvatar from "../../Common/Avatar";
 import {
   getTeam,
   removeTeamMember,
@@ -25,6 +26,7 @@ export const Team = ({
 }) => {
   useEffect(() => {
     getTeam();
+    // eslint-disable-next-line
   }, []);
   const toggleActiveInactive = (status, userId) => {
     toggleUserActiveInactive(status, userId);
@@ -43,11 +45,13 @@ export const Team = ({
       >
         <Loading loading={loading}>
           <List
-            dataSource={team}
+            dataSource={team.filter((el) => {
+              return el.deletedAt == null;
+            })}
             renderItem={(item) => (
               <List.Item key={item.email}>
                 <List.Item.Meta
-                  avatar={<Avatar src={""} />}
+                  avatar={<UserAvatar user={item.id} log={true} />}
                   title={
                     <div
                       style={{
@@ -59,6 +63,7 @@ export const Team = ({
                       <div> {item.name}</div>
                       {!item.verifiedAt && (
                         <Popconfirm
+                          placement="right"
                           title="Resend Verification Email?"
                           onConfirm={async () => {
                             await resendVerificationMail({
@@ -70,7 +75,9 @@ export const Team = ({
                           cancelText="No"
                           trigger={"hover"}
                         >
-                          <Tag color="red">Verification Pending</Tag>
+                          <Tag color="red" className="pointer">
+                            Verification Pending
+                          </Tag>
                         </Popconfirm>
                       )}
                     </div>
@@ -109,6 +116,7 @@ export const Team = ({
                   </Button>
 
                   <Popconfirm
+                    placement="left"
                     title="Are you sure to remove this user?"
                     onConfirm={() => {
                       removeTeamMember(item.id);
@@ -116,7 +124,7 @@ export const Team = ({
                     okText="Yes, Remove"
                     cancelText="No"
                   >
-                    <Button type="danger" ghost size="small">
+                    <Button danger ghost size="small">
                       <DeleteOutlined /> Remove User
                     </Button>
                   </Popconfirm>

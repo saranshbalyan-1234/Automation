@@ -75,6 +75,8 @@ const SignIn = ({ loading, signIn }) => {
                   ]}
                 >
                   <Input.Password
+                    showCount
+                    maxLength={15}
                     prefix={<LockOutlined />}
                     type="password"
                     placeholder="Password"

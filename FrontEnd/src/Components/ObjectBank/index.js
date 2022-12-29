@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import {
   getObjectByProject,
@@ -6,21 +6,15 @@ import {
   saveObject,
 } from "../../Redux/Actions/object";
 import { connect } from "react-redux";
-
-import Details from "./Details";
 import ObjectList from "./ObjectList";
+import ObjectTabs from "./ObjectTabs";
 const ObjectBank = ({
   objectList,
   loading,
   getObjectByProject,
   deleteObject,
-  currentProjectId,
   saveObject,
 }) => {
-  useEffect(() => {
-    currentProjectId && getObjectByProject();
-  }, [currentProjectId]);
-
   return (
     <>
       <Routes>
@@ -34,17 +28,17 @@ const ObjectBank = ({
               name="Object"
               link="ObjectBank"
               onSave={saveObject}
+              getList={getObjectByProject}
             />
           }
         />
-        <Route path="/:objectId/:tab" element={<Details />} />
+        <Route path="/:objectId/:tab" element={<ObjectTabs />} />
       </Routes>
     </>
   );
 };
 
 const mapStateToProps = (state) => ({
-  currentProjectId: state.projects.currentProject.id,
   objectList: state.objectBank.data,
   loading: state.objectBank.loading,
 });

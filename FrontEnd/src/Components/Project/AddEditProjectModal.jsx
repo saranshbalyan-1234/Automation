@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import ReactQuill from "react-quill";
 import moment from "moment";
 import Loading from "../Common/Loading";
+import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
 const AddEditProjectModal = ({
   visible,
@@ -32,12 +33,12 @@ const AddEditProjectModal = ({
   return (
     <Modal
       title={edit ? "Edit Project" : "Add New Project"}
-      visible={visible}
+      open={visible}
       footer={false}
       onCancel={() => {
         setVisible(false);
       }}
-      closable={false}
+      // closable={false}
       width={500}
     >
       <Loading loading={projects.loading}>
@@ -51,8 +52,8 @@ const AddEditProjectModal = ({
             description: edit ? projects.currentProject.description : "",
             date: edit
               ? [
-                  moment(projects.currentProject.startDate, format),
-                  moment(projects.currentProject.endDate, format),
+                  dayjs(projects.currentProject.startDate, format),
+                  dayjs(projects.currentProject.endDate, format),
                 ]
               : [],
           }}
@@ -67,7 +68,7 @@ const AddEditProjectModal = ({
               },
             ]}
           >
-            <Input name="name" />
+            <Input name="name" showCount maxlength={50} />
           </Form.Item>
 
           <Form.Item
