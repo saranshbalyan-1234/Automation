@@ -5,7 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Details from "./Details";
 import ActivityLog from "../Common/ActivityLog";
 import { getObjectLogsById } from "../../Redux/Actions/object";
-function ObjectBankTabs({ logs, getObjectLogsById }) {
+function ObjectBankTabs({ logs, getObjectLogsById, loading }) {
   const { tab, objectId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
@@ -35,7 +35,9 @@ function ObjectBankTabs({ logs, getObjectLogsById }) {
             {activeTab === "details" && <Details />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Logs" key="logs">
-            {activeTab === "logs" && <ActivityLog logs={logs} />}
+            {activeTab === "logs" && (
+              <ActivityLog logs={logs} loading={loading} />
+            )}
           </Tabs.TabPane>
         </Tabs>
       </div>
@@ -44,6 +46,7 @@ function ObjectBankTabs({ logs, getObjectLogsById }) {
 }
 const mapStateToProps = (state) => ({
   logs: state.objectBank.currentObject.logs,
+  loading: state.objectBank.loading,
 });
 
 const mapDispatchToProps = { getObjectLogsById };

@@ -26,7 +26,7 @@ const saveObject = async (req, res) => {
 
     const object = await Object.schema(req.database).create(payload);
     createObjectLog(req, res, object.id, [
-      `Created the object "${req.body.name}".`,
+      `created the object "${req.body.name}".`,
     ]);
     return res.status(200).json(object);
   } catch (err) {
@@ -192,7 +192,7 @@ const saveObjectLocator = async (req, res) => {
     const locator = await ObjectLocator.schema(req.database).create(req.body);
 
     createObjectLog(req, res, req.body.objectId, [
-      `Added the "${req.body.type}" locator "${req.body.locator}".`,
+      `added the "${req.body.type}" locator "${req.body.locator}".`,
     ]);
 
     return res.status(200).json(locator);

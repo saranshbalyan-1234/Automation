@@ -2,7 +2,8 @@ import React from "react";
 import { Table } from "antd";
 import moment from "moment";
 import UserAvatar from "./Avatar";
-export default function ActivityLog({ logs = [] }) {
+import Loading from "./Loading";
+export default function ActivityLog({ logs = [], loading }) {
   const columns = [
     {
       title: "",
@@ -58,12 +59,14 @@ export default function ActivityLog({ logs = [] }) {
       : "";
   };
   return (
-    <Table
-      scroll={{ x: true }}
-      columns={columns}
-      dataSource={logs}
-      sticky
-      size="small"
-    />
+    <Loading loading={loading}>
+      <Table
+        scroll={{ x: true }}
+        columns={columns}
+        dataSource={logs}
+        sticky
+        size="small"
+      />
+    </Loading>
   );
 }

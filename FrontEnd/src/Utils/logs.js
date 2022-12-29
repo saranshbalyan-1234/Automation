@@ -8,11 +8,11 @@ export const getDetailsEditedLogs = async (oldData, newData) => {
         if (key === "tags") {
           const tagDifference = difference(oldData["tags"], newData["tags"]);
           (tagDifference.length > 0 ||
-            oldData["tags"].length !== newData["tags"].length) &&
+            oldData["tags"]?.length !== newData["tags"]?.length) &&
             messages.push(
-              `Updated the "${key}" to "${newData[key].join(", ")}"`
+              `updated the "${key}" to "${newData[key].join(", ")}"`
             );
-        } else messages.push(`Updated the "${key}" to "${newData[key]}"`);
+        } else messages.push(`updated the "${key}" to "${newData[key]}"`);
       }
   });
   return messages;

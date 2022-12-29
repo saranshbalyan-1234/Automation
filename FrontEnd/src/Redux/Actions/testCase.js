@@ -14,7 +14,9 @@ import {
   ADD_STEP,
   EDIT_STEP,
   DELETE_STEP,
+  GET_TEST_CASE_LOGS,
 } from "../Actions/action-types";
+import { getDetailsEditedLogs } from "../../Utils/logs";
 
 export const getTestCaseByProject = (payload) => {
   return async (dispatch, getState) => {
@@ -57,6 +59,11 @@ export const editTestCase = (payload) => {
 
       let currentTestCaseId = getState().testCase.currentTestCase?.id;
       let editedTestCase = { ...payload };
+
+      let oldData = getState().testCase.currentTestCase;
+
+      const logs = await getDetailsEditedLogs(oldData, payload);
+      logs.length > 0 && createTestCaseLogs(currentTestCaseId, logs);
 
       await axios.put(`/testcase/${currentTestCaseId}`, payload);
       dispatch({
@@ -246,4 +253,28 @@ export const executeTestCase = (testCaseId, payload) => {
       return false;
     }
   };
+};
+
+export const getTestCaseLogsById = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: TEST_CASE_REQUEST });
+      const { data } = await axios.get(`/testCase/${id}/logs`);
+      dispatch({ type: GET_TEST_CASE_LOGS, payload: data });
+      return true;
+    } catch (err) {
+      dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+
+//utils
+export const createTestCaseLogs = async (id, logs) => {
+  try {
+    await axios.post(`/testCase/${id}/logs`, { logs });
+    return true;
+  } catch (err) {
+    return false;
+  }
 };

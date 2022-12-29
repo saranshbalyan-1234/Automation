@@ -9,6 +9,8 @@ import {
   saveProcess,
   updateProcess,
   deleteProcess,
+  getTestCaseLogsById,
+  createTestCaseLog,
 } from "../../Controllers/TestCase/testCaseController.js";
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
@@ -50,6 +52,17 @@ Router.delete(
   "/:testCaseId",
   validatePermission("Test Case", "delete"),
   deleteTestCase
+);
+
+Router.post(
+  "/:testCaseId/logs",
+  validatePermission("Test Case", "edit"),
+  createTestCaseLog
+);
+Router.get(
+  "/:testCaseId/logs",
+  validatePermission("Test Case", "view"),
+  getTestCaseLogsById
 );
 
 export default Router;

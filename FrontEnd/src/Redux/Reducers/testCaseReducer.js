@@ -14,6 +14,7 @@ import {
   DELETE_STEP,
   EDIT_STEP,
   EMPTY_TEST_CASE,
+  GET_TEST_CASE_LOGS,
 } from "../Actions/action-types";
 import { orderBy } from "lodash";
 const initState = {
@@ -65,6 +66,15 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         currentTestCase: {
           ...state.currentTestCase,
           ...payload,
+        },
+        loading: false,
+      };
+    case GET_TEST_CASE_LOGS:
+      return {
+        ...state,
+        currentTestCase: {
+          ...state.currentTestCase,
+          logs: payload,
         },
         loading: false,
       };

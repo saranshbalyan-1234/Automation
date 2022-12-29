@@ -15,11 +15,15 @@ import User from "../Models/User.js";
 import UserRole from "../Models/RolePermission/UserRole.js";
 import Project from "../Models/Project/Project.js";
 import UserProject from "../Models/Project/UserProject.js";
+
+//TestCase
 import TestCase from "../Models/TestCase/TestCase.js";
 import TestParameter from "../Models/TestCase/TestParameter.js";
 import TestStep from "../Models/TestCase/TestStep.js";
 import Process from "../Models/TestCase/Process.js";
 import ReusableProcess from "../Models/TestCase/ReusableProcess.js";
+import ReusableProcessLog from "../Models/TestCase/ReusableProcessLog.js";
+import TestCaseLog from "../Models/TestCase/TestCaseLog.js";
 
 //Object
 import Object from "../Models/TestCase/Object/Object.js";
@@ -75,11 +79,15 @@ db.userRoles = UserRole(sequelize, DataTypes);
 db.userProjects = UserProject(sequelize, DataTypes);
 db.projects = Project(sequelize, DataTypes);
 db.roles = Role(sequelize, DataTypes);
+
+//TestCase
 db.testParameters = TestParameter(sequelize, DataTypes);
 db.testSteps = TestStep(sequelize, DataTypes);
 db.testCases = TestCase(sequelize, DataTypes);
 db.process = Process(sequelize, DataTypes);
 db.reusableProcess = ReusableProcess(sequelize, DataTypes);
+db.reusableProcessLogs = ReusableProcessLog(sequelize, DataTypes);
+db.testCaseLogs = TestCaseLog(sequelize, DataTypes);
 
 //Object
 db.objects = Object(sequelize, DataTypes);
@@ -103,6 +111,8 @@ db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
 
-// await db.objectLogs.schema("saranshbalyan123gmailcom").sync({ force: true });
+// await db.reusableProcessLogs
+//   .schema("saranshbalyan123gmailcom")
+//   .sync({ force: true });
 
 export default db;

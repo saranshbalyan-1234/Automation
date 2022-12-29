@@ -122,6 +122,18 @@ export default (sequelize, DataTypes) => {
     foreignKey: "id",
     constraints: false,
   });
+  sequelize.models.testCaseLogs.hasOne(sequelize.models.users, {
+    as: "createdBy",
+    sourceKey: "createdByUser",
+    foreignKey: "id",
+    constraints: false,
+  });
+  sequelize.models.reusableProcessLogs.hasOne(sequelize.models.users, {
+    as: "createdBy",
+    sourceKey: "createdByUser",
+    foreignKey: "id",
+    constraints: false,
+  });
 
   sequelize.models.reusableProcesses.hasOne(sequelize.models.users, {
     as: "createdBy",

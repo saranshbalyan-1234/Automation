@@ -59,19 +59,9 @@ const objectBankReducer = (state = initState, { type, payload }) => {
         },
       };
     case GET_OBJECT_DETAILS_BY_ID:
-      let tempDetails = {
-        id: payload.id,
-        name: payload.name,
-        createdAt: payload.createdAt,
-        updatedAt: payload.updatedAt,
-        description: payload.description,
-        tags: payload.tags,
-        createdBy: payload.createdBy,
-        locators: payload.locators,
-      };
       return {
         ...state,
-        currentObject: { ...tempDetails },
+        currentObject: { ...state.currentObject, ...payload },
         loading: false,
       };
     case GET_OBJECT_LOCATORS:

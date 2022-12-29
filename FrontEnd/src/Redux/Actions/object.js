@@ -56,7 +56,6 @@ export const editObject = (payload) => {
       let oldData = getState().objectBank.currentObject;
 
       const logs = await getDetailsEditedLogs(oldData, payload);
-      console.log("saransh", logs);
       logs.length > 0 && createObjectLogs(currentObjectId, logs);
       let editedObject = { ...payload };
 

@@ -15,6 +15,7 @@ const Object = db.objects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const ReusableProcess = db.reusableProcess;
+const TestCaseLog = db.testCaseLogs;
 const saveTestCase = async (req, res) => {
   /*  #swagger.tags = ["Test Case"] 
      #swagger.security = [{"apiKeyAuth": []}]
@@ -26,6 +27,11 @@ const saveTestCase = async (req, res) => {
     const payload = { ...req.body };
     payload.createdByUser = req.user.id;
     const data = await TestCase.schema(req.database).create(payload);
+
+    createObjectLog(req, res, data.id, [
+      `created the TestCase "${req.body.name}".`,
+    ]);
+
     return res
       .status(200)
       .json({ ...data.dataValues, message: "TestCase created successfully!" });
@@ -350,6 +356,60 @@ const deleteProcess = async (req, res) => {
   }
 };
 
+const getTestCaseLogsById = async (req, res) => {
+  /*  #swagger.tags = ["Test Case"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const testCaseId = req.params.testCaseId;
+
+    const { error } = idValidation.validate({ id: testCaseId });
+    if (error) throw new Error(error.details[0].message);
+
+    const locators = await TestCaseLog.schema(req.database).findAll({
+      where: {
+        testCaseId,
+      },
+      attributes: ["log", "createdAt"],
+      include: [
+        {
+          model: User.schema(req.database),
+          as: "createdBy",
+          attributes: ["id", "name", "email", "active", "profileImage"],
+        },
+      ],
+    });
+
+    return res.status(200).json(locators);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+const createTestCaseLog = async (req, res, id, logs = []) => {
+  /*  #swagger.tags = ["Test Object"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const testCaseId = req.params.testCaseId || id;
+    const tempLogs = req.body.logs || logs;
+
+    // const { error } = idValidation.validate({ id: objectId });
+    // if (error) throw new Error(error.details[0].message);
+
+    const payload = tempLogs.map((el) => {
+      return { log: el, testCaseId, createdByUser: req.user.id };
+    });
+    await TestCaseLog.schema(req.database).bulkCreate(payload);
+    if (logs.length == 0) return res.status(201);
+  } catch (err) {
+    if (logs.length == 0) getError(err, res);
+    else console.log(err);
+  }
+};
+
 export {
   saveTestCase,
   updateTestCase,
@@ -360,4 +420,6 @@ export {
   saveProcess,
   updateProcess,
   deleteProcess,
+  getTestCaseLogsById,
+  createTestCaseLog,
 };

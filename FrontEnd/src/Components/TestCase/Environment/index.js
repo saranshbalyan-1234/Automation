@@ -70,7 +70,7 @@ const Environment = ({
             el
           ),
         dataIndex: el,
-        width: "100%",
+        // width: "100%",
       };
       if (el !== "Environment") {
         temp.render = (text, record) => (
@@ -94,7 +94,7 @@ const Environment = ({
     setColumns([
       ...dynamicKeys,
       {
-        title: "Actions",
+        title: "",
         key: "actions",
         render: (_, record) => (
           <Popconfirm
