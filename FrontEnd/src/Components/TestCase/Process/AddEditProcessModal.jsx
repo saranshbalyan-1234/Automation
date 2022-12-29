@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import { Form, Input, Modal, Button, Select } from "antd";
 import { connect } from "react-redux";
-import { addProcess, editProcess } from "../../../Redux/Actions/testCase";
+import {
+  addProcess,
+  editProcess,
+  createTestCaseLogs,
+} from "../../../Redux/Actions/testCase";
 import { getReusableProcessByProject } from "../../../Redux/Actions/reusableProcess";
 import ReactQuill from "react-quill";
 import Loading from "../../Common/Loading";
@@ -39,6 +43,19 @@ const AddEditProcessModal = ({
         testCaseId: currentTestCaseId,
         step,
       });
+
+      if (addReusable) {
+        const reusableName = reusableProcesses.find((el) => {
+          return el.id == data.reusableProcessId;
+        })?.name;
+        createTestCaseLogs(currentTestCaseId, [
+          `added new reusableProcess "${reusableName}" as process "${data.name}".`,
+        ]);
+      } else {
+        createTestCaseLogs(currentTestCaseId, [
+          `added new process "${data.name}".`,
+        ]);
+      }
       if (step === 1 && edit === false) setEdit(true);
     }
     result && setVisible(false);

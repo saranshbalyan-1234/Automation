@@ -12,6 +12,7 @@ export const saveProcesValidation = joi.object({
   name: joi.string().min(3).max(30).required(),
   comment: joi.string().allow(null, "").required(),
   testCaseId: joi.number().integer().required(),
+  reusableProcessId: joi.number().integer(),
 });
 
 export const updateProcessValidation = joi.object({

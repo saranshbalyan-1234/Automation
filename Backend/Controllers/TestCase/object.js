@@ -192,7 +192,7 @@ const saveObjectLocator = async (req, res) => {
     const locator = await ObjectLocator.schema(req.database).create(req.body);
 
     createObjectLog(req, res, req.body.objectId, [
-      `added the "${req.body.type}" locator "${req.body.locator}".`,
+      `added new "${req.body.type}" locator "${req.body.locator}".`,
     ]);
 
     return res.status(200).json(locator);
@@ -251,6 +251,7 @@ const getObjectLogsByObjectId = async (req, res) => {
           attributes: ["id", "name", "email", "active", "profileImage"],
         },
       ],
+      order: [["createdAt", "DESC"]],
     });
 
     return res.status(200).json(locators);

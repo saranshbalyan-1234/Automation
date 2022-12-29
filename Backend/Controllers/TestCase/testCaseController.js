@@ -28,7 +28,7 @@ const saveTestCase = async (req, res) => {
     payload.createdByUser = req.user.id;
     const data = await TestCase.schema(req.database).create(payload);
 
-    createObjectLog(req, res, data.id, [
+    createTestCaseLog(req, res, data.id, [
       `created the TestCase "${req.body.name}".`,
     ]);
 
@@ -280,7 +280,6 @@ const saveProcess = async (req, res) => {
         },
       ],
     });
-
     return res.status(200).json(process);
   } catch (err) {
     getError(err, res);
@@ -379,6 +378,7 @@ const getTestCaseLogsById = async (req, res) => {
           attributes: ["id", "name", "email", "active", "profileImage"],
         },
       ],
+      order: [["createdAt", "DESC"]],
     });
 
     return res.status(200).json(locators);

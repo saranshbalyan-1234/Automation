@@ -102,7 +102,13 @@ const Process = ({
                         placement="left"
                         title="Are you sure to remove this process?"
                         onConfirm={async () => {
-                          await deleteProcess(item.id, item.step);
+                          await deleteProcess(
+                            item.id,
+                            item.step,
+                            testCaseId,
+                            item.name,
+                            item.reusableProcess
+                          );
                         }}
                         okText="Yes, Remove"
                         cancelText="No"

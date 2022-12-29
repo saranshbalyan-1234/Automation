@@ -157,7 +157,13 @@ export const editProcess = (payload) => {
   };
 };
 
-export const deleteProcess = (processId, step) => {
+export const deleteProcess = (
+  processId,
+  step,
+  testCaseId,
+  name,
+  reusableProcess
+) => {
   return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
@@ -167,7 +173,10 @@ export const deleteProcess = (processId, step) => {
         type: DELETE_PROCESS,
         payload: { processId, step },
       });
-
+      let msg = reusableProcess
+        ? `removed the reusableProcess "${reusableProcess.name}" added as process "${name}"`
+        : `deleted the process "${name}"`;
+      createTestCaseLogs(testCaseId, [msg]);
       return true;
     } catch (err) {
       console.log(err);
