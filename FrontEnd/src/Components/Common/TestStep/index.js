@@ -149,9 +149,12 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
             placement="left"
             title="Are you sure to remove this step?"
             onConfirm={async () => {
-              if (process?.id)
-                await deleteStep(record.id, record.step, process?.id);
-              else deleteStep(record.id, record.step);
+              await deleteStep(
+                record.id,
+                record.step,
+                process,
+                reusableProcess
+              );
             }}
             okText="Yes, Remove"
             cancelText="No"
