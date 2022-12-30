@@ -33,6 +33,9 @@ const ProcessHistory = db.processHistory;
 const TestStepHistory = db.testStepHistory;
 const Environment = db.enviroments;
 const Column = db.columns;
+const ObjectLog = db.objectLogs;
+const TestCaseLog = db.testCaseLogs;
+const ReusableProcessLog = db.reusableProcessLogs;
 const register = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
   try {
@@ -236,6 +239,19 @@ const verifyCustomer = async (req, res) => {
         });
 
         await Column.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+
+        await ObjectLog.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+        await TestCaseLog.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+        await ReusableProcessLog.schema(database).sync({
           force: true,
           alter: true,
         });
