@@ -21,6 +21,11 @@ const saveReusableProcess = async (req, res) => {
     const payload = { ...req.body };
     payload.createdByUser = req.user.id;
     const data = await ReusableProcess.schema(req.database).create(payload);
+
+    createReusableProcessLog(req, res, data.id, [
+      `created the reusableProcess "${req.body.name}".`,
+    ]);
+
     return res.status(200).json({
       ...data.dataValues,
       message: "ReusableProcess created successfully!",
@@ -204,9 +209,9 @@ const getReusableProcessLogsById = async (req, res) => {
     const { error } = idValidation.validate({ id: reusableProcessId });
     if (error) throw new Error(error.details[0].message);
 
-    const locators = await ReusableProcessLog.schema(req.database).findAll({
+    const logs = await ReusableProcessLog.schema(req.database).findAll({
       where: {
-        testCaseId,
+        reusableProcessId,
       },
       attributes: ["log", "createdAt"],
       include: [
@@ -219,7 +224,7 @@ const getReusableProcessLogsById = async (req, res) => {
       order: [["createdAt", "DESC"]],
     });
 
-    return res.status(200).json(locators);
+    return res.status(200).json(logs);
   } catch (err) {
     getError(err, res);
   }
@@ -231,14 +236,14 @@ const createReusableProcessLog = async (req, res, id, logs = []) => {
   */
 
   try {
-    const testCaseId = req.params.testCaseId || id;
+    const reusableProcessId = req.params.reusableProcessId || id;
     const tempLogs = req.body.logs || logs;
 
     // const { error } = idValidation.validate({ id: objectId });
     // if (error) throw new Error(error.details[0].message);
 
     const payload = tempLogs.map((el) => {
-      return { log: el, testCaseId, createdByUser: req.user.id };
+      return { log: el, reusableProcessId, createdByUser: req.user.id };
     });
     await ReusableProcessLog.schema(req.database).bulkCreate(payload);
     if (logs.length == 0) return res.status(201);

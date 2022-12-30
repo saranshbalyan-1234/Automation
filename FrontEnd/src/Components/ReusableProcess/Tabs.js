@@ -9,10 +9,10 @@ import {
   deleteStep,
   getReusableProcessStepsById,
   editReusableProcess,
+  getReusableProcessLogsById,
 } from "../../Redux/Actions/reusableProcess";
 import TestStep from "../Common/TestStep";
-// import Details from "../Common/Details";
-// import ActivityLog from "../Common/ActivityLog";
+import ActivityLog from "../Common/ActivityLog";
 function ReusableProcessTabs({
   getReusableProcessDetailsById,
   getReusableProcessStepsById,
@@ -21,6 +21,8 @@ function ReusableProcessTabs({
   currentReusableProcess,
   loading,
   editReusableProcess,
+  logs,
+  getReusableProcessLogsById,
 }) {
   const { tab, reusableProcessId } = useParams();
   const navigate = useNavigate();
@@ -32,6 +34,10 @@ function ReusableProcessTabs({
 
   useEffect(() => {
     setActiveTab(tab);
+  }, [tab]);
+  useEffect(() => {
+    tab === "logs" && getReusableProcessLogsById(reusableProcessId);
+    // eslint-disable-next-line
   }, [tab]);
   useEffect(() => {
     if (tab === "teststeps") {
@@ -85,9 +91,11 @@ function ReusableProcessTabs({
               />
             )}
           </Tabs.TabPane>
-          {/* <Tabs.TabPane tab="Activity Log" key="activitylog">
-            <ActivityLog />
-          </Tabs.TabPane> */}
+          <Tabs.TabPane tab="Logs" key="logs">
+            {activeTab === "logs" && (
+              <ActivityLog logs={logs} loading={loading} />
+            )}
+          </Tabs.TabPane>
         </Tabs>
         {renderButton()}
       </div>
@@ -97,6 +105,7 @@ function ReusableProcessTabs({
 const mapStateToProps = (state) => ({
   testSteps: state.reusableProcess.currentReusableProcess.testSteps,
   currentReusableProcess: state.reusableProcess.currentReusableProcess,
+  logs: state.reusableProcess.currentReusableProcess.logs,
   loading: state.reusableProcess.loading,
 });
 
@@ -105,6 +114,7 @@ const mapDispatchToProps = {
   getReusableProcessStepsById,
   deleteStep,
   editReusableProcess,
+  getReusableProcessLogsById,
 };
 
 export default connect(

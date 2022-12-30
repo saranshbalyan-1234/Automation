@@ -7,7 +7,7 @@ import {
   editStep,
   createTestCaseLogs,
 } from "../../../Redux/Actions/testCase";
-import { getDetailsEditedLogs } from "../../../Utils/logs";
+import { getStepEditedLogs } from "../../../Utils/logs";
 import { getObjectByProject } from "../../../Redux/Actions/object";
 import {
   addReusableStep,
@@ -43,7 +43,6 @@ const AddEditStepModal = ({
   setEdit = () => {},
   currentTestCaseId,
 }) => {
-  console.log("saransh", process);
   const [actionEvent, setActionEvent] = useState([]);
   const [currentEvent, setCurrentEvent] = useState({});
   const [addObjectModal, setAddObjectModal] = useState(false);
@@ -72,18 +71,22 @@ const AddEditStepModal = ({
   useEffect(() => {
     edit &&
       form.setFieldsValue({
-        parameter1: editData.testParameters.find((el) => {
-          return el.type === currentEvent.parameter1;
-        })?.property,
-        parameter2: editData.testParameters.find((el) => {
-          return el.type === currentEvent.parameter2;
-        })?.property,
-        parameter3: editData.testParameters.find((el) => {
-          return el.type === currentEvent.parameter3;
-        })?.property,
-        parameter4: editData.testParameters.find((el) => {
-          return el.type === currentEvent.parameter4;
-        })?.property,
+        parameter1:
+          editData.testParameters?.find((el) => {
+            return el.type === currentEvent.parameter1;
+          })?.property || "",
+        parameter2:
+          editData.testParameters?.find((el) => {
+            return el.type === currentEvent.parameter2;
+          })?.property || "",
+        parameter3:
+          editData.testParameters?.find((el) => {
+            return el.type === currentEvent.parameter3;
+          })?.property || "",
+        parameter4:
+          editData.testParameters?.find((el) => {
+            return el.type === currentEvent.parameter4;
+          })?.property || "",
       });
 
     form.setFieldsValue({
@@ -157,6 +160,8 @@ const AddEditStepModal = ({
           data: payload,
           stepId: editData.id,
         });
+        const logs = await getStepEditedLogs(editData, payload, "step ");
+        logs.length > 0 && createReusableProcessLogs(reusableProcess.id, logs);
       } else {
         result = await editStep({
           data: payload,
@@ -164,9 +169,10 @@ const AddEditStepModal = ({
           reusableProcessId: reusableProcess?.id,
           processId: process?.id,
         });
-        // const logs = await getDetailsEditedLogs(editData, payload, "step ");
-        // logs.length > 0 && createTestCaseLogs(currentTestCaseId, logs);
+        const logs = await getStepEditedLogs(editData, payload, "step ");
+        logs.length > 0 && createTestCaseLogs(currentTestCaseId, logs);
       }
+
       setEditData({});
     } else {
       if (reusableProcess?.id && !process?.id) {
