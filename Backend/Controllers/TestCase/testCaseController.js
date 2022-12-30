@@ -403,7 +403,7 @@ const createTestCaseLog = async (req, res, id, logs = []) => {
       return { log: el, testCaseId, createdByUser: req.user.id };
     });
     await TestCaseLog.schema(req.database).bulkCreate(payload);
-    if (logs.length == 0) return res.status(201);
+    if (logs.length == 0) return res.status(201).json("Log Created");
   } catch (err) {
     if (logs.length == 0) getError(err, res);
     else console.log(err);

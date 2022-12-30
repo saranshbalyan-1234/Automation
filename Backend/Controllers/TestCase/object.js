@@ -276,7 +276,7 @@ const createObjectLog = async (req, res, id, logs = []) => {
       return { log: el, objectId, createdByUser: req.user.id };
     });
     await ObjectLog.schema(req.database).bulkCreate(payload);
-    if (logs.length == 0) return res.status(201);
+    if (logs.length == 0) return res.status(201).json("Log Created");
   } catch (err) {
     if (logs.length == 0) getError(err, res);
     else console.log(err);

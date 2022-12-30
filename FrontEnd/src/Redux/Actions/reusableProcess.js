@@ -151,7 +151,7 @@ export const editReusableStep = (payload) => {
 };
 
 export const deleteStep = (testStepId, step) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       dispatch({ type: REUSABLE_PROCESS_REQUEST });
 
@@ -160,7 +160,12 @@ export const deleteStep = (testStepId, step) => {
         type: DELETE_REUSABLE_STEP,
         payload: { testStepId, step },
       });
+      let currentReusableProcessId =
+        getState().reusableProcess.currentReusableProcess?.id;
 
+      createReusableProcessLogs(currentReusableProcessId, [
+        `deleted step from position ${step}`,
+      ]);
       return true;
     } catch (err) {
       console.log(err);
