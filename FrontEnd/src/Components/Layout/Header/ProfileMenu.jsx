@@ -105,11 +105,11 @@ const ProfileMenu = ({ logout, user }) => {
           cursor: "pointer",
         }}
       >
-        <Dropdown overlay={notificationMenu} trigger={["hover"]}>
+        {/* <Dropdown overlay={notificationMenu} trigger={["hover"]}>
           <Badge count={1} overflowCount={9}>
             <BellOutlined style={{ color: "white", fontSize: "20px" }} />
           </Badge>
-        </Dropdown>
+        </Dropdown> */}
       </div>
       <Dropdown overlay={profileMenu} trigger={["hover"]}>
         <div
