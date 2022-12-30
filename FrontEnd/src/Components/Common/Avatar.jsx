@@ -26,6 +26,7 @@ const UserAvatar = ({ userList, user, size = "small", self, log }) => {
         style={{ marginTop: "-10px" }}
       >
         <Card.Meta
+          style={{ minWidth: 250 }}
           title={
             <div
               style={{
