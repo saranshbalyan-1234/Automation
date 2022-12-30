@@ -24,6 +24,8 @@ const {
   newWindow,
   closeBrowser,
   maximizeBrowser,
+  switchToTab,
+  switchToDefaultTab,
 } = require("./browser");
 const {
   enterDateTime,
@@ -189,6 +191,25 @@ const handleStep = async (
       break;
     case "Maximize Browser":
       return await await maximizeBrowser(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Switch To Tab":
+      return await switchToTab(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Switch To Default Tab":
+      return await switchToDefaultTab(
         driver,
         processResult,
         req,

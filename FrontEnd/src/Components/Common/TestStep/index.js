@@ -29,8 +29,8 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
       render: (text, record) => (
         <div className="pointer">
           <StepMenu
-            processId={process?.id}
-            reusableProcessId={reusableProcess?.id}
+            process={process}
+            reusableProcess={reusableProcess}
             testStep={record}
           />
         </div>

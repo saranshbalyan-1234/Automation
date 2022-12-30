@@ -126,7 +126,6 @@ const validateObjectSelected = async (
   stepHistoryId,
   executionHistory
 ) => {
-  const timeout = Number(step.testParameters.Timeout);
   console.log("Validating Object Selected");
   try {
     const element = await driver.findElement(

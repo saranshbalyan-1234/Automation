@@ -205,7 +205,7 @@ const AddEditStepModal = ({
             step,
           });
           createTestCaseLogs(currentTestCaseId, [
-            `added new step at position ${step} in process "${process.name}"`,
+            `added new step at position ${step} in process "${process?.name}"`,
           ]);
         }
       }

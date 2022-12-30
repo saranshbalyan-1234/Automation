@@ -154,6 +154,59 @@ const maximizeBrowser = async (
     );
   }
 };
+
+const switchToDefaultTab = async (
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  try {
+    console.log("Switching To Default Tab");
+
+    const tabs = await driver.getAllWindowHandles();
+    await driver.switchTo().window(tabs[0]);
+
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const switchToTab = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  try {
+    console.log("Switching To Tab");
+    const number = parseInt(step.testParameters.TabNumber) - 1;
+    const tabs = await driver.getAllWindowHandles();
+
+    if (number > tabs.length) {
+      throw new Error("Invalid TabNumber");
+    } else await driver.switchTo().window(tabs[number]);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
 module.exports = {
   refreshPage,
   backPage,
@@ -162,4 +215,6 @@ module.exports = {
   newWindow,
   closeBrowser,
   maximizeBrowser,
+  switchToTab,
+  switchToDefaultTab,
 };
