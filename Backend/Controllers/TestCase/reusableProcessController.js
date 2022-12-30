@@ -1,6 +1,9 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-import { idValidation } from "../../Utils/Validations/index.js";
+import {
+  idValidation,
+  createLogValidation,
+} from "../../Utils/Validations/index.js";
 import { updateReusableProcessValidation } from "../../Utils/Validations/reusableProcess.js";
 import { nameDesTagPrjValidation } from "../../Utils/Validations/index.js";
 
@@ -239,8 +242,11 @@ const createReusableProcessLog = async (req, res, id, logs = []) => {
     const reusableProcessId = req.params.reusableProcessId || id;
     const tempLogs = req.body.logs || logs;
 
-    // const { error } = idValidation.validate({ id: objectId });
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = createLogValidation.validate({
+      id: reusableProcessId,
+      logs: tempLogs,
+    });
+    if (error) throw new Error(error.details[0].message);
 
     const payload = tempLogs.map((el) => {
       return { log: el, reusableProcessId, createdByUser: req.user.id };

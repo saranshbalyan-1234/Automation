@@ -3,6 +3,7 @@ import getError from "../../Utils/sequelizeError.js";
 import {
   idValidation,
   nameDesTagPrjValidation,
+  createLogValidation,
 } from "../../Utils/Validations/index.js";
 import {
   updateObjectValidation,
@@ -269,8 +270,11 @@ const createObjectLog = async (req, res, id, logs = []) => {
     const objectId = req.params.objectId || id;
     const tempLogs = req.body.logs || logs;
 
-    // const { error } = idValidation.validate({ id: objectId });
-    // if (error) throw new Error(error.details[0].message);
+    const { error } = createLogValidation.validate({
+      id: objectId,
+      logs: tempLogs,
+    });
+    if (error) throw new Error(error.details[0].message);
 
     const payload = tempLogs.map((el) => {
       return { log: el, objectId, createdByUser: req.user.id };

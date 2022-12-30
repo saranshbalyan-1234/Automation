@@ -13,3 +13,8 @@ export const nameDesTagPrjValidation = joi.object({
   tags: joi.array().allow(null, ""),
   projectId: joi.number().integer().required(),
 });
+
+export const createLogValidation = joi.object({
+  id: joi.number().integer().required(),
+  logs: joi.array().required(),
+});
