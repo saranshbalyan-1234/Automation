@@ -134,12 +134,12 @@ function Setting({ roles, team }) {
               />
             )}
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Notification" key="notification">
+          {/* <Tabs.TabPane tab="Notification" key="notification">
             <ComingSoon />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Billing" key="billing">
             <ComingSoon />
-          </Tabs.TabPane>
+          </Tabs.TabPane> */}
         </Tabs>
         {renderButton()}
       </div>
