@@ -24,7 +24,7 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
   const columns = [
     {
       title: "",
-      width: 50,
+      width: 40,
       dataIndex: "action",
       render: (text, record) => (
         <div className="pointer">
@@ -134,7 +134,7 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
       ),
     },
     {
-      title: "Actions",
+      title: "",
       width: 100,
       dataIndex: "editDelete",
       render: (text, record) => (
