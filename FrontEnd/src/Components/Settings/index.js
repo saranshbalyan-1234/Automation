@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Button } from "antd";
 import Profile from "./Profile";
-import ComingSoon from "../../Views/ComingSoon";
 import Team from "./Team";
 import Role from "./Role";
 import { PlusOutlined, EditOutlined, SettingOutlined } from "@ant-design/icons";

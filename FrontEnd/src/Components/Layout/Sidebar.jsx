@@ -6,9 +6,10 @@ import {
 } from "@ant-design/icons";
 import { VscDebugRestart } from "react-icons/vsc";
 import { Layout, Menu } from "antd";
+import { connect } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 const { Sider } = Layout;
-export default function Sidebar({ collapsed, setCollapsed }) {
+function Sidebar({ collapsed, setCollapsed, currentProjectId }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedMenu, setSelectedMenu] = useState("Dashboard");
@@ -26,15 +27,29 @@ export default function Sidebar({ collapsed, setCollapsed }) {
   };
 
   const items = [
-    { label: "Dashboard", key: "Dashboard", icon: <DashboardOutlined /> }, // remember to pass the key prop
-
-    { label: "Test Case", key: "TestCase", icon: <FileOutlined /> },
+    {
+      label: "Dashboard",
+      key: "Dashboard",
+      icon: <DashboardOutlined />,
+    },
+    {
+      label: "Test Case",
+      key: "TestCase",
+      icon: <FileOutlined />,
+      disabled: !currentProjectId,
+    },
     {
       label: "Reusable Process",
       key: "ReusableProcess",
       icon: <VscDebugRestart />,
+      disabled: !currentProjectId,
     },
-    { label: " Object Bank", key: "ObjectBank", icon: <BankOutlined /> },
+    {
+      label: " Object Bank",
+      key: "ObjectBank",
+      icon: <BankOutlined />,
+      disabled: !currentProjectId,
+    },
   ];
 
   return (
@@ -96,3 +111,11 @@ export default function Sidebar({ collapsed, setCollapsed }) {
     </Sider>
   );
 }
+
+const mapStateToProps = (state) => ({
+  currentProjectId: state.projects.currentProject?.id,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

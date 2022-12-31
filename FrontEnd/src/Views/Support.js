@@ -1,11 +1,7 @@
 import { Collapse, Space } from "antd";
 import React from "react";
 const { Panel } = Collapse;
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
+
 export default function Support() {
   return (
     <Space direction="vertical" style={{ minWidth: "100%", marginTop: 10 }}>
@@ -33,15 +29,15 @@ export default function Support() {
               Object: A object is the part where you define the HTML element. A
               element is located with the help of locators which can be of type
               <ul>
-                <li>// ClassName</li>
-                <li>// CSS</li>
-                <li>// Id</li>
-                <li>// JS</li>
-                <li>// LinkText</li>
-                <li>// Name</li>
-                <li>// PartialLinkText</li>
-                <li>// TagName</li>
-                <li>// XPATH</li>
+                <li>ClassName</li>
+                <li>CSS</li>
+                <li>Id</li>
+                <li>JS</li>
+                <li>LinkText</li>
+                <li>Name</li>
+                <li>PartialLinkText</li>
+                <li>TagName</li>
+                <li>XPATH</li>
               </ul>
             </li>
           </ul>
@@ -60,15 +56,15 @@ export default function Support() {
           A object is the part where you define the HTML element. A element is
           located with the help of locators which can be of type
           <ul>
-            <li>// ClassName</li>
-            <li>// CSS</li>
-            <li>// Id</li>
-            <li>// JS</li>
-            <li>// LinkText</li>
-            <li>// Name</li>
-            <li>// PartialLinkText</li>
-            <li>// TagName</li>
-            <li>// XPATH</li>
+            <li>ClassName</li>
+            <li>CSS</li>
+            <li>Id</li>
+            <li>JS</li>
+            <li>LinkText</li>
+            <li>Name</li>
+            <li>PartialLinkText</li>
+            <li>TagName</li>
+            <li>XPATH</li>
           </ul>
         </Panel>
       </Collapse>
