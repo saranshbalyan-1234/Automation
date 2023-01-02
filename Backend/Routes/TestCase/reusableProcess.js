@@ -12,40 +12,48 @@ import {
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
-Router.post("/", validatePermission("Test Case", "edit"), saveReusableProcess);
+Router.post(
+  "/",
+  validatePermission("Reusable Process", "add"),
+  saveReusableProcess
+);
 Router.put(
   "/:reusableProcessId",
-  validatePermission("Test Case", "edit"),
+  validatePermission("Reusable Process", "edit"),
   updateReusableProcess
 );
 Router.get(
   "/:reusableProcessId/details",
-  validatePermission("Test Case", "view"),
+  validatePermission("Reusable Process", "view"),
   getReusableProcessDetailsById
 );
 
-Router.get("/", validatePermission("Test Case", "view"), getAllReusableProcess);
+Router.get(
+  "/",
+  validatePermission("Reusable Process", "view"),
+  getAllReusableProcess
+);
 
 Router.get(
   "/:reusableProcessId/teststeps",
-  validatePermission("Test Case", "view"),
+  validatePermission("Reusable Process", "view"),
   getTestStepByReusableProcess
 );
 
 Router.delete(
   "/:reusableProcessId",
-  validatePermission("Test Case", "edit"),
+  validatePermission("Reusable Process", "delete"),
   deleteReusableProcess
 );
 
 Router.post(
   "/:reusableProcessId/logs",
-  validatePermission("Test Case", "edit"),
+  validatePermission("Reusable Process", "edit"),
   createReusableProcessLog
 );
 Router.get(
   "/:reusableProcessId/logs",
-  validatePermission("Test Case", "view"),
+  validatePermission("Reusable Process", "view"),
   getReusableProcessLogsById
 );
 

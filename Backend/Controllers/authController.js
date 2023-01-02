@@ -157,6 +157,7 @@ const login = async (req, res) => {
       profileImage: profileImage ? base64ProfileImage : "",
       customerAdmin,
       defaultProjectId,
+      verifiedAt,
       roles: newRoles,
       accessToken,
       refreshToken,

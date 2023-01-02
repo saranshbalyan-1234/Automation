@@ -100,42 +100,45 @@ export const Team = ({
                   }
                 />
                 <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                  {editTeamPermission && (
-                    <>
-                      <Switch
-                        onChange={(e) => toggleActiveInactive(e, item.id)}
-                        checked={item.active}
-                        checkedChildren="Active"
-                        unCheckedChildren="Inactive"
-                      />
-                      <Button
-                        type="primary"
-                        ghost
-                        size="small"
-                        onClick={async () => {
-                          await setEditUserId(item.id);
-                          setManageUserModal(true);
-                        }}
-                      >
-                        <EditOutlined /> Manage User
-                      </Button>
-                    </>
-                  )}
-                  {deleteTeamPermission && (
-                    <Popconfirm
-                      placement="left"
-                      title="Are you sure to remove this user?"
-                      onConfirm={() => {
-                        removeTeamMember(item.id);
-                      }}
-                      okText="Yes, Remove"
-                      cancelText="No"
+                  <Switch
+                    onChange={(e) => toggleActiveInactive(e, item.id)}
+                    checked={item.active}
+                    checkedChildren="Active"
+                    unCheckedChildren="Inactive"
+                    disabled={!editTeamPermission}
+                  />
+                  <Button
+                    type="primary"
+                    ghost
+                    size="small"
+                    onClick={async () => {
+                      await setEditUserId(item.id);
+                      setManageUserModal(true);
+                    }}
+                    disabled={!editTeamPermission}
+                  >
+                    <EditOutlined /> Manage User
+                  </Button>
+
+                  <Popconfirm
+                    placement="left"
+                    title="Are you sure to remove this user?"
+                    onConfirm={() => {
+                      removeTeamMember(item.id);
+                    }}
+                    okText="Yes, Remove"
+                    cancelText="No"
+                    disabled={!deleteTeamPermission}
+                  >
+                    <Button
+                      danger
+                      ghost
+                      size="small"
+                      disabled={!deleteTeamPermission}
                     >
-                      <Button danger ghost size="small">
-                        <DeleteOutlined /> Remove User
-                      </Button>
-                    </Popconfirm>
-                  )}
+                      <DeleteOutlined /> Remove User
+                    </Button>
+                  </Popconfirm>
                 </div>
               </List.Item>
             )}

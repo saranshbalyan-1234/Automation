@@ -39,7 +39,7 @@ function Setting({ roles, team }) {
   }, [tab]);
 
   const renderButton = () => {
-    if (activeTab === "roles" && addRolePermission)
+    if (activeTab === "roles")
       return (
         <Button
           type="primary"
@@ -48,11 +48,12 @@ function Setting({ roles, team }) {
           onClick={() => {
             setAddRoleModal(true);
           }}
+          disabled={!addRolePermission}
         >
           <PlusOutlined /> Add Role
         </Button>
       );
-    else if (activeTab === "team" && addTeamPermission)
+    else if (activeTab === "team")
       return (
         <div
           style={{
@@ -72,6 +73,7 @@ function Setting({ roles, team }) {
             onClick={() => {
               setAddUserModal(true);
             }}
+            disabled={!addTeamPermission}
           >
             <PlusOutlined /> Add User
           </Button>

@@ -15,8 +15,12 @@ import { usePermission } from "./Utils/permission";
 function Routess({ user }) {
   const location = useLocation();
   const viewTestCasePermission = usePermission("Test Case", "view");
+  const viewReusableProcessPermission = usePermission(
+    "Reusable Process",
+    "view"
+  );
+  const viewObjectBankPermission = usePermission("Object Bank", "view");
   const viewProjectPermission = usePermission("Project", "view");
-
   return user ? (
     <Layout>
       <Routes>
@@ -27,16 +31,17 @@ function Routess({ user }) {
           <Route exact path="/project/*" element={<Project />}></Route>
         )}
         {viewTestCasePermission && (
-          <>
-            (<Route exact path="/testCase/*" element={<TestCase />}></Route>
-            <Route
-              exact
-              path="/reusableProcess/*"
-              element={<ReusableProcess />}
-            ></Route>
-            <Route exact path="/objectBank/*" element={<ObjectBank />}></Route>{" "}
-            )
-          </>
+          <Route exact path="/testCase/*" element={<TestCase />}></Route>
+        )}
+        {viewReusableProcessPermission && (
+          <Route
+            exact
+            path="/reusableProcess/*"
+            element={<ReusableProcess />}
+          ></Route>
+        )}
+        {viewObjectBankPermission && (
+          <Route exact path="/objectBank/*" element={<ObjectBank />}></Route>
         )}
         <Route
           exact

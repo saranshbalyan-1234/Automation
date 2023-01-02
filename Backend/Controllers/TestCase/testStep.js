@@ -15,10 +15,19 @@ const saveTestStep = async (req, res) => {
   */
 
   try {
+    const { processId, reusableProcessId, step } = req.body;
+
+    let permissionName = reusableProcessId ? "Reusable Process" : "Test Case";
+
+    if (!req.user.customerAdmin) {
+      const allowed = await req.user.permissions.some((permission) => {
+        return permissionName == permission.name && permission.add;
+      });
+      if (!allowed) return res.status(401).json({ error: "Unauthorized" });
+    }
+
     const { error } = saveTestStepValidation.validate(req.body);
     if (error) throw new Error(error.details[0].message);
-
-    const { processId, reusableProcessId, step } = req.body;
 
     if (processId) {
       await TestStep.schema(req.database).increment("step", {

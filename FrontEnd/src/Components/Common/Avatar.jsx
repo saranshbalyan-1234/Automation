@@ -4,9 +4,8 @@ import { connect } from "react-redux";
 
 const UserAvatar = ({ userList, user, size = "small", self, log }) => {
   const [userData, setUserData] = useState({});
-
   useEffect(() => {
-    const temp = [...userList, self]?.find((el) => {
+    const temp = [...userList, { ...self, active: true }]?.find((el) => {
       return el.id === user;
     });
     temp.id && setUserData(temp);
