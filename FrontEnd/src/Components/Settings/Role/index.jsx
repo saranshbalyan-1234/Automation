@@ -10,6 +10,7 @@ import { deleteRole, getAllRole } from "../../../Redux/Actions/role";
 import AddEditRoleModal from "./AddEditRoleModal";
 import ManagePermissionModal from "./ManagePermissionModal";
 import Loading from "../../Common/Loading";
+import { usePermission } from "../../../Utils/permission";
 const { Panel } = Collapse;
 export const Role = ({
   data,
@@ -22,6 +23,8 @@ export const Role = ({
   singleRoleData,
   setSingleRoleData,
 }) => {
+  const deleteRolePermission = usePermission("Role", "delete");
+  const editRolePermission = usePermission("Role", "edit");
   const [addEditRoleModal, setAddEditRoleModal] = useState(false);
 
   useEffect(() => {
@@ -115,46 +118,52 @@ export const Role = ({
                           gap: "10px",
                         }}
                       >
-                        <Button
-                          type="primary"
-                          ghost
-                          size="small"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleRoleEdit(item);
-                          }}
-                        >
-                          <EditOutlined style={{ cursor: "pointer" }} /> Edit
-                          Role
-                        </Button>
-                        <Button
-                          type="primary"
-                          ghost
-                          size="small"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAddPermission(item);
-                          }}
-                        >
-                          <SettingOutlined /> Manage Permmission
-                        </Button>
-                        <Popconfirm
-                          placement="left"
-                          title="Are you sure to delete this Role?"
-                          onConfirm={(e) => {
-                            e.stopPropagation();
-                            deleteRole(item.id);
-                          }}
-                          okText="Yes, Delete"
-                          cancelText="No"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                          }}
-                        >
-                          <Button danger ghost size="small">
-                            <DeleteOutlined /> Delete Role
-                          </Button>
-                        </Popconfirm>
+                        {editRolePermission && (
+                          <>
+                            <Button
+                              type="primary"
+                              ghost
+                              size="small"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRoleEdit(item);
+                              }}
+                            >
+                              <EditOutlined style={{ cursor: "pointer" }} />{" "}
+                              Edit Role
+                            </Button>
+                            <Button
+                              type="primary"
+                              ghost
+                              size="small"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAddPermission(item);
+                              }}
+                            >
+                              <SettingOutlined /> Manage Permmission
+                            </Button>
+                          </>
+                        )}
+                        {deleteRolePermission && (
+                          <Popconfirm
+                            placement="left"
+                            title="Are you sure to delete this Role?"
+                            onConfirm={(e) => {
+                              e.stopPropagation();
+                              deleteRole(item.id);
+                            }}
+                            okText="Yes, Delete"
+                            cancelText="No"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                          >
+                            <Button danger ghost size="small">
+                              <DeleteOutlined /> Delete Role
+                            </Button>
+                          </Popconfirm>
+                        )}
                       </div>
                     )}
                   </div>

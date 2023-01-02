@@ -11,6 +11,7 @@ import {
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ManageUserModal from "./ManageUserModal";
 import Loading from "../../Common/Loading";
+import { usePermission } from "../../../Utils/permission";
 export const Team = ({
   team,
   loading,
@@ -24,6 +25,8 @@ export const Team = ({
   editUserId,
   setEditUserId,
 }) => {
+  const editTeamPermission = usePermission("Team", "edit");
+  const deleteTeamPermission = usePermission("Team", "delete");
   useEffect(() => {
     getTeam();
     // eslint-disable-next-line
@@ -97,37 +100,42 @@ export const Team = ({
                   }
                 />
                 <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                  <Switch
-                    onChange={(e) => toggleActiveInactive(e, item.id)}
-                    checked={item.active}
-                    checkedChildren="Active"
-                    unCheckedChildren="Inactive"
-                  />
-                  <Button
-                    type="primary"
-                    ghost
-                    size="small"
-                    onClick={async () => {
-                      await setEditUserId(item.id);
-                      setManageUserModal(true);
-                    }}
-                  >
-                    <EditOutlined /> Manage User
-                  </Button>
-
-                  <Popconfirm
-                    placement="left"
-                    title="Are you sure to remove this user?"
-                    onConfirm={() => {
-                      removeTeamMember(item.id);
-                    }}
-                    okText="Yes, Remove"
-                    cancelText="No"
-                  >
-                    <Button danger ghost size="small">
-                      <DeleteOutlined /> Remove User
-                    </Button>
-                  </Popconfirm>
+                  {editTeamPermission && (
+                    <>
+                      <Switch
+                        onChange={(e) => toggleActiveInactive(e, item.id)}
+                        checked={item.active}
+                        checkedChildren="Active"
+                        unCheckedChildren="Inactive"
+                      />
+                      <Button
+                        type="primary"
+                        ghost
+                        size="small"
+                        onClick={async () => {
+                          await setEditUserId(item.id);
+                          setManageUserModal(true);
+                        }}
+                      >
+                        <EditOutlined /> Manage User
+                      </Button>
+                    </>
+                  )}
+                  {deleteTeamPermission && (
+                    <Popconfirm
+                      placement="left"
+                      title="Are you sure to remove this user?"
+                      onConfirm={() => {
+                        removeTeamMember(item.id);
+                      }}
+                      okText="Yes, Remove"
+                      cancelText="No"
+                    >
+                      <Button danger ghost size="small">
+                        <DeleteOutlined /> Remove User
+                      </Button>
+                    </Popconfirm>
+                  )}
                 </div>
               </List.Item>
             )}

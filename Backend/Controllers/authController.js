@@ -91,10 +91,12 @@ const login = async (req, res) => {
             {
               model: Role.schema(tenant),
               attributes: ["name"],
-            },
-            {
-              model: Permission.schema(tenant),
-              attributes: ["name", "view", "add", "edit", "delete"],
+              include: [
+                {
+                  model: Permission.schema(tenant),
+                  attributes: ["name", "view", "add", "edit", "delete"],
+                },
+              ],
             },
           ],
         },
@@ -110,10 +112,10 @@ const login = async (req, res) => {
 
     let allPermissions = [];
     const newRoles = await user.userRoles.map((el) => {
-      allPermissions = [...allPermissions, ...el.permissions];
+      allPermissions = [...allPermissions, ...el.role.permissions];
       let tempRole = {};
       tempRole.name = el.role.name;
-      tempRole.permissions = el.permissions;
+      tempRole.permissions = el.role.permissions;
       return tempRole;
     });
 
