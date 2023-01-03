@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { List, Popconfirm, Checkbox, Collapse, Button, Empty } from "antd";
+import { Popconfirm, Collapse, Button, Empty } from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -11,6 +11,7 @@ import AddEditRoleModal from "./AddEditRoleModal";
 import ManagePermissionModal from "./ManagePermissionModal";
 import Loading from "../../Common/Loading";
 import { usePermission } from "../../../Utils/permission";
+import Permission from "./Permission";
 const { Panel } = Collapse;
 export const Role = ({
   data,
@@ -40,43 +41,7 @@ export const Role = ({
     setAddPermissionModal(true);
     setSingleRoleData(item);
   };
-  const renderPermission = (role) => {
-    return (
-      <div style={{ paddingLeft: "30px" }}>
-        <List
-          dataSource={role.permissions}
-          renderItem={(permission) => (
-            <List.Item>
-              <List.Item.Meta
-                title={<div>Permission: {permission.name}</div>}
-                description={
-                  <div
-                    style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}
-                  >
-                    <div style={{ display: "flex", gap: "5px" }}>
-                      View: <Checkbox checked={permission.view} />
-                    </div>
 
-                    <div style={{ display: "flex", gap: "5px" }}>
-                      Add: <Checkbox checked={permission.add} />
-                    </div>
-
-                    <div style={{ display: "flex", gap: "5px" }}>
-                      Edit: <Checkbox checked={permission.edit} />
-                    </div>
-
-                    <div style={{ display: "flex", gap: "5px" }}>
-                      Delete: <Checkbox checked={permission.delete} />
-                    </div>
-                  </div>
-                }
-              />
-            </List.Item>
-          )}
-        />
-      </div>
-    );
-  };
   return (
     <>
       <Loading loading={loading}>
@@ -164,12 +129,7 @@ export const Role = ({
                             size="small"
                             disabled={!deleteRolePermission}
                           >
-                            <DeleteOutlined
-                              style={{
-                                color: deleteRolePermission ? "black" : "grey",
-                              }}
-                            />{" "}
-                            Delete Role
+                            <DeleteOutlined /> Delete Role
                           </Button>
                         </Popconfirm>
                       </div>
@@ -177,7 +137,11 @@ export const Role = ({
                   </div>
                 }
               >
-                {renderPermission(item)}
+                <Permission
+                  roleData={item}
+                  editRolePermission={editRolePermission}
+                  editable={false}
+                />
               </Panel>
             </Collapse>
           );
