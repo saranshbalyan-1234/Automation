@@ -8,17 +8,18 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../Common/Loading";
 import CustomSearch from "../Common/Search";
 import { connect } from "react-redux";
+import { usePermission } from "../../Utils/permission";
 const ObjectList = ({
   onDelete,
   onSave = () => {},
   loading,
   data,
-  name,
-  link,
   getList = () => {},
   currentProjectId,
 }) => {
   const navigate = useNavigate();
+  const addObjectPermission = usePermission("Object Bank", "add");
+  const deleteObjectPermission = usePermission("Object Bank", "delete");
   const [addEditObjectModal, setAddEditObjectModal] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
 
@@ -91,17 +92,21 @@ const ObjectList = ({
         <div style={{ display: "flex", gap: 10 }}>
           <Popconfirm
             placement="left"
-            title={`Are you sure to delete this ${name}?`}
+            title={`Are you sure to delete this Object?`}
             onConfirm={async (e) => {
               e.stopPropagation();
               await onDelete(record.id);
             }}
             okText="Yes, Delete"
             cancelText="No"
+            disabled={!deleteObjectPermission}
           >
             <DeleteOutlined
               onClick={(e) => e.stopPropagation()}
-              style={{ fontSize: 17 }}
+              style={{
+                fontSize: 17,
+                cursor: deleteObjectPermission ? "pointer" : "not-allowed",
+              }}
             />
           </Popconfirm>
         </div>
@@ -121,18 +126,16 @@ const ObjectList = ({
             padding: "10px 0px 10px 0px ",
           }}
         >
-          <CustomSearch
-            placeholder={`Search ${name}`}
-            onSearch={handleSearch}
-          />
+          <CustomSearch placeholder={`Search Object`} onSearch={handleSearch} />
           <Button
             type="primary"
             ghost
             onClick={() => {
               setAddEditObjectModal(true);
             }}
+            disabled={!addObjectPermission}
           >
-            New {name}
+            New Object
           </Button>
         </div>
         <Table
@@ -144,7 +147,7 @@ const ObjectList = ({
           onRow={(record, rowIndex) => {
             return {
               onClick: () => {
-                navigate(`/${link}/${record.id}/details`);
+                navigate(`/ObjectBank}/${record.id}/details`);
               },
             };
           }}
@@ -153,7 +156,6 @@ const ObjectList = ({
           visible={addEditObjectModal}
           setVisible={setAddEditObjectModal}
           loading={loading}
-          name={name}
           onSave={onSave}
         />
       </Loading>

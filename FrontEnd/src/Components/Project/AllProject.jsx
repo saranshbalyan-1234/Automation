@@ -20,6 +20,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Common/Loading";
+import { usePermission } from "../../Utils/permission";
 export const AllProject = ({
   getAllProject,
   getProjectById,
@@ -29,6 +30,8 @@ export const AllProject = ({
   user,
 }) => {
   const navigate = useNavigate();
+  const addProjectPermission = usePermission("Project", "add");
+  const deleteProjectPermission = usePermission("Project", "delete");
   const [addEditProjectModal, setAddEditProjectModal] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
   useEffect(() => {
@@ -99,6 +102,7 @@ export const AllProject = ({
           onClick={() => {
             setAddEditProjectModal(true);
           }}
+          disabled={!addProjectPermission}
         >
           New Project
         </Button>
@@ -266,7 +270,12 @@ export const AllProject = ({
                       okText="Yes, Remove"
                       cancelText="No"
                     >
-                      <Button danger ghost size="small">
+                      <Button
+                        danger
+                        ghost
+                        size="small"
+                        disabled={!deleteProjectPermission}
+                      >
                         <DeleteOutlined />
                       </Button>
                     </Popconfirm>

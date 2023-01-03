@@ -8,6 +8,7 @@ import {
   getReusableProcessByProject,
   saveReusableProcess,
 } from "../../Redux/Actions/reusableProcess";
+import { usePermission } from "../../Utils/permission";
 const ReusableProcess = ({
   loading,
   getReusableProcessByProject,
@@ -15,6 +16,11 @@ const ReusableProcess = ({
   reusableProcess,
   saveReusableProcess,
 }) => {
+  const addReusableProcessPermission = usePermission("Reusable Process", "add");
+  const deleteReusableProcessPermission = usePermission(
+    "Reusable Process",
+    "delete"
+  );
   return (
     <>
       <Routes>
@@ -29,6 +35,8 @@ const ReusableProcess = ({
               link="ReusableProcess"
               onSave={saveReusableProcess}
               getList={getReusableProcessByProject}
+              addPermission={addReusableProcessPermission}
+              deletePermission={deleteReusableProcessPermission}
             />
           }
         />

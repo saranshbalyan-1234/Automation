@@ -11,7 +11,14 @@ import {
 import ViewObjectModal from "./ViewObjectModal";
 import ViewParameterModal from "./ViewParameterModal";
 import ViewCommentModal from "./ViewCommentModal";
+import { usePermission } from "../../../Utils/permission";
 const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
+  const editTestCasePermission = usePermission("Test Case", "edit");
+  const editReusableProcessPermission = usePermission(
+    "Reusable Process",
+    "edit"
+  );
+
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [viewParameterModal, setViewParameterModal] = useState(false);
   const [parameters, setParameters] = useState([]);
@@ -32,6 +39,8 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
             process={process}
             reusableProcess={reusableProcess}
             testStep={record}
+            editTestCasePermission={editTestCasePermission}
+            editReusableProcessPermission={editReusableProcessPermission}
           />
         </div>
       ),
@@ -140,7 +149,22 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
       render: (text, record) => (
         <div style={{ display: "flex", gap: 10, cursor: "pointer" }}>
           <EditOutlined
+            style={{
+              cursor: reusableProcess
+                ? editReusableProcessPermission
+                  ? "pointer"
+                  : "not-allowed"
+                : editTestCasePermission
+                ? "pointer"
+                : "not-allowed",
+            }}
             onClick={() => {
+              if (
+                reusableProcess
+                  ? !editReusableProcessPermission
+                  : !editTestCasePermission
+              )
+                return;
               setEditData(record);
               setAddEditStepModal(true);
             }}
@@ -158,8 +182,23 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
             }}
             okText="Yes, Remove"
             cancelText="No"
+            disabled={
+              reusableProcess
+                ? !editReusableProcessPermission
+                : !editTestCasePermission
+            }
           >
-            <DeleteOutlined />
+            <DeleteOutlined
+              style={{
+                cursor: reusableProcess
+                  ? editReusableProcessPermission
+                    ? "pointer"
+                    : "not-allowed"
+                  : editTestCasePermission
+                  ? "pointer"
+                  : "not-allowed",
+              }}
+            />
           </Popconfirm>
         </div>
       ),

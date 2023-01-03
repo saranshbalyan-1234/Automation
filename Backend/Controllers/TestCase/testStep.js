@@ -21,7 +21,7 @@ const saveTestStep = async (req, res) => {
 
     if (!req.user.customerAdmin) {
       const allowed = await req.user.permissions.some((permission) => {
-        return permissionName == permission.name && permission.add;
+        return permissionName == permission.name && permission.edit;
       });
       if (!allowed) return res.status(401).json({ error: "Unauthorized" });
     }
@@ -155,7 +155,7 @@ const deleteTestStep = async (req, res) => {
 
     if (!req.user.customerAdmin) {
       const allowed = await req.user.permissions.some((permission) => {
-        return permissionName == permission.name && permission.delete;
+        return permissionName == permission.name && permission.edit;
       });
       if (!allowed) return res.status(401).json({ error: "Unauthorized" });
     }

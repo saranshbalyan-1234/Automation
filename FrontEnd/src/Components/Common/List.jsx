@@ -17,6 +17,8 @@ const List = ({
   link,
   getList = () => {},
   currentProjectId,
+  addPermission,
+  deletePermission,
 }) => {
   const navigate = useNavigate();
   const [addEditModal, setAddEditModal] = useState(false);
@@ -97,10 +99,14 @@ const List = ({
             }}
             okText="Yes, Delete"
             cancelText="No"
+            disabled={!deletePermission}
           >
             <DeleteOutlined
               onClick={(e) => e.stopPropagation()}
-              style={{ fontSize: 17 }}
+              style={{
+                fontSize: 17,
+                cursor: deletePermission ? "pointer" : "not-allowed",
+              }}
             />
           </Popconfirm>
         </div>
@@ -130,6 +136,7 @@ const List = ({
             onClick={() => {
               setAddEditModal(true);
             }}
+            disabled={!addPermission}
           >
             New {name}
           </Button>
