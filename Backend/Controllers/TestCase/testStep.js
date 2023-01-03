@@ -75,6 +75,22 @@ const updateTestStep = async (req, res) => {
 
   try {
     const testStepId = req.params.testStepId;
+
+    const updatingStep = await TestStep.schema(req.database).findByPk(
+      testStepId
+    );
+
+    let permissionName = updatingStep.reusableProcessId
+      ? "Reusable Process"
+      : "Test Case";
+
+    if (!req.user.customerAdmin) {
+      const allowed = await req.user.permissions.some((permission) => {
+        return permissionName == permission.name && permission.edit;
+      });
+      if (!allowed) return res.status(401).json({ error: "Unauthorized" });
+    }
+
     const { error } = updateTestStepValidation.validate({
       ...req.body,
       testStepId,
@@ -128,11 +144,24 @@ const deleteTestStep = async (req, res) => {
 
   try {
     const testStepId = req.params.testStepId;
-    const { error } = idValidation.validate({ id: testStepId });
-    if (error) throw new Error(error.details[0].message);
+
     const deletingTestStep = await TestStep.schema(req.database).findByPk(
       testStepId
     );
+
+    let permissionName = deletingTestStep.reusableProcessId
+      ? "Reusable Process"
+      : "Test Case";
+
+    if (!req.user.customerAdmin) {
+      const allowed = await req.user.permissions.some((permission) => {
+        return permissionName == permission.name && permission.delete;
+      });
+      if (!allowed) return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const { error } = idValidation.validate({ id: testStepId });
+    if (error) throw new Error(error.details[0].message);
 
     const deletedTestStep = await TestStep.schema(req.database).destroy({
       where: { id: testStepId },

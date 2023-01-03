@@ -160,8 +160,11 @@ const AddEditStepModal = ({
           data: payload,
           stepId: editData.id,
         });
-        const logs = await getStepEditedLogs(editData, payload, "step ");
-        logs.length > 0 && createReusableProcessLogs(reusableProcess.id, logs);
+        if (result) {
+          const logs = await getStepEditedLogs(editData, payload, "step ");
+          logs.length > 0 &&
+            createReusableProcessLogs(reusableProcess.id, logs);
+        }
       } else {
         result = await editStep({
           data: payload,
@@ -169,8 +172,10 @@ const AddEditStepModal = ({
           reusableProcessId: reusableProcess?.id,
           processId: process?.id,
         });
-        const logs = await getStepEditedLogs(editData, payload, "step ");
-        logs.length > 0 && createTestCaseLogs(currentTestCaseId, logs);
+        if (result) {
+          const logs = await getStepEditedLogs(editData, payload, "step ");
+          logs.length > 0 && createTestCaseLogs(currentTestCaseId, logs);
+        }
       }
 
       setEditData({});
@@ -181,9 +186,11 @@ const AddEditStepModal = ({
           reusableProcessId: reusableProcess.id,
           step,
         });
-        createReusableProcessLogs(reusableProcess?.id, [
-          `added new step at position ${step}`,
-        ]);
+        if (result) {
+          createReusableProcessLogs(reusableProcess?.id, [
+            `added new step at position ${step}`,
+          ]);
+        }
       } else {
         if (reusableProcess?.id && process?.id) {
           result = await addStep({
@@ -192,21 +199,25 @@ const AddEditStepModal = ({
             step,
             reusableId: process?.id,
           });
-          createReusableProcessLogs(reusableProcess.id, [
-            `added new step at position ${step}`,
-          ]);
-          createTestCaseLogs(currentTestCaseId, [
-            `added new step at position ${step} in reusableProcess "${reusableProcess.name}" or process "${process.name}"`,
-          ]);
+          if (result) {
+            createReusableProcessLogs(reusableProcess.id, [
+              `added new step at position ${step}`,
+            ]);
+            createTestCaseLogs(currentTestCaseId, [
+              `added new step at position ${step} in reusableProcess "${reusableProcess.name}" or process "${process.name}"`,
+            ]);
+          }
         } else {
           result = await addStep({
             ...payload,
             processId: process?.id,
             step,
           });
-          createTestCaseLogs(currentTestCaseId, [
-            `added new step at position ${step} in process "${process?.name}"`,
-          ]);
+          if (result) {
+            createTestCaseLogs(currentTestCaseId, [
+              `added new step at position ${step} in process "${process?.name}"`,
+            ]);
+          }
         }
       }
     }
