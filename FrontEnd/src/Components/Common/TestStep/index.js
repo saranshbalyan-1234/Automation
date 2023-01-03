@@ -157,6 +157,13 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
                 : editTestCasePermission
                 ? "pointer"
                 : "not-allowed",
+              color: reusableProcess
+                ? editReusableProcessPermission
+                  ? "black"
+                  : "grey"
+                : editTestCasePermission
+                ? "black"
+                : "grey",
             }}
             onClick={() => {
               if (
@@ -197,6 +204,13 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
                   : editTestCasePermission
                   ? "pointer"
                   : "not-allowed",
+                color: reusableProcess
+                  ? editReusableProcessPermission
+                    ? "black"
+                    : "grey"
+                  : editTestCasePermission
+                  ? "black"
+                  : "grey",
               }}
             />
           </Popconfirm>
