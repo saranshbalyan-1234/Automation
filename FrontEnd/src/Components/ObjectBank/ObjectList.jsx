@@ -106,6 +106,7 @@ const ObjectList = ({
               style={{
                 fontSize: 17,
                 cursor: deleteObjectPermission ? "pointer" : "not-allowed",
+                color: deleteObjectPermission ? "black" : "grey",
               }}
             />
           </Popconfirm>

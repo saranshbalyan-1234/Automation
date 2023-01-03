@@ -106,6 +106,7 @@ const List = ({
               style={{
                 fontSize: 17,
                 cursor: deletePermission ? "pointer" : "not-allowed",
+                color: deletePermission ? "black" : "grey",
               }}
             />
           </Popconfirm>

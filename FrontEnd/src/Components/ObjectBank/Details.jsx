@@ -9,6 +9,7 @@ import AddLocatorsModal from "./AddLocatorsModal";
 import UserAvatar from "../Common/Avatar";
 import moment from "moment";
 import AddEditObjectModal from "./AddEditObjectModal";
+import { usePermission } from "../../Utils/permission";
 const { Meta } = Card;
 const { Title } = Typography;
 const ObjectDetails = ({
@@ -18,6 +19,7 @@ const ObjectDetails = ({
   history = false,
   loading,
 }) => {
+  const editObjectPermission = usePermission("Object Bank", "edit");
   const { objectId } = useParams();
   const [currentObject, setCurrentObject] = useState({});
   const [addLocatorModal, setAddLocatorModal] = useState(false);
@@ -128,6 +130,7 @@ const ObjectDetails = ({
                 onClick={() => {
                   setAddLocatorModal(true);
                 }}
+                disabled={!editObjectPermission}
               >
                 <PlusOutlined /> Add Locator
               </Button>

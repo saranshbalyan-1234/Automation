@@ -3,12 +3,9 @@ import { connect } from "react-redux";
 import { Table, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { deleteLocator } from "../../Redux/Actions/object";
-export const Locators = ({
-  currentObjectId,
-  locators,
-  deleteLocator,
-  history = false,
-}) => {
+import { usePermission } from "../../Utils/permission";
+export const Locators = ({ locators, deleteLocator, history = false }) => {
+  const editObjectPermission = usePermission("Object Bank", "edit");
   const handleDeleteLocator = async (id, name, type) => {
     return await deleteLocator(id, name, type);
   };
@@ -35,8 +32,14 @@ export const Locators = ({
             }}
             okText="Yes, Remove"
             cancelText="No"
+            disabled={!editObjectPermission}
           >
-            <DeleteOutlined style={{ fontSize: 17 }} onClick={() => {}} />
+            <DeleteOutlined
+              style={{
+                fontSize: 17,
+                color: editObjectPermission ? "black" : "grey",
+              }}
+            />
           </Popconfirm>
         ),
     },
@@ -49,9 +52,7 @@ export const Locators = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  currentObjectId: state.objectBank.currentObject.id,
-});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = { deleteLocator };
 
