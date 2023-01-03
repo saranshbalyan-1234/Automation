@@ -8,7 +8,7 @@ import {
   EDIT_ROLE_SUCCESS,
   UPDATE_ROLE_PERMISSION_SUCCESS,
 } from "./action-types";
-
+import { message } from "antd";
 export const getAllRole = () => {
   return async (dispatch) => {
     try {
@@ -89,6 +89,7 @@ export const updateRolePermission = (permissions, roleId) => {
         type: UPDATE_ROLE_PERMISSION_SUCCESS,
         payload: { data, roleId },
       });
+      message.success("Permissions Updated!");
       return true;
     } catch (err) {
       dispatch({ type: ROLE_FAILURE });
