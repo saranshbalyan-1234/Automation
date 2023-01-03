@@ -44,7 +44,7 @@ export default function ActivityLog({ logs = [], loading }) {
       title: "Date & Time",
       dataIndex: "executedBy",
       render: (_, record) => (
-        <div>{moment(record.createdAt).format("DD/MM/YY h:mm:ss a")}</div>
+        <div>{moment(record.createdAt).format("DD/MM/YY hh:mm:ss a")}</div>
       ),
       width: 180,
     },
