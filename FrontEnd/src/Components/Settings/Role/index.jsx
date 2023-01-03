@@ -5,16 +5,17 @@ import {
   DeleteOutlined,
   EditOutlined,
   SettingOutlined,
+  EyeOutlined,
 } from "@ant-design/icons";
 import { deleteRole, getAllRole } from "../../../Redux/Actions/role";
 import AddEditRoleModal from "./AddEditRoleModal";
 import ManagePermissionModal from "./ManagePermissionModal";
 import Loading from "../../Common/Loading";
 import { usePermission } from "../../../Utils/permission";
-import Permission from "./Permission";
+// import Permission from "./Permission";
 const { Panel } = Collapse;
 export const Role = ({
-  data,
+  roles,
   loading,
   profile = false,
   getAllRole,
@@ -45,10 +46,11 @@ export const Role = ({
   return (
     <>
       <Loading loading={loading}>
-        {data.map((item, index) => {
+        {roles.map((item, index) => {
           return (
-            <Collapse style={{ marginTop: "10px" }} key={index}>
+            <Collapse style={{ marginTop: "10px" }} key={index} activeKey={[]}>
               <Panel
+                showArrow={false}
                 header={
                   <div
                     style={{
@@ -104,9 +106,17 @@ export const Role = ({
                             e.stopPropagation();
                             handleAddPermission(item);
                           }}
-                          disabled={!editRolePermission}
                         >
-                          <SettingOutlined /> Manage Permmission
+                          {editRolePermission ? (
+                            <>
+                              <SettingOutlined /> Manage Permission
+                            </>
+                          ) : (
+                            <>
+                              <EyeOutlined />
+                              View Permission
+                            </>
+                          )}
                         </Button>
 
                         <Popconfirm
@@ -137,16 +147,16 @@ export const Role = ({
                   </div>
                 }
               >
-                <Permission
+                {/* <Permission
                   roleData={item}
                   editRolePermission={editRolePermission}
                   editable={false}
-                />
+                /> */}
               </Panel>
             </Collapse>
           );
         })}
-        {data.length === 0 && <Empty description="No Data Found." />}
+        {roles.length === 0 && <Empty description="No Data Found." />}
       </Loading>
       {addEditRoleModal && (
         <AddEditRoleModal
@@ -168,7 +178,10 @@ export const Role = ({
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  roles: state.roles.data,
+  loading: state.roles.loading,
+});
 
 const mapDispatchToProps = { deleteRole, getAllRole };
 

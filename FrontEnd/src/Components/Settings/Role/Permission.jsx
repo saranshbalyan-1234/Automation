@@ -13,13 +13,13 @@ export const Permission = ({
   roleData,
   editRolePermission,
   setVisible,
-  editable = true,
 }) => {
   const [loading, setLoading] = useState(false);
   const [availablePermission, setAvailablePermission] = useState([]);
   const [addedPermission, setAddedPermission] = useState([
     ...roleData.permissions,
   ]);
+
   const [allPermission, setAllPermission] = useState([]);
   useEffect(() => {
     getAvailablePermission();
@@ -97,13 +97,12 @@ export const Permission = ({
               marginTop: "20px",
             }}
           >
-            {editable ? (
+            {editRolePermission ? (
               <Select
                 showSearch
                 value={permission.name}
                 style={{ minWidth: "160px" }}
                 onChange={(e) => handleRowChange("name", e, index)}
-                disabled={!editable}
               >
                 {availablePermission.map((el, i) => {
                   return (
@@ -120,47 +119,47 @@ export const Permission = ({
             <div style={{ display: "flex", gap: "5px" }}>
               View:
               <Checkbox
-                onChange={(e) =>
-                  handleRowChange("view", e.target.checked, index)
-                }
+                onChange={(e) => {
+                  if (!editRolePermission) return;
+                  handleRowChange("view", e.target.checked, index);
+                }}
                 checked={permission.view}
-                disabled={!editable}
               />
             </div>
 
             <div style={{ display: "flex", gap: "5px" }}>
               Add:
               <Checkbox
-                onChange={(e) =>
-                  handleRowChange("add", e.target.checked, index)
-                }
+                onChange={(e) => {
+                  if (!editRolePermission) return;
+                  handleRowChange("add", e.target.checked, index);
+                }}
                 checked={permission.add}
-                disabled={!editable}
               />
             </div>
 
             <div style={{ display: "flex", gap: "5px" }}>
               Edit:
               <Checkbox
-                onChange={(e) =>
-                  handleRowChange("edit", e.target.checked, index)
-                }
+                onChange={(e) => {
+                  if (!editRolePermission) return;
+                  handleRowChange("edit", e.target.checked, index);
+                }}
                 checked={permission.edit}
-                disabled={!editable}
               />
             </div>
 
             <div style={{ display: "flex", gap: "5px" }}>
               Delete:
               <Checkbox
-                onChange={(e) =>
-                  handleRowChange("delete", e.target.checked, index)
-                }
+                onChange={(e) => {
+                  if (!editRolePermission) return;
+                  handleRowChange("delete", e.target.checked, index);
+                }}
                 checked={permission.delete}
-                disabled={!editable}
               />
             </div>
-            {editable && (
+            {editRolePermission && (
               <DeleteOutlined
                 style={{
                   marginTop: "5px",
@@ -175,7 +174,7 @@ export const Permission = ({
           </div>
         );
       })}
-      {editable && (
+      {editRolePermission && (
         <>
           <Button
             type="dashed"

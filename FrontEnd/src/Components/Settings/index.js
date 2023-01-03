@@ -124,8 +124,6 @@ function Setting({ roles, team }) {
             <Tabs.TabPane tab="Roles" key="roles">
               {activeTab === "roles" && (
                 <Role
-                  data={roles.data}
-                  loading={roles.loading}
                   setAddPermissionModal={setAddPermissionModal}
                   addPermissionModal={addPermissionModal}
                   singleRoleData={singleRoleData}
@@ -189,7 +187,6 @@ function Setting({ roles, team }) {
   );
 }
 const mapStateToProps = (state) => ({
-  roles: state.roles,
   team: state.team.data,
 });
 

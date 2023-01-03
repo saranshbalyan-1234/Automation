@@ -11,7 +11,7 @@ const ManagePermissionModal = ({
   return (
     <Modal
       centered
-      title="Manage Permissions"
+      title={editRolePermission ? "Manage Permissions" : "View Permission"}
       open={visible}
       footer={false}
       onCancel={() => {
