@@ -276,7 +276,14 @@ export const AllProject = ({
                         size="small"
                         disabled={!deleteProjectPermission}
                       >
-                        <DeleteOutlined />
+                        <DeleteOutlined
+                          style={{
+                            color: deleteProjectPermission ? "black" : "grey",
+                            cursor: deleteProjectPermission
+                              ? "pointer"
+                              : "not-allowed",
+                          }}
+                        />
                       </Button>
                     </Popconfirm>
                   </div>

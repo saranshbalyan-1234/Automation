@@ -13,6 +13,7 @@ import TestStepTable from "../../Common/TestStep";
 import AddEditProcessModal from "./AddEditProcessModal";
 import ViewCommentModal from "../../Common/TestStep/ViewCommentModal";
 import Loading from "../../Common/Loading";
+import { usePermission } from "../../../Utils/permission";
 const { Panel } = Collapse;
 const Process = ({
   getTestCaseStepsById,
@@ -20,6 +21,7 @@ const Process = ({
   deleteProcess,
   deleteStep,
 }) => {
+  const editTestCasePermission = usePermission("Test Case", "edit");
   const [addEditProcessModal, setAddEditProcessModal] = useState(false);
   const [addReusable, setAddReusable] = useState(false);
   const [comment, setComment] = useState(false);
@@ -93,7 +95,14 @@ const Process = ({
                         Step Count : {item.testSteps.length}
                       </Tag>
                       <EditOutlined
+                        style={{
+                          color: editTestCasePermission ? "black" : "grey",
+                          cursor: editTestCasePermission
+                            ? "pointer"
+                            : "not-allowed",
+                        }}
                         onClick={() => {
+                          if (!editTestCasePermission) return;
                           setEditProcessData(item);
                           setAddEditProcessModal(true);
                         }}
@@ -112,8 +121,16 @@ const Process = ({
                         }}
                         okText="Yes, Remove"
                         cancelText="No"
+                        disabled={!editTestCasePermission}
                       >
-                        <DeleteOutlined />
+                        <DeleteOutlined
+                          style={{
+                            color: editTestCasePermission ? "black" : "grey",
+                            cursor: editTestCasePermission
+                              ? "pointer"
+                              : "not-allowed",
+                          }}
+                        />
                       </Popconfirm>
                     </div>
                   </div>

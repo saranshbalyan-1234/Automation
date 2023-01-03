@@ -150,6 +150,7 @@ export const Team = ({
             visible={manageUserModal}
             setVisible={setManageUserModal}
             userId={editUserId}
+            editTeamPermission={editTeamPermission}
           />
         )}
       </div>

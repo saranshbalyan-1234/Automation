@@ -38,6 +38,7 @@ export const Locators = ({ locators, deleteLocator, history = false }) => {
               style={{
                 fontSize: 17,
                 color: editObjectPermission ? "black" : "grey",
+                cursor: editObjectPermission ? "pointer" : "not-allowed",
               }}
             />
           </Popconfirm>

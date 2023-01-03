@@ -12,6 +12,7 @@ const ManagePermissionModal = ({
   updateRolePermission,
   roles,
   roleData,
+  editRolePermission,
 }) => {
   const [loading, setLoading] = useState(false);
   const [availablePermission, setAvailablePermission] = useState([]);
@@ -161,9 +162,13 @@ const ManagePermissionModal = ({
                 />
               </div>
               <DeleteOutlined
-                style={{ cursor: "pointer", marginTop: "5px" }}
+                style={{
+                  marginTop: "5px",
+                  color: editRolePermission ? "black" : "grey",
+                  cursor: editRolePermission ? "pointer" : "not-allowed",
+                }}
                 onClick={() => {
-                  handlePermissionRemove(index);
+                  editRolePermission && handlePermissionRemove(index);
                 }}
               />
             </div>

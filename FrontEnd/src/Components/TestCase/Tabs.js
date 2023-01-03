@@ -14,6 +14,7 @@ import Details from "./TestCaseDetails";
 import ActivityLog from "../Common/ActivityLog";
 import ExecuteModal from "./ExecuteModal";
 import ExecutionHistory from "./ExecutionHistory/List";
+import { usePermission } from "../../Utils/permission";
 function TestCaseTabs({
   getTestCaseDetailsById,
   currentTestCase,
@@ -22,6 +23,8 @@ function TestCaseTabs({
   logs,
   getTestCaseLogsById,
 }) {
+  const viewExecutionPermission = usePermission("Execute", "view");
+  const addExecutionPermission = usePermission("Execute", "add");
   const { tab, testCaseId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
@@ -75,6 +78,7 @@ function TestCaseTabs({
             onClick={() => {
               setExecuteModal(true);
             }}
+            disabled={!addExecutionPermission}
           >
             <PlayCircleFilled />
             Execute
@@ -103,7 +107,11 @@ function TestCaseTabs({
           <Tabs.TabPane tab="Test Steps" key="teststeps">
             {activeTab === "teststeps" && <Process />}
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Execution History" key="executionhistory">
+          <Tabs.TabPane
+            tab="Execution History"
+            key="executionhistory"
+            disabled={!viewExecutionPermission}
+          >
             {activeTab === "executionhistory" && <ExecutionHistory />}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Logs" key="logs">
@@ -115,7 +123,11 @@ function TestCaseTabs({
         {renderButton()}
       </div>
       {executeModal && (
-        <ExecuteModal setVisible={setExecuteModal} visible={executeModal} />
+        <ExecuteModal
+          setVisible={setExecuteModal}
+          visible={executeModal}
+          addExecutionPermission={addExecutionPermission}
+        />
       )}
       {envModal && <Environment setVisible={setEnvModal} visible={envModal} />}
     </>

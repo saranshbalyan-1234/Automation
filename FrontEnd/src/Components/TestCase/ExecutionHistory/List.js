@@ -11,13 +11,14 @@ import {
 } from "../../../Redux/Actions/executionHistory";
 import ViewExecutionHistoryModal from "./ViewExecutionHistoryModal";
 import Loading from "../../Common/Loading";
-
+import { usePermission } from "../../../Utils/permission";
 export const List = ({
   getAllExecutionHistoryByTestCase,
   deleteExecutionHistory,
   loading,
   data,
 }) => {
+  const deleteExecutionPermission = usePermission("Execution", "delete");
   const { testCaseId } = useParams();
   const [executionHistoryId, setExecutionHistoryId] = useState(0);
   useEffect(() => {
@@ -81,10 +82,15 @@ export const List = ({
             }}
             okText="Yes, Delete"
             cancelText="No"
+            disabled={!deleteExecutionPermission}
           >
             <DeleteOutlined
               onClick={(e) => e.stopPropagation()}
-              style={{ fontSize: 17 }}
+              style={{
+                fontSize: 17,
+                color: deleteExecutionPermission ? "black" : "grey",
+                cursor: deleteExecutionPermission ? "pointer" : "not-allowed",
+              }}
             />
           </Popconfirm>
         </div>

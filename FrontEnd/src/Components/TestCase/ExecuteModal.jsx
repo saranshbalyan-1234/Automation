@@ -12,6 +12,7 @@ const ExecuteModal = ({
   loading,
   executeTestCase,
   currentTestCaseId,
+  addExecutionPermission,
 }) => {
   const [form] = Form.useForm();
   const [allEnvironments, setAllEnvironments] = useState([]);
@@ -120,6 +121,7 @@ const ExecuteModal = ({
               type="primary"
               style={{ marginRight: "20px" }}
               htmlType="submit"
+              disabled={!addExecutionPermission}
             >
               Submit
             </Button>

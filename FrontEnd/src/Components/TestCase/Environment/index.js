@@ -11,6 +11,7 @@ import {
   deleteColumn,
   deleteEnvironment,
 } from "../../../Redux/Actions/environment";
+import { usePermission } from "../../../Utils/permission";
 const Environment = ({
   visible,
   setVisible,
@@ -22,6 +23,7 @@ const Environment = ({
   deleteColumn,
   deleteEnvironment,
 }) => {
+  const editTestCasePermission = usePermission("Test Case", "edit");
   const [columns, setColumns] = useState([]);
   const [searchedData, setSearchedData] = useState([]);
   const [addModal, setAddModal] = useState({ active: false });
@@ -59,10 +61,16 @@ const Environment = ({
                 }}
                 okText="Yes, Delete"
                 cancelText="No"
+                disabled={!editTestCasePermission}
               >
                 <DeleteOutlined
                   onClick={(e) => e.stopPropagation()}
-                  style={{ fontSize: 14, marginLeft: 5 }}
+                  style={{
+                    fontSize: 14,
+                    marginLeft: 5,
+                    color: editTestCasePermission ? "black" : "grey",
+                    cursor: editTestCasePermission ? "pointer" : "not-allowed",
+                  }}
                 />
               </Popconfirm>
             </div>
@@ -76,9 +84,9 @@ const Environment = ({
         temp.render = (text, record) => (
           <div style={{ minHeight: 30 }}>
             <div
-              className="show-boundary"
+              className={editTestCasePermission ? "show-boundary" : ""}
               style={{ minHeight: 25 }}
-              contentEditable
+              contentEditable={editTestCasePermission}
               onBlur={(e) => handleUpdateValue(record, el, e)}
             >
               {text}
@@ -106,10 +114,15 @@ const Environment = ({
             }}
             okText="Yes, Delete"
             cancelText="No"
+            disabled={!editTestCasePermission}
           >
             <DeleteOutlined
               onClick={(e) => e.stopPropagation()}
-              style={{ fontSize: 17 }}
+              style={{
+                fontSize: 17,
+                color: editTestCasePermission ? "black" : "grey",
+                cursor: editTestCasePermission ? "pointer" : "not-allowed",
+              }}
             />
           </Popconfirm>
         ),
@@ -170,7 +183,9 @@ const Environment = ({
                     // setRows([...rows, { env: "Enter Name", editing: true }]);
                     setAddModal({ active: true, type: "Column" });
                   }}
-                  disabled={searchedData.length === 0}
+                  disabled={
+                    searchedData.length === 0 || !editTestCasePermission
+                  }
                 >
                   <PlusOutlined /> Column
                 </Button>
@@ -181,6 +196,7 @@ const Environment = ({
                     // setRows([...rows, { env: "Enter Name", editing: true }]);
                     setAddModal({ active: true, type: "Environment" });
                   }}
+                  disabled={!editTestCasePermission}
                 >
                   <PlusOutlined />
                   Environment

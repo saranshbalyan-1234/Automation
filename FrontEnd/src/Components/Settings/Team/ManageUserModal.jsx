@@ -6,7 +6,13 @@ import { connect } from "react-redux";
 import axios from "axios";
 import Loading from "../../Common/Loading";
 const { Option } = Select;
-function ManageUser({ visible, setVisible, userId, updateUserRole }) {
+function ManageUser({
+  visible,
+  setVisible,
+  userId,
+  updateUserRole,
+  editTeamPermission,
+}) {
   const [loading, setLoading] = useState(false);
   const [availableRole, setAvailableRole] = useState([]);
   const [addedRole, setAddedRole] = useState([]);
@@ -125,10 +131,14 @@ function ManageUser({ visible, setVisible, userId, updateUserRole }) {
                 </Select>
 
                 <DeleteOutlined
-                  style={{ cursor: "pointer" }}
+                  style={{
+                    color: editTeamPermission ? "black" : "grey",
+                    cursor: editTeamPermission ? "pointer" : "not-allowed",
+                  }}
                   onClick={() => {
                     handleRoleRemove(index, role);
                   }}
+                  disabled={!editTeamPermission}
                 />
               </div>
             );
@@ -140,7 +150,7 @@ function ManageUser({ visible, setVisible, userId, updateUserRole }) {
           block
           icon={<PlusOutlined />}
           style={{ marginTop: "20px" }}
-          disabled={availableRole.length === 0}
+          disabled={availableRole.length === 0 || !editTeamPermission}
         >
           Add Role
         </Button>

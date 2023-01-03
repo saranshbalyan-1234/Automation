@@ -164,7 +164,12 @@ export const Role = ({
                             size="small"
                             disabled={!deleteRolePermission}
                           >
-                            <DeleteOutlined /> Delete Role
+                            <DeleteOutlined
+                              style={{
+                                color: deleteRolePermission ? "black" : "grey",
+                              }}
+                            />{" "}
+                            Delete Role
                           </Button>
                         </Popconfirm>
                       </div>
@@ -192,6 +197,7 @@ export const Role = ({
           visible={addPermissionModal}
           setVisible={setAddPermissionModal}
           roleData={singleRoleData}
+          editRolePermission={editRolePermission}
         />
       )}
     </>
