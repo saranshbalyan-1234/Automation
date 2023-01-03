@@ -9,7 +9,7 @@ export default (sequelize, DataTypes) => {
           notNull: true,
         },
         references: {
-          model: "user",
+          model: "users",
           key: "id",
         },
       },

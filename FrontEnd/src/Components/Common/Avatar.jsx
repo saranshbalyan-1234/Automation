@@ -8,7 +8,7 @@ const UserAvatar = ({ userList, user, size = "small", self, log }) => {
     const temp = [...userList, { ...self, active: true }]?.find((el) => {
       return el.id === user;
     });
-    temp.id && setUserData(temp);
+    temp?.id && setUserData(temp);
     // eslint-disable-next-line
   }, [userList, user]);
 
