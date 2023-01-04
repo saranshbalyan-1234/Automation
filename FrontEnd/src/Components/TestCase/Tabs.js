@@ -23,8 +23,8 @@ function TestCaseTabs({
   logs,
   getTestCaseLogsById,
 }) {
-  const viewExecutionPermission = usePermission("Execute", "view");
-  const addExecutionPermission = usePermission("Execute", "add");
+  const viewExecutionPermission = usePermission("Execution", "view");
+  const addExecutionPermission = usePermission("Execution", "add");
   const { tab, testCaseId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
