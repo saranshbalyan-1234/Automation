@@ -4,9 +4,10 @@ import {
   FileOutlined,
   BankOutlined,
   BugOutlined,
+  CalendarOutlined,
 } from "@ant-design/icons";
 import { VscDebugRestart } from "react-icons/vsc";
-import { Layout, Menu, Divider } from "antd";
+import { Layout, Menu } from "antd";
 import { connect } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 const { Sider } = Layout;
@@ -67,6 +68,12 @@ function Sidebar({ collapsed, setCollapsed, currentProjectId }) {
       label: "Defect",
       key: "Defect",
       icon: <BugOutlined />,
+      disabled: !currentProjectId,
+    },
+    {
+      label: "Release",
+      key: "Release",
+      icon: <CalendarOutlined />,
       disabled: !currentProjectId,
     },
   ];
