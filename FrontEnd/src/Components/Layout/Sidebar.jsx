@@ -3,9 +3,10 @@ import {
   DashboardOutlined,
   FileOutlined,
   BankOutlined,
+  BugOutlined,
 } from "@ant-design/icons";
 import { VscDebugRestart } from "react-icons/vsc";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Divider } from "antd";
 import { connect } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 const { Sider } = Layout;
@@ -33,6 +34,12 @@ function Sidebar({ collapsed, setCollapsed, currentProjectId }) {
       icon: <DashboardOutlined />,
     },
     {
+      label: <hr className="menuDivider" />,
+      key: "Dashboard",
+      icon: <DashboardOutlined />,
+      type: "group",
+    },
+    {
       label: "Test Case",
       key: "TestCase",
       icon: <FileOutlined />,
@@ -45,9 +52,21 @@ function Sidebar({ collapsed, setCollapsed, currentProjectId }) {
       disabled: !currentProjectId,
     },
     {
-      label: " Object Bank",
+      label: "Object Bank",
       key: "ObjectBank",
       icon: <BankOutlined />,
+      disabled: !currentProjectId,
+    },
+    {
+      label: <hr className="menuDivider" />,
+      key: "Dashboard",
+      icon: <DashboardOutlined />,
+      type: "group",
+    },
+    {
+      label: "Defect",
+      key: "Defect",
+      icon: <BugOutlined />,
       disabled: !currentProjectId,
     },
   ];

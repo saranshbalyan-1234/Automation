@@ -50,3 +50,7 @@ h5 {
   background-color: #021d36;
   border-radius: 15px;
 }
+.menuDivider {
+  border: 1px solid grey !important;
+  margin-top: -5px !important;
+}
