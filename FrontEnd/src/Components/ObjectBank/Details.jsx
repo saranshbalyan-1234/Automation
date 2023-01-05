@@ -65,7 +65,7 @@ const ObjectDetails = ({
                       {moment(currentObject.createdAt).format("DD/MM/YY")} By
                       &nbsp;
                       {currentObject.createdBy && (
-                        <UserAvatar user={currentObject.createdBy.id} />
+                        <UserAvatar user={currentObject.createdByUser} />
                       )}
                     </div>
                   </div>

@@ -92,14 +92,21 @@ const getAllTestCase = async (req, res) => {
       where: {
         projectId,
       },
-      attributes: ["id", "name", "updatedAt", "createdAt", "tags"],
-      include: [
-        {
-          model: User.schema(req.database),
-          as: "createdBy",
-          attributes: ["id", "name", "email", "active", "profileImage"],
-        },
+      attributes: [
+        "id",
+        "name",
+        "updatedAt",
+        "createdAt",
+        "tags",
+        "createdByUser",
       ],
+      // include: [
+      //   {
+      //     model: User.schema(req.database),
+      //     as: "createdBy",
+      //     attributes: ["id", "name", "email", "active", "profileImage"],
+      //   },
+      // ],
     });
 
     return res.status(200).json(testCases);
@@ -153,14 +160,15 @@ const getTestCaseDetailsById = async (req, res) => {
         "updatedAt",
         "description",
         "tags",
+        "createdByUser",
       ],
-      include: [
-        {
-          model: User.schema(req.database),
-          as: "createdBy",
-          attributes: ["id", "name", "email", "active", "profileImage"],
-        },
-      ],
+      // include: [
+      //   {
+      //     model: User.schema(req.database),
+      //     as: "createdBy",
+      //     attributes: ["id", "name", "email", "active", "profileImage"],
+      //   },
+      // ],
     });
 
     const totalProcess = await Process.schema(req.database).findAll({
@@ -373,14 +381,14 @@ const getTestCaseLogsById = async (req, res) => {
       where: {
         testCaseId,
       },
-      attributes: ["log", "createdAt"],
-      include: [
-        {
-          model: User.schema(req.database),
-          as: "createdBy",
-          attributes: ["id", "name", "email", "active", "profileImage"],
-        },
-      ],
+      attributes: ["log", "createdAt", "createdByUser"],
+      // include: [
+      //   {
+      //     model: User.schema(req.database),
+      //     as: "createdBy",
+      //     attributes: ["id", "name", "email", "active", "profileImage"],
+      //   },
+      // ],
       order: [["createdAt", "DESC"]],
     });
 

@@ -34,8 +34,8 @@ export default function ActivityLog({ logs = [], loading }) {
             }}
           ></div>
           <div>
-            <UserAvatar user={record.createdBy.id} />
-            {" " + record.createdBy.name + " " + text}
+            <UserAvatar user={record.createdByUser} />
+            {/* {" " + record.createdBy.name + " " + text} */}
           </div>
         </div>
       ),

@@ -225,7 +225,7 @@ export const AllProject = ({
                 >
                   <div style={{ display: "flex", gap: "5px" }}>
                     <div>Author</div>
-                    <UserAvatar user={item.createdBy.id} />
+                    <UserAvatar user={item.createdByUser} />
                   </div>
 
                   <div

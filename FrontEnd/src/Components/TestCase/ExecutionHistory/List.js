@@ -34,11 +34,11 @@ export const List = ({
     },
     {
       title: "Executed At",
-      dataIndex: "executedBy",
+      dataIndex: "executedByUser",
       render: (_, record) => (
         <div>
           {moment(record.createdAt).format("DD/MM/YY hh:mm:ss a")} By &nbsp;
-          {record.executedBy && <UserAvatar user={record.executedBy.id} />}
+          <UserAvatar user={record.executedByUser} />
         </div>
       ),
       width: 180,

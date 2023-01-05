@@ -33,7 +33,7 @@ const Details = ({ loading, details, name, onEdit = () => {} }) => {
                     Created On &nbsp;
                     {moment(details.createdAt).format("DD/MM/YY")} By &nbsp;
                     {details.createdBy && (
-                      <UserAvatar user={details.createdBy.id} />
+                      <UserAvatar user={details.createdByUser} />
                     )}
                   </div>
                 </div>

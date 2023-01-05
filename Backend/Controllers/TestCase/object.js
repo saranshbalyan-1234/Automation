@@ -55,13 +55,14 @@ const getObjectDetailsById = async (req, res) => {
         "updatedAt",
         "description",
         "tags",
+        "createdByUser",
       ],
       include: [
-        {
-          model: User.schema(req.database),
-          as: "createdBy",
-          attributes: ["id", "name", "email", "active", "profileImage"],
-        },
+        // {
+        //   model: User.schema(req.database),
+        //   as: "createdBy",
+        //   attributes: ["id", "name", "email", "active", "profileImage"],
+        // },
         {
           model: ObjectLocator.schema(req.database),
           as: "locators",
@@ -143,14 +144,21 @@ const getAllObject = async (req, res) => {
       where: {
         projectId,
       },
-      attributes: ["id", "name", "createdAt", "updatedAt", "tags"],
-      include: [
-        {
-          model: User.schema(req.database),
-          as: "createdBy",
-          attributes: ["id", "name", "email", "active", "profileImage"],
-        },
+      attributes: [
+        "id",
+        "name",
+        "createdAt",
+        "updatedAt",
+        "tags",
+        "createdByUser",
       ],
+      // include: [
+      //   {
+      //     model: User.schema(req.database),
+      //     as: "createdBy",
+      //     attributes: ["id", "name", "email", "active", "profileImage"],
+      //   },
+      // ],
     });
 
     return res.status(200).json(objects);
@@ -244,14 +252,14 @@ const getObjectLogsByObjectId = async (req, res) => {
       where: {
         objectId,
       },
-      attributes: ["log", "createdAt"],
-      include: [
-        {
-          model: User.schema(req.database),
-          as: "createdBy",
-          attributes: ["id", "name", "email", "active", "profileImage"],
-        },
-      ],
+      attributes: ["log", "createdAt", "createdByUser"],
+      // include: [
+      //   {
+      //     model: User.schema(req.database),
+      //     as: "createdBy",
+      //     attributes: ["id", "name", "email", "active", "profileImage"],
+      //   },
+      // ],
       order: [["createdAt", "DESC"]],
     });
 

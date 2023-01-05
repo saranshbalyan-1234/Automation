@@ -51,11 +51,7 @@ const ViewExecutionHistoryModal = ({
                   </Title>
                   <div style={{ color: "black", fontWeight: 600 }}>
                     Executed By &nbsp;
-                    {currentExecutionHistory.executedBy && (
-                      <UserAvatar
-                        user={currentExecutionHistory.executedBy.id}
-                      />
-                    )}
+                    <UserAvatar user={currentExecutionHistory.executedByUser} />
                   </div>
                 </div>
               }
