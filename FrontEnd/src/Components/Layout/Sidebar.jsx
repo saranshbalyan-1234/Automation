@@ -5,13 +5,23 @@ import {
   BankOutlined,
   BugOutlined,
   CalendarOutlined,
+  ProjectOutlined,
 } from "@ant-design/icons";
 import { VscDebugRestart } from "react-icons/vsc";
 import { Layout, Menu } from "antd";
 import { connect } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 const { Sider } = Layout;
-function Sidebar({ collapsed, setCollapsed, currentProjectId }) {
+function Sidebar({
+  collapsed,
+  setCollapsed,
+  currentProjectId,
+  viewTestCasePermission,
+  viewReusableProcessPermission,
+  viewObjectBankPermission,
+  viewProjectPermission,
+  viewDefectPermission,
+}) {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedMenu, setSelectedMenu] = useState("Dashboard");
@@ -35,40 +45,43 @@ function Sidebar({ collapsed, setCollapsed, currentProjectId }) {
       icon: <DashboardOutlined />,
     },
     {
+      label: "Projects",
+      key: "Project",
+      icon: <ProjectOutlined />,
+    },
+    {
       label: <hr className="menuDivider" />,
-      key: "Dashboard",
-      icon: <DashboardOutlined />,
+      key: "DashboardDivider",
       type: "group",
     },
     {
       label: "Test Case",
       key: "TestCase",
       icon: <FileOutlined />,
-      disabled: !currentProjectId,
+      disabled: !currentProjectId || !viewTestCasePermission,
     },
     {
       label: "Reusable Process",
       key: "ReusableProcess",
       icon: <VscDebugRestart />,
-      disabled: !currentProjectId,
+      disabled: !currentProjectId || !viewReusableProcessPermission,
     },
     {
       label: "Object Bank",
       key: "ObjectBank",
       icon: <BankOutlined />,
-      disabled: !currentProjectId,
+      disabled: !currentProjectId || !viewObjectBankPermission,
     },
     {
       label: <hr className="menuDivider" />,
-      key: "Dashboard",
-      icon: <DashboardOutlined />,
+      key: "ManualDivider",
       type: "group",
     },
     {
       label: "Defect",
       key: "Defect",
       icon: <BugOutlined />,
-      disabled: !currentProjectId,
+      disabled: !currentProjectId || !viewDefectPermission,
     },
     {
       label: "Release",

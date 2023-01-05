@@ -25,11 +25,11 @@ const getAllExecutionHistoryByTestCase = async (req, res) => {
         testCaseId,
       },
       include: [
-        {
-          model: User.schema(req.database),
-          as: "executedBy",
-          attributes: ["id", "name", "email", "active", "profileImage"],
-        },
+        // {
+        //   model: User.schema(req.database),
+        //   as: "executedBy",
+        //   attributes: ["id", "name", "email", "active", "profileImage"],
+        // },
       ],
       order: [["createdAt", "DESC"]],
     });
@@ -81,11 +81,11 @@ const getExecutionHistoryById = async (req, res) => {
       req.database
     ).findByPk(executionHistoryId, {
       include: [
-        {
-          model: User.schema(req.database),
-          as: "executedBy",
-          attributes: ["id", "name", "email", "active", "profileImage"],
-        },
+        // {
+        //   model: User.schema(req.database),
+        //   as: "executedBy",
+        //   attributes: ["id", "name", "email", "active", "profileImage"],
+        // },
         {
           model: ProcessHistory.schema(req.database),
           as: "process",

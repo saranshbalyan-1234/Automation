@@ -11,6 +11,7 @@ import Project from "./Components/Project";
 import TestCase from "./Components/TestCase";
 import ReusableProcess from "./Components/ReusableProcess";
 import ObjectBank from "./Components/ObjectBank";
+import Defect from "./Components/Defect";
 import { usePermission } from "./Utils/permission";
 function Routess({ user }) {
   const location = useLocation();
@@ -21,8 +22,15 @@ function Routess({ user }) {
   );
   const viewObjectBankPermission = usePermission("Object Bank", "view");
   const viewProjectPermission = usePermission("Project", "view");
+  const viewDefectPermission = usePermission("Defect", "view");
   return user ? (
-    <Layout>
+    <Layout
+      viewTestCasePermission={viewTestCasePermission}
+      viewReusableProcessPermission={viewReusableProcessPermission}
+      viewObjectBankPermission={viewObjectBankPermission}
+      viewProjectPermission={viewProjectPermission}
+      viewDefectPermission={viewDefectPermission}
+    >
       <Routes>
         <Route exact path="/" element={<Dashboard />}></Route>
         <Route exact path="/support" element={<Support />}></Route>
@@ -40,8 +48,12 @@ function Routess({ user }) {
             element={<ReusableProcess />}
           ></Route>
         )}
+
         {viewObjectBankPermission && (
           <Route exact path="/objectBank/*" element={<ObjectBank />}></Route>
+        )}
+        {viewDefectPermission && (
+          <Route exact path="/Defect/*" element={<Defect />}></Route>
         )}
         <Route
           exact

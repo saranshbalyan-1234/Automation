@@ -49,6 +49,13 @@ export default (sequelize, DataTypes) => {
         key: "id",
       },
     },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
+    },
     priority: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -56,12 +63,16 @@ export default (sequelize, DataTypes) => {
         notNull: true,
       },
     },
-    status: {
+    severity: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notNull: true,
       },
+    },
+    estimatedTime: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     startTime: {
       type: DataTypes.DATE,
