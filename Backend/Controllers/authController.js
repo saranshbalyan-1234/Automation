@@ -12,30 +12,43 @@ import { createBucket } from "./awsController.js";
 import getError from "../Utils/sequelizeError.js";
 import moment from "moment";
 import { s3 } from "./awsController.js";
-const User = db.users;
-const UserRole = db.userRoles;
-const Permission = db.permissions;
-const Role = db.roles;
-const Customer = db.customers;
+
+//Main
 const Tenant = db.tenants;
+const Customer = db.customers;
 const Unverified = db.unverifieds;
+
+//Tenant
+const User = db.users;
+const Role = db.roles;
+const Permission = db.permissions;
+const UserRole = db.userRoles;
 const Project = db.projects;
 const UserProject = db.userProjects;
+
+//TestCase
 const TestCase = db.testCases;
-const Object = db.objects;
+const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const Process = db.process;
-const TestParameter = db.testParameters;
 const ReusableProcess = db.reusableProcess;
+const TestCaseLog = db.testCaseLogs;
+const ReusableProcessLog = db.reusableProcessLogs;
+
+//Object
+const Object = db.objects;
 const ObjectLocator = db.ObjectLocators;
+const ObjectLog = db.objectLogs;
+
+//Execution History
 const ExecutionHistory = db.executionHistory;
 const ProcessHistory = db.processHistory;
 const TestStepHistory = db.testStepHistory;
+
+//Environment
 const Environment = db.enviroments;
 const Column = db.columns;
-const ObjectLog = db.objectLogs;
-const TestCaseLog = db.testCaseLogs;
-const ReusableProcessLog = db.reusableProcessLogs;
+
 const register = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
   try {

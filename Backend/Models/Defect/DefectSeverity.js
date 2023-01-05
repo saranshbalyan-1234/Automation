@@ -10,6 +10,14 @@ export default (sequelize, DataTypes) => {
           notNull: true,
         },
       },
+      step: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: "step",
+        validate: {
+          notNull: true,
+        },
+      },
     },
     { timestamps: false }
   );

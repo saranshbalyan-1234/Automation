@@ -2447,6 +2447,50 @@
           }
         ]
       }
+    },
+    "/defect/": {
+      "get": {
+        "tags": [
+          "Defect"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-project-id",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/defect/settings": {
+      "get": {
+        "tags": [
+          "Defect"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
     }
   }
 }

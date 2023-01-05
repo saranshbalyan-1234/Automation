@@ -35,9 +35,17 @@ import ExecutionHistory from "../Models/TestCase/ExecutionHistory/ExecutionHisto
 import ProcessHistory from "../Models/TestCase/ExecutionHistory/ProcessHistory.js";
 import TestStepHistory from "../Models/TestCase/ExecutionHistory/TestStepHistory.js";
 
-//Env Table
+//Environment
 import Environment from "../Models/TestCase/Environment/Environment.js";
 import Column from "../Models/TestCase/Environment/Column.js";
+
+//Defect
+import Defect from "../Models/Defect/Defect.js";
+import DefectPriority from "../Models/Defect/DefectPriority.js";
+import DefectSeverity from "../Models/Defect/DefectSeverity.js";
+import DefectStatus from "../Models/Defect/DefectStatus.js";
+import DefectStatusMapping from "../Models/Defect/DefectStatusMapping.js";
+
 dotenv.config();
 
 const sequelize = new Sequelize(
@@ -103,6 +111,13 @@ db.testStepHistory = TestStepHistory(sequelize, DataTypes);
 db.enviroments = Environment(sequelize, DataTypes);
 db.columns = Column(sequelize, DataTypes);
 
+//Defect
+db.defects = Defect(sequelize, DataTypes);
+db.defectPriority = DefectPriority(sequelize, DataTypes);
+db.defectSeverity = DefectSeverity(sequelize, DataTypes);
+db.defectStatus = DefectStatus(sequelize, DataTypes);
+db.defectStatusMapping = DefectStatusMapping(sequelize, DataTypes);
+
 db.users = User(sequelize, DataTypes); //all associations
 
 await db.tenants.schema("Main").sync({ force: false, alter: true });
@@ -111,8 +126,6 @@ db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
 
-// await db.reusableProcessLogs
-//   .schema("saranshbalyan123gmailcom")
-//   .sync({ force: true });
+// await db.defectStatus.schema("saranshbalyan123gmailcom").sync({ force: true });
 
 export default db;

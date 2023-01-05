@@ -49,25 +49,37 @@ export default (sequelize, DataTypes) => {
         key: "id",
       },
     },
-    status: {
-      type: DataTypes.STRING,
+    statusId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: true,
       },
+      references: {
+        model: "defectStatuses",
+        key: "id",
+      },
     },
-    priority: {
-      type: DataTypes.STRING,
+    priorityId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: true,
       },
+      references: {
+        model: "defectPriorities",
+        key: "id",
+      },
     },
-    severity: {
-      type: DataTypes.STRING,
+    severityId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: true,
+      },
+      references: {
+        model: "defectSeverities",
+        key: "id",
       },
     },
     estimatedTime: {
