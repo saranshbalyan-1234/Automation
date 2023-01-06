@@ -2,22 +2,23 @@ import React, { useState, useEffect } from "react";
 import { Table, Popconfirm, Button, Tag } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
-import AddEditDefectModal from "./AddEditDefectModal";
+import AddEditDefectModal from "./DefectDetail";
 import UserAvatar from "../Common/Avatar";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Common/Loading";
 import CustomSearch from "../Common/Search";
 import { connect } from "react-redux";
-import { usePermission } from "../../Utils/permission";
+
 import { getAllDefects } from "../../Redux/Actions/defect";
 const DefectList = ({
   loading = false,
   data = [],
   currentProjectId,
   getAllDefects,
+  addDefectPermission,
 }) => {
   const navigate = useNavigate();
-  const addDefectPermission = usePermission("Defect", "add");
+
   const [addEditDefectModal, setAddEditDefectModal] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
   useEffect(() => {
@@ -138,7 +139,7 @@ const DefectList = ({
             type="primary"
             ghost
             onClick={() => {
-              setAddEditDefectModal(true);
+              navigate("/Defect/new");
             }}
             disabled={!addDefectPermission}
           >

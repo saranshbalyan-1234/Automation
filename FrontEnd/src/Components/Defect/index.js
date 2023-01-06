@@ -4,6 +4,8 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import DefectList from "./DefectList";
+import DefectDetail from "./DefectDetail";
+import { usePermission } from "../../Utils/permission";
 // import {
 //   getTestCaseByProject,
 //   deleteTestCase,
@@ -19,13 +21,19 @@ const Defect = (
     //   saveTestCase,
   }
 ) => {
-  //   const addTestCasePermission = usePermission("Test Case", "add");
-  //   const deleteTestCasePermission = usePermission("Test Case", "delete");
+  const addDefectPermission = usePermission("Defect", "add");
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<DefectList />} />
-        {/* <Route path="/:testCaseId/:tab" element={<TestCaseTabs />} /> */}
+        <Route
+          path="/"
+          element={<DefectList addDefectPermission={addDefectPermission} />}
+        />
+        {addDefectPermission && (
+          <Route path="/new" element={<DefectDetail />} />
+        )}
+        <Route path="/:defectId/:tab" element={<div>saransh</div>} />
       </Routes>
     </>
   );
