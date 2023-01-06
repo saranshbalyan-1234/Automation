@@ -33,7 +33,15 @@ const getMyProject = async (req, res) => {
               include: [
                 {
                   model: User.schema(req.database),
-                  attributes: ["id", "name", "email", "active", "profileImage"],
+                  attributes: [
+                    "id",
+                    "name",
+                    "email",
+                    "active",
+                    "profileImage",
+                    "deletedAt",
+                  ],
+                  paranoid: false,
                 },
               ],
             },
@@ -88,11 +96,20 @@ const getProjectById = async (req, res) => {
       include: [
         {
           model: UserProject.schema(req.database),
+          // paranoid: false,
           as: "members",
           include: [
             {
               model: User.schema(req.database),
-              attributes: ["id", "name", "email", "active", "verifiedAt"],
+              attributes: [
+                "id",
+                "name",
+                "email",
+                "active",
+                "verifiedAt",
+                "deletedAt",
+              ],
+              paranoid: false,
             },
           ],
         },

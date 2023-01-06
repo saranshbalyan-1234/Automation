@@ -21,7 +21,7 @@ const Headers = ({
   const navigate = useNavigate();
   useEffect(() => {
     getProject();
-    getTeam();
+    // getTeam();
     myStatus();
     // eslint-disable-next-line
   }, []);
