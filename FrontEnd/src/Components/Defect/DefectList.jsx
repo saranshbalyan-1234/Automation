@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Popconfirm, Button, Tag } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import AddEditDefectModal from "./DefectDetail";
 import UserAvatar from "../Common/Avatar";
@@ -143,7 +143,7 @@ const DefectList = ({
             }}
             disabled={!addDefectPermission}
           >
-            New Defect
+            <PlusOutlined /> New Defect
           </Button>
         </div>
         <Table

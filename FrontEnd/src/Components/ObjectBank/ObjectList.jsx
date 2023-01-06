@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Popconfirm, Button, Tag } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import AddEditObjectModal from "./AddEditObjectModal";
 import UserAvatar from "../Common/Avatar";
@@ -136,7 +136,7 @@ const ObjectList = ({
             }}
             disabled={!addObjectPermission}
           >
-            New Object
+            <PlusOutlined /> New Object
           </Button>
         </div>
         <Table
