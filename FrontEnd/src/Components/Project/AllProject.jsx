@@ -196,13 +196,9 @@ export const AllProject = ({
                                 backgroundColor: "#fde3cf",
                               }}
                             >
-                              {item.members
-                                .filter((el) => {
-                                  return el.deletedAt == null;
-                                })
-                                .map((el) => {
-                                  return <UserAvatar user={el.id} />;
-                                })}
+                              {item.members.map((el) => {
+                                return <UserAvatar user={el.id} />;
+                              })}
                             </Avatar.Group>
                           </div>
                         </div>

@@ -15,16 +15,12 @@ const AddProjectMemberModal = ({
   const [availableMembers, setAvailableMembers] = useState([]);
 
   const checkAvailableMember = async () => {
-    const difference = await allUsers
-      .filter((el) => {
-        return el.deletedAt === null;
-      })
-      .filter((user) => {
-        const addedMembers = currentProject.members;
-        return !addedMembers.some((el) => {
-          return el.id === user.id;
-        });
+    const difference = await allUsers.filter((user) => {
+      const addedMembers = currentProject.members;
+      return !addedMembers.some((el) => {
+        return el.id === user.id;
       });
+    });
     setAvailableMembers(difference);
   };
 

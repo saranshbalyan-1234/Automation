@@ -48,7 +48,9 @@ export const Team = ({
       >
         <Loading loading={loading}>
           <List
-            dataSource={team}
+            dataSource={team.filter((el) => {
+              return el.deletedAt == null;
+            })}
             renderItem={(item) => (
               <List.Item key={item.email}>
                 <List.Item.Meta

@@ -99,7 +99,7 @@ export const handleAvatarInitials = (user) => {
 };
 
 const mapStateToProps = (state) => ({
-  userList: state.projects.currentProject.members,
+  userList: state.team.data,
   self: state.auth.user,
 });
 const mapDispatchToProps = {};

@@ -34,15 +34,6 @@ export const ProjectDetails = ({
   const [addProjectMemberModal, setAddProjectMemberModal] = useState(false);
   const [editProjectModal, setEditProjectModal] = useState(false);
   const [graphCount, setGraphCount] = useState([]);
-  const [members, setMembers] = useState([]);
-
-  useEffect(() => {
-    const temp = currentProject.members.filter((el) => {
-      return el.deletedAt == null;
-    });
-    setMembers(temp);
-  }, [currentProject.members]);
-
   useEffect(() => {
     getProject();
     // eslint-disable-next-line
@@ -178,7 +169,9 @@ export const ProjectDetails = ({
                       Created On
                       {moment(currentProject.createdAt).format("DD/MM/YY")} By
                       &nbsp;
-                      <UserAvatar user={currentProject.createdByUser} />
+                      {currentProject.createdBy && (
+                        <UserAvatar user={currentProject.createdByUser} />
+                      )}
                     </div>
                   </div>
                 }
@@ -250,7 +243,7 @@ export const ProjectDetails = ({
           </Card>
         </div>
         <Card style={{ marginTop: 20 }}>
-          {members && (
+          {currentProject.members && (
             <div
               style={{
                 display: "flex",
@@ -262,8 +255,8 @@ export const ProjectDetails = ({
                 level={5}
                 style={{ display: "flex", flexWrap: "wrap", gap: 10 }}
               >
-                <div>Members</div> <div>({members.length})</div>
-                <MemberBadge members={members} />
+                <div>Members</div> <div>({currentProject.members.length})</div>
+                <MemberBadge members={currentProject.members} />
               </Title>
               <Button
                 type="primary"
@@ -281,7 +274,7 @@ export const ProjectDetails = ({
           <Table
             scroll={{ x: true }}
             columns={columns}
-            dataSource={members}
+            dataSource={currentProject.members}
             size="small"
           />
         </Card>
