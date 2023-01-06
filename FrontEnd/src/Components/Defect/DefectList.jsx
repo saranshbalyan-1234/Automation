@@ -2,19 +2,27 @@ import React, { useState, useEffect } from "react";
 import { Table, Popconfirm, Button, Tag } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
-// import AddEditModal from "./AddEditModal";
+import AddEditDefectModal from "./AddEditDefectModal";
 import UserAvatar from "../Common/Avatar";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Common/Loading";
 import CustomSearch from "../Common/Search";
 import { connect } from "react-redux";
-const DefectList = ({ loading = false, data = [], currentProjectId }) => {
+import { usePermission } from "../../Utils/permission";
+import { getAllDefects } from "../../Redux/Actions/defect";
+const DefectList = ({
+  loading = false,
+  data = [],
+  currentProjectId,
+  getAllDefects,
+}) => {
   const navigate = useNavigate();
-  const [addEditModal, setAddEditModal] = useState(false);
+  const addDefectPermission = usePermission("Defect", "add");
+  const [addEditDefectModal, setAddEditDefectModal] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
   useEffect(() => {
-    // getList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getAllDefects();
+    // eslint-disable-next-line
   }, [currentProjectId]);
 
   useEffect(() => {
@@ -38,7 +46,6 @@ const DefectList = ({ loading = false, data = [], currentProjectId }) => {
     {
       title: "Title",
       dataIndex: "title",
-      width: 550,
       render: (text, record) => (
         <div>
           {text}
@@ -53,27 +60,28 @@ const DefectList = ({ loading = false, data = [], currentProjectId }) => {
     {
       title: "Status",
       dataIndex: "status",
-      width: 150,
+      width: 100,
     },
     {
       title: "Priority",
       dataIndex: "priority",
-      width: 150,
+      width: 100,
     },
     {
       title: "Severity",
       dataIndex: "severity",
-      width: 150,
+      width: 100,
     },
     {
       title: "Assignee",
       dataIndex: "assigneeId",
+      width: 100,
       render: (text) => <UserAvatar user={text} />,
     },
     {
       title: "Reported At",
       dataIndex: "reportedId",
-
+      width: 150,
       render: (text, record) => (
         <div>
           {moment(record.createdAt).format("DD/MM/YYYY hh:mm:ss a")} By &nbsp;
@@ -130,9 +138,9 @@ const DefectList = ({ loading = false, data = [], currentProjectId }) => {
             type="primary"
             ghost
             onClick={() => {
-              setAddEditModal(true);
+              setAddEditDefectModal(true);
             }}
-            // disabled={!addPermission}
+            disabled={!addDefectPermission}
           >
             New Defect
           </Button>
@@ -151,15 +159,12 @@ const DefectList = ({ loading = false, data = [], currentProjectId }) => {
             };
           }}
         />
-        {/* {addEditModal && (
-          <AddEditModal
-            visible={addEditModal}
-            setVisible={setAddEditModal}
-            loading={loading}
-            name={name}
-            onSave={onSave}
+        {addEditDefectModal && (
+          <AddEditDefectModal
+            visible={addEditDefectModal}
+            setVisible={setAddEditDefectModal}
           />
-        )} */}
+        )}
       </Loading>
     </>
   );
@@ -169,6 +174,6 @@ const mapStateToProps = (state) => ({
   currentProjectId: state.projects.currentProject?.id,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { getAllDefects };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectList);

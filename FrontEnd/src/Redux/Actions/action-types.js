@@ -104,3 +104,12 @@ export const ADD_ENVIRONMENT = "ADD_ENVIRONMENT";
 export const ADD_COLUMN = "ADD_COLUMN";
 export const UPDATE_COLUMN_VALUE = "UPDATE_COLUMN_VALUE";
 export const DELETE_COLUMN = "DELETE_COLUMN";
+
+//Defect
+export const DEFECT_REQUEST = "DEFECT_REQUEST";
+export const DEFECT_FAILURE = "DEFECT_FAILURE";
+export const GET_ALL_DEFECT = "GET_ALL_DEFECT";
+export const ADD_DEFECT = "ADD_DEFECT";
+export const EDIT_DEFECT = "EDIT_DEFECT";
+export const DELETE_DEFECT = "DELETE_DEFECT";
+export const EMPTY_DEFECT = "EMPTY_DEFECT";
