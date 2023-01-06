@@ -37,9 +37,7 @@ const ReusableProcessDetails = ({
                   <div style={{ color: "black" }}>
                     Created On &nbsp;
                     {moment(details.createdAt).format("DD/MM/YY")} By &nbsp;
-                    {details.createdBy && (
-                      <UserAvatar user={details.createdByUser} />
-                    )}
+                    <UserAvatar user={details.createdByUser} />
                   </div>
                 </div>
               }

@@ -92,6 +92,7 @@ const getProjectById = async (req, res) => {
         "startDate",
         "endDate",
         "createdAt",
+        "createdByUser",
       ],
       include: [
         {
