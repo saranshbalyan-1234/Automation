@@ -4,14 +4,16 @@ import ReactQuill from "react-quill";
 import { connect } from "react-redux";
 import Loading from "../Common/Loading";
 import { useNavigate } from "react-router-dom";
+import { saveDefect } from "../../Redux/Actions/defect";
+import UserAvatar from "../Common/Avatar";
 const AddEditModal = ({
-  currentProjectId,
   editData,
   setEditData,
   loading,
   edit = false,
-  onSave,
+  saveDefect,
   onEdit,
+  projectMembers,
 }) => {
   const navigate = useNavigate();
   const onSubmit = async (data) => {
@@ -20,27 +22,12 @@ const AddEditModal = ({
       result = await onEdit(data);
       setEditData({});
     } else {
-      result = await onSave({
-        ...data,
-        projectId: currentProjectId,
-      });
+      result = await saveDefect(data);
     }
-    // result && setVisible(false);
+    result && navigate(`/Defect/${result.id}/Details`);
   };
 
   return (
-    // <Modal
-    //   centered
-    //   width={800}
-    //   title={edit ? `Edit Defect` : `Create New Defect`}
-    //   open={visible}
-    //   footer={false}
-    //   onCancel={() => {
-    //     setVisible(false);
-    //   }}
-    //   // closable={false}
-    // >
-
     <div style={{ paddingTop: 10, display: "flex", flexWrap: "wrap" }}>
       <div
         style={{
@@ -124,10 +111,29 @@ const AddEditModal = ({
                   },
                 ]}
               >
-                {" "}
-                <div style={{ display: "flex", gap: 20 }}>
-                  <Select placeholder="Assignee" style={{ width: 200 }} />
-                  <div>Reporter: </div>{" "}
+                <div style={{ display: "flex", gap: 20, zIndex: -1 }}>
+                  <Select placeholder="Assignee" style={{ width: 200 }}>
+                    {projectMembers.map((el) => {
+                      return (
+                        <Select.Option value={el.id}>
+                          <div style={{ display: "flex" }}>
+                            <div style={{ minWidth: 30 }}>
+                              <UserAvatar user={el.id} />
+                            </div>
+                            <div
+                              style={{
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
+                              {el.name}
+                            </div>
+                          </div>
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
+                  <div>Reporter: </div>
                 </div>
               </Form.Item>
               <Form.Item
@@ -188,13 +194,12 @@ const AddEditModal = ({
         </Loading>
       </div>
     </div>
-    // </Modal>
   );
 };
 const mapStateToProps = (state) => ({
-  currentProjectId: state.projects.currentProject.id,
   loading: state.defect.loading,
+  projectMembers: state.projects.currentProject.members,
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = { saveDefect };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditModal);

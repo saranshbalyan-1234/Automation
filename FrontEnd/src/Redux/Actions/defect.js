@@ -21,3 +21,18 @@ export const getAllDefects = () => {
     }
   };
 };
+
+export const saveDefect = (payload) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: DEFECT_REQUEST });
+      const { data } = await axios.post(`/defect`, payload);
+      dispatch({ type: ADD_DEFECT, payload: data });
+      return data;
+    } catch (err) {
+      console.log(err);
+      dispatch({ type: DEFECT_FAILURE });
+      return false;
+    }
+  };
+};

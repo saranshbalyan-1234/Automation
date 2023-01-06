@@ -12,6 +12,7 @@ export default (sequelize, DataTypes) => {
           model: "users",
           key: "id",
         },
+        onDelete: "CASCADE",
       },
       projectId: {
         type: DataTypes.INTEGER,
@@ -23,6 +24,7 @@ export default (sequelize, DataTypes) => {
           model: "projects",
           key: "id",
         },
+        onDelete: "CASCADE",
       },
     },
     { paranoid: true }
