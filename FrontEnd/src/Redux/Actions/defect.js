@@ -3,7 +3,6 @@ import {
   DEFECT_REQUEST,
   DEFECT_FAILURE,
   GET_ALL_DEFECT,
-  ADD_DEFECT,
   EDIT_DEFECT,
   DELETE_DEFECT,
   GET_SELECTED_DEFECT,
@@ -56,7 +55,6 @@ export const saveDefect = (payload) => {
     try {
       dispatch({ type: DEFECT_REQUEST });
       const { data } = await axios.post(`/defect`, payload);
-      dispatch({ type: ADD_DEFECT, payload: data });
       return data;
     } catch (err) {
       console.log(err);

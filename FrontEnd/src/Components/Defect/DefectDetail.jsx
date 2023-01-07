@@ -18,6 +18,7 @@ const AddEditModal = ({
   getDefectById,
   currentDefect,
 }) => {
+  const [form] = Form.useForm();
   const { defectId } = useParams();
   const [editMode, setEditMode] = useState(false);
   useEffect(() => {
@@ -36,8 +37,25 @@ const AddEditModal = ({
     result && navigate(`/Defect/${result.id}/details`);
   };
 
+  useEffect(() => {
+    if (!editMode) return;
+    form.setFieldsValue({
+      title: currentDefect.title,
+      description: currentDefect.description,
+      tags: currentDefect.tags ? currentDefect.tags : undefined,
+      assigneeId: currentDefect.assigneeId,
+      reporterId: currentDefect.reporterId,
+      statusId: currentDefect.statusId,
+      priorityId: currentDefect.priorityId,
+      severityId: currentDefect.severityId,
+      estimatedTime: currentDefect.estimatedTime,
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editMode]);
+
   return (
-    <div style={{ paddingTop: 10, display: "flex", flexWrap: "wrap" }}>
+    <div style={{ display: "flex", flexWrap: "wrap" }}>
       <div
         style={{
           width: 700,
@@ -45,18 +63,10 @@ const AddEditModal = ({
       >
         <Loading loading={loading}>
           <Form
+            form={form}
             name={"Defect"}
             onFinish={onSubmit}
             labelCol={{ span: 5 }}
-            initialValues={{
-              name: editMode ? currentDefect.name : "",
-              description: editMode ? currentDefect.description : "",
-              tags: editMode
-                ? currentDefect.tags
-                  ? currentDefect.tags
-                  : undefined
-                : undefined,
-            }}
           >
             <div
               style={{
@@ -65,6 +75,10 @@ const AddEditModal = ({
                 boxShadow: "rgb(0 0 0 / 7%) 3px 3px 22px inset",
                 borderRadius: 12,
                 padding: 20,
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setEditMode(true);
               }}
             >
               {defectId && (
@@ -102,6 +116,7 @@ const AddEditModal = ({
                   />
                 ) : (
                   <div
+                    style={{ marginTop: -8 }}
                     dangerouslySetInnerHTML={{
                       __html: currentDefect.description,
                     }}
@@ -255,16 +270,23 @@ const AddEditModal = ({
               <div
                 style={{ display: "flex", gap: 20, justifyContent: "center" }}
               >
-                <Button type="primary" htmlType="submit">
-                  Submit
-                </Button>
-                <Button
-                  onClick={() => {
-                    navigate(-1);
-                  }}
-                >
-                  Cancel
-                </Button>
+                {editMode ||
+                  (!defectId && (
+                    <>
+                      <Button type="primary" htmlType="submit">
+                        Submit
+                      </Button>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (defectId) setEditMode(false);
+                          else navigate(-1);
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </>
+                  ))}
               </div>
             </div>
           </Form>
