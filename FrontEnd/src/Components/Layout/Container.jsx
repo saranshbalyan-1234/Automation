@@ -50,25 +50,28 @@ export default function Container({ children }) {
 
     if (locArray.length > 2 && locArray[2] != "") {
       let name = "";
-      if (locArray[1].toLowerCase().includes("reusableprocess")) {
+      if (locArray[1] == "ReusableProcess") {
         name = "Reusable Process";
-      } else if (locArray[1].toLowerCase().includes("objectbank")) {
+      } else if (locArray[1] == "ObjectBank") {
         name = "Objects";
-      } else if (locArray[1].toLowerCase().includes("defect")) {
+      } else if (locArray[1] == "Defect") {
         name = "Defects";
-      } else if (locArray[1].toLowerCase().includes("testcase")) {
+      } else if (locArray[1] == "TestCase") {
         name = "Test Case";
+      } else if (locArray[1] == "project") {
+        name = "project";
       }
-      return (
-        <GoMainButton
-          onClick={() => {
-            navigate("/" + locArray[1]);
-          }}
-        >
-          <LeftCircleOutlined />
-          All {name}
-        </GoMainButton>
-      );
+      if (name)
+        return (
+          <GoMainButton
+            onClick={() => {
+              navigate("/" + locArray[1]);
+            }}
+          >
+            <LeftCircleOutlined />
+            All {name}
+          </GoMainButton>
+        );
     }
   };
   return (
