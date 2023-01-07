@@ -6,6 +6,7 @@ import {
   ADD_DEFECT,
   EDIT_DEFECT,
   DELETE_DEFECT,
+  GET_SELECTED_DEFECT,
   GET_DEFECT_SETTING,
 } from "./action-types";
 
@@ -22,6 +23,20 @@ export const getAllDefects = () => {
     }
   };
 };
+export const getDefectById = (defectId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: DEFECT_REQUEST });
+      const { data } = await axios.get(`/defect/${defectId}`);
+      dispatch({ type: GET_SELECTED_DEFECT, payload: data });
+      return true;
+    } catch (err) {
+      dispatch({ type: DEFECT_FAILURE });
+      return false;
+    }
+  };
+};
+
 export const getDefectSetting = () => {
   return async (dispatch) => {
     try {

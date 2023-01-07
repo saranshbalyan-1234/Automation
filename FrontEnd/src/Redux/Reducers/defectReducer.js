@@ -7,6 +7,7 @@ import {
   DELETE_DEFECT,
   EMPTY_DEFECT,
   GET_DEFECT_SETTING,
+  GET_SELECTED_DEFECT,
 } from "../Actions/action-types";
 
 const initState = {
@@ -28,7 +29,12 @@ const defectReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: false,
       };
-
+    case GET_SELECTED_DEFECT:
+      return {
+        ...state,
+        currentDefect: payload,
+        loading: false,
+      };
     case GET_ALL_DEFECT:
       return {
         ...state,

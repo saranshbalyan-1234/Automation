@@ -1,6 +1,6 @@
-import db from "../../Utils/dataBaseConnection.js";
-import getError from "../../Utils/sequelizeError.js";
-import { idValidation } from "../../Utils/Validations/index.js";
+import db from "../Utils/dataBaseConnection.js";
+import getError from "../Utils/sequelizeError.js";
+import { idValidation } from "../Utils/Validations/index.js";
 
 const Defect = db.defects;
 const DefectPriority = db.defectPriority;
@@ -74,10 +74,9 @@ const saveDefect = async (req, res) => {
 };
 
 const createDefectLog = async (req, res, id, logs = []) => {
-  /*  #swagger.tags = ["Test Object"] 
+  /*  #swagger.tags = ["Defect"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
-
   try {
     const objectId = req.params.objectId || id;
     const tempLogs = req.body.logs || logs;
@@ -99,4 +98,31 @@ const createDefectLog = async (req, res, id, logs = []) => {
   }
 };
 
-export { getDefectSettings, getAllDefectByProject, saveDefect };
+const getDefectDetailsById = async (req, res) => {
+  /*  #swagger.tags = ["Defect"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const defectId = req.params.defectId;
+    const { error } = idValidation.validate({ id: defectId });
+    if (error) throw new Error(error.details[0].message);
+
+    const defect = await Defect.schema(req.database).findOne({
+      where: {
+        id: defectId,
+      },
+    });
+
+    return res.status(200).json(defect);
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+export {
+  getDefectSettings,
+  getAllDefectByProject,
+  saveDefect,
+  getDefectDetailsById,
+};

@@ -1,31 +1,39 @@
-import React from "react";
-import { Form, Input, Button, Select, InputNumber, Tooltip } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Input, Button, Select, InputNumber, Tooltip, Tag } from "antd";
 import ReactQuill from "react-quill";
 import { connect } from "react-redux";
 import Loading from "../Common/Loading";
-import { useNavigate } from "react-router-dom";
-import { saveDefect } from "../../Redux/Actions/defect";
+import { useNavigate, useParams } from "react-router-dom";
+import { getDefectById, saveDefect } from "../../Redux/Actions/defect";
+import { getProjectkey } from "../../Redux/Actions/project";
+import UserAvatar from "../Common/Avatar";
 const { Option } = Select;
 const AddEditModal = ({
-  editData,
-  setEditData,
   loading,
-  edit = false,
   saveDefect,
   onEdit,
   projectMembers,
   setting,
+  getProjectkey,
+  getDefectById,
+  currentDefect,
 }) => {
+  const { defectId } = useParams();
+  const [editMode, setEditMode] = useState(false);
+  useEffect(() => {
+    defectId && getDefectById(defectId);
+  }, [defectId]);
+
   const navigate = useNavigate();
   const onSubmit = async (data) => {
     let result = false;
-    if (edit) {
+    if (editMode) {
       result = await onEdit(data);
-      setEditData({});
+      setEditMode(false);
     } else {
       result = await saveDefect(data);
     }
-    result && navigate(`/Defect/${result.id}/Details`);
+    result && navigate(`/Defect/${result.id}/details`);
   };
 
   return (
@@ -41,25 +49,212 @@ const AddEditModal = ({
             onFinish={onSubmit}
             labelCol={{ span: 5 }}
             initialValues={{
-              name: edit ? editData.name : "",
-              description: edit ? editData.description : "",
-              tags: edit
-                ? editData.tags
-                  ? editData.tags
+              name: editMode ? currentDefect.name : "",
+              description: editMode ? currentDefect.description : "",
+              tags: editMode
+                ? currentDefect.tags
+                  ? currentDefect.tags
                   : undefined
                 : undefined,
             }}
           >
             <div
               style={{
-                display: "flex",
-                gap: 20,
-                justifyContent: edit ? "space-between" : "center",
-                marginBottom: 20,
+                background:
+                  "0% 0% no-repeat padding-box padding-box rgb(247, 247, 247)",
+                boxShadow: "rgb(0 0 0 / 7%) 3px 3px 22px inset",
+                borderRadius: 12,
+                padding: 20,
               }}
             >
-              {edit && <div style={{ fontWeight: 600 }}>Defect Id:</div>}
-              <div style={{ display: "flex", gap: 20 }}>
+              {defectId && (
+                <div
+                  style={{
+                    fontWeight: 600,
+                    textTransform: "uppercase",
+                    marginBottom: 5,
+                  }}
+                >
+                  Defect Id: {getProjectkey() + "-D-" + defectId}
+                </div>
+              )}
+              <Form.Item
+                name="title"
+                label="Title"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter Defect Title!",
+                  },
+                ]}
+              >
+                {editMode || !defectId ? (
+                  <Input name="name" showCount />
+                ) : (
+                  <div>{currentDefect.title}</div>
+                )}
+              </Form.Item>
+              <Form.Item name="description" label="Description">
+                {editMode || !defectId ? (
+                  <ReactQuill
+                    placeholder="Enter Description"
+                    name="description"
+                  />
+                ) : (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: currentDefect.description,
+                    }}
+                  ></div>
+                )}
+              </Form.Item>
+              <Form.Item name="tags" label="Tags">
+                {editMode || !defectId ? (
+                  <Select mode="tags" placeholder="Tags" />
+                ) : currentDefect.tags?.length > 0 ? (
+                  currentDefect.tags.map((el) => {
+                    return <Tag>{el}</Tag>;
+                  })
+                ) : (
+                  "N/A"
+                )}
+              </Form.Item>{" "}
+              <Form.Item
+                name="assigneeId"
+                label="Assignee"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Assignee!",
+                  },
+                ]}
+              >
+                {editMode || !defectId ? (
+                  <Select placeholder="Assignee" style={{ width: 250 }}>
+                    {projectMembers.map((el) => {
+                      return (
+                        <Option value={el.id}>
+                          <Tooltip title={el.email}>{el.name}</Tooltip>
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                ) : (
+                  <div style={{ display: "flex" }}>
+                    <div style={{ width: 250 }}>
+                      <UserAvatar user={currentDefect.assigneeId} />
+                    </div>
+                    <div style={{ display: "flex", gap: 10 }}>
+                      <div> Reporter:</div>
+                      <UserAvatar user={currentDefect.reporterId} />
+                    </div>
+                  </div>
+                )}
+              </Form.Item>
+              <Form.Item
+                name="statusId"
+                label="Status"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Status!",
+                  },
+                ]}
+              >
+                {editMode || !defectId ? (
+                  <Select placeholder="Status" style={{ width: 250 }}>
+                    {setting.status.map((el) => {
+                      return <Option value={el.id}>{el.name}</Option>;
+                    })}
+                  </Select>
+                ) : (
+                  <div>
+                    {
+                      setting.status.find((el) => {
+                        return el.id === currentDefect.statusId;
+                      })?.name
+                    }
+                  </div>
+                )}
+              </Form.Item>
+              <Form.Item
+                name="priorityId"
+                label="Priority"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Priority!",
+                  },
+                ]}
+              >
+                {editMode || !defectId ? (
+                  <Select placeholder="Priority" style={{ width: 250 }}>
+                    {setting.priority.map((el) => {
+                      return <Option value={el.id}>{el.name}</Option>;
+                    })}
+                  </Select>
+                ) : (
+                  <div>
+                    {
+                      setting.priority.find((el) => {
+                        return el.id === currentDefect.priorityId;
+                      })?.name
+                    }
+                  </div>
+                )}
+              </Form.Item>
+              <Form.Item
+                name="severityId"
+                label="Severity"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Severity!",
+                  },
+                ]}
+              >
+                {editMode || !defectId ? (
+                  <Select placeholder="Severity" style={{ width: 250 }}>
+                    {setting.severity.map((el) => {
+                      return (
+                        <Select.Option value={el.id}>{el.name}</Select.Option>
+                      );
+                    })}
+                  </Select>
+                ) : (
+                  <div>
+                    {
+                      setting.severity.find((el) => {
+                        return el.id === currentDefect.severityId;
+                      })?.name
+                    }
+                  </div>
+                )}
+              </Form.Item>
+              <Form.Item
+                name="estimatedTime"
+                label="Estimated Time"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter Estimated Time!",
+                  },
+                ]}
+              >
+                {editMode || !defectId ? (
+                  <InputNumber
+                    min={1}
+                    placeholder="Estimated Time"
+                    style={{ width: 250 }}
+                    addonAfter="Hour"
+                  />
+                ) : (
+                  <div>{currentDefect.estimatedTime + " hour"}</div>
+                )}
+              </Form.Item>
+              <div
+                style={{ display: "flex", gap: 20, justifyContent: "center" }}
+              >
                 <Button type="primary" htmlType="submit">
                   Submit
                 </Button>
@@ -72,128 +267,6 @@ const AddEditModal = ({
                 </Button>
               </div>
             </div>
-            <div
-              style={{
-                background:
-                  "0% 0% no-repeat padding-box padding-box rgb(247, 247, 247)",
-                boxShadow: "rgb(0 0 0 / 7%) 3px 3px 22px inset",
-                borderRadius: 12,
-                padding: 20,
-              }}
-            >
-              <Form.Item
-                name="title"
-                label="Title"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter Defect Title!",
-                  },
-                ]}
-              >
-                <Input name="name" showCount />
-              </Form.Item>
-              <Form.Item name="description" label="Description">
-                <ReactQuill
-                  placeholder="Enter Description"
-                  name="description"
-                />
-              </Form.Item>
-              <Form.Item name="tags" label="Tags">
-                <Select mode="tags" placeholder="Tags" />
-              </Form.Item>{" "}
-              <Form.Item
-                name="assigneeId"
-                label="Assignee"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Assignee!",
-                  },
-                ]}
-              >
-                {/* <div style={{ display: "flex", gap: 20 }}> */}
-                <Select placeholder="Assignee" style={{ width: 250 }}>
-                  {projectMembers.map((el) => {
-                    return (
-                      <Option value={el.id}>
-                        <Tooltip title={el.email}>{el.name}</Tooltip>
-                      </Option>
-                    );
-                  })}
-                </Select>
-                {/* <div>Reporter: </div> */}
-                {/* <div>Reporter: </div>
-                </div> */}
-              </Form.Item>
-              <Form.Item
-                name="statusId"
-                label="Status"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Status!",
-                  },
-                ]}
-              >
-                <Select placeholder="Status" style={{ width: 250 }}>
-                  {setting.status.map((el) => {
-                    return <Option value={el.id}>{el.name}</Option>;
-                  })}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                name="priorityId"
-                label="Priority"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Priority!",
-                  },
-                ]}
-              >
-                <Select placeholder="Priority" style={{ width: 250 }}>
-                  {setting.priority.map((el) => {
-                    return <Option value={el.id}>{el.name}</Option>;
-                  })}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                name="severityId"
-                label="Severity"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Severity!",
-                  },
-                ]}
-              >
-                <Select placeholder="Severity" style={{ width: 250 }}>
-                  {setting.severity.map((el) => {
-                    return (
-                      <Select.Option value={el.id}>{el.name}</Select.Option>
-                    );
-                  })}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                name="estimatedTime"
-                label="Estimated Time"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter Estimated Time!",
-                  },
-                ]}
-              >
-                <InputNumber
-                  min={1}
-                  placeholder="Estimated Time"
-                  style={{ width: 250 }}
-                  addonAfter="Hour"
-                />
-              </Form.Item>
-            </div>
           </Form>
         </Loading>
       </div>
@@ -204,7 +277,8 @@ const mapStateToProps = (state) => ({
   loading: state.defect.loading,
   projectMembers: state.projects.currentProject.members,
   setting: state.defect.setting,
+  currentDefect: state.defect.currentDefect,
 });
-const mapDispatchToProps = { saveDefect };
+const mapDispatchToProps = { saveDefect, getProjectkey, getDefectById };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditModal);

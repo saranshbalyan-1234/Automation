@@ -6,6 +6,7 @@ import DefectList from "./DefectList";
 import DefectDetail from "./DefectDetail";
 import { usePermission } from "../../Utils/permission";
 import { getDefectSetting } from "../../Redux/Actions/defect";
+import DefectTabs from "./DefectTabs";
 const Defect = ({ getDefectSetting }) => {
   const addDefectPermission = usePermission("Defect", "add");
 
@@ -23,7 +24,7 @@ const Defect = ({ getDefectSetting }) => {
         {addDefectPermission && (
           <Route path="/new" element={<DefectDetail />} />
         )}
-        <Route path="/:defectId/:tab" element={<div>saransh</div>} />
+        <Route path="/:defectId/:tab" element={<DefectTabs />} />
       </Routes>
     </>
   );
