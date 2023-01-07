@@ -16,7 +16,9 @@ const AddProjectMemberModal = ({
 
   const checkAvailableMember = async () => {
     const difference = await allUsers.filter((user) => {
-      const addedMembers = currentProject.members;
+      const addedMembers = currentProject.members.filter((el) => {
+        return el.deletedAt === null;
+      });
       return !addedMembers.some((el) => {
         return el.id === user.id;
       });

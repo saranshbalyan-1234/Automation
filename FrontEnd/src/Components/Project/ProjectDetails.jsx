@@ -34,6 +34,11 @@ export const ProjectDetails = ({
   const [addProjectMemberModal, setAddProjectMemberModal] = useState(false);
   const [editProjectModal, setEditProjectModal] = useState(false);
   const [graphCount, setGraphCount] = useState([]);
+
+  const members = currentProject.members.filter((el) => {
+    return el.deletedAt === null;
+  });
+
   useEffect(() => {
     getProject();
     // eslint-disable-next-line
@@ -243,7 +248,7 @@ export const ProjectDetails = ({
           </Card>
         </div>
         <Card style={{ marginTop: 20 }}>
-          {currentProject.members && (
+          {members && (
             <div
               style={{
                 display: "flex",
@@ -255,8 +260,8 @@ export const ProjectDetails = ({
                 level={5}
                 style={{ display: "flex", flexWrap: "wrap", gap: 10 }}
               >
-                <div>Members</div> <div>({currentProject.members.length})</div>
-                <MemberBadge members={currentProject.members} />
+                <div>Members</div> <div>({members.length})</div>
+                <MemberBadge members={members} />
               </Title>
               <Button
                 type="primary"
@@ -274,7 +279,9 @@ export const ProjectDetails = ({
           <Table
             scroll={{ x: true }}
             columns={columns}
-            dataSource={currentProject.members}
+            dataSource={members.filter((el) => {
+              return el.deletedAt === null;
+            })}
             size="small"
           />
         </Card>

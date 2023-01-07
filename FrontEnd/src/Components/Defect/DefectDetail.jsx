@@ -35,7 +35,7 @@ const AddEditModal = ({
   const navigate = useNavigate();
   const onSubmit = async (data) => {
     let result = false;
-    if (editMode) {
+    if (editMode && defectId) {
       result = await editDefect(data);
       setEditMode(false);
     } else {
@@ -45,7 +45,7 @@ const AddEditModal = ({
   };
 
   useEffect(() => {
-    if (!editMode) return;
+    if (!editMode || !defectId) return;
     form.setFieldsValue({
       title: currentDefect.title,
       description: currentDefect.description,
@@ -153,13 +153,17 @@ const AddEditModal = ({
               >
                 {editMode || !defectId ? (
                   <Select placeholder="Assignee" style={{ width: 250 }}>
-                    {projectMembers.map((el) => {
-                      return (
-                        <Option value={el.id}>
-                          <Tooltip title={el.email}>{el.name}</Tooltip>
-                        </Option>
-                      );
-                    })}
+                    {projectMembers
+                      .filter((el) => {
+                        return el.deletedAt === null;
+                      })
+                      .map((el) => {
+                        return (
+                          <Option value={el.id}>
+                            <Tooltip title={el.email}>{el.name}</Tooltip>
+                          </Option>
+                        );
+                      })}
                   </Select>
                 ) : (
                   <div style={{ display: "flex" }}>
@@ -216,7 +220,13 @@ const AddEditModal = ({
                     })}
                   </Select>
                 ) : (
-                  <div>
+                  <div
+                    style={{
+                      color: setting.priority.find((el) => {
+                        return el.id === currentDefect.priorityId;
+                      })?.color,
+                    }}
+                  >
                     {
                       setting.priority.find((el) => {
                         return el.id === currentDefect.priorityId;

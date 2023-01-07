@@ -100,13 +100,6 @@ const getAllTestCase = async (req, res) => {
         "tags",
         "createdByUser",
       ],
-      // include: [
-      //   {
-      //     model: User.schema(req.database),
-      //     as: "createdBy",
-      //     attributes: ["id", "name", "email", "active", "profileImage"],
-      //   },
-      // ],
     });
 
     return res.status(200).json(testCases);
@@ -162,13 +155,6 @@ const getTestCaseDetailsById = async (req, res) => {
         "tags",
         "createdByUser",
       ],
-      // include: [
-      //   {
-      //     model: User.schema(req.database),
-      //     as: "createdBy",
-      //     attributes: ["id", "name", "email", "active", "profileImage"],
-      //   },
-      // ],
     });
 
     const totalProcess = await Process.schema(req.database).findAll({
@@ -382,13 +368,6 @@ const getTestCaseLogsById = async (req, res) => {
         testCaseId,
       },
       attributes: ["log", "createdAt", "createdByUser"],
-      // include: [
-      //   {
-      //     model: User.schema(req.database),
-      //     as: "createdBy",
-      //     attributes: ["id", "name", "email", "active", "profileImage"],
-      //   },
-      // ],
       order: [["createdAt", "DESC"]],
     });
 

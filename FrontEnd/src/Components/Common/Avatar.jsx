@@ -22,11 +22,13 @@ const UserAvatar = ({
     return (
       <Badge.Ribbon
         text={
-          userData.verifiedAt
-            ? userData.active
-              ? "Active"
-              : "Inactive"
-            : "Verification Pending"
+          userData.deletedAt
+            ? userData.verifiedAt
+              ? userData.active
+                ? "Active"
+                : "Inactive"
+              : "Verification Pending"
+            : "Deleted"
         }
         style={{ marginTop: "-10px" }}
       >

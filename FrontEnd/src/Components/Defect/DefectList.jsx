@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Table, Popconfirm, Button, Tag } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
-import AddEditDefectModal from "./DefectDetail";
 import UserAvatar from "../Common/Avatar";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Common/Loading";
@@ -10,6 +9,7 @@ import CustomSearch from "../Common/Search";
 import { connect } from "react-redux";
 import { getAllDefects, deleteDefect } from "../../Redux/Actions/defect";
 import { usePermission } from "../../Utils/permission";
+import styled from "styled-components";
 const DefectList = ({
   loading = false,
   data = [],
@@ -17,10 +17,10 @@ const DefectList = ({
   getAllDefects,
   addDefectPermission,
   deleteDefect,
+  setting,
 }) => {
   const navigate = useNavigate();
   const deleteDefectPermission = usePermission("Defect", "delete");
-  const [addEditDefectModal, setAddEditDefectModal] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
   useEffect(() => {
     getAllDefects();
@@ -49,9 +49,9 @@ const DefectList = ({
       title: "Title",
       dataIndex: "title",
       render: (text, record) => (
-        <div>
+        <div style={{ overflow: "hidden", textOverflow: "ellipsis" }}>
           {text}
-          <div style={{ overflow: "auto" }}>
+          <div style={{ marginTop: 5 }}>
             {record.tags?.map((el) => {
               return <Tag>{el}</Tag>;
             })}
@@ -60,35 +60,74 @@ const DefectList = ({
       ),
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      width: 100,
+      title: <StyledText>Status</StyledText>,
+      dataIndex: "statusId",
+      width: 150,
+      render: (text) => (
+        <StyledText>
+          {
+            setting.status.find((el) => {
+              return el.id === text;
+            })?.name
+          }
+        </StyledText>
+      ),
     },
     {
-      title: "Priority",
-      dataIndex: "priority",
+      title: <StyledText>Priority</StyledText>,
+      dataIndex: "priorityId",
       width: 100,
+      render: (text) => (
+        <StyledText>
+          <div
+            style={{
+              color: setting.priority.find((el) => {
+                return el.id === text;
+              })?.color,
+            }}
+          >
+            {
+              setting.priority.find((el) => {
+                return el.id === text;
+              })?.name
+            }
+          </div>
+        </StyledText>
+      ),
     },
     {
-      title: "Severity",
-      dataIndex: "severity",
+      title: <StyledText>Severity</StyledText>,
+      dataIndex: "severityId",
       width: 100,
+      render: (text) => (
+        <StyledText>
+          {
+            setting.severity.find((el) => {
+              return el.id === text;
+            })?.name
+          }
+        </StyledText>
+      ),
     },
     {
-      title: "Assignee",
+      title: <StyledText>Assignee</StyledText>,
       dataIndex: "assigneeId",
       width: 100,
-      render: (text) => <UserAvatar user={text} />,
+      render: (text) => (
+        <StyledText>
+          <UserAvatar user={text} />
+        </StyledText>
+      ),
     },
     {
-      title: "Reported At",
+      title: <StyledText> Reported At</StyledText>,
       dataIndex: "reporterId",
       width: 230,
       render: (text, record) => (
-        <div>
+        <StyledText>
           {moment(record.createdAt).format("DD/MM/YYYY hh:mm a")} By &nbsp;
           <UserAvatar user={text} />
-        </div>
+        </StyledText>
       ),
     },
 
@@ -161,12 +200,6 @@ const DefectList = ({
             };
           }}
         />
-        {addEditDefectModal && (
-          <AddEditDefectModal
-            visible={addEditDefectModal}
-            setVisible={setAddEditDefectModal}
-          />
-        )}
       </Loading>
     </>
   );
@@ -175,8 +208,16 @@ const DefectList = ({
 const mapStateToProps = (state) => ({
   currentProjectId: state.projects.currentProject?.id,
   data: state.defect.data,
+  setting: state.defect.setting,
 });
 
 const mapDispatchToProps = { getAllDefects, deleteDefect };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectList);
+
+const StyledText = styled.div`
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;

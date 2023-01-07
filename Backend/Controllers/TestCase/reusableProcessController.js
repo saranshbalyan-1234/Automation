@@ -95,13 +95,6 @@ const getAllReusableProcess = async (req, res) => {
         "tags",
         "createdByUser",
       ],
-      // include: [
-      //   {
-      //     model: User.schema(req.database),
-      //     as: "createdBy",
-      //     attributes: ["id", "name", "email", "active", "profileImage"],
-      //   },
-      // ],
     });
 
     return res.status(200).json(reusableProcesses);
@@ -163,13 +156,6 @@ const getReusableProcessDetailsById = async (req, res) => {
         "tags",
         "createdByUser",
       ],
-      // include: [
-      //   {
-      //     model: User.schema(req.database),
-      //     as: "createdBy",
-      //     attributes: ["id", "name", "email", "active", "profileImage"],
-      //   },
-      // ],
     });
     const totalSteps = await TestStep.schema(req.database).count({
       where: { reusableProcessId },
@@ -225,13 +211,6 @@ const getReusableProcessLogsById = async (req, res) => {
         reusableProcessId,
       },
       attributes: ["log", "createdAt", "createdByUser"],
-      // include: [
-      //   {
-      //     model: User.schema(req.database),
-      //     as: "createdBy",
-      //     attributes: ["id", "name", "email", "active", "profileImage"],
-      //   },
-      // ],
       order: [["createdAt", "DESC"]],
     });
 

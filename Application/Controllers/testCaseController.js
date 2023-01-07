@@ -27,12 +27,6 @@ const getTestStepByTestCase = async (req, res) => {
                   model: ObjectLocator.schema(req.database),
                   as: "locators",
                 },
-
-                // {
-                //   model: User.schema(req.database),
-                //   as: "createdBy",
-                //   attributes: ["id", "name", "email", "active", "profileImage"],
-                // },
               ],
             },
             { model: TestParameter.schema(req.database) },
