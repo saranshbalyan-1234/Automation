@@ -113,3 +113,4 @@ export const ADD_DEFECT = "ADD_DEFECT";
 export const EDIT_DEFECT = "EDIT_DEFECT";
 export const DELETE_DEFECT = "DELETE_DEFECT";
 export const EMPTY_DEFECT = "EMPTY_DEFECT";
+export const GET_DEFECT_SETTING = "GET_DEFECT_SETTING";

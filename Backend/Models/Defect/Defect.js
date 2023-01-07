@@ -27,17 +27,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.JSON,
       defaultValue: null,
     },
-    reporterId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: true,
-      },
-      references: {
-        model: "users",
-        key: "id",
-      },
-    },
+
     assigneeId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -49,14 +39,14 @@ export default (sequelize, DataTypes) => {
         key: "id",
       },
     },
-    statusId: {
+    reporterId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: true,
       },
       references: {
-        model: "defectStatuses",
+        model: "users",
         key: "id",
       },
     },
@@ -68,6 +58,17 @@ export default (sequelize, DataTypes) => {
       },
       references: {
         model: "defectPriorities",
+        key: "id",
+      },
+    },
+    statusId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: true,
+      },
+      references: {
+        model: "defectStatuses",
         key: "id",
       },
     },

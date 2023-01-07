@@ -6,11 +6,14 @@ import {
   EDIT_DEFECT,
   DELETE_DEFECT,
   EMPTY_DEFECT,
+  GET_DEFECT_SETTING,
 } from "../Actions/action-types";
 
 const initState = {
   loading: false,
   data: [],
+  currentDefect: {},
+  setting: { status: [], priority: [], severity: [] },
 };
 
 const defectReducer = (state = initState, { type, payload }) => {
@@ -32,7 +35,12 @@ const defectReducer = (state = initState, { type, payload }) => {
         data: payload,
         loading: false,
       };
-
+    case GET_DEFECT_SETTING:
+      return {
+        ...state,
+        setting: payload,
+        loading: false,
+      };
     case EMPTY_DEFECT:
       return {
         loading: false,

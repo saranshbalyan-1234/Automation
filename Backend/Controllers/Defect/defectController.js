@@ -15,13 +15,13 @@ const getDefectSettings = async (req, res) => {
 
   try {
     const priority = await DefectPriority.schema(req.database).findAll({
-      attributes: ["name"],
+      attributes: ["id", "name", "color"],
     });
     const severity = await DefectSeverity.schema(req.database).findAll({
-      attributes: ["name"],
+      attributes: ["id", "name"],
     });
     const status = await DefectStatus.schema(req.database).findAll({
-      attributes: ["name", "parentStatusId"],
+      attributes: ["id", "name"],
     });
 
     return res.status(200).json({ priority, severity, status });
@@ -61,7 +61,7 @@ const saveDefect = async (req, res) => {
     // const { error } = nameDesTagPrjValidation.validate(req.body);
     // if (error) throw new Error(error.details[0].message);
     const projectId = req.headers["x-project-id"];
-    const payload = { ...req.body, createdByUser: req.user.id, projectId };
+    const payload = { ...req.body, reporterId: req.user.id, projectId };
 
     const defect = await Defect.schema(req.database).create(payload);
     // createDefectLog(req, res, defect.id, [

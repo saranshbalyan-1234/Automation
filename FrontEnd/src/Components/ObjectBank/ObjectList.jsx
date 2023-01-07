@@ -65,24 +65,14 @@ const ObjectList = ({
     {
       title: "Created At",
       dataIndex: "createdBy",
-      width: 250,
+      width: 230,
       render: (_, record) => (
         <div>
-          {moment(record.createdAt).format("DD/MM/YYYY hh:mm:ss a")} By &nbsp;
+          {moment(record.createdAt).format("DD/MM/YYYY hh:mm a")} By &nbsp;
           <UserAvatar user={record.createdByUser} />
         </div>
-        // <div>{<UserAvatar user={record.createdBy} />}</div>
       ),
     },
-
-    // {
-    //   title: "Last Updated",
-    //   key: "updatedAt",
-    //   width: 190,
-    //   render: (_, record) => (
-    //     <div>{moment(record.updatedAt).format("DD/MM/YYYY hh:mm:ss a")}</div>
-    //   ),
-    // },
 
     {
       title: "",

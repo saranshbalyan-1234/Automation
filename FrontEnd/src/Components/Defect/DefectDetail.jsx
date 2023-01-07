@@ -1,11 +1,11 @@
 import React from "react";
-import { Form, Input, Button, Select, InputNumber } from "antd";
+import { Form, Input, Button, Select, InputNumber, Tooltip } from "antd";
 import ReactQuill from "react-quill";
 import { connect } from "react-redux";
 import Loading from "../Common/Loading";
 import { useNavigate } from "react-router-dom";
 import { saveDefect } from "../../Redux/Actions/defect";
-import UserAvatar from "../Common/Avatar";
+const { Option } = Select;
 const AddEditModal = ({
   editData,
   setEditData,
@@ -14,6 +14,7 @@ const AddEditModal = ({
   saveDefect,
   onEdit,
   projectMembers,
+  setting,
 }) => {
   const navigate = useNavigate();
   const onSubmit = async (data) => {
@@ -111,30 +112,19 @@ const AddEditModal = ({
                   },
                 ]}
               >
-                <div style={{ display: "flex", gap: 20, zIndex: -1 }}>
-                  <Select placeholder="Assignee" style={{ width: 200 }}>
-                    {projectMembers.map((el) => {
-                      return (
-                        <Select.Option value={el.id}>
-                          <div style={{ display: "flex" }}>
-                            <div style={{ minWidth: 30 }}>
-                              <UserAvatar user={el.id} />
-                            </div>
-                            <div
-                              style={{
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                              }}
-                            >
-                              {el.name}
-                            </div>
-                          </div>
-                        </Select.Option>
-                      );
-                    })}
-                  </Select>
-                  <div>Reporter: </div>
-                </div>
+                {/* <div style={{ display: "flex", gap: 20 }}> */}
+                <Select placeholder="Assignee" style={{ width: 250 }}>
+                  {projectMembers.map((el) => {
+                    return (
+                      <Option value={el.id}>
+                        <Tooltip title={el.email}>{el.name}</Tooltip>
+                      </Option>
+                    );
+                  })}
+                </Select>
+                {/* <div>Reporter: </div> */}
+                {/* <div>Reporter: </div>
+                </div> */}
               </Form.Item>
               <Form.Item
                 name="statusId"
@@ -146,7 +136,11 @@ const AddEditModal = ({
                   },
                 ]}
               >
-                <Select placeholder="Status" style={{ width: 200 }} />
+                <Select placeholder="Status" style={{ width: 250 }}>
+                  {setting.status.map((el) => {
+                    return <Option value={el.id}>{el.name}</Option>;
+                  })}
+                </Select>
               </Form.Item>
               <Form.Item
                 name="priorityId"
@@ -158,7 +152,11 @@ const AddEditModal = ({
                   },
                 ]}
               >
-                <Select placeholder="Priority" style={{ width: 200 }} />
+                <Select placeholder="Priority" style={{ width: 250 }}>
+                  {setting.priority.map((el) => {
+                    return <Option value={el.id}>{el.name}</Option>;
+                  })}
+                </Select>
               </Form.Item>
               <Form.Item
                 name="severityId"
@@ -170,7 +168,13 @@ const AddEditModal = ({
                   },
                 ]}
               >
-                <Select placeholder="Severity" style={{ width: 200 }} />
+                <Select placeholder="Severity" style={{ width: 250 }}>
+                  {setting.severity.map((el) => {
+                    return (
+                      <Select.Option value={el.id}>{el.name}</Select.Option>
+                    );
+                  })}
+                </Select>
               </Form.Item>
               <Form.Item
                 name="estimatedTime"
@@ -185,7 +189,7 @@ const AddEditModal = ({
                 <InputNumber
                   min={1}
                   placeholder="Estimated Time"
-                  style={{ width: 200 }}
+                  style={{ width: 250 }}
                   addonAfter="Hour"
                 />
               </Form.Item>
@@ -199,6 +203,7 @@ const AddEditModal = ({
 const mapStateToProps = (state) => ({
   loading: state.defect.loading,
   projectMembers: state.projects.currentProject.members,
+  setting: state.defect.setting,
 });
 const mapDispatchToProps = { saveDefect };
 

@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
   const DefectStatus = sequelize.define(
-    "defectStatuses",
+    "defectStatus",
     {
       name: {
         type: DataTypes.STRING,

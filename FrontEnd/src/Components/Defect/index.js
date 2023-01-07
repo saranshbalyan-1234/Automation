@@ -1,27 +1,17 @@
-import React from "react";
-// import List from "../Common/List";
+import React, { useEffect } from "react";
 // import TestCaseTabs from "./Tabs";
 import { Routes, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import DefectList from "./DefectList";
 import DefectDetail from "./DefectDetail";
 import { usePermission } from "../../Utils/permission";
-// import {
-//   getTestCaseByProject,
-//   deleteTestCase,
-//   saveTestCase,
-// } from "../../Redux/Actions/testCase";
-// import { usePermission } from "../../Utils/permission";
-const Defect = (
-  {
-    //   getTestCaseByProject,
-    //   deleteTestCase,
-    //   testCases,
-    //   loading,
-    //   saveTestCase,
-  }
-) => {
+import { getDefectSetting } from "../../Redux/Actions/defect";
+const Defect = ({ getDefectSetting }) => {
   const addDefectPermission = usePermission("Defect", "add");
+
+  useEffect(() => {
+    getDefectSetting();
+  }, []);
 
   return (
     <>
@@ -38,15 +28,10 @@ const Defect = (
     </>
   );
 };
-const mapStateToProps = (state) => ({
-  //   testCases: state.testCase.data,
-  //   loading: state.testCase.loading,
-});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {
-  //   getTestCaseByProject,
-  //   deleteTestCase,
-  //   saveTestCase,
+  getDefectSetting,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Defect);

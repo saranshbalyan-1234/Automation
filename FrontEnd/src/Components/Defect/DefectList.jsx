@@ -81,11 +81,11 @@ const DefectList = ({
     },
     {
       title: "Reported At",
-      dataIndex: "reportedId",
-      width: 150,
+      dataIndex: "reporterId",
+      width: 230,
       render: (text, record) => (
         <div>
-          {moment(record.createdAt).format("DD/MM/YYYY hh:mm:ss a")} By &nbsp;
+          {moment(record.createdAt).format("DD/MM/YYYY hh:mm a")} By &nbsp;
           <UserAvatar user={text} />
         </div>
       ),
@@ -173,6 +173,7 @@ const DefectList = ({
 
 const mapStateToProps = (state) => ({
   currentProjectId: state.projects.currentProject?.id,
+  data: state.defect.data,
 });
 
 const mapDispatchToProps = { getAllDefects };
