@@ -48,17 +48,17 @@ export default function Container({ children }) {
   const renderBack = () => {
     const locArray = location.pathname.split("/");
 
-    if (locArray.length > 2 && locArray[2] != "") {
+    if (locArray.length > 2 && locArray[2] !== "") {
       let name = "";
-      if (locArray[1] == "ReusableProcess") {
+      if (locArray[1] === "ReusableProcess") {
         name = "Reusable Process";
-      } else if (locArray[1] == "ObjectBank") {
+      } else if (locArray[1] === "ObjectBank") {
         name = "Objects";
-      } else if (locArray[1] == "Defect") {
+      } else if (locArray[1] === "Defect") {
         name = "Defects";
-      } else if (locArray[1] == "TestCase") {
+      } else if (locArray[1] === "TestCase") {
         name = "Test Case";
-      } else if (locArray[1] == "project") {
+      } else if (locArray[1] === "project") {
         name = "project";
       }
       if (name)
