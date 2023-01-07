@@ -4,14 +4,18 @@ import ReactQuill from "react-quill";
 import { connect } from "react-redux";
 import Loading from "../Common/Loading";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDefectById, saveDefect } from "../../Redux/Actions/defect";
+import {
+  getDefectById,
+  saveDefect,
+  editDefect,
+} from "../../Redux/Actions/defect";
 import { getProjectkey } from "../../Redux/Actions/project";
 import UserAvatar from "../Common/Avatar";
 const { Option } = Select;
 const AddEditModal = ({
   loading,
   saveDefect,
-  onEdit,
+  editDefect,
   projectMembers,
   setting,
   getProjectkey,
@@ -29,12 +33,12 @@ const AddEditModal = ({
   const onSubmit = async (data) => {
     let result = false;
     if (editMode) {
-      result = await onEdit(data);
+      result = await editDefect(data);
       setEditMode(false);
     } else {
       result = await saveDefect(data);
+      result && navigate(`/Defect/${result.id}/details`);
     }
-    result && navigate(`/Defect/${result.id}/details`);
   };
 
   useEffect(() => {
@@ -264,29 +268,33 @@ const AddEditModal = ({
                     addonAfter="Hour"
                   />
                 ) : (
-                  <div>{currentDefect.estimatedTime + " hour"}</div>
+                  <div>
+                    {currentDefect.estimatedTime +
+                      ` ${
+                        currentDefect.estimatedTime > 1 ? " hours" : " hour"
+                      }`}
+                  </div>
                 )}
               </Form.Item>
               <div
                 style={{ display: "flex", gap: 20, justifyContent: "center" }}
               >
-                {editMode ||
-                  (!defectId && (
-                    <>
-                      <Button type="primary" htmlType="submit">
-                        Submit
-                      </Button>
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (defectId) setEditMode(false);
-                          else navigate(-1);
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </>
-                  ))}
+                {(editMode || !defectId) && (
+                  <>
+                    <Button type="primary" htmlType="submit">
+                      Submit
+                    </Button>
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (defectId) setEditMode(false);
+                        else navigate(-1);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </Form>
@@ -301,6 +309,11 @@ const mapStateToProps = (state) => ({
   setting: state.defect.setting,
   currentDefect: state.defect.currentDefect,
 });
-const mapDispatchToProps = { saveDefect, getProjectkey, getDefectById };
+const mapDispatchToProps = {
+  saveDefect,
+  getProjectkey,
+  getDefectById,
+  editDefect,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditModal);

@@ -120,9 +120,39 @@ const getDefectDetailsById = async (req, res) => {
   }
 };
 
+const updateDefect = async (req, res) => {
+  /*  #swagger.tags = ["Defect"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const defectId = req.params.defectId;
+    // const { error } = updateObjectValidation.validate({
+    //   ...req.body,
+    //   objectId,
+    // });
+    // if (error) throw new Error(error.details[0].message);
+
+    const updatedDefect = await Defect.schema(req.database).update(req.body, {
+      where: {
+        id: defectId,
+      },
+    });
+
+    if (updatedDefect[0]) {
+      return res.status(200).json({ message: "Defect updated successfully!" });
+    } else {
+      return res.status(400).json({ error: "Defect not found" });
+    }
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
 export {
   getDefectSettings,
   getAllDefectByProject,
   saveDefect,
   getDefectDetailsById,
+  updateDefect,
 };

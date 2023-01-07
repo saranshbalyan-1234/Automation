@@ -53,12 +53,11 @@ export const editObject = (payload) => {
 
       const logs = await getDetailsEditedLogs(oldData, payload);
       logs.length > 0 && createObjectLogs(currentObjectId, logs);
-      let editedObject = { ...payload };
 
       await axios.put(`/object/${currentObjectId}`, payload);
       dispatch({
         type: UPDATE_TEST_OBJECT,
-        payload: editedObject,
+        payload: payload,
       });
 
       return true;

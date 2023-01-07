@@ -51,6 +51,15 @@ const defectReducer = (state = initState, { type, payload }) => {
         loading: false,
         data: [],
       };
+    case EDIT_DEFECT:
+      return {
+        ...state,
+        loading: false,
+        currentDefect: {
+          ...state.currentDefect,
+          ...payload,
+        },
+      };
     default:
       return state;
   }

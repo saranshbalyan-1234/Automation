@@ -63,3 +63,30 @@ export const saveDefect = (payload) => {
     }
   };
 };
+
+export const editDefect = (payload) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: DEFECT_REQUEST });
+
+      let currentDefectId = getState().defect.currentDefect?.id;
+      // let oldData = getState().objectBank.currentObject;
+
+      // const logs = await getDetailsEditedLogs(oldData, payload);
+      // logs.length > 0 && createObjectLogs(currentObjectId, logs);
+      // let editedObject = { ...payload };
+
+      await axios.put(`/defect/${currentDefectId}`, payload);
+      dispatch({
+        type: EDIT_DEFECT,
+        payload: payload,
+      });
+
+      return true;
+    } catch (err) {
+      console.log(err);
+      dispatch({ type: DEFECT_FAILURE });
+      return false;
+    }
+  };
+};

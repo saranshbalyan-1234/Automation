@@ -84,7 +84,7 @@ export default (sequelize, DataTypes) => {
       },
     },
     estimatedTime: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     startTime: {
