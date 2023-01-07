@@ -30,11 +30,11 @@ const Environment = ({
 
   useEffect(() => {
     setSearchedData(environments);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [environments]);
   useEffect(() => {
     getAllEnvironments(currentTestCaseId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentTestCaseId]);
   const handleUpdateValue = (record, column, e) => {
     updateColumnValue({
@@ -129,7 +129,7 @@ const Environment = ({
         width: 50,
       },
     ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [environments.length > 0 && Object.keys(environments[0]).length]);
 
   const handleSearch = (e) => {

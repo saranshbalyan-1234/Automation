@@ -9,7 +9,7 @@ const ViewScreenShotModal = ({ visible, setVisible }) => {
   const [imgData, setImgData] = useState("");
   useEffect(() => {
     fetchScreenShot();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   const fetchScreenShot = async () => {

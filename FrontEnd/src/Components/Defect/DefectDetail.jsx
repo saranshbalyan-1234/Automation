@@ -11,6 +11,7 @@ import {
 } from "../../Redux/Actions/defect";
 import { getProjectkey } from "../../Redux/Actions/project";
 import UserAvatar from "../Common/Avatar";
+import { usePermission } from "../../Utils/permission";
 const { Option } = Select;
 const AddEditModal = ({
   loading,
@@ -23,10 +24,12 @@ const AddEditModal = ({
   currentDefect,
 }) => {
   const [form] = Form.useForm();
+  const editDefectPermission = usePermission("Defect", "edit");
   const { defectId } = useParams();
   const [editMode, setEditMode] = useState(false);
   useEffect(() => {
     defectId && getDefectById(defectId);
+    // eslint-disable-next-line
   }, [defectId]);
 
   const navigate = useNavigate();
@@ -55,7 +58,7 @@ const AddEditModal = ({
       estimatedTime: currentDefect.estimatedTime,
     });
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [editMode]);
 
   return (
@@ -79,10 +82,10 @@ const AddEditModal = ({
                 boxShadow: "rgb(0 0 0 / 7%) 3px 3px 22px inset",
                 borderRadius: 12,
                 padding: 20,
-                cursor: "pointer",
+                cursor: editDefectPermission ? "pointer" : "default",
               }}
               onClick={() => {
-                setEditMode(true);
+                if (editDefectPermission) setEditMode(true);
               }}
             >
               {defectId && (

@@ -12,6 +12,7 @@ const Defect = ({ getDefectSetting }) => {
 
   useEffect(() => {
     getDefectSetting();
+    // eslint-disable-next-line
   }, []);
 
   return (

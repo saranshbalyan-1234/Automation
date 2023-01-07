@@ -65,7 +65,7 @@ const AddEditStepModal = ({
           })
         );
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [edit]);
 
   useEffect(() => {
@@ -107,12 +107,12 @@ const AddEditStepModal = ({
           return el.type === currentEvent.parameter4;
         })?.method || "Static",
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentEvent, edit]);
 
   useEffect(() => {
     currentProjectId && getObjectByProject();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentProjectId]);
 
   const onSubmit = async (data) => {

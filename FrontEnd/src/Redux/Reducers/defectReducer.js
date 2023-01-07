@@ -60,6 +60,13 @@ const defectReducer = (state = initState, { type, payload }) => {
           ...payload,
         },
       };
+    case DELETE_DEFECT:
+      let temp = [...state.data].filter((el) => el.id !== payload);
+      return {
+        ...state,
+        loading: false,
+        data: temp,
+      };
     default:
       return state;
   }

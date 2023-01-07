@@ -34,7 +34,7 @@ const ObjectDetails = ({
       newObject?.id && getObjectDetailsById(newObject?.id);
       setCurrentObject(object);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [objectId, newObject?.id, object?.id, history]);
 
   useEffect(() => {

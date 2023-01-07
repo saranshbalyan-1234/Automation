@@ -149,10 +149,36 @@ const updateDefect = async (req, res) => {
   }
 };
 
+const deleteDefect = async (req, res) => {
+  /*  #swagger.tags = ["Defect"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const defectId = req.params.defectId;
+
+    const { error } = idValidation.validate({ id: defectId });
+    if (error) throw new Error(error.details[0].message);
+
+    const deletedDefect = await Defect.schema(req.database).destroy({
+      where: { id: defectId },
+    });
+
+    if (deletedDefect > 0) {
+      return res.status(200).json({ message: "Defect deleted successfully" });
+    } else {
+      return res.status(400).json({ error: "Defect not found" });
+    }
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
 export {
   getDefectSettings,
   getAllDefectByProject,
   saveDefect,
   getDefectDetailsById,
   updateDefect,
+  deleteDefect,
 };

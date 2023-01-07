@@ -8,17 +8,18 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../Common/Loading";
 import CustomSearch from "../Common/Search";
 import { connect } from "react-redux";
-
-import { getAllDefects } from "../../Redux/Actions/defect";
+import { getAllDefects, deleteDefect } from "../../Redux/Actions/defect";
+import { usePermission } from "../../Utils/permission";
 const DefectList = ({
   loading = false,
   data = [],
   currentProjectId,
   getAllDefects,
   addDefectPermission,
+  deleteDefect,
 }) => {
   const navigate = useNavigate();
-
+  const deleteDefectPermission = usePermission("Defect", "delete");
   const [addEditDefectModal, setAddEditDefectModal] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
   useEffect(() => {
@@ -102,18 +103,18 @@ const DefectList = ({
             title={`Are you sure to delete this Defect?`}
             onConfirm={async (e) => {
               e.stopPropagation();
-              //   await onDelete(record.id);
+              await deleteDefect(record.id);
             }}
             okText="Yes, Delete"
             cancelText="No"
-            // disabled={!deletePermission}
+            disabled={!deleteDefectPermission}
           >
             <DeleteOutlined
               onClick={(e) => e.stopPropagation()}
               style={{
                 fontSize: 17,
-                // cursor: deletePermission ? "pointer" : "not-allowed",
-                // color: deletePermission ? "black" : "grey",
+                cursor: deleteDefectPermission ? "pointer" : "not-allowed",
+                color: deleteDefectPermission ? "black" : "grey",
               }}
             />
           </Popconfirm>
@@ -176,6 +177,6 @@ const mapStateToProps = (state) => ({
   data: state.defect.data,
 });
 
-const mapDispatchToProps = { getAllDefects };
+const mapDispatchToProps = { getAllDefects, deleteDefect };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectList);

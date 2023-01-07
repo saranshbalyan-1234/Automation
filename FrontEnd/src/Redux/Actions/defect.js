@@ -90,3 +90,17 @@ export const editDefect = (payload) => {
     }
   };
 };
+
+export const deleteDefect = (defectId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: DEFECT_REQUEST });
+      await axios.delete(`defect/${defectId}`);
+      dispatch({ type: DELETE_DEFECT, payload: defectId });
+      return true;
+    } catch (err) {
+      dispatch({ type: DEFECT_FAILURE });
+      return false;
+    }
+  };
+};
