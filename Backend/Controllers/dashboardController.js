@@ -144,7 +144,7 @@ export const detailedExecutionReport = async (req, res) => {
       }
     );
     const totalCount = await ExecutionHistory.schema(req.database).count({
-      where: { executedByUser: req.body.userId || req.user.id },
+      where: { executedByUser: req.body.executedByUser || req.user.id },
     });
     let data = {};
 

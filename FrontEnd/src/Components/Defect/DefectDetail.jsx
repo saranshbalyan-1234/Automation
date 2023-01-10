@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Select, InputNumber, Tooltip, Tag } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  InputNumber,
+  Tooltip,
+  Tag,
+  Divider,
+} from "antd";
+import moment from "moment";
 import ReactQuill from "react-quill";
 import { connect } from "react-redux";
 import Loading from "../Common/Loading";
@@ -61,6 +71,14 @@ const AddEditModal = ({
     // eslint-disable-next-line
   }, [editMode]);
 
+  const getTime = () => {
+    let startingTime = moment(currentDefect.startTime);
+    let timeTaken = moment(currentDefect.endTime).diff(
+      moment(startingTime),
+      "seconds"
+    );
+    return moment.utc(timeTaken * 1000).format("HH:mm:ss");
+  };
   return (
     <div style={{ display: "flex", flexWrap: "wrap" }}>
       <div
@@ -273,7 +291,7 @@ const AddEditModal = ({
                   },
                 ]}
               >
-                {editMode || !defectId ? (
+                {!defectId ? (
                   <InputNumber
                     min={1}
                     placeholder="Estimated Time"
@@ -289,6 +307,62 @@ const AddEditModal = ({
                   </div>
                 )}
               </Form.Item>
+              {currentDefect.startTime && currentDefect.endTime && (
+                <>
+                  <Divider />
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    <div>
+                      Created At:{" "}
+                      {moment(currentDefect.createdAt).format(
+                        "DD/MM/YYYY hh:mm a"
+                      )}
+                    </div>
+                    <div>
+                      Updated At:{" "}
+                      {moment(currentDefect.updatedAt).format(
+                        "DD/MM/YYYY hh:mm a"
+                      )}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "space-evenly",
+                      marginTop: 10,
+                    }}
+                  >
+                    <div>
+                      Started At:{" "}
+                      {moment(currentDefect.startTime).format(
+                        "DD/MM/YYYY hh:mm a"
+                      )}
+                    </div>
+                    <div>
+                      Resolved At:{" "}
+                      {moment(currentDefect.endTime).format(
+                        "DD/MM/YYYY hh:mm a"
+                      )}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: 10,
+                    }}
+                  >
+                    Time Taken To Resolve: {getTime()}
+                  </div>
+                  <Divider />
+                </>
+              )}
               <div
                 style={{ display: "flex", gap: 20, justifyContent: "center" }}
               >

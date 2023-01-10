@@ -29,7 +29,9 @@ export default function Container({ children }) {
       <Breadcrumb.Item key={url}>
         <a
           style={{ textTransform: "capitalize" }}
-          // href={void 0}
+          href={() => {
+            return void 0;
+          }}
         >
           {breadcrumbNameMap[url] || value}
         </a>
