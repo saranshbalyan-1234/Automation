@@ -30,6 +30,7 @@ const getMyProject = async (req, res) => {
             {
               model: UserProject.schema(req.database),
               as: "members",
+              paranoid: false,
               include: [
                 {
                   model: User.schema(req.database),
@@ -41,6 +42,7 @@ const getMyProject = async (req, res) => {
                     "profileImage",
                     "deletedAt",
                   ],
+                  paranoid: false,
                 },
               ],
             },
