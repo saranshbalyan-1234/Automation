@@ -23,7 +23,7 @@ import { getProjectkey } from "../../Redux/Actions/project";
 import UserAvatar from "../Common/Avatar";
 import { usePermission } from "../../Utils/permission";
 const { Option } = Select;
-const AddEditModal = ({
+const DefectDetail = ({
   loading,
   saveDefect,
   editDefect,
@@ -307,35 +307,32 @@ const AddEditModal = ({
                   </div>
                 )}
               </Form.Item>
+              <Divider />
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "space-evenly",
+                }}
+              >
+                <div>
+                  Created At:{" "}
+                  {moment(currentDefect.createdAt).format("DD/MM/YYYY hh:mm a")}
+                </div>
+                <div>
+                  Last Updated At:{" "}
+                  {moment(currentDefect.updatedAt).format("DD/MM/YYYY hh:mm a")}
+                </div>
+              </div>
               {currentDefect.startTime && currentDefect.endTime && (
                 <>
-                  <Divider />
                   <div
                     style={{
                       display: "flex",
                       flexWrap: "wrap",
                       justifyContent: "space-evenly",
-                    }}
-                  >
-                    <div>
-                      Created At:{" "}
-                      {moment(currentDefect.createdAt).format(
-                        "DD/MM/YYYY hh:mm a"
-                      )}
-                    </div>
-                    <div>
-                      Updated At:{" "}
-                      {moment(currentDefect.updatedAt).format(
-                        "DD/MM/YYYY hh:mm a"
-                      )}
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      justifyContent: "space-evenly",
-                      marginTop: 10,
+                      marginTop: 15,
+                      marginBottom: 15,
                     }}
                   >
                     <div>
@@ -355,14 +352,13 @@ const AddEditModal = ({
                     style={{
                       display: "flex",
                       justifyContent: "center",
-                      marginTop: 10,
                     }}
                   >
                     Time Taken To Resolve: {getTime()}
                   </div>
-                  <Divider />
                 </>
               )}
+              <Divider />
               <div
                 style={{ display: "flex", gap: 20, justifyContent: "center" }}
               >
@@ -403,4 +399,4 @@ const mapDispatchToProps = {
   editDefect,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddEditModal);
+export default connect(mapStateToProps, mapDispatchToProps)(DefectDetail);

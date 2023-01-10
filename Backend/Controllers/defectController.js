@@ -73,31 +73,6 @@ const saveDefect = async (req, res) => {
   }
 };
 
-const createDefectLog = async (req, res, id, logs = []) => {
-  /*  #swagger.tags = ["Defect"] 
-     #swagger.security = [{"apiKeyAuth": []}]
-  */
-  try {
-    const objectId = req.params.objectId || id;
-    const tempLogs = req.body.logs || logs;
-
-    const { error } = createLogValidation.validate({
-      id: objectId,
-      logs: tempLogs,
-    });
-    if (error) throw new Error(error.details[0].message);
-
-    const payload = tempLogs.map((el) => {
-      return { log: el, objectId, createdByUser: req.user.id };
-    });
-    await ObjectLog.schema(req.database).bulkCreate(payload);
-    if (logs.length == 0) return res.status(201).json("Log Created");
-  } catch (err) {
-    if (logs.length == 0) getError(err, res);
-    else console.log(err);
-  }
-};
-
 const getDefectDetailsById = async (req, res) => {
   /*  #swagger.tags = ["Defect"] 
      #swagger.security = [{"apiKeyAuth": []}]
@@ -115,35 +90,6 @@ const getDefectDetailsById = async (req, res) => {
     });
 
     return res.status(200).json(defect);
-  } catch (err) {
-    getError(err, res);
-  }
-};
-
-const updateDefect = async (req, res) => {
-  /*  #swagger.tags = ["Defect"] 
-     #swagger.security = [{"apiKeyAuth": []}]
-  */
-
-  try {
-    const defectId = req.params.defectId;
-    // const { error } = updateObjectValidation.validate({
-    //   ...req.body,
-    //   objectId,
-    // });
-    // if (error) throw new Error(error.details[0].message);
-
-    const updatedDefect = await Defect.schema(req.database).update(req.body, {
-      where: {
-        id: defectId,
-      },
-    });
-
-    if (updatedDefect[0]) {
-      return res.status(200).json({ message: "Defect updated successfully!" });
-    } else {
-      return res.status(400).json({ error: "Defect not found" });
-    }
   } catch (err) {
     getError(err, res);
   }
@@ -174,6 +120,80 @@ const deleteDefect = async (req, res) => {
   }
 };
 
+const updateDefect = async (req, res) => {
+  /*  #swagger.tags = ["Defect"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+
+  try {
+    const defectId = req.params.defectId;
+    const statusId = req.body.statusId;
+    let payload = { ...req.body };
+    // const { error } = updateObjectValidation.validate({
+    //   ...req.body,
+    //   objectId,
+    // });
+    // if (error) throw new Error(error.details[0].message);
+
+    const defect = await Defect.schema(req.database).findByPk(defectId);
+
+    if (defect.dataValues.statusId != statusId) {
+      const defectStatus = await DefectStatus.schema(req.database).findByPk(
+        statusId
+      );
+
+      if (defectStatus.dataValues.name === "In Progress") {
+        if (defect.dataValues.startTime === null)
+          payload.startTime = new Date();
+        else {
+          if (defect.endTime) {
+            payload.endTime = null;
+          }
+        }
+      } else if (defectStatus.dataValues.name === "Resolved") {
+        payload.endTime = new Date();
+      }
+    }
+    const updatedDefect = await Defect.schema(req.database).update(payload, {
+      where: {
+        id: defectId,
+      },
+    });
+
+    if (updatedDefect[0]) {
+      return res.status(200).json({ message: "Defect updated successfully!" });
+    } else {
+      return res.status(400).json({ error: "Defect not found" });
+    }
+  } catch (err) {
+    getError(err, res);
+  }
+};
+
+const createDefectLog = async (req, res, id, logs = []) => {
+  /*  #swagger.tags = ["Defect"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+  try {
+    const objectId = req.params.objectId || id;
+    const tempLogs = req.body.logs || logs;
+
+    const { error } = createLogValidation.validate({
+      id: objectId,
+      logs: tempLogs,
+    });
+    if (error) throw new Error(error.details[0].message);
+
+    const payload = tempLogs.map((el) => {
+      return { log: el, objectId, createdByUser: req.user.id };
+    });
+    await ObjectLog.schema(req.database).bulkCreate(payload);
+    if (logs.length == 0) return res.status(201).json("Log Created");
+  } catch (err) {
+    if (logs.length == 0) getError(err, res);
+    else console.log(err);
+  }
+};
 export {
   getDefectSettings,
   getAllDefectByProject,

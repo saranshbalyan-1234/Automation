@@ -64,19 +64,33 @@ export const saveDefect = (payload) => {
   };
 };
 
-export const editDefect = (payload) => {
+export const editDefect = (tempPayload) => {
   return async (dispatch, getState) => {
     try {
+      let payload = { ...tempPayload };
       dispatch({ type: DEFECT_REQUEST });
 
-      let currentDefectId = getState().defect.currentDefect?.id;
+      const currentDefect = getState().defect.currentDefect;
+      const statuses = getState().defect.setting.status;
+
       // let oldData = getState().objectBank.currentObject;
 
       // const logs = await getDetailsEditedLogs(oldData, payload);
       // logs.length > 0 && createObjectLogs(currentObjectId, logs);
       // let editedObject = { ...payload };
 
-      await axios.put(`/defect/${currentDefectId}`, payload);
+      if (tempPayload.statusId !== currentDefect.statusId) {
+        const status = statuses.find((el) => {
+          return el.id === tempPayload.statusId;
+        });
+        if (status.name === "In Progress" && currentDefect.startTime === null) {
+          payload.startTime = new Date();
+        } else if (status.name === "Resolved") {
+          payload.endTime = new Date();
+        }
+      }
+
+      await axios.put(`/defect/${currentDefect.id}`, payload);
       dispatch({
         type: EDIT_DEFECT,
         payload: payload,
