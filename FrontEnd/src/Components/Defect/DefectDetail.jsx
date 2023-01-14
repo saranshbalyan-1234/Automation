@@ -180,17 +180,13 @@ const DefectDetail = ({
                         .indexOf(input.toLowerCase()) >= 0
                     }
                   >
-                    {projectMembers
-                      .filter((el) => {
-                        return el.deletedAt === null;
-                      })
-                      .map((el) => {
-                        return (
-                          <Option value={el.id}>
-                            <Tooltip title={el.email}>{el.name}</Tooltip>
-                          </Option>
-                        );
-                      })}
+                    {projectMembers.map((el) => {
+                      return (
+                        <Option value={el.id} disabled={el.deletedAt}>
+                          <Tooltip title={el.email}>{el.name}</Tooltip>
+                        </Option>
+                      );
+                    })}
                   </Select>
                 ) : (
                   <div style={{ display: "flex" }}>
