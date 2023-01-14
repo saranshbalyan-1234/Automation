@@ -308,24 +308,29 @@ const DefectDetail = ({
                 )}
               </Form.Item>
               <Divider />
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "space-evenly",
-                }}
-              >
-                <div>
-                  Created At:{" "}
-                  {moment(currentDefect.createdAt).format("DD/MM/YYYY hh:mm a")}
-                </div>
-                <div>
-                  Last Updated At:{" "}
-                  {moment(currentDefect.updatedAt).format("DD/MM/YYYY hh:mm a")}
-                </div>
-              </div>
-              {currentDefect.startTime && currentDefect.endTime && (
+              {defectId && (
                 <>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    <div>
+                      Created At:{" "}
+                      {moment(currentDefect.createdAt).format(
+                        "DD/MM/YYYY hh:mm a"
+                      )}
+                    </div>
+                    <div>
+                      Last Updated At:{" "}
+                      {moment(currentDefect.updatedAt).format(
+                        "DD/MM/YYYY hh:mm a"
+                      )}
+                    </div>
+                  </div>
+
                   <div
                     style={{
                       display: "flex",
@@ -337,15 +342,21 @@ const DefectDetail = ({
                   >
                     <div>
                       Started At:{" "}
-                      {moment(currentDefect.startTime).format(
-                        "DD/MM/YYYY hh:mm a"
-                      )}
+                      {currentDefect.startTime
+                        ? moment(currentDefect.startTime).format(
+                            "DD/MM/YYYY hh:mm a"
+                          )
+                        : "NOT_STARTED"}
                     </div>
                     <div>
                       Resolved At:{" "}
-                      {moment(currentDefect.endTime).format(
-                        "DD/MM/YYYY hh:mm a"
-                      )}
+                      {currentDefect.startTime
+                        ? currentDefect.endTime
+                          ? moment(currentDefect.endTime).format(
+                              "DD/MM/YYYY hh:mm a"
+                            )
+                          : "IN_PROGRESS"
+                        : "NOT_STARTED"}
                     </div>
                   </div>
                   <div
@@ -354,11 +365,17 @@ const DefectDetail = ({
                       justifyContent: "center",
                     }}
                   >
-                    Time Taken To Resolve: {getTime()}
+                    Time Taken To Resolve:
+                    {currentDefect.startTime
+                      ? currentDefect.endTime
+                        ? getTime()
+                        : "IN_PROGRESS"
+                      : "NOT_STARTED"}
                   </div>
+
+                  <Divider />
                 </>
               )}
-              <Divider />
               <div
                 style={{ display: "flex", gap: 20, justifyContent: "center" }}
               >
