@@ -170,7 +170,16 @@ const DefectDetail = ({
                 ]}
               >
                 {editMode || !defectId ? (
-                  <Select placeholder="Assignee" style={{ width: 250 }}>
+                  <Select
+                    placeholder="Assignee"
+                    style={{ width: 250 }}
+                    showSearch
+                    filterOption={(input, option) =>
+                      option.children.props.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
                     {projectMembers
                       .filter((el) => {
                         return el.deletedAt === null;
@@ -206,7 +215,16 @@ const DefectDetail = ({
                 ]}
               >
                 {editMode || !defectId ? (
-                  <Select placeholder="Status" style={{ width: 250 }}>
+                  <Select
+                    placeholder="Status"
+                    style={{ width: 250 }}
+                    showSearch
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
                     {setting.status.map((el) => {
                       return <Option value={el.id}>{el.name}</Option>;
                     })}
