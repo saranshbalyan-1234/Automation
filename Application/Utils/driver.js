@@ -32,6 +32,13 @@ const createLocalDriver = (req) => {
   let options = new chrome.Options();
 
   if (req.body.headless) options.addArguments("--headless");
+  options.addArguments("start-maximized");
+  options.addArguments("disable-infobars");
+  options.addArguments("--disable-extensions");
+  options.addArguments("--no-sandbox");
+  options.addArguments("--disable-application-cache");
+  options.addArguments("--disable-gpu");
+  options.addArguments("--disable-dev-shm-usage");
 
   return chrome.Driver.createSession(options, service);
 };
@@ -46,6 +53,7 @@ const createApplicationDriver = (req) => {
 
   let options = new chrome.Options();
   if (req.body.headless) options.addArguments("--headless");
+  options.addArguments("--no-sandbox");
   return chrome.Driver.createSession(options, service);
 };
 

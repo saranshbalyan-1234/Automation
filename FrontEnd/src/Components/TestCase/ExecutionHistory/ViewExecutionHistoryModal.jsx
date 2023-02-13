@@ -161,6 +161,20 @@ const ViewExecutionHistoryModal = ({
                 )}
               </div>
             </Tag>
+
+            <Tag
+              color={currentExecutionHistory.headless ? "#1677ff" : "#cd201f"}
+              className="row"
+            >
+              <div>Headless</div>
+              <div>
+                {currentExecutionHistory.headless ? (
+                  <CheckOutlined />
+                ) : (
+                  <CloseOutlined />
+                )}
+              </div>
+            </Tag>
           </div>
           <div style={{ marginTop: 20 }}>
             <Process />
