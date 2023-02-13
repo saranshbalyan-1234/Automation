@@ -1,7 +1,8 @@
 import express from "express";
 import {
   getAllExecutionHistoryByTestCase,
-  deleteExecutionHistory,
+  deleteExecutionHistoryById,
+  deleteExecutionHistoryByTestCase,
   getExecutionHistoryById,
 } from "../../Controllers/TestCase/executionHistory.js";
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
@@ -10,7 +11,12 @@ const Router = express.Router();
 Router.delete(
   "/:executionHistoryId",
   validatePermission("Test Case", "delete"),
-  deleteExecutionHistory
+  deleteExecutionHistoryById
+);
+Router.delete(
+  "/testCase/:testCaseId",
+  validatePermission("Test Case", "delete"),
+  deleteExecutionHistoryByTestCase
 );
 Router.get(
   "/:executionHistoryId",

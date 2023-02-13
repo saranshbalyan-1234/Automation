@@ -4,7 +4,6 @@ import moment from "moment";
 import { deleteS3Folder } from "../awsController.js";
 import { idValidation } from "../../Utils/Validations/index.js";
 const ExecutionHistory = db.executionHistory;
-const User = db.users;
 const ProcessHistory = db.processHistory;
 const TestStepHistory = db.testStepHistory;
 
@@ -33,7 +32,7 @@ const getAllExecutionHistoryByTestCase = async (req, res) => {
   }
 };
 
-const deleteExecutionHistory = async (req, res) => {
+const deleteExecutionHistoryById = async (req, res) => {
   /*  #swagger.tags = ["Execution History"] 
      #swagger.security = [{"apiKeyAuth": []}]
   */
@@ -60,7 +59,38 @@ const deleteExecutionHistory = async (req, res) => {
     getError(err, res);
   }
 };
+const deleteExecutionHistoryByTestCase = async (req, res) => {
+  /*  #swagger.tags = ["Execution History"] 
+     #swagger.security = [{"apiKeyAuth": []}]
+  */
+  try {
+    const testCaseId = req.params.testCaseId;
 
+    const allHsitory = await ExecutionHistory.schema(req.database).findAll({
+      where: { testCaseId },
+    });
+
+    const deletedExecutionHistory = await ExecutionHistory.schema(
+      req.database
+    ).destroy({
+      where: { testCaseId },
+    });
+
+    if (deletedExecutionHistory > 0) {
+      allHsitory.forEach((el) => {
+        deleteS3Folder(req.database, el.dataValues.id);
+      });
+
+      return res
+        .status(200)
+        .json({ message: "ExecutionHistory deleted successfully" });
+    } else {
+      return res.status(400).json({ error: "Record not found" });
+    }
+  } catch (err) {
+    getError(err, res);
+  }
+};
 const getExecutionHistoryById = async (req, res) => {
   /*  #swagger.tags = ["Execution History"] 
      #swagger.security = [{"apiKeyAuth": []}]
@@ -108,6 +138,7 @@ const getExecutionHistoryById = async (req, res) => {
 
 export {
   getAllExecutionHistoryByTestCase,
-  deleteExecutionHistory,
+  deleteExecutionHistoryById,
   getExecutionHistoryById,
+  deleteExecutionHistoryByTestCase,
 };

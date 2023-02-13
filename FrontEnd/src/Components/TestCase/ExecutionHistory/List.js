@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import {
   deleteExecutionHistory,
   getAllExecutionHistoryByTestCase,
+  deleteAllExecutionHistory,
 } from "../../../Redux/Actions/executionHistory";
 import ViewExecutionHistoryModal from "./ViewExecutionHistoryModal";
 import Loading from "../../Common/Loading";
@@ -15,6 +16,7 @@ import { usePermission } from "../../../Utils/permission";
 export const List = ({
   getAllExecutionHistoryByTestCase,
   deleteExecutionHistory,
+  deleteAllExecutionHistory,
   loading,
   data,
 }) => {
@@ -68,7 +70,28 @@ export const List = ({
     },
 
     {
-      title: "",
+      title: (
+        <div style={{ display: "flex", gap: 10 }}>
+          <Popconfirm
+            placement="left"
+            title={`Are you sure to delete all Execution History?`}
+            onConfirm={async () => {
+              await deleteAllExecutionHistory();
+            }}
+            okText="Yes, Delete"
+            cancelText="No"
+            disabled={!deleteExecutionPermission}
+          >
+            <DeleteOutlined
+              style={{
+                fontSize: 17,
+                color: deleteExecutionPermission ? "black" : "grey",
+                cursor: deleteExecutionPermission ? "pointer" : "not-allowed",
+              }}
+            />
+          </Popconfirm>
+        </div>
+      ),
       key: "actions",
       width: 50,
       render: (_, record) => (
@@ -132,6 +155,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   deleteExecutionHistory,
+  deleteAllExecutionHistory,
   getAllExecutionHistoryByTestCase,
 };
 
