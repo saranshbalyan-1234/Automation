@@ -108,6 +108,9 @@ const ExecuteModal = ({
           >
             <Switch checkedChildren="Yes" unCheckedChildren="No" />
           </Form.Item>
+          <Form.Item name="headless" label="Headless" valuePropName="checked">
+            <Switch checkedChildren="Yes" unCheckedChildren="No" />
+          </Form.Item>
           <Form.Item name="description" label="">
             <ReactQuill
               style={{ width: 450 }}
