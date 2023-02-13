@@ -13,7 +13,7 @@ const createExecutionHistory = async (req, res) => {
     payload.testCaseId = testCaseId;
     payload.result = null;
 
-    res.status(200).json({ message: "Started Execution" });
+    // res.status(200).json({ message: "Started Execution" });
     return await ExecutionHistory.schema(req.database).create(payload);
   } catch (err) {
     console.log(err);

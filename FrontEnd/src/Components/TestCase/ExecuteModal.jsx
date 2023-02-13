@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Modal, Button, Select, Switch } from "antd";
+import { Form, Input, Modal, Button, Select, Switch, InputNumber } from "antd";
 import { connect } from "react-redux";
 import { executeTestCase } from "../../Redux/Actions/testCase";
 import ReactQuill from "react-quill";
@@ -58,6 +58,7 @@ const ExecuteModal = ({
           initialValues={{
             continueOnError: false,
             recordAllSteps: false,
+            bots: 1,
           }}
         >
           <Form.Item
@@ -94,6 +95,18 @@ const ExecuteModal = ({
               </Select>
             </Form.Item>
           )}
+          <Form.Item
+            name="bots"
+            label="Bots"
+            rules={[
+              {
+                required: true,
+                message: "Please input number of bots!",
+              },
+            ]}
+          >
+            <InputNumber min={1} />
+          </Form.Item>
           <Form.Item
             name="continueOnError"
             label="Continue On Error"
