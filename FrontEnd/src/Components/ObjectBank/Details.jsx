@@ -70,13 +70,7 @@ const ObjectDetails = ({
                 }
                 description={<></>}
               />
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 25,
-                }}
-              >
+              {!history && (
                 <Button
                   type="primary"
                   ghost
@@ -88,7 +82,7 @@ const ObjectDetails = ({
                   <EditOutlined />
                   Edit Object Details
                 </Button>
-              </div>
+              )}
             </div>
             {currentObject.description && (
               <Meta
