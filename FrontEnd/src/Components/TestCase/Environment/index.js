@@ -47,39 +47,55 @@ const Environment = ({
     if (environments.length === 0) return;
 
     const tempDynamicKeys = Object.keys(environments[0]).map((el) => {
-      let temp = {
-        title:
-          el !== "Environment" && el !== "envId" ? (
-            <div style={{ paddingLeft: 10 }}>
-              {el}
-              <Popconfirm
-                placement="left"
-                title={`Are you sure to delete this Column?`}
-                onConfirm={async (e) => {
-                  e.stopPropagation();
-                  await deleteColumn(el);
+      let temp = {};
+      if (el !== "Environment" && el !== "envId") {
+        temp.title = (
+          <div
+            style={{
+              paddingLeft: 10,
+              whiteSpace: "nowrap",
+              overflow: "scroll",
+            }}
+          >
+            {el}
+            <Popconfirm
+              placement="left"
+              title={`Are you sure to delete this Column?`}
+              onConfirm={async (e) => {
+                e.stopPropagation();
+                await deleteColumn(el);
+              }}
+              okText="Yes, Delete"
+              cancelText="No"
+              disabled={!editTestCasePermission}
+            >
+              <DeleteOutlined
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  fontSize: 14,
+                  marginLeft: 5,
+                  color: editTestCasePermission ? "black" : "grey",
+                  cursor: editTestCasePermission ? "pointer" : "not-allowed",
                 }}
-                okText="Yes, Delete"
-                cancelText="No"
-                disabled={!editTestCasePermission}
-              >
-                <DeleteOutlined
-                  onClick={(e) => e.stopPropagation()}
-                  style={{
-                    fontSize: 14,
-                    marginLeft: 5,
-                    color: editTestCasePermission ? "black" : "grey",
-                    cursor: editTestCasePermission ? "pointer" : "not-allowed",
-                  }}
-                />
-              </Popconfirm>
-            </div>
-          ) : (
-            el
-          ),
-        dataIndex: el,
-        // width: "100%",
-      };
+              />
+            </Popconfirm>
+          </div>
+        );
+        temp.width = 250;
+        temp.dataIndex = el;
+      } else {
+        temp.title = el;
+        temp.width = 120;
+        temp.dataIndex = el;
+      }
+      //   title:
+
+      //     ) : (
+      //       el
+      //     ),
+      //   dataIndex: el,
+      //   width: 100,
+      // };
       if (el !== "Environment") {
         temp.render = (text, record) => (
           <div style={{ minHeight: 30 }}>
@@ -204,7 +220,7 @@ const Environment = ({
               </div>
             </div>
             <Table
-              scroll={{ x: true }}
+              scroll={{ x: columns.length * 250 - 330 }}
               size="small"
               columns={columns}
               dataSource={searchedData}
