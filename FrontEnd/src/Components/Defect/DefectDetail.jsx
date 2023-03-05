@@ -39,6 +39,7 @@ const DefectDetail = ({
   const [editMode, setEditMode] = useState(false);
   useEffect(() => {
     defectId && getDefectById(defectId);
+    console.log("Saransh", defectId);
     // eslint-disable-next-line
   }, [defectId]);
 
@@ -55,7 +56,13 @@ const DefectDetail = ({
   };
 
   useEffect(() => {
-    if (!editMode || !defectId) return;
+    if (!editMode) return;
+    if (!defectId) {
+      const NewStatus = setting.status.find((el) => {
+        return el.name == "New";
+      });
+      return form.setFieldsValue({ statusId: NewStatus.id });
+    }
     form.setFieldsValue({
       title: currentDefect.title,
       description: currentDefect.description,
@@ -69,7 +76,7 @@ const DefectDetail = ({
     });
 
     // eslint-disable-next-line
-  }, [editMode]);
+  }, [editMode, defectId]);
 
   const getTime = () => {
     let startingTime = moment(currentDefect.startTime);
@@ -212,6 +219,7 @@ const DefectDetail = ({
               >
                 {editMode || !defectId ? (
                   <Select
+                    disabled={!defectId}
                     placeholder="Status"
                     style={{ width: 250 }}
                     showSearch

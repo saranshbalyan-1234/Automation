@@ -63,7 +63,15 @@ const saveDefect = async (req, res) => {
     const projectId = req.headers["x-project-id"];
     const payload = { ...req.body, reporterId: req.user.id, projectId };
 
-    const defect = await Defect.schema(req.database).create(payload);
+    const status = await DefectStatus.schema(req.database).findOne({
+      attributes: ["id"],
+      where: { name: "New" },
+    });
+
+    const defect = await Defect.schema(req.database).create({
+      ...payload,
+      statusId: status.dataValues.id,
+    });
     // createDefectLog(req, res, defect.id, [
     //   `created the defect "${req.body.name}".`,
     // ]);
