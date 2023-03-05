@@ -20,14 +20,14 @@ const execute = async (req, res) => {
   const data = await getTestStepByTestCase(req, res);
   try {
     for (let i = 0; i < req.body.bots; i++) {
-      temp(req, res, data);
+      startExecution(req, res, data);
     }
   } catch (err) {
     console.log(err);
   }
 };
 
-const temp = async (req, res, temp) => {
+const startExecution = async (req, res, temp) => {
   const executionHistory = await createExecutionHistory(req, res);
   let data = { executionHistory, data: temp };
   let driver = await createDriver(req, res);
