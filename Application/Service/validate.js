@@ -2,7 +2,7 @@ const chromeDriver = require("selenium-webdriver");
 const { until } = chromeDriver;
 const {
   updateStepResult,
-} = require("../../Controllers/executionHistoryController");
+} = require("../Controllers/executionHistoryController");
 const { findByLocator, handleActionEventError } = require("./utils");
 const validateObjectTextIncludes = async (
   step,

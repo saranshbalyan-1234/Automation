@@ -1,7 +1,7 @@
 const { handleActionEventError } = require("./utils");
 const {
   updateStepResult,
-} = require("../../Controllers/executionHistoryController");
+} = require("../Controllers/executionHistoryController");
 const waitUntilAlertPresent = async (
   step,
   driver,

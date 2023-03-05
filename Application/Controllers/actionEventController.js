@@ -1,5 +1,5 @@
 const moment = require("moment");
-const { takeScreenshot } = require("../Utils/ActionEvent/utils");
+const { takeScreenshot } = require("../Service/utils");
 const { createFolder } = require("./awsController");
 const {
   createProcessHistory,
@@ -13,7 +13,7 @@ const {
 const { getAllEnvironmentsByTestCase } = require("./environment");
 const { createDriver } = require("../Utils/driver");
 const { getTestStepByTestCase } = require("./testCaseController");
-const { handleStep } = require("../Utils/actionEvent");
+const { handleStep } = require("../Service");
 
 const execute = async (req, res) => {
   res.status(200).json({ message: "Started Execution" });

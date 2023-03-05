@@ -1,7 +1,7 @@
 const { findByLocator, handleActionEventError } = require("./utils");
 const {
   updateStepResult,
-} = require("../../Controllers/executionHistoryController");
+} = require("../Controllers/executionHistoryController");
 const moment = require("moment");
 const enterDateTime = async (
   step,

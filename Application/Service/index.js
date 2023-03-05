@@ -85,7 +85,7 @@ const {
 
 const {
   updateStepResult,
-} = require("../../Controllers/executionHistoryController");
+} = require("../Controllers/executionHistoryController");
 const { Key } = chromeDriver;
 
 const handleStep = async (
