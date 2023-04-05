@@ -20,7 +20,6 @@ function Sidebar({
   viewReusableProcessPermission,
   viewObjectBankPermission,
   viewProjectPermission,
-  viewDefectPermission,
 }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -76,12 +75,6 @@ function Sidebar({
       label: <hr className="menuDivider" />,
       key: "ManualDivider",
       type: "group",
-    },
-    {
-      label: "Defect",
-      key: "Defect",
-      icon: <BugOutlined />,
-      disabled: !currentProjectId || !viewDefectPermission,
     },
     {
       label: "Release",
