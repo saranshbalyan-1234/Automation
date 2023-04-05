@@ -22,14 +22,12 @@ function Routess({ user }) {
   );
   const viewObjectBankPermission = usePermission("Object Bank", "view");
   const viewProjectPermission = usePermission("Project", "view");
-  const viewDefectPermission = usePermission("Defect", "view");
   return user ? (
     <Layout
       viewTestCasePermission={viewTestCasePermission}
       viewReusableProcessPermission={viewReusableProcessPermission}
       viewObjectBankPermission={viewObjectBankPermission}
       viewProjectPermission={viewProjectPermission}
-      viewDefectPermission={viewDefectPermission}
     >
       <Routes>
         <Route exact path="/" element={<Dashboard />}></Route>
@@ -51,9 +49,6 @@ function Routess({ user }) {
 
         {viewObjectBankPermission && (
           <Route exact path="/objectBank/*" element={<ObjectBank />}></Route>
-        )}
-        {viewDefectPermission && (
-          <Route exact path="/Defect/*" element={<Defect />}></Route>
         )}
         <Route
           exact
