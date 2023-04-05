@@ -39,12 +39,6 @@ import TestStepHistory from "../Models/TestCase/ExecutionHistory/TestStepHistory
 import Environment from "../Models/TestCase/Environment/Environment.js";
 import Column from "../Models/TestCase/Environment/Column.js";
 
-//Defect
-import Defect from "../Models/Defect/Defect.js";
-import DefectPriority from "../Models/Defect/DefectPriority.js";
-import DefectSeverity from "../Models/Defect/DefectSeverity.js";
-import DefectStatus from "../Models/Defect/DefectStatus.js";
-import DefectStatusMapping from "../Models/Defect/DefectStatusMapping.js";
 
 dotenv.config();
 
@@ -110,13 +104,6 @@ db.testStepHistory = TestStepHistory(sequelize, DataTypes);
 //Environment
 db.enviroments = Environment(sequelize, DataTypes);
 db.columns = Column(sequelize, DataTypes);
-
-//Defect
-db.defects = Defect(sequelize, DataTypes);
-db.defectPriority = DefectPriority(sequelize, DataTypes);
-db.defectSeverity = DefectSeverity(sequelize, DataTypes);
-db.defectStatus = DefectStatus(sequelize, DataTypes);
-db.defectStatusMapping = DefectStatusMapping(sequelize, DataTypes);
 
 db.users = User(sequelize, DataTypes); //all associations
 
