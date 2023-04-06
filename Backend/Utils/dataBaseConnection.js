@@ -39,7 +39,6 @@ import TestStepHistory from "../Models/TestCase/ExecutionHistory/TestStepHistory
 import Environment from "../Models/TestCase/Environment/Environment.js";
 import Column from "../Models/TestCase/Environment/Column.js";
 
-
 dotenv.config();
 
 const sequelize = new Sequelize(

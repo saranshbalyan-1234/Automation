@@ -63,7 +63,7 @@ export default function Parameter({ currentEvent }) {
                 })}
               </Select>
             ) : (
-              <Input name="parameter1" showCount maxLength={50} />
+              <Input name="parameter1" showCount maxLength={100} />
             )}
           </Form.Item>
         </Form.Item>
@@ -127,7 +127,7 @@ export default function Parameter({ currentEvent }) {
                 })}
               </Select>
             ) : (
-              <Input name="parameter2" showCount maxLength={50} />
+              <Input name="parameter2" showCount maxLength={100} />
             )}
           </Form.Item>
         </Form.Item>
@@ -191,7 +191,7 @@ export default function Parameter({ currentEvent }) {
                 })}
               </Select>
             ) : (
-              <Input name="parameter3" showCount maxLength={50} />
+              <Input name="parameter3" showCount maxLength={100} />
             )}
           </Form.Item>
         </Form.Item>
@@ -255,7 +255,7 @@ export default function Parameter({ currentEvent }) {
                 })}
               </Select>
             ) : (
-              <Input name="parameter4" showCount maxLength={50} />
+              <Input name="parameter4" showCount maxLength={100} />
             )}
           </Form.Item>
         </Form.Item>
