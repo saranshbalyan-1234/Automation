@@ -38,6 +38,11 @@ function Sidebar({
 
   const items = [
     {
+      label: <hr className="menuDivider" />,
+      key: "DashboardDivider",
+      type: "group",
+    },
+    {
       label: "Dashboard",
       key: "Dashboard",
       icon: <DashboardOutlined />,
@@ -69,17 +74,6 @@ function Sidebar({
       key: "ObjectBank",
       icon: <BankOutlined />,
       disabled: !currentProjectId || !viewObjectBankPermission,
-    },
-    {
-      label: <hr className="menuDivider" />,
-      key: "ManualDivider",
-      type: "group",
-    },
-    {
-      label: "Release",
-      key: "Release",
-      icon: <CalendarOutlined />,
-      disabled: !currentProjectId,
     },
   ];
 
