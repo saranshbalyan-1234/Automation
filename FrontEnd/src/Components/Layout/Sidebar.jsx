@@ -3,7 +3,6 @@ import {
   DashboardOutlined,
   FileOutlined,
   BankOutlined,
-  BugOutlined,
   CalendarOutlined,
   ProjectOutlined,
 } from "@ant-design/icons";

@@ -11,7 +11,6 @@ import Project from "./Components/Project";
 import TestCase from "./Components/TestCase";
 import ReusableProcess from "./Components/ReusableProcess";
 import ObjectBank from "./Components/ObjectBank";
-import Defect from "./Components/Defect";
 import { usePermission } from "./Utils/permission";
 function Routess({ user }) {
   const location = useLocation();
