@@ -5,7 +5,6 @@ import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import axios from "axios";
 import Loading from "../../Common/Loading";
-const { Option } = Select;
 function ManageUser({
   visible,
   setVisible,
@@ -123,9 +122,9 @@ function ManageUser({
                 >
                   {availableRole.map((el, i) => {
                     return (
-                      <Option value={el.name} key={i}>
+                      <Select.Option value={el.name} key={i}>
                         {el.name}
-                      </Option>
+                      </Select.Option>
                     );
                   })}
                 </Select>

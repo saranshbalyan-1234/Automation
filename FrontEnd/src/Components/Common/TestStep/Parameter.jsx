@@ -1,7 +1,6 @@
 import React from "react";
 import { Form, Input, Select } from "antd";
 import { KeyboardButtonList, ConditionList } from "./ActionEventConstants";
-const Option = { Select };
 export default function Parameter({ currentEvent }) {
   return (
     <>
@@ -23,9 +22,9 @@ export default function Parameter({ currentEvent }) {
             }}
           >
             <Select>
-              <Option value="Static">Static</Option>
-              <Option value="Dynamic">Dynamic</Option>
-              <Option value="Environment">Environment</Option>
+              <Select.Option value="Static">Static</Select.Option>
+              <Select.Option value="Dynamic">Dynamic</Select.Option>
+              <Select.Option value="Environment">Environment</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
@@ -46,9 +45,9 @@ export default function Parameter({ currentEvent }) {
               <Select style={{ minWidth: "160px" }} showSearch>
                 {KeyboardButtonList.map((el, i) => {
                   return (
-                    <Option value={el} key={i}>
+                    <Select.Option value={el} key={i}>
                       {el}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -56,9 +55,9 @@ export default function Parameter({ currentEvent }) {
               <Select style={{ minWidth: "160px" }} showSearch>
                 {ConditionList.map((el, i) => {
                   return (
-                    <Option value={el} key={i}>
+                    <Select.Option value={el} key={i}>
                       {el}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -87,9 +86,9 @@ export default function Parameter({ currentEvent }) {
             }}
           >
             <Select>
-              <Option value="Static">Static</Option>
-              <Option value="Dynamic">Dynamic</Option>
-              <Option value="Environment">Environment</Option>
+              <Select.Option value="Static">Static</Select.Option>
+              <Select.Option value="Dynamic">Dynamic</Select.Option>
+              <Select.Option value="Environment">Environment</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
@@ -110,9 +109,9 @@ export default function Parameter({ currentEvent }) {
               <Select style={{ minWidth: "160px" }} showSearch>
                 {KeyboardButtonList.map((el, i) => {
                   return (
-                    <Option value={el} key={i}>
+                    <Select.Option value={el} key={i}>
                       {el}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -120,9 +119,9 @@ export default function Parameter({ currentEvent }) {
               <Select style={{ minWidth: "160px" }} showSearch>
                 {ConditionList.map((el, i) => {
                   return (
-                    <Option value={el} key={i}>
+                    <Select.Option value={el} key={i}>
                       {el}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -151,9 +150,9 @@ export default function Parameter({ currentEvent }) {
             }}
           >
             <Select>
-              <Option value="Static">Static</Option>
-              <Option value="Dynamic">Dynamic</Option>
-              <Option value="Environment">Environment</Option>
+              <Select.Option value="Static">Static</Select.Option>
+              <Select.Option value="Dynamic">Dynamic</Select.Option>
+              <Select.Option value="Environment">Environment</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
@@ -174,9 +173,9 @@ export default function Parameter({ currentEvent }) {
               <Select style={{ minWidth: "160px" }} showSearch>
                 {KeyboardButtonList.map((el, i) => {
                   return (
-                    <Option value={el} key={i}>
+                    <Select.Option value={el} key={i}>
                       {el}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -184,9 +183,9 @@ export default function Parameter({ currentEvent }) {
               <Select style={{ minWidth: "160px" }} showSearch>
                 {ConditionList.map((el, i) => {
                   return (
-                    <Option value={el} key={i}>
+                    <Select.Option value={el} key={i}>
                       {el}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -215,9 +214,9 @@ export default function Parameter({ currentEvent }) {
             }}
           >
             <Select>
-              <Option value="Static">Static</Option>
-              <Option value="Dynamic">Dynamic</Option>
-              <Option value="Environment">Environment</Option>
+              <Select.Option value="Static">Static</Select.Option>
+              <Select.Option value="Dynamic">Dynamic</Select.Option>
+              <Select.Option value="Environment">Environment</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
@@ -238,9 +237,9 @@ export default function Parameter({ currentEvent }) {
               <Select style={{ minWidth: "160px" }} showSearch>
                 {KeyboardButtonList.map((el, i) => {
                   return (
-                    <Option value={el} key={i}>
+                    <Select.Option value={el} key={i}>
                       {el}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -248,9 +247,9 @@ export default function Parameter({ currentEvent }) {
               <Select style={{ minWidth: "160px" }} showSearch>
                 {ConditionList.map((el, i) => {
                   return (
-                    <Option value={el} key={i}>
+                    <Select.Option value={el} key={i}>
                       {el}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>

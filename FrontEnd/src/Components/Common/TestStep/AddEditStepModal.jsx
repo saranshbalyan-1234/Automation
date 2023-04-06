@@ -20,7 +20,6 @@ import { saveObject } from "../../../Redux/Actions/object";
 import ReactQuill from "react-quill";
 import Loading from "../Loading";
 import Parameter from "./Parameter";
-const Option = { Select };
 const AddEditStepModal = ({
   visible,
   setVisible,
@@ -43,6 +42,7 @@ const AddEditStepModal = ({
   setEdit = () => {},
   currentTestCaseId,
   actionEvents,
+  getActionEvents,
 }) => {
   const [currentEvent, setCurrentEvent] = useState({});
   const [addObjectModal, setAddObjectModal] = useState(false);
@@ -301,9 +301,9 @@ const AddEditStepModal = ({
               >
                 {actionEvents.map((el, i) => {
                   return (
-                    <Option value={el.name} key={i}>
+                    <Select.Option value={el.name} key={i}>
                       {el.name}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -323,9 +323,9 @@ const AddEditStepModal = ({
                 <Select style={{ minWidth: "160px" }} showSearch>
                   {objectList.map((el, i) => {
                     return (
-                      <Option value={el.id} key={i}>
+                      <Select.Option value={el.id} key={i}>
                         {el.name}
-                      </Option>
+                      </Select.Option>
                     );
                   })}
                 </Select>

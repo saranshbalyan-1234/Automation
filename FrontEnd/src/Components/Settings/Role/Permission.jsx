@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Loading from "../../Common/Loading";
-const { Option } = Select;
 
 export const Permission = ({
   updateRolePermission,
@@ -106,9 +105,9 @@ export const Permission = ({
               >
                 {availablePermission.map((el, i) => {
                   return (
-                    <Option value={el.name} key={i}>
+                    <Select.Option value={el.name} key={i}>
                       {el.name}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>

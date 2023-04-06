@@ -4,7 +4,6 @@ import { addObjectLocator } from "../../Redux/Actions/object";
 import { connect } from "react-redux";
 import locatorTypes from "./locatorTypes";
 import Loading from "../Common/Loading";
-const { Option } = Select;
 const AddLocatorsModal = ({
   visible,
   setVisible,
@@ -49,9 +48,9 @@ const AddLocatorsModal = ({
             <Select>
               {locatorTypes.map((el, i) => {
                 return (
-                  <Option value={el} key={i}>
+                  <Select.Option value={el} key={i}>
                     {el}
-                  </Option>
+                  </Select.Option>
                 );
               })}
             </Select>

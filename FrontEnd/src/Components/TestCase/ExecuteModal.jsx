@@ -5,7 +5,6 @@ import { executeTestCase } from "../../Redux/Actions/testCase";
 import ReactQuill from "react-quill";
 import Loading from "../Common/Loading";
 import axios from "axios";
-const { Option } = Select;
 const ExecuteModal = ({
   visible,
   setVisible,
@@ -87,9 +86,9 @@ const ExecuteModal = ({
               <Select showSearch style={{ minWidth: "160px" }}>
                 {allEnvironments.map((el, i) => {
                   return (
-                    <Option value={el.id} key={i}>
+                    <Select.Option value={el.id} key={i}>
                       {el.name}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>

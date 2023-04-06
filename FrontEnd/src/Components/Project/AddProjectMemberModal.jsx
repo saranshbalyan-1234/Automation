@@ -3,7 +3,6 @@ import { Form, Modal, Button, Select, Tooltip } from "antd";
 import { addMember } from "../../Redux/Actions/project";
 import { connect } from "react-redux";
 import Loading from "../Common/Loading";
-const { Option } = Select;
 const AddProjectMemberModal = ({
   visible,
   setVisible,
@@ -80,9 +79,9 @@ const AddProjectMemberModal = ({
             >
               {availableMembers.map((el, i) => {
                 return (
-                  <Option value={el.id} key={i}>
+                  <Select.Option value={el.id} key={i}>
                     <Tooltip title={el.email}>{el.name}</Tooltip>
-                  </Option>
+                  </Select.Option>
                 );
               })}
             </Select>

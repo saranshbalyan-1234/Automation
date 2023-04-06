@@ -147,6 +147,7 @@ const getAllObject = async (req, res) => {
         "tags",
         "createdByUser",
       ],
+      order: [["name", "ASC"]],
     });
 
     return res.status(200).json(objects);
