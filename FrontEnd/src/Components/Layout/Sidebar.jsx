@@ -3,7 +3,6 @@ import {
   DashboardOutlined,
   FileOutlined,
   BankOutlined,
-  CalendarOutlined,
   ProjectOutlined,
 } from "@ant-design/icons";
 import { VscDebugRestart } from "react-icons/vsc";

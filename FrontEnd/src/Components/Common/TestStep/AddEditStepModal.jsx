@@ -9,13 +9,13 @@ import {
 } from "../../../Redux/Actions/testCase";
 import { getStepEditedLogs } from "../../../Utils/logs";
 import { getObjectByProject } from "../../../Redux/Actions/object";
+import { getActionEvents } from "../../../Redux/Actions/testCase";
 import {
   addReusableStep,
   editReusableStep,
   createReusableProcessLogs,
 } from "../../../Redux/Actions/reusableProcess";
 import AddEditObjectModal from "../../ObjectBank/AddEditObjectModal";
-import axios from "axios";
 import { saveObject } from "../../../Redux/Actions/object";
 import ReactQuill from "react-quill";
 import Loading from "../Loading";
@@ -42,31 +42,31 @@ const AddEditStepModal = ({
   saveObject,
   setEdit = () => {},
   currentTestCaseId,
+  actionEvents,
 }) => {
-  const [actionEvent, setActionEvent] = useState([]);
   const [currentEvent, setCurrentEvent] = useState({});
   const [addObjectModal, setAddObjectModal] = useState(false);
 
   const [form] = Form.useForm();
 
   useEffect(() => {
-    axios.get("/global/actionEvent").then((res) => {
-      setActionEvent(res.data);
+    if (actionEvents.length === 0) getActionEvents();
+    else {
       if (edit)
         setCurrentEvent(
-          res.data.find((el) => {
+          actionEvents.find((el) => {
             return el.name === editData.actionEvent;
           })
         );
       else
         setCurrentEvent(
-          res.data.find((el) => {
+          actionEvents.find((el) => {
             return el.name === "Launch Website";
           })
         );
-    });
+    }
     // eslint-disable-next-line
-  }, [edit]);
+  }, [edit, actionEvents]);
 
   useEffect(() => {
     edit &&
@@ -293,13 +293,13 @@ const AddEditStepModal = ({
                 style={{ minWidth: "160px" }}
                 onChange={(e) =>
                   setCurrentEvent(
-                    actionEvent.find((el) => {
+                    actionEvents.find((el) => {
                       return el.name === e;
                     })
                   )
                 }
               >
-                {actionEvent.map((el, i) => {
+                {actionEvents.map((el, i) => {
                   return (
                     <Option value={el.name} key={i}>
                       {el.name}
@@ -386,6 +386,7 @@ const mapStateToProps = (state) => ({
   currentTestCaseId: state.testCase.currentTestCase.id,
   objectList: state.objectBank.data,
   objectLoading: state.objectBank.loading,
+  actionEvents: state.testCase.actionEvents,
 });
 const mapDispatchToProps = {
   addProcess,
@@ -395,6 +396,7 @@ const mapDispatchToProps = {
   editReusableStep,
   getObjectByProject,
   saveObject,
+  getActionEvents,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditStepModal);

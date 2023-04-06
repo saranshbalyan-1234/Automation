@@ -15,6 +15,7 @@ import {
   EDIT_STEP,
   DELETE_STEP,
   GET_TEST_CASE_LOGS,
+  GET_ACTION_EVENTS,
 } from "../Actions/action-types";
 import { getDetailsEditedLogs } from "../../Utils/logs";
 import { createReusableProcessLogs } from "./reusableProcess";
@@ -245,7 +246,7 @@ export const deleteStep = (testStepId, step, process, reusableProcess) => {
       let currentTestCaseId = getState().testCase.currentTestCase?.id;
       if (reusableProcess) {
         createTestCaseLogs(currentTestCaseId, [
-          `deleted step from position ${step} from reusablePpocess ${reusableProcess.name} or process "${process.name}`,
+          `deleted step from position ${step} from reusableProcess ${reusableProcess.name} or process "${process.name}`,
         ]);
       } else {
         createTestCaseLogs(currentTestCaseId, [
@@ -284,6 +285,21 @@ export const getTestCaseLogsById = (id) => {
       dispatch({ type: TEST_CASE_REQUEST });
       const { data } = await axios.get(`/testCase/${id}/logs`);
       dispatch({ type: GET_TEST_CASE_LOGS, payload: data });
+      return true;
+    } catch (err) {
+      dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const getActionEvents = (payload) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: TEST_CASE_REQUEST });
+
+      const { data } = await axios.get(`/global/actionEvent`);
+      dispatch({ type: GET_ACTION_EVENTS, payload: data });
       return true;
     } catch (err) {
       dispatch({ type: TEST_CASE_FAILURE });

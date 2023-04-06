@@ -10,6 +10,7 @@ import UserAvatar from "../Common/Avatar";
 import moment from "moment";
 import AddEditObjectModal from "./AddEditObjectModal";
 import { usePermission } from "../../Utils/permission";
+import Loading from "../Common/Loading";
 const { Meta } = Card;
 const { Title } = Typography;
 const ObjectDetails = ({
@@ -45,7 +46,7 @@ const ObjectDetails = ({
   return (
     <div style={{ paddingTop: 20 }}>
       {currentObject && (
-        <>
+        <Loading loading={loading}>
           <Card>
             <div
               style={{
@@ -129,7 +130,7 @@ const ObjectDetails = ({
             )}
             <Locators locators={currentObject.locators} history={history} />
           </div>
-        </>
+        </Loading>
       )}
       {addLocatorModal && (
         <AddLocatorsModal
