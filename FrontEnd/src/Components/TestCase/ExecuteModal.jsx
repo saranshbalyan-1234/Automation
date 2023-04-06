@@ -83,7 +83,11 @@ const ExecuteModal = ({
                 },
               ]}
             >
-              <Select showSearch style={{ minWidth: "160px" }}>
+              <Select
+                showSearch
+                style={{ minWidth: "160px" }}
+                optionFilterProp="children"
+              >
                 {allEnvironments.map((el, i) => {
                   return (
                     <Select.Option value={el.id} key={i}>

@@ -38,7 +38,7 @@ function Sidebar({
   const items = [
     {
       label: <hr className="menuDivider" />,
-      key: "DashboardDivider",
+      key: "DashboardDivider1",
       type: "group",
     },
     {
@@ -53,7 +53,7 @@ function Sidebar({
     },
     {
       label: <hr className="menuDivider" />,
-      key: "DashboardDivider",
+      key: "DashboardDivider2",
       type: "group",
     },
     {

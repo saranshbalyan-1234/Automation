@@ -147,7 +147,7 @@ export const ProjectDetails = ({
       ),
     },
   ];
-  if (loading) return null;
+  // if (loading) return null;
   return (
     <div style={{ paddingTop: 20 }}>
       <Loading loading={loading}>

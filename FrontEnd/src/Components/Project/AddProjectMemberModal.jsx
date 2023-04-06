@@ -76,6 +76,17 @@ const AddProjectMemberModal = ({
               placeholder="Select an user"
               style={{ minWidth: "160px" }}
               showSearch
+              optionFilterProp="children"
+              filterOption={(input, option) => {
+                return (
+                  option.children.props.title
+                    .toLowerCase()
+                    .includes(input.toLowerCase()) ||
+                  option.children.props.children
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                );
+              }}
             >
               {availableMembers.map((el, i) => {
                 return (

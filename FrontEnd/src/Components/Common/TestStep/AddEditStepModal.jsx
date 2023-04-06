@@ -320,7 +320,11 @@ const AddEditStepModal = ({
                   },
                 ]}
               >
-                <Select style={{ minWidth: "160px" }} showSearch>
+                <Select
+                  style={{ minWidth: "160px" }}
+                  showSearch
+                  optionFilterProp="children"
+                >
                   {objectList.map((el, i) => {
                     return (
                       <Select.Option value={el.id} key={i}>
