@@ -61,20 +61,17 @@ function Profile({ user, deleteCustomer }) {
           )}
         </Card>
       </Badge.Ribbon>
-      {
-        // !user.customerAdmin &&
-        true && (
-          <Badge.Ribbon text={"My Roles"}>
-            <div style={{ paddingTop: "10px" }}>
-              {user.roles.length > 0 ? (
-                <Role loading={false} data={user.roles} profile={true} />
-              ) : (
-                <Empty description="No Role Assigned." />
-              )}
-            </div>
-          </Badge.Ribbon>
-        )
-      }
+      {!user.customerAdmin && (
+        <Badge.Ribbon text={"My Roles"}>
+          <div style={{ paddingTop: "10px" }}>
+            {user.roles.length > 0 ? (
+              <Role loading={false} data={user.roles} profile={true} />
+            ) : (
+              <Empty description="No Role Assigned." />
+            )}
+          </div>
+        </Badge.Ribbon>
+      )}
       {editProfileImage && (
         <UploadProfileImage
           visible={editProfileImage}

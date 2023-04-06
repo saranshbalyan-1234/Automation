@@ -11,6 +11,7 @@ import {
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ManageUserModal from "./ManageUserModal";
 import Loading from "../../Common/Loading";
+import { usePermission } from "../../../Utils/permission";
 export const Team = ({
   team,
   loading,
@@ -24,6 +25,8 @@ export const Team = ({
   editUserId,
   setEditUserId,
 }) => {
+  const editTeamPermission = usePermission("Team", "edit");
+  const deleteTeamPermission = usePermission("Team", "delete");
   useEffect(() => {
     getTeam();
     // eslint-disable-next-line
@@ -102,6 +105,7 @@ export const Team = ({
                     checked={item.active}
                     checkedChildren="Active"
                     unCheckedChildren="Inactive"
+                    disabled={!editTeamPermission}
                   />
                   <Button
                     type="primary"
@@ -111,6 +115,7 @@ export const Team = ({
                       await setEditUserId(item.id);
                       setManageUserModal(true);
                     }}
+                    disabled={!editTeamPermission}
                   >
                     <EditOutlined /> Manage User
                   </Button>
@@ -123,8 +128,14 @@ export const Team = ({
                     }}
                     okText="Yes, Remove"
                     cancelText="No"
+                    disabled={!deleteTeamPermission}
                   >
-                    <Button danger ghost size="small">
+                    <Button
+                      danger
+                      ghost
+                      size="small"
+                      disabled={!deleteTeamPermission}
+                    >
                       <DeleteOutlined /> Remove User
                     </Button>
                   </Popconfirm>
@@ -139,6 +150,7 @@ export const Team = ({
             visible={manageUserModal}
             setVisible={setManageUserModal}
             userId={editUserId}
+            editTeamPermission={editTeamPermission}
           />
         )}
       </div>

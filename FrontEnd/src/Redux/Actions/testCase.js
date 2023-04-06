@@ -15,9 +15,10 @@ import {
   EDIT_STEP,
   DELETE_STEP,
   GET_TEST_CASE_LOGS,
+  GET_ACTION_EVENTS,
 } from "../Actions/action-types";
 import { getDetailsEditedLogs } from "../../Utils/logs";
-
+import { createReusableProcessLogs } from "./reusableProcess";
 export const getTestCaseByProject = (payload) => {
   return async (dispatch, getState) => {
     try {
@@ -231,17 +232,31 @@ export const editStep = (payload) => {
   };
 };
 
-export const deleteStep = (testStepId, step, processId) => {
-  return async (dispatch) => {
+export const deleteStep = (testStepId, step, process, reusableProcess) => {
+  return async (dispatch, getState) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
 
       await axios.delete(`/testStep/${testStepId}`);
       dispatch({
         type: DELETE_STEP,
-        payload: { testStepId, processId, step },
+        payload: { testStepId, processId: process?.id, step },
       });
 
+      let currentTestCaseId = getState().testCase.currentTestCase?.id;
+      if (reusableProcess) {
+        createTestCaseLogs(currentTestCaseId, [
+          `deleted step from position ${step} from reusableProcess ${reusableProcess.name} or process "${process.name}`,
+        ]);
+      } else {
+        createTestCaseLogs(currentTestCaseId, [
+          `deleted step from position ${step} from process ${process.name}`,
+        ]);
+      }
+      reusableProcess &&
+        createReusableProcessLogs(reusableProcess?.id, [
+          `deleted step from position ${step}`,
+        ]);
       return true;
     } catch (err) {
       console.log(err);
@@ -270,6 +285,21 @@ export const getTestCaseLogsById = (id) => {
       dispatch({ type: TEST_CASE_REQUEST });
       const { data } = await axios.get(`/testCase/${id}/logs`);
       dispatch({ type: GET_TEST_CASE_LOGS, payload: data });
+      return true;
+    } catch (err) {
+      dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+
+export const getActionEvents = (payload) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: TEST_CASE_REQUEST });
+
+      const { data } = await axios.get(`/global/actionEvent`);
+      dispatch({ type: GET_ACTION_EVENTS, payload: data });
       return true;
     } catch (err) {
       dispatch({ type: TEST_CASE_FAILURE });

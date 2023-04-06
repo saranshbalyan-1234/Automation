@@ -10,7 +10,6 @@ import { getReusableProcessByProject } from "../../../Redux/Actions/reusableProc
 import ReactQuill from "react-quill";
 import Loading from "../../Common/Loading";
 import { getDetailsEditedLogs } from "../../../Utils/logs";
-const { Option } = Select;
 const AddEditProcessModal = ({
   visible,
   setVisible,
@@ -123,9 +122,9 @@ const AddEditProcessModal = ({
                 <Select style={{ minWidth: "160px" }}>
                   {reusableProcesses.map((el, i) => {
                     return (
-                      <Option value={el.id} key={i}>
+                      <Select.Option value={el.id} key={i}>
                         {el.name}
-                      </Option>
+                      </Select.Option>
                     );
                   })}
                 </Select>

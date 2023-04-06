@@ -51,11 +51,7 @@ const ViewExecutionHistoryModal = ({
                   </Title>
                   <div style={{ color: "black", fontWeight: 600 }}>
                     Executed By &nbsp;
-                    {currentExecutionHistory.executedBy && (
-                      <UserAvatar
-                        user={currentExecutionHistory.executedBy.id}
-                      />
-                    )}
+                    <UserAvatar user={currentExecutionHistory.executedByUser} />
                   </div>
                 </div>
               }
@@ -159,6 +155,20 @@ const ViewExecutionHistoryModal = ({
               <div> Continue On Error</div>
               <div>
                 {currentExecutionHistory.continueOnError ? (
+                  <CheckOutlined />
+                ) : (
+                  <CloseOutlined />
+                )}
+              </div>
+            </Tag>
+
+            <Tag
+              color={currentExecutionHistory.headless ? "#1677ff" : "#cd201f"}
+              className="row"
+            >
+              <div>Headless</div>
+              <div>
+                {currentExecutionHistory.headless ? (
                   <CheckOutlined />
                 ) : (
                   <CloseOutlined />

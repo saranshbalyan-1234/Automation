@@ -62,9 +62,7 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
                     <div style={{ color: "black" }}>
                       Created On &nbsp;
                       {moment(details.createdAt).format("DD/MM/YY")} By &nbsp;
-                      {details.createdBy && (
-                        <UserAvatar user={details.createdBy.id} />
-                      )}
+                      <UserAvatar user={details.createdByUser} />
                     </div>
                   </div>
                 }

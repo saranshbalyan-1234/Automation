@@ -30,17 +30,21 @@ const getMyProject = async (req, res) => {
             {
               model: UserProject.schema(req.database),
               as: "members",
+              paranoid: false,
               include: [
                 {
                   model: User.schema(req.database),
-                  attributes: ["id", "name", "email", "active", "profileImage"],
+                  attributes: [
+                    "id",
+                    "name",
+                    "email",
+                    "active",
+                    "profileImage",
+                    "deletedAt",
+                  ],
+                  paranoid: false,
                 },
               ],
-            },
-            {
-              model: User.schema(req.database),
-              as: "createdBy",
-              attributes: ["id", "name", "email", "active", "profileImage"],
             },
           ],
         },
@@ -84,22 +88,27 @@ const getProjectById = async (req, res) => {
         "startDate",
         "endDate",
         "createdAt",
+        "createdByUser",
       ],
       include: [
         {
           model: UserProject.schema(req.database),
           as: "members",
+          paranoid: false,
           include: [
             {
               model: User.schema(req.database),
-              attributes: ["id", "name", "email", "active", "verifiedAt"],
+              attributes: [
+                "id",
+                "name",
+                "email",
+                "active",
+                "verifiedAt",
+                "deletedAt",
+              ],
+              paranoid: false,
             },
           ],
-        },
-        {
-          model: User.schema(req.database),
-          as: "createdBy",
-          attributes: ["id", "name", "email", "active", "profileImage"],
         },
       ],
     });

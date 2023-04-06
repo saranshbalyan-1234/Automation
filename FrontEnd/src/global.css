@@ -50,3 +50,11 @@ h5 {
   background-color: #021d36;
   border-radius: 15px;
 }
+.menuDivider {
+  border: 1px solid grey !important;
+  margin-top: -5px !important;
+}
+
+.ant-form-item {
+  margin-bottom: 15px !important;
+}

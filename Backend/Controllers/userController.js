@@ -10,7 +10,6 @@ import {
 } from "../Utils/Validations/user.js";
 import { s3 } from "./awsController.js";
 import { idValidation } from "../Utils/Validations/index.js";
-
 import { deleteBucket } from "./awsController.js";
 import { registerValidation } from "../Utils/Validations/auth.js";
 import { uploadFile } from "./awsController.js";

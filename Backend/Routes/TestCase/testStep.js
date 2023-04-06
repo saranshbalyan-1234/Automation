@@ -7,7 +7,7 @@ import {
 import { validatePermission } from "../../Utils/Middlewares/permissions.js";
 const Router = express.Router();
 
-Router.post("/", validatePermission("Test Case", "edit"), saveTestStep);
+Router.post("/", saveTestStep);
 Router.put(
   "/:testStepId",
   validatePermission("Test Case", "edit"),

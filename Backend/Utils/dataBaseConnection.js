@@ -35,9 +35,10 @@ import ExecutionHistory from "../Models/TestCase/ExecutionHistory/ExecutionHisto
 import ProcessHistory from "../Models/TestCase/ExecutionHistory/ProcessHistory.js";
 import TestStepHistory from "../Models/TestCase/ExecutionHistory/TestStepHistory.js";
 
-//Env Table
+//Environment
 import Environment from "../Models/TestCase/Environment/Environment.js";
 import Column from "../Models/TestCase/Environment/Column.js";
+
 dotenv.config();
 
 const sequelize = new Sequelize(
@@ -111,8 +112,6 @@ db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
 
-// await db.reusableProcessLogs
-//   .schema("saranshbalyan123gmailcom")
-//   .sync({ force: true });
+// await db.defects.schema("saranshbalyan123gmailcom").sync({ force: true });
 
 export default db;

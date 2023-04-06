@@ -11,7 +11,14 @@ import {
 import ViewObjectModal from "./ViewObjectModal";
 import ViewParameterModal from "./ViewParameterModal";
 import ViewCommentModal from "./ViewCommentModal";
+import { usePermission } from "../../../Utils/permission";
 const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
+  const editTestCasePermission = usePermission("Test Case", "edit");
+  const editReusableProcessPermission = usePermission(
+    "Reusable Process",
+    "edit"
+  );
+
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [viewParameterModal, setViewParameterModal] = useState(false);
   const [parameters, setParameters] = useState([]);
@@ -24,14 +31,16 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
   const columns = [
     {
       title: "",
-      width: 50,
+      width: 40,
       dataIndex: "action",
       render: (text, record) => (
         <div className="pointer">
           <StepMenu
-            processId={process?.id}
-            reusableProcessId={reusableProcess?.id}
+            process={process}
+            reusableProcess={reusableProcess}
             testStep={record}
+            editTestCasePermission={editTestCasePermission}
+            editReusableProcessPermission={editReusableProcessPermission}
           />
         </div>
       ),
@@ -134,13 +143,35 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
       ),
     },
     {
-      title: "Actions",
+      title: "",
       width: 100,
       dataIndex: "editDelete",
       render: (text, record) => (
         <div style={{ display: "flex", gap: 10, cursor: "pointer" }}>
           <EditOutlined
+            style={{
+              cursor: reusableProcess
+                ? editReusableProcessPermission
+                  ? "pointer"
+                  : "not-allowed"
+                : editTestCasePermission
+                ? "pointer"
+                : "not-allowed",
+              color: reusableProcess
+                ? editReusableProcessPermission
+                  ? "black"
+                  : "grey"
+                : editTestCasePermission
+                ? "black"
+                : "grey",
+            }}
             onClick={() => {
+              if (
+                reusableProcess
+                  ? !editReusableProcessPermission
+                  : !editTestCasePermission
+              )
+                return;
               setEditData(record);
               setAddEditStepModal(true);
             }}
@@ -149,14 +180,39 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
             placement="left"
             title="Are you sure to remove this step?"
             onConfirm={async () => {
-              if (process?.id)
-                await deleteStep(record.id, record.step, process?.id);
-              else deleteStep(record.id, record.step);
+              await deleteStep(
+                record.id,
+                record.step,
+                process,
+                reusableProcess
+              );
             }}
             okText="Yes, Remove"
             cancelText="No"
+            disabled={
+              reusableProcess
+                ? !editReusableProcessPermission
+                : !editTestCasePermission
+            }
           >
-            <DeleteOutlined />
+            <DeleteOutlined
+              style={{
+                cursor: reusableProcess
+                  ? editReusableProcessPermission
+                    ? "pointer"
+                    : "not-allowed"
+                  : editTestCasePermission
+                  ? "pointer"
+                  : "not-allowed",
+                color: reusableProcess
+                  ? editReusableProcessPermission
+                    ? "black"
+                    : "grey"
+                  : editTestCasePermission
+                  ? "black"
+                  : "grey",
+              }}
+            />
           </Popconfirm>
         </div>
       ),

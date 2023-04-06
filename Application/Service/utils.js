@@ -1,9 +1,9 @@
 const chromeDriver = require("selenium-webdriver");
 const { By } = chromeDriver;
-const { uploadFile } = require("../../Controllers/awsController");
+const { uploadFile } = require("../Controllers/awsController");
 const {
   updateStepResult,
-} = require("../../Controllers/executionHistoryController");
+} = require("../Controllers/executionHistoryController");
 const findByLocator = async (locators) => {
   // ClassName
   // CSS

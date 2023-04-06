@@ -2,8 +2,8 @@ const chrome = require("selenium-webdriver/chrome");
 
 const createDriver = async (req, res) => {
   try {
-    return createLocalDriver();
-    // return createApplicationDriver();
+    return createLocalDriver(req);
+    // return createApplicationDriver(req);
   } catch (e) {
     console.log(e);
     let error = "";
@@ -23,7 +23,7 @@ const createDriver = async (req, res) => {
   }
 };
 
-const createLocalDriver = () => {
+const createLocalDriver = (req) => {
   let newExecutablePath = "";
   newExecutablePath = process.cwd() + "/chromedriver";
 
@@ -31,10 +31,19 @@ const createLocalDriver = () => {
 
   let options = new chrome.Options();
 
+  if (req.body.headless) options.addArguments("--headless");
+  options.addArguments("start-maximized");
+  options.addArguments("disable-infobars");
+  options.addArguments("--disable-extensions");
+  options.addArguments("--no-sandbox");
+  options.addArguments("--disable-application-cache");
+  options.addArguments("--disable-gpu");
+  options.addArguments("--disable-dev-shm-usage");
+
   return chrome.Driver.createSession(options, service);
 };
 
-const createApplicationDriver = () => {
+const createApplicationDriver = (req) => {
   let newExecutablePath = "";
   let executablePath = process.execPath.split("/");
   executablePath[executablePath.length - 1] = "chromedriver";
@@ -43,7 +52,8 @@ const createApplicationDriver = () => {
   let service = new chrome.ServiceBuilder(newExecutablePath).build();
 
   let options = new chrome.Options();
-
+  if (req.body.headless) options.addArguments("--headless");
+  options.addArguments("--no-sandbox");
   return chrome.Driver.createSession(options, service);
 };
 

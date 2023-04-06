@@ -24,6 +24,8 @@ const {
   newWindow,
   closeBrowser,
   maximizeBrowser,
+  switchToTab,
+  switchToDefaultTab,
 } = require("./browser");
 const {
   enterDateTime,
@@ -83,7 +85,7 @@ const {
 
 const {
   updateStepResult,
-} = require("../../Controllers/executionHistoryController");
+} = require("../Controllers/executionHistoryController");
 const { Key } = chromeDriver;
 
 const handleStep = async (
@@ -189,6 +191,25 @@ const handleStep = async (
       break;
     case "Maximize Browser":
       return await await maximizeBrowser(
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Switch To Tab":
+      return await switchToTab(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Switch To Default Tab":
+      return await switchToDefaultTab(
         driver,
         processResult,
         req,
@@ -1010,6 +1031,16 @@ const handleStep = async (
         output
       );
       break;
+    case "Throw Error":
+      return await throwError(
+        step,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+
     default:
       break;
   }
@@ -1811,6 +1842,28 @@ const calculateAndStore = async (
     output[step.testParameters.Output] = result;
 
     return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const throwError = async (
+  step,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Throwing Error");
+  try {
+    const message = step.testParameters.Message;
+    throw new Error(message);
   } catch (err) {
     return await handleActionEventError(
       err,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Popconfirm, Button, Tag } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import AddEditModal from "./AddEditModal";
 import UserAvatar from "./Avatar";
@@ -17,13 +17,15 @@ const List = ({
   link,
   getList = () => {},
   currentProjectId,
+  addPermission,
+  deletePermission,
 }) => {
   const navigate = useNavigate();
   const [addEditModal, setAddEditModal] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
   useEffect(() => {
     getList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentProjectId]);
 
   useEffect(() => {
@@ -64,23 +66,14 @@ const List = ({
     {
       title: "Created At",
       dataIndex: "createdBy",
-      width: 250,
+      width: 230,
       render: (_, record) => (
         <div>
-          {moment(record.createdAt).format("DD/MM/YYYY h:mm:ss a")} By &nbsp;
-          {record.createdBy && <UserAvatar user={record.createdBy.id} />}
+          {moment(record.createdAt).format("DD/MM/YYYY hh:mm a")} By &nbsp;
+          <UserAvatar user={record.createdByUser} />
         </div>
       ),
     },
-
-    // {
-    //   title: "Last Updated",
-    //   key: "updatedAt",
-    //   width: 190,
-    //   render: (_, record) => (
-    //     <div>{moment(record.updatedAt).format("DD/MM/YYYY h:mm:ss a")}</div>
-    //   ),
-    // },
 
     {
       title: "",
@@ -97,10 +90,15 @@ const List = ({
             }}
             okText="Yes, Delete"
             cancelText="No"
+            disabled={!deletePermission}
           >
             <DeleteOutlined
               onClick={(e) => e.stopPropagation()}
-              style={{ fontSize: 17 }}
+              style={{
+                fontSize: 17,
+                cursor: deletePermission ? "pointer" : "not-allowed",
+                color: deletePermission ? "black" : "grey",
+              }}
             />
           </Popconfirm>
         </div>
@@ -130,8 +128,9 @@ const List = ({
             onClick={() => {
               setAddEditModal(true);
             }}
+            disabled={!addPermission}
           >
-            New {name}
+            <PlusOutlined /> New {name}
           </Button>
         </div>
         <Table

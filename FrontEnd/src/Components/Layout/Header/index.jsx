@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Layout, Dropdown, Menu, message } from "antd";
 import ProfileMenu from "./ProfileMenu";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CaretDownOutlined, ProjectOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { getAllProject, getProjectById } from "../../../Redux/Actions/project";
@@ -18,6 +18,7 @@ const Headers = ({
   getTeam,
 }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   useEffect(() => {
     getProject();
     getTeam();
@@ -35,6 +36,7 @@ const Headers = ({
         await getProjectById(data[0].id);
       } else {
         message.error("No project found!");
+        navigate("/project");
       }
     }
   };

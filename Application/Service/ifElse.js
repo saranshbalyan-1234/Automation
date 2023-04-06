@@ -1,6 +1,6 @@
 const {
   updateStepResult,
-} = require("../../Controllers/executionHistoryController");
+} = require("../Controllers/executionHistoryController");
 const chromeDriver = require("selenium-webdriver");
 const { findByLocator, handleActionEventError } = require("./utils");
 const { until } = chromeDriver;

@@ -1,6 +1,6 @@
 const {
   updateStepResult,
-} = require("../../Controllers/executionHistoryController");
+} = require("../Controllers/executionHistoryController");
 const { handleActionEventError } = require("./utils");
 
 const ConvertToString = async (

@@ -12,27 +12,43 @@ import { createBucket } from "./awsController.js";
 import getError from "../Utils/sequelizeError.js";
 import moment from "moment";
 import { s3 } from "./awsController.js";
-const User = db.users;
-const UserRole = db.userRoles;
-const Permission = db.permissions;
-const Role = db.roles;
-const Customer = db.customers;
+
+//Main
 const Tenant = db.tenants;
+const Customer = db.customers;
 const Unverified = db.unverifieds;
+
+//Tenant
+const User = db.users;
+const Role = db.roles;
+const Permission = db.permissions;
+const UserRole = db.userRoles;
 const Project = db.projects;
 const UserProject = db.userProjects;
+
+//TestCase
 const TestCase = db.testCases;
-const Object = db.objects;
+const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const Process = db.process;
-const TestParameter = db.testParameters;
 const ReusableProcess = db.reusableProcess;
+const TestCaseLog = db.testCaseLogs;
+const ReusableProcessLog = db.reusableProcessLogs;
+
+//Object
+const Object = db.objects;
 const ObjectLocator = db.ObjectLocators;
+const ObjectLog = db.objectLogs;
+
+//Execution History
 const ExecutionHistory = db.executionHistory;
 const ProcessHistory = db.processHistory;
 const TestStepHistory = db.testStepHistory;
+
+//Environment
 const Environment = db.enviroments;
 const Column = db.columns;
+
 const register = async (req, res) => {
   /*  #swagger.tags = ["Auth"] */
   try {
@@ -88,10 +104,12 @@ const login = async (req, res) => {
             {
               model: Role.schema(tenant),
               attributes: ["name"],
-            },
-            {
-              model: Permission.schema(tenant),
-              attributes: ["name", "view", "add", "edit", "delete"],
+              include: [
+                {
+                  model: Permission.schema(tenant),
+                  attributes: ["name", "view", "add", "edit", "delete"],
+                },
+              ],
             },
           ],
         },
@@ -107,10 +125,10 @@ const login = async (req, res) => {
 
     let allPermissions = [];
     const newRoles = await user.userRoles.map((el) => {
-      allPermissions = [...allPermissions, ...el.permissions];
+      allPermissions = [...allPermissions, ...el.role.permissions];
       let tempRole = {};
       tempRole.name = el.role.name;
-      tempRole.permissions = el.permissions;
+      tempRole.permissions = el.role.permissions;
       return tempRole;
     });
 
@@ -152,6 +170,7 @@ const login = async (req, res) => {
       profileImage: profileImage ? base64ProfileImage : "",
       customerAdmin,
       defaultProjectId,
+      verifiedAt,
       roles: newRoles,
       accessToken,
       refreshToken,
@@ -236,6 +255,19 @@ const verifyCustomer = async (req, res) => {
         });
 
         await Column.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+
+        await ObjectLog.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+        await TestCaseLog.schema(database).sync({
+          force: true,
+          alter: true,
+        });
+        await ReusableProcessLog.schema(database).sync({
           force: true,
           alter: true,
         });

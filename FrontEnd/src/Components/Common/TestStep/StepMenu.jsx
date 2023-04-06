@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import { Dropdown, Menu } from "antd";
 import { PlusOutlined, SettingOutlined } from "@ant-design/icons";
 import AddEditStepModal from "./AddEditStepModal";
-
-export default function StepMenu({ processId, testStep, reusableProcessId }) {
+export default function StepMenu({
+  process,
+  testStep,
+  reusableProcess,
+  editTestCasePermission,
+  editReusableProcessPermission,
+}) {
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [step, setStep] = useState(0);
   const menu = (
@@ -22,6 +27,9 @@ export default function StepMenu({ processId, testStep, reusableProcessId }) {
             setStep(testStep.step);
             setAddEditStepModal(true);
           },
+          disabled: reusableProcess
+            ? !editReusableProcessPermission
+            : !editTestCasePermission,
         },
         {
           label: (
@@ -35,6 +43,9 @@ export default function StepMenu({ processId, testStep, reusableProcessId }) {
             setStep(testStep.step + 1);
             setAddEditStepModal(true);
           },
+          disabled: reusableProcess
+            ? !editReusableProcessPermission
+            : !editTestCasePermission,
         },
       ]}
     />
@@ -55,8 +66,8 @@ export default function StepMenu({ processId, testStep, reusableProcessId }) {
         <AddEditStepModal
           visible={addEditStepModal}
           setVisible={setAddEditStepModal}
-          processId={processId}
-          reusableProcessId={reusableProcessId}
+          process={process}
+          reusableProcess={reusableProcess}
           step={step}
         />
       )}

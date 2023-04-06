@@ -1,6 +1,9 @@
 import db from "../../Utils/dataBaseConnection.js";
 import getError from "../../Utils/sequelizeError.js";
-import { idValidation } from "../../Utils/Validations/index.js";
+import {
+  idValidation,
+  createLogValidation,
+} from "../../Utils/Validations/index.js";
 import {
   updateTestCaseValidation,
   saveProcesValidation,
@@ -89,13 +92,13 @@ const getAllTestCase = async (req, res) => {
       where: {
         projectId,
       },
-      attributes: ["id", "name", "updatedAt", "createdAt", "tags"],
-      include: [
-        {
-          model: User.schema(req.database),
-          as: "createdBy",
-          attributes: ["id", "name", "email", "active", "profileImage"],
-        },
+      attributes: [
+        "id",
+        "name",
+        "updatedAt",
+        "createdAt",
+        "tags",
+        "createdByUser",
       ],
     });
 
@@ -150,13 +153,7 @@ const getTestCaseDetailsById = async (req, res) => {
         "updatedAt",
         "description",
         "tags",
-      ],
-      include: [
-        {
-          model: User.schema(req.database),
-          as: "createdBy",
-          attributes: ["id", "name", "email", "active", "profileImage"],
-        },
+        "createdByUser",
       ],
     });
 
@@ -370,14 +367,7 @@ const getTestCaseLogsById = async (req, res) => {
       where: {
         testCaseId,
       },
-      attributes: ["log", "createdAt"],
-      include: [
-        {
-          model: User.schema(req.database),
-          as: "createdBy",
-          attributes: ["id", "name", "email", "active", "profileImage"],
-        },
-      ],
+      attributes: ["log", "createdAt", "createdByUser"],
       order: [["createdAt", "DESC"]],
     });
 
@@ -396,14 +386,16 @@ const createTestCaseLog = async (req, res, id, logs = []) => {
     const testCaseId = req.params.testCaseId || id;
     const tempLogs = req.body.logs || logs;
 
-    // const { error } = idValidation.validate({ id: objectId });
-    // if (error) throw new Error(error.details[0].message);
-
+    const { error } = createLogValidation.validate({
+      id: testCaseId,
+      logs: tempLogs,
+    });
+    if (error) throw new Error(error.details[0].message);
     const payload = tempLogs.map((el) => {
       return { log: el, testCaseId, createdByUser: req.user.id };
     });
     await TestCaseLog.schema(req.database).bulkCreate(payload);
-    if (logs.length == 0) return res.status(201);
+    if (logs.length == 0) return res.status(201).json("Log Created");
   } catch (err) {
     if (logs.length == 0) getError(err, res);
     else console.log(err);

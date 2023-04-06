@@ -121,3 +121,29 @@ export const editProject = (payload) => {
     }
   };
 };
+
+export const getProjectkey = () => {
+  return (dispatch, getState) => {
+    try {
+      let currentProjectName = getState().projects.currentProject?.name;
+      let currentProjectId = getState().projects.currentProject?.id;
+      if (currentProjectName) {
+        let currentProjectArr = currentProjectName.split(" ");
+
+        if (currentProjectArr.length > 2) {
+          return (
+            currentProjectArr[0] +
+            currentProjectArr[2] +
+            currentProjectArr[3] +
+            currentProjectId
+          );
+        } else {
+          return currentProjectName.substring(0, 3) + currentProjectId;
+        }
+      }
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
+};

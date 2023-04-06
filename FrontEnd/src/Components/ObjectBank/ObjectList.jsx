@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Popconfirm, Button, Tag } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import AddEditObjectModal from "./AddEditObjectModal";
 import UserAvatar from "../Common/Avatar";
@@ -8,23 +8,24 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../Common/Loading";
 import CustomSearch from "../Common/Search";
 import { connect } from "react-redux";
+import { usePermission } from "../../Utils/permission";
 const ObjectList = ({
   onDelete,
   onSave = () => {},
   loading,
   data,
-  name,
-  link,
   getList = () => {},
   currentProjectId,
 }) => {
   const navigate = useNavigate();
+  const addObjectPermission = usePermission("Object Bank", "add");
+  const deleteObjectPermission = usePermission("Object Bank", "delete");
   const [addEditObjectModal, setAddEditObjectModal] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
 
   useEffect(() => {
     getList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentProjectId]);
 
   useEffect(() => {
@@ -64,24 +65,14 @@ const ObjectList = ({
     {
       title: "Created At",
       dataIndex: "createdBy",
-      width: 250,
+      width: 230,
       render: (_, record) => (
         <div>
-          {moment(record.createdAt).format("DD/MM/YYYY h:mm:ss a")} By &nbsp;
-          {record.createdBy && <UserAvatar user={record.createdBy.id} />}
+          {moment(record.createdAt).format("DD/MM/YYYY hh:mm a")} By &nbsp;
+          <UserAvatar user={record.createdByUser} />
         </div>
-        // <div>{<UserAvatar user={record.createdBy} />}</div>
       ),
     },
-
-    // {
-    //   title: "Last Updated",
-    //   key: "updatedAt",
-    //   width: 190,
-    //   render: (_, record) => (
-    //     <div>{moment(record.updatedAt).format("DD/MM/YYYY h:mm:ss a")}</div>
-    //   ),
-    // },
 
     {
       title: "",
@@ -91,17 +82,22 @@ const ObjectList = ({
         <div style={{ display: "flex", gap: 10 }}>
           <Popconfirm
             placement="left"
-            title={`Are you sure to delete this ${name}?`}
+            title={`Are you sure to delete this Object?`}
             onConfirm={async (e) => {
               e.stopPropagation();
               await onDelete(record.id);
             }}
             okText="Yes, Delete"
             cancelText="No"
+            disabled={!deleteObjectPermission}
           >
             <DeleteOutlined
               onClick={(e) => e.stopPropagation()}
-              style={{ fontSize: 17 }}
+              style={{
+                fontSize: 17,
+                cursor: deleteObjectPermission ? "pointer" : "not-allowed",
+                color: deleteObjectPermission ? "black" : "grey",
+              }}
             />
           </Popconfirm>
         </div>
@@ -121,18 +117,16 @@ const ObjectList = ({
             padding: "10px 0px 10px 0px ",
           }}
         >
-          <CustomSearch
-            placeholder={`Search ${name}`}
-            onSearch={handleSearch}
-          />
+          <CustomSearch placeholder={`Search Object`} onSearch={handleSearch} />
           <Button
             type="primary"
             ghost
             onClick={() => {
               setAddEditObjectModal(true);
             }}
+            disabled={!addObjectPermission}
           >
-            New {name}
+            <PlusOutlined /> New Object
           </Button>
         </div>
         <Table
@@ -144,7 +138,8 @@ const ObjectList = ({
           onRow={(record, rowIndex) => {
             return {
               onClick: () => {
-                navigate(`/${link}/${record.id}/details`);
+                console.log("saransh", record.id);
+                navigate(`/ObjectBank/${record.id}/details`);
               },
             };
           }}
@@ -153,7 +148,6 @@ const ObjectList = ({
           visible={addEditObjectModal}
           setVisible={setAddEditObjectModal}
           loading={loading}
-          name={name}
           onSave={onSave}
         />
       </Loading>

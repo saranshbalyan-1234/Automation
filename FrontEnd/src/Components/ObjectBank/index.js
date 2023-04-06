@@ -8,6 +8,7 @@ import {
 import { connect } from "react-redux";
 import ObjectList from "./ObjectList";
 import ObjectTabs from "./ObjectTabs";
+
 const ObjectBank = ({
   objectList,
   loading,
@@ -25,8 +26,6 @@ const ObjectBank = ({
               data={objectList}
               loading={loading}
               onDelete={deleteObject}
-              name="Object"
-              link="ObjectBank"
               onSave={saveObject}
               getList={getObjectByProject}
             />

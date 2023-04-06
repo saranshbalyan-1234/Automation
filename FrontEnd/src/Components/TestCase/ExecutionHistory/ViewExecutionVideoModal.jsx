@@ -22,13 +22,13 @@ const ViewExecutionVideoModal = ({
       currentExecutionHistory.process[0].testSteps[1]?.testStepId;
     fetchCurrentScreenShot(firstScreenshotId);
     secondScreenshotId && fetchNextScreenShot(secondScreenshotId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     if (!playing) return;
     handleNextScreenshot();
-    //   eslint-disable-next-line react-hooks/exhaustive-deps
+    //   eslint-disable-next-line
   }, [nextScreenshot, playing]);
   const handleNextScreenshot = async () => {
     setTimeout(async () => {

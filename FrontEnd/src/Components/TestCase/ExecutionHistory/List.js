@@ -8,16 +8,19 @@ import { connect } from "react-redux";
 import {
   deleteExecutionHistory,
   getAllExecutionHistoryByTestCase,
+  deleteAllExecutionHistory,
 } from "../../../Redux/Actions/executionHistory";
 import ViewExecutionHistoryModal from "./ViewExecutionHistoryModal";
 import Loading from "../../Common/Loading";
-
+import { usePermission } from "../../../Utils/permission";
 export const List = ({
   getAllExecutionHistoryByTestCase,
   deleteExecutionHistory,
+  deleteAllExecutionHistory,
   loading,
   data,
 }) => {
+  const deleteExecutionPermission = usePermission("Execution", "delete");
   const { testCaseId } = useParams();
   const [executionHistoryId, setExecutionHistoryId] = useState(0);
   useEffect(() => {
@@ -33,11 +36,11 @@ export const List = ({
     },
     {
       title: "Executed At",
-      dataIndex: "executedBy",
+      dataIndex: "executedByUser",
       render: (_, record) => (
         <div>
-          {moment(record.createdAt).format("DD/MM/YY h:mm:ss a")} By &nbsp;
-          {record.executedBy && <UserAvatar user={record.executedBy.id} />}
+          {moment(record.createdAt).format("DD/MM/YY hh:mm a")} By &nbsp;
+          <UserAvatar user={record.executedByUser} />
         </div>
       ),
       width: 180,
@@ -67,7 +70,28 @@ export const List = ({
     },
 
     {
-      title: "",
+      title: (
+        <div style={{ display: "flex", gap: 10 }}>
+          <Popconfirm
+            placement="left"
+            title={`Are you sure to delete all Execution History?`}
+            onConfirm={async () => {
+              await deleteAllExecutionHistory();
+            }}
+            okText="Yes, Delete"
+            cancelText="No"
+            disabled={!deleteExecutionPermission}
+          >
+            <DeleteOutlined
+              style={{
+                fontSize: 17,
+                color: deleteExecutionPermission ? "black" : "grey",
+                cursor: deleteExecutionPermission ? "pointer" : "not-allowed",
+              }}
+            />
+          </Popconfirm>
+        </div>
+      ),
       key: "actions",
       width: 50,
       render: (_, record) => (
@@ -81,10 +105,15 @@ export const List = ({
             }}
             okText="Yes, Delete"
             cancelText="No"
+            disabled={!deleteExecutionPermission}
           >
             <DeleteOutlined
               onClick={(e) => e.stopPropagation()}
-              style={{ fontSize: 17 }}
+              style={{
+                fontSize: 17,
+                color: deleteExecutionPermission ? "black" : "grey",
+                cursor: deleteExecutionPermission ? "pointer" : "not-allowed",
+              }}
             />
           </Popconfirm>
         </div>
@@ -126,6 +155,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   deleteExecutionHistory,
+  deleteAllExecutionHistory,
   getAllExecutionHistoryByTestCase,
 };
 

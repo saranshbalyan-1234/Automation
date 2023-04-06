@@ -11,6 +11,7 @@ import {
   deleteColumn,
   deleteEnvironment,
 } from "../../../Redux/Actions/environment";
+import { usePermission } from "../../../Utils/permission";
 const Environment = ({
   visible,
   setVisible,
@@ -22,17 +23,18 @@ const Environment = ({
   deleteColumn,
   deleteEnvironment,
 }) => {
+  const editTestCasePermission = usePermission("Test Case", "edit");
   const [columns, setColumns] = useState([]);
   const [searchedData, setSearchedData] = useState([]);
   const [addModal, setAddModal] = useState({ active: false });
 
   useEffect(() => {
     setSearchedData(environments);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [environments]);
   useEffect(() => {
     getAllEnvironments(currentTestCaseId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentTestCaseId]);
   const handleUpdateValue = (record, column, e) => {
     updateColumnValue({
@@ -45,40 +47,62 @@ const Environment = ({
     if (environments.length === 0) return;
 
     const tempDynamicKeys = Object.keys(environments[0]).map((el) => {
-      let temp = {
-        title:
-          el !== "Environment" && el !== "envId" ? (
-            <div style={{ paddingLeft: 10 }}>
-              {el}
-              <Popconfirm
-                placement="left"
-                title={`Are you sure to delete this Column?`}
-                onConfirm={async (e) => {
-                  e.stopPropagation();
-                  await deleteColumn(el);
+      let temp = {};
+      if (el !== "Environment" && el !== "envId") {
+        temp.title = (
+          <div
+            style={{
+              paddingLeft: 10,
+              whiteSpace: "nowrap",
+              overflow: "scroll",
+            }}
+          >
+            {el}
+            <Popconfirm
+              placement="left"
+              title={`Are you sure to delete this Column?`}
+              onConfirm={async (e) => {
+                e.stopPropagation();
+                await deleteColumn(el);
+              }}
+              okText="Yes, Delete"
+              cancelText="No"
+              disabled={!editTestCasePermission}
+            >
+              <DeleteOutlined
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  fontSize: 14,
+                  marginLeft: 5,
+                  color: editTestCasePermission ? "black" : "grey",
+                  cursor: editTestCasePermission ? "pointer" : "not-allowed",
                 }}
-                okText="Yes, Delete"
-                cancelText="No"
-              >
-                <DeleteOutlined
-                  onClick={(e) => e.stopPropagation()}
-                  style={{ fontSize: 14, marginLeft: 5 }}
-                />
-              </Popconfirm>
-            </div>
-          ) : (
-            el
-          ),
-        dataIndex: el,
-        // width: "100%",
-      };
+              />
+            </Popconfirm>
+          </div>
+        );
+        temp.width = 250;
+        temp.dataIndex = el;
+      } else {
+        temp.title = el;
+        temp.width = 120;
+        temp.dataIndex = el;
+      }
+      //   title:
+
+      //     ) : (
+      //       el
+      //     ),
+      //   dataIndex: el,
+      //   width: 100,
+      // };
       if (el !== "Environment") {
         temp.render = (text, record) => (
           <div style={{ minHeight: 30 }}>
             <div
-              className="show-boundary"
+              className={editTestCasePermission ? "show-boundary" : ""}
               style={{ minHeight: 25 }}
-              contentEditable
+              contentEditable={editTestCasePermission}
               onBlur={(e) => handleUpdateValue(record, el, e)}
             >
               {text}
@@ -106,17 +130,22 @@ const Environment = ({
             }}
             okText="Yes, Delete"
             cancelText="No"
+            disabled={!editTestCasePermission}
           >
             <DeleteOutlined
               onClick={(e) => e.stopPropagation()}
-              style={{ fontSize: 17 }}
+              style={{
+                fontSize: 17,
+                color: editTestCasePermission ? "black" : "grey",
+                cursor: editTestCasePermission ? "pointer" : "not-allowed",
+              }}
             />
           </Popconfirm>
         ),
         width: 50,
       },
     ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [environments.length > 0 && Object.keys(environments[0]).length]);
 
   const handleSearch = (e) => {
@@ -170,7 +199,9 @@ const Environment = ({
                     // setRows([...rows, { env: "Enter Name", editing: true }]);
                     setAddModal({ active: true, type: "Column" });
                   }}
-                  disabled={searchedData.length === 0}
+                  disabled={
+                    searchedData.length === 0 || !editTestCasePermission
+                  }
                 >
                   <PlusOutlined /> Column
                 </Button>
@@ -181,6 +212,7 @@ const Environment = ({
                     // setRows([...rows, { env: "Enter Name", editing: true }]);
                     setAddModal({ active: true, type: "Environment" });
                   }}
+                  disabled={!editTestCasePermission}
                 >
                   <PlusOutlined />
                   Environment
@@ -188,7 +220,7 @@ const Environment = ({
               </div>
             </div>
             <Table
-              scroll={{ x: true }}
+              scroll={{ x: columns.length * 250 - 330 }}
               size="small"
               columns={columns}
               dataSource={searchedData}

@@ -8,14 +8,29 @@ import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 import Container from "./Container";
 const { Content } = Layout;
-export default function LayOut({ children }) {
+export default function LayOut({
+  children,
+  viewTestCasePermission,
+  viewReusableProcessPermission,
+  viewObjectBankPermission,
+  viewProjectPermission,
+  viewDefectPermission,
+}) {
   const [collapsed, setCollapsed] = useState(true);
 
   return (
     <StyledLayout>
       <Layout>
         <Layout style={{ maxHeight: "100vh" }}>
-          <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+          <Sidebar
+            collapsed={collapsed}
+            setCollapsed={setCollapsed}
+            viewTestCasePermission={viewTestCasePermission}
+            viewReusableProcessPermission={viewReusableProcessPermission}
+            viewObjectBankPermission={viewObjectBankPermission}
+            viewProjectPermission={viewProjectPermission}
+            viewDefectPermission={viewDefectPermission}
+          />
           <div
             style={{
               width: "100%",

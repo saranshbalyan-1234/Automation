@@ -14,7 +14,7 @@ export default (sequelize, DataTypes) => {
         notNull: true,
       },
       references: {
-        model: "testcases",
+        model: "testCases",
         key: "id",
       },
       onDelete: "CASCADE",

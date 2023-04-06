@@ -1,13 +1,13 @@
 import React from "react";
-import { HomeOutlined } from "@ant-design/icons";
-import { Link, useLocation } from "react-router-dom";
+import { HomeOutlined, LeftCircleOutlined } from "@ant-design/icons";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Breadcrumb } from "antd";
- import { PageHeader } from "@ant-design/pro-layout";
+import { PageHeader } from "@ant-design/pro-layout";
 import { ImLocation } from "react-icons/im";
-
+import styled from "styled-components";
 export default function Container({ children }) {
   const location = useLocation();
-
+  const navigate = useNavigate();
   const breadcrumbNameMap = {
     "/setting": "Settings",
   };
@@ -29,7 +29,9 @@ export default function Container({ children }) {
       <Breadcrumb.Item key={url}>
         <a
           style={{ textTransform: "capitalize" }}
-          // href={void 0}
+          href={() => {
+            return void 0;
+          }}
         >
           {breadcrumbNameMap[url] || value}
         </a>
@@ -45,12 +47,41 @@ export default function Container({ children }) {
     </Breadcrumb.Item>,
   ].concat(extraBreadcrumbItems);
 
+  const renderBack = () => {
+    const locArray = location.pathname.split("/");
+
+    if (locArray.length > 2 && locArray[2] !== "") {
+      let name = "";
+      if (locArray[1] === "ReusableProcess") {
+        name = "Reusable Process";
+      } else if (locArray[1] === "ObjectBank") {
+        name = "Objects";
+      } else if (locArray[1] === "Defect") {
+        name = "Defects";
+      } else if (locArray[1] === "TestCase") {
+        name = "Test Case";
+      } else if (locArray[1] === "project") {
+        name = "project";
+      }
+      if (name)
+        return (
+          <GoMainButton
+            onClick={() => {
+              navigate("/" + locArray[1]);
+            }}
+          >
+            <LeftCircleOutlined />
+            All {name}
+          </GoMainButton>
+        );
+    }
+  };
   return (
     <>
       <div>
         <PageHeader
           style={{ padding: "5px 15px 5px 15px", background: "#fff" }}
-          onBack={() => window.history.back()}
+          // onBack={() => window.history.back()}
           title={
             <div
               style={{
@@ -59,6 +90,7 @@ export default function Container({ children }) {
                 // marginTop: "-10px",
               }}
             >
+              <div>{renderBack()}</div>
               <ImLocation style={{ marginRight: "3px", marginTop: "5px" }} />
               <div>{renderTitle()}</div>
             </div>
@@ -93,3 +125,19 @@ export default function Container({ children }) {
     </>
   );
 }
+
+const GoMainButton = styled.div`
+  background-color: rgb(229, 231, 235);
+  border-radius: 15px;
+  color: rgb(31, 63, 111);
+  cursor: pointer;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 10px;
+  font-size: 16px;
+  span {
+    color: rgb(31, 63, 111);
+    margin-right: 5px;
+  }
+`;

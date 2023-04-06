@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Button } from "antd";
 import Profile from "./Profile";
-import ComingSoon from "../../Views/ComingSoon";
 import Team from "./Team";
 import Role from "./Role";
 import { PlusOutlined, EditOutlined, SettingOutlined } from "@ant-design/icons";
@@ -12,7 +11,13 @@ import AddEditRoleModal from "./Role/AddEditRoleModal";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import MemberBadge from "../Common/MemberBadge";
+import { usePermission } from "../../Utils/permission";
 function Setting({ roles, team }) {
+  const viewTeamPermission = usePermission("Team", "view");
+  const addTeamPermission = usePermission("Team", "add");
+  const viewRolePermission = usePermission("Role", "view");
+  const addRolePermission = usePermission("Role", "add");
+
   const { tab } = useParams();
   const navigate = useNavigate();
   const [editUserId, setEditUserId] = useState(0);
@@ -43,6 +48,7 @@ function Setting({ roles, team }) {
           onClick={() => {
             setAddRoleModal(true);
           }}
+          disabled={!addRolePermission}
         >
           <PlusOutlined /> Add Role
         </Button>
@@ -67,6 +73,7 @@ function Setting({ roles, team }) {
             onClick={() => {
               setAddUserModal(true);
             }}
+            disabled={!addTeamPermission}
           >
             <PlusOutlined /> Add User
           </Button>
@@ -112,57 +119,67 @@ function Setting({ roles, team }) {
           <Tabs.TabPane tab="Profile" key="profile">
             <Profile />
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Roles" key="roles">
-            {activeTab === "roles" && (
-              <Role
-                data={roles.data}
-                loading={roles.loading}
-                setAddPermissionModal={setAddPermissionModal}
-                addPermissionModal={addPermissionModal}
-                singleRoleData={singleRoleData}
-                setSingleRoleData={setSingleRoleData}
-              />
-            )}
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Team" key="team">
-            {activeTab === "team" && (
-              <Team
-                manageUserModal={manageUserModal}
-                setManageUserModal={setManageUserModal}
-                setEditUserId={setEditUserId}
-                editUserId={editUserId}
-              />
-            )}
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Notification" key="notification">
+
+          {viewRolePermission && (
+            <Tabs.TabPane tab="Roles" key="roles">
+              {activeTab === "roles" && (
+                <Role
+                  setAddPermissionModal={setAddPermissionModal}
+                  addPermissionModal={addPermissionModal}
+                  singleRoleData={singleRoleData}
+                  setSingleRoleData={setSingleRoleData}
+                />
+              )}
+            </Tabs.TabPane>
+          )}
+          {viewTeamPermission && (
+            <Tabs.TabPane tab="Team" key="team">
+              {activeTab === "team" && (
+                <Team
+                  manageUserModal={manageUserModal}
+                  setManageUserModal={setManageUserModal}
+                  setEditUserId={setEditUserId}
+                  editUserId={editUserId}
+                />
+              )}
+            </Tabs.TabPane>
+          )}
+
+          {/* <Tabs.TabPane tab="Notification" key="notification">
             <ComingSoon />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Billing" key="billing">
             <ComingSoon />
-          </Tabs.TabPane>
+          </Tabs.TabPane> */}
         </Tabs>
         {renderButton()}
       </div>
-      <AddUserModal
-        addUserModal={addUserModal}
-        setAddUserModal={setAddUserModal}
-        setManageUserModal={setManageUserModal}
-        setEditUserId={setEditUserId}
-      />
-      <ChangePasswordModal
-        changePasswordModal={changePasswordModal}
-        setChangePasswordModal={setChangePasswordModal}
-      />
-      <EditDetailsModal
-        editDetailsModal={editDetailsModal}
-        setEditDetailsModal={setEditDetailsModal}
-      />
+      {addUserModal && (
+        <AddUserModal
+          addUserModal={addUserModal}
+          setAddUserModal={setAddUserModal}
+          setManageUserModal={setManageUserModal}
+          setEditUserId={setEditUserId}
+        />
+      )}
+      {changePasswordModal && (
+        <ChangePasswordModal
+          changePasswordModal={changePasswordModal}
+          setChangePasswordModal={setChangePasswordModal}
+        />
+      )}
+
+      {editDetailsModal && (
+        <EditDetailsModal
+          editDetailsModal={editDetailsModal}
+          setEditDetailsModal={setEditDetailsModal}
+        />
+      )}
       {addRoleModal && (
         <AddEditRoleModal
           visible={addRoleModal}
           setVisible={setAddRoleModal}
           setAddPermissionModal={setAddPermissionModal}
-          // roleData={roleData}
           setSingleRoleData={setSingleRoleData}
         />
       )}
@@ -170,7 +187,6 @@ function Setting({ roles, team }) {
   );
 }
 const mapStateToProps = (state) => ({
-  roles: state.roles,
   team: state.team.data,
 });
 

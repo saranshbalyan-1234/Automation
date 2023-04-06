@@ -2,7 +2,7 @@ const chromeDriver = require("selenium-webdriver");
 const { until } = chromeDriver;
 const {
   updateStepResult,
-} = require("../../Controllers/executionHistoryController");
+} = require("../Controllers/executionHistoryController");
 const { findByLocator, handleActionEventError } = require("./utils");
 const validateObjectTextIncludes = async (
   step,
@@ -126,7 +126,6 @@ const validateObjectSelected = async (
   stepHistoryId,
   executionHistory
 ) => {
-  const timeout = Number(step.testParameters.Timeout);
   console.log("Validating Object Selected");
   try {
     const element = await driver.findElement(

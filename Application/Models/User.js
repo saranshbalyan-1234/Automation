@@ -48,12 +48,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     { paranoid: true }
   );
-  sequelize.models.objects.hasOne(sequelize.models.users, {
-    as: "createdBy",
-    sourceKey: "createdByUser",
-    foreignKey: "id",
-    constraints: false,
-  });
 
   sequelize.models.objects.hasMany(sequelize.models.objectLocators, {
     foreignKey: "objectId",

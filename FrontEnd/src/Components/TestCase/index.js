@@ -1,5 +1,4 @@
 import React from "react";
-// import TestCaseList from "./TestCaseList";
 import List from "../Common/List";
 import TestCaseTabs from "./Tabs";
 import { Routes, Route } from "react-router-dom";
@@ -9,6 +8,7 @@ import {
   deleteTestCase,
   saveTestCase,
 } from "../../Redux/Actions/testCase";
+import { usePermission } from "../../Utils/permission";
 const TestCase = ({
   getTestCaseByProject,
   deleteTestCase,
@@ -16,6 +16,8 @@ const TestCase = ({
   loading,
   saveTestCase,
 }) => {
+  const addTestCasePermission = usePermission("Test Case", "add");
+  const deleteTestCasePermission = usePermission("Test Case", "delete");
   return (
     <>
       <Routes>
@@ -30,6 +32,8 @@ const TestCase = ({
               name="Test Case"
               link="TestCase"
               getList={getTestCaseByProject}
+              addPermission={addTestCasePermission}
+              deletePermission={deleteTestCasePermission}
             />
           }
         />

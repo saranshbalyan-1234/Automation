@@ -20,6 +20,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Common/Loading";
+import { usePermission } from "../../Utils/permission";
 export const AllProject = ({
   getAllProject,
   getProjectById,
@@ -29,11 +30,13 @@ export const AllProject = ({
   user,
 }) => {
   const navigate = useNavigate();
+  const addProjectPermission = usePermission("Project", "add");
+  const deleteProjectPermission = usePermission("Project", "delete");
   const [addEditProjectModal, setAddEditProjectModal] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
   useEffect(() => {
     setSearchedData(projects.data);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [projects.data]);
 
   const handleSearch = (e) => {
@@ -46,7 +49,7 @@ export const AllProject = ({
 
   useEffect(() => {
     getAllProject();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   const formatDates = (startDate, endDate) => {
@@ -99,6 +102,7 @@ export const AllProject = ({
           onClick={() => {
             setAddEditProjectModal(true);
           }}
+          disabled={!addProjectPermission}
         >
           New Project
         </Button>
@@ -192,9 +196,13 @@ export const AllProject = ({
                                 backgroundColor: "#fde3cf",
                               }}
                             >
-                              {item.members.map((el) => {
-                                return <UserAvatar user={el.id} />;
-                              })}
+                              {item.members
+                                .filter((el) => {
+                                  return el.deletedAt === null;
+                                })
+                                .map((el) => {
+                                  return <UserAvatar user={el.id} />;
+                                })}
                             </Avatar.Group>
                           </div>
                         </div>
@@ -221,7 +229,7 @@ export const AllProject = ({
                 >
                   <div style={{ display: "flex", gap: "5px" }}>
                     <div>Author</div>
-                    <UserAvatar user={item.createdBy.id} />
+                    <UserAvatar user={item.createdByUser} />
                   </div>
 
                   <div
@@ -266,7 +274,12 @@ export const AllProject = ({
                       okText="Yes, Remove"
                       cancelText="No"
                     >
-                      <Button danger ghost size="small">
+                      <Button
+                        danger
+                        ghost
+                        size="small"
+                        disabled={!deleteProjectPermission}
+                      >
                         <DeleteOutlined />
                       </Button>
                     </Popconfirm>

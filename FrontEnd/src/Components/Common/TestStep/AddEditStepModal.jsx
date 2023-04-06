@@ -7,20 +7,19 @@ import {
   editStep,
   createTestCaseLogs,
 } from "../../../Redux/Actions/testCase";
-import { getDetailsEditedLogs } from "../../../Utils/logs";
+import { getStepEditedLogs } from "../../../Utils/logs";
 import { getObjectByProject } from "../../../Redux/Actions/object";
+import { getActionEvents } from "../../../Redux/Actions/testCase";
 import {
   addReusableStep,
   editReusableStep,
   createReusableProcessLogs,
 } from "../../../Redux/Actions/reusableProcess";
 import AddEditObjectModal from "../../ObjectBank/AddEditObjectModal";
-import axios from "axios";
 import { saveObject } from "../../../Redux/Actions/object";
 import ReactQuill from "react-quill";
 import Loading from "../Loading";
 import Parameter from "./Parameter";
-const Option = { Select };
 const AddEditStepModal = ({
   visible,
   setVisible,
@@ -42,48 +41,52 @@ const AddEditStepModal = ({
   saveObject,
   setEdit = () => {},
   currentTestCaseId,
+  actionEvents,
+  getActionEvents,
 }) => {
-  console.log("saransh", process);
-  const [actionEvent, setActionEvent] = useState([]);
   const [currentEvent, setCurrentEvent] = useState({});
   const [addObjectModal, setAddObjectModal] = useState(false);
 
   const [form] = Form.useForm();
 
   useEffect(() => {
-    axios.get("/global/actionEvent").then((res) => {
-      setActionEvent(res.data);
+    if (actionEvents.length === 0) getActionEvents();
+    else {
       if (edit)
         setCurrentEvent(
-          res.data.find((el) => {
+          actionEvents.find((el) => {
             return el.name === editData.actionEvent;
           })
         );
       else
         setCurrentEvent(
-          res.data.find((el) => {
+          actionEvents.find((el) => {
             return el.name === "Launch Website";
           })
         );
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [edit]);
+    }
+    // eslint-disable-next-line
+  }, [edit, actionEvents]);
 
   useEffect(() => {
     edit &&
       form.setFieldsValue({
-        parameter1: editData.testParameters.find((el) => {
-          return el.type === currentEvent.parameter1;
-        })?.property,
-        parameter2: editData.testParameters.find((el) => {
-          return el.type === currentEvent.parameter2;
-        })?.property,
-        parameter3: editData.testParameters.find((el) => {
-          return el.type === currentEvent.parameter3;
-        })?.property,
-        parameter4: editData.testParameters.find((el) => {
-          return el.type === currentEvent.parameter4;
-        })?.property,
+        parameter1:
+          editData.testParameters?.find((el) => {
+            return el.type === currentEvent.parameter1;
+          })?.property || "",
+        parameter2:
+          editData.testParameters?.find((el) => {
+            return el.type === currentEvent.parameter2;
+          })?.property || "",
+        parameter3:
+          editData.testParameters?.find((el) => {
+            return el.type === currentEvent.parameter3;
+          })?.property || "",
+        parameter4:
+          editData.testParameters?.find((el) => {
+            return el.type === currentEvent.parameter4;
+          })?.property || "",
       });
 
     form.setFieldsValue({
@@ -104,12 +107,12 @@ const AddEditStepModal = ({
           return el.type === currentEvent.parameter4;
         })?.method || "Static",
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentEvent, edit]);
 
   useEffect(() => {
     currentProjectId && getObjectByProject();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentProjectId]);
 
   const onSubmit = async (data) => {
@@ -157,6 +160,11 @@ const AddEditStepModal = ({
           data: payload,
           stepId: editData.id,
         });
+        if (result) {
+          const logs = await getStepEditedLogs(editData, payload, "step ");
+          logs.length > 0 &&
+            createReusableProcessLogs(reusableProcess.id, logs);
+        }
       } else {
         result = await editStep({
           data: payload,
@@ -164,9 +172,12 @@ const AddEditStepModal = ({
           reusableProcessId: reusableProcess?.id,
           processId: process?.id,
         });
-        // const logs = await getDetailsEditedLogs(editData, payload, "step ");
-        // logs.length > 0 && createTestCaseLogs(currentTestCaseId, logs);
+        if (result) {
+          const logs = await getStepEditedLogs(editData, payload, "step ");
+          logs.length > 0 && createTestCaseLogs(currentTestCaseId, logs);
+        }
       }
+
       setEditData({});
     } else {
       if (reusableProcess?.id && !process?.id) {
@@ -175,9 +186,11 @@ const AddEditStepModal = ({
           reusableProcessId: reusableProcess.id,
           step,
         });
-        createReusableProcessLogs(reusableProcess?.id, [
-          `added new step at position ${step}`,
-        ]);
+        if (result) {
+          createReusableProcessLogs(reusableProcess?.id, [
+            `added new step at position ${step}`,
+          ]);
+        }
       } else {
         if (reusableProcess?.id && process?.id) {
           result = await addStep({
@@ -186,21 +199,25 @@ const AddEditStepModal = ({
             step,
             reusableId: process?.id,
           });
-          createReusableProcessLogs(reusableProcess.id, [
-            `added new step at position ${step}`,
-          ]);
-          createTestCaseLogs(currentTestCaseId, [
-            `added new step at position ${step} in reusableProcess "${reusableProcess.name}" or process "${process.name}"`,
-          ]);
+          if (result) {
+            createReusableProcessLogs(reusableProcess.id, [
+              `added new step at position ${step}`,
+            ]);
+            createTestCaseLogs(currentTestCaseId, [
+              `added new step at position ${step} in reusableProcess "${reusableProcess.name}" or process "${process.name}"`,
+            ]);
+          }
         } else {
           result = await addStep({
             ...payload,
             processId: process?.id,
             step,
           });
-          createTestCaseLogs(currentTestCaseId, [
-            `added new step at position ${step} in process "${process.name}"`,
-          ]);
+          if (result) {
+            createTestCaseLogs(currentTestCaseId, [
+              `added new step at position ${step} in process "${process?.name}"`,
+            ]);
+          }
         }
       }
     }
@@ -276,17 +293,17 @@ const AddEditStepModal = ({
                 style={{ minWidth: "160px" }}
                 onChange={(e) =>
                   setCurrentEvent(
-                    actionEvent.find((el) => {
+                    actionEvents.find((el) => {
                       return el.name === e;
                     })
                   )
                 }
               >
-                {actionEvent.map((el, i) => {
+                {actionEvents.map((el, i) => {
                   return (
-                    <Option value={el.name} key={i}>
+                    <Select.Option value={el.name} key={i}>
                       {el.name}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -303,12 +320,16 @@ const AddEditStepModal = ({
                   },
                 ]}
               >
-                <Select style={{ minWidth: "160px" }} showSearch>
+                <Select
+                  style={{ minWidth: "160px" }}
+                  showSearch
+                  optionFilterProp="children"
+                >
                   {objectList.map((el, i) => {
                     return (
-                      <Option value={el.id} key={i}>
+                      <Select.Option value={el.id} key={i}>
                         {el.name}
-                      </Option>
+                      </Select.Option>
                     );
                   })}
                 </Select>
@@ -369,6 +390,7 @@ const mapStateToProps = (state) => ({
   currentTestCaseId: state.testCase.currentTestCase.id,
   objectList: state.objectBank.data,
   objectLoading: state.objectBank.loading,
+  actionEvents: state.testCase.actionEvents,
 });
 const mapDispatchToProps = {
   addProcess,
@@ -378,6 +400,7 @@ const mapDispatchToProps = {
   editReusableStep,
   getObjectByProject,
   saveObject,
+  getActionEvents,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditStepModal);

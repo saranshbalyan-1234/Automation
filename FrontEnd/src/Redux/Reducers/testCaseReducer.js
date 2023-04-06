@@ -15,12 +15,14 @@ import {
   EDIT_STEP,
   EMPTY_TEST_CASE,
   GET_TEST_CASE_LOGS,
+  GET_ACTION_EVENTS,
 } from "../Actions/action-types";
 import { orderBy } from "lodash";
 const initState = {
   loading: false,
   data: [],
   currentTestCase: { process: [] },
+  actionEvents: [],
 };
 
 const testCaseReducer = (state = initState, { type, payload }) => {
@@ -34,6 +36,12 @@ const testCaseReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         data: payload,
+        loading: false,
+      };
+    case GET_ACTION_EVENTS:
+      return {
+        ...state,
+        actionEvents: payload,
         loading: false,
       };
     case TEST_CASE_FAILURE:

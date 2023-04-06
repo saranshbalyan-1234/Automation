@@ -43,6 +43,11 @@ export default (sequelize, DataTypes) => {
       defaultValue: 0,
       values: [0, 1],
     },
+    headless: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
+      values: [0, 1],
+    },
     recordAllSteps: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0,

@@ -10,7 +10,7 @@ export default function CustomSearch({
 }) {
   const handleSearch = debounce((e) => {
     onSearch(e);
-  }, 200);
+  }, 300);
   return (
     <StyledSearch width={width}>
       <Input

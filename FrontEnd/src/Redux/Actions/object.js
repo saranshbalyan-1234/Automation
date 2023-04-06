@@ -29,15 +29,11 @@ export const getObjectByProject = (payload) => {
 };
 
 export const saveObject = (payload) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
       dispatch({ type: OBJECT_BANK_REQUEST });
       const { data } = await axios.post(`/object`, payload);
-      const updatedObject = {
-        ...data,
-        createdBy: getState().auth.user,
-      };
-      dispatch({ type: CREATE_TEST_OBJECT, payload: updatedObject });
+      dispatch({ type: CREATE_TEST_OBJECT, payload: data });
       return data;
     } catch (err) {
       console.log(err);
@@ -57,12 +53,11 @@ export const editObject = (payload) => {
 
       const logs = await getDetailsEditedLogs(oldData, payload);
       logs.length > 0 && createObjectLogs(currentObjectId, logs);
-      let editedObject = { ...payload };
 
       await axios.put(`/object/${currentObjectId}`, payload);
       dispatch({
         type: UPDATE_TEST_OBJECT,
-        payload: editedObject,
+        payload: payload,
       });
 
       return true;

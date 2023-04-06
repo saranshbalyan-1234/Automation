@@ -4,11 +4,16 @@ import {
   LogoutOutlined,
   EditOutlined,
   DownloadOutlined,
-  BellOutlined,
+  // BellOutlined,
   CaretDownOutlined,
 } from "@ant-design/icons";
 import { BiSupport } from "react-icons/bi";
-import { Avatar, Dropdown, Menu, Badge } from "antd";
+import {
+  Avatar,
+  Dropdown,
+  Menu,
+  //  Badge
+} from "antd";
 import { logout } from "../../../Redux/Actions/auth";
 import { Link } from "react-router-dom";
 import { handleAvatarInitials } from "../../Common/Avatar";
@@ -63,38 +68,38 @@ const ProfileMenu = ({ logout, user }) => {
     />
   );
 
-  const notificationMenu = (
-    <Menu
-      items={[
-        {
-          label: (
-            <div style={{ width: "400px" }}>
-              <Badge.Ribbon text="TestCase">
-                <div style={{ paddingRight: "70px" }}>
-                  saransh created a new test case, with name how are you, please
-                  have a look
-                </div>
-              </Badge.Ribbon>
-            </div>
-          ),
-          key: "1",
-        },
-        {
-          label: (
-            <div style={{ width: "400px" }}>
-              <Badge.Ribbon text="TestCase" color="red">
-                <div style={{ paddingRight: "70px" }}>
-                  saransh created a new test case, with name how are you, please
-                  have a look
-                </div>
-              </Badge.Ribbon>
-            </div>
-          ),
-          key: "2",
-        },
-      ]}
-    />
-  );
+  // const notificationMenu = (
+  //   <Menu
+  //     items={[
+  //       {
+  //         label: (
+  //           <div style={{ width: "400px" }}>
+  //             <Badge.Ribbon text="TestCase">
+  //               <div style={{ paddingRight: "70px" }}>
+  //                 saransh created a new test case, with name how are you, please
+  //                 have a look
+  //               </div>
+  //             </Badge.Ribbon>
+  //           </div>
+  //         ),
+  //         key: "1",
+  //       },
+  //       {
+  //         label: (
+  //           <div style={{ width: "400px" }}>
+  //             <Badge.Ribbon text="TestCase" color="red">
+  //               <div style={{ paddingRight: "70px" }}>
+  //                 saransh created a new test case, with name how are you, please
+  //                 have a look
+  //               </div>
+  //             </Badge.Ribbon>
+  //           </div>
+  //         ),
+  //         key: "2",
+  //       },
+  //     ]}
+  //   />
+  // );
 
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
@@ -105,11 +110,11 @@ const ProfileMenu = ({ logout, user }) => {
           cursor: "pointer",
         }}
       >
-        <Dropdown overlay={notificationMenu} trigger={["hover"]}>
+        {/* <Dropdown overlay={notificationMenu} trigger={["hover"]}>
           <Badge count={1} overflowCount={9}>
             <BellOutlined style={{ color: "white", fontSize: "20px" }} />
           </Badge>
-        </Dropdown>
+        </Dropdown> */}
       </div>
       <Dropdown overlay={profileMenu} trigger={["hover"]}>
         <div

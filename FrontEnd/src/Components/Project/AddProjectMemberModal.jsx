@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Form, Modal, Button, Select } from "antd";
+import { Form, Modal, Button, Select, Tooltip } from "antd";
 import { addMember } from "../../Redux/Actions/project";
 import { connect } from "react-redux";
 import Loading from "../Common/Loading";
-const { Option } = Select;
 const AddProjectMemberModal = ({
   visible,
   setVisible,
@@ -15,16 +14,14 @@ const AddProjectMemberModal = ({
   const [availableMembers, setAvailableMembers] = useState([]);
 
   const checkAvailableMember = async () => {
-    const difference = await allUsers
-      .filter((el) => {
+    const difference = await allUsers.filter((user) => {
+      const addedMembers = currentProject.members.filter((el) => {
         return el.deletedAt === null;
-      })
-      .filter((user) => {
-        const addedMembers = currentProject.members;
-        return !addedMembers.some((el) => {
-          return el.id === user.id;
-        });
       });
+      return !addedMembers.some((el) => {
+        return el.id === user.id;
+      });
+    });
     setAvailableMembers(difference);
   };
 
@@ -79,12 +76,23 @@ const AddProjectMemberModal = ({
               placeholder="Select an user"
               style={{ minWidth: "160px" }}
               showSearch
+              optionFilterProp="children"
+              filterOption={(input, option) => {
+                return (
+                  option.children.props.title
+                    .toLowerCase()
+                    .includes(input.toLowerCase()) ||
+                  option.children.props.children
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                );
+              }}
             >
               {availableMembers.map((el, i) => {
                 return (
-                  <Option value={el.id} key={i}>
-                    {`${el.name}-${el.email}`}
-                  </Option>
+                  <Select.Option value={el.id} key={i}>
+                    <Tooltip title={el.email}>{el.name}</Tooltip>
+                  </Select.Option>
                 );
               })}
             </Select>

@@ -3,6 +3,7 @@ import {
   EXECUTION_HISTORY_FAILURE,
   GET_ALL_EXECUTION_HISTORY,
   DELETE_EXECUTION_HISTORY,
+  DELETE_ALL_EXECUTION_HISTORY,
   GET_EXECUTION_HISTORY_BY_ID,
   EMPTY_EXECUTION_HISTORY,
 } from "../Actions/action-types";
@@ -30,6 +31,12 @@ const executionHistoryReducer = (state = initState, { type, payload }) => {
         ...state,
         data: payload,
         loading: false,
+      };
+    case DELETE_ALL_EXECUTION_HISTORY:
+      return {
+        ...state,
+        loading: false,
+        data: [],
       };
     case DELETE_EXECUTION_HISTORY:
       let temp = [...state.data].filter((el) => el.id !== payload);

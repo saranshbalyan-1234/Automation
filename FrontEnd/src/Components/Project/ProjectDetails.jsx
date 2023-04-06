@@ -20,6 +20,7 @@ import AddProjectMemberModal from "./AddProjectMemberModal";
 import MemberBadge from "../Common/MemberBadge";
 import ColumnGraph from "../Common/Graph/ColumnGraph";
 import Loading from "../Common/Loading";
+import { usePermission } from "../../Utils/permission";
 const { Title } = Typography;
 const { Meta } = Card;
 export const ProjectDetails = ({
@@ -28,11 +29,16 @@ export const ProjectDetails = ({
   getProjectById,
   removeMember,
 }) => {
+  const editProjectPermission = usePermission("Project", "edit");
   const { projectId } = useParams();
-
   const [addProjectMemberModal, setAddProjectMemberModal] = useState(false);
   const [editProjectModal, setEditProjectModal] = useState(false);
   const [graphCount, setGraphCount] = useState([]);
+
+  const members = currentProject.members.filter((el) => {
+    return el.deletedAt === null;
+  });
+
   useEffect(() => {
     getProject();
     // eslint-disable-next-line
@@ -128,13 +134,20 @@ export const ProjectDetails = ({
           }}
           okText="Yes, Remove"
           cancelText="No"
+          disabled={!editProjectPermission}
         >
-          <DeleteOutlined style={{ fontSize: 17 }} onClick={() => {}} />
+          <DeleteOutlined
+            style={{
+              fontSize: 17,
+              color: editProjectPermission ? "black" : "grey",
+              cursor: editProjectPermission ? "pointer" : "not-allowed",
+            }}
+          />
         </Popconfirm>
       ),
     },
   ];
-  if (loading) return null;
+  // if (loading) return null;
   return (
     <div style={{ paddingTop: 20 }}>
       <Loading loading={loading}>
@@ -162,7 +175,7 @@ export const ProjectDetails = ({
                       {moment(currentProject.createdAt).format("DD/MM/YY")} By
                       &nbsp;
                       {currentProject.createdBy && (
-                        <UserAvatar user={currentProject.createdBy.id} />
+                        <UserAvatar user={currentProject.createdByUser} />
                       )}
                     </div>
                   </div>
@@ -235,7 +248,7 @@ export const ProjectDetails = ({
           </Card>
         </div>
         <Card style={{ marginTop: 20 }}>
-          {currentProject.members && (
+          {members && (
             <div
               style={{
                 display: "flex",
@@ -247,8 +260,8 @@ export const ProjectDetails = ({
                 level={5}
                 style={{ display: "flex", flexWrap: "wrap", gap: 10 }}
               >
-                <div>Members</div> <div>({currentProject.members.length})</div>
-                <MemberBadge members={currentProject.members} />
+                <div>Members</div> <div>({members.length})</div>
+                <MemberBadge members={members} />
               </Title>
               <Button
                 type="primary"
@@ -266,7 +279,9 @@ export const ProjectDetails = ({
           <Table
             scroll={{ x: true }}
             columns={columns}
-            dataSource={currentProject.members}
+            dataSource={members.filter((el) => {
+              return el.deletedAt === null;
+            })}
             size="small"
           />
         </Card>

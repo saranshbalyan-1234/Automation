@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Modal, Button, Select, Switch } from "antd";
+import { Form, Input, Modal, Button, Select, Switch, InputNumber } from "antd";
 import { connect } from "react-redux";
 import { executeTestCase } from "../../Redux/Actions/testCase";
 import ReactQuill from "react-quill";
 import Loading from "../Common/Loading";
 import axios from "axios";
-const { Option } = Select;
 const ExecuteModal = ({
   visible,
   setVisible,
   loading,
   executeTestCase,
   currentTestCaseId,
+  addExecutionPermission,
 }) => {
   const [form] = Form.useForm();
   const [allEnvironments, setAllEnvironments] = useState([]);
@@ -57,6 +57,7 @@ const ExecuteModal = ({
           initialValues={{
             continueOnError: false,
             recordAllSteps: false,
+            bots: 1,
           }}
         >
           <Form.Item
@@ -82,17 +83,33 @@ const ExecuteModal = ({
                 },
               ]}
             >
-              <Select showSearch style={{ minWidth: "160px" }}>
+              <Select
+                showSearch
+                style={{ minWidth: "160px" }}
+                optionFilterProp="children"
+              >
                 {allEnvironments.map((el, i) => {
                   return (
-                    <Option value={el.id} key={i}>
+                    <Select.Option value={el.id} key={i}>
                       {el.name}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
             </Form.Item>
           )}
+          <Form.Item
+            name="bots"
+            label="Bots"
+            rules={[
+              {
+                required: true,
+                message: "Please input number of bots!",
+              },
+            ]}
+          >
+            <InputNumber min={1} />
+          </Form.Item>
           <Form.Item
             name="continueOnError"
             label="Continue On Error"
@@ -105,6 +122,9 @@ const ExecuteModal = ({
             label="Record All Steps"
             valuePropName="checked"
           >
+            <Switch checkedChildren="Yes" unCheckedChildren="No" />
+          </Form.Item>
+          <Form.Item name="headless" label="Headless" valuePropName="checked">
             <Switch checkedChildren="Yes" unCheckedChildren="No" />
           </Form.Item>
           <Form.Item name="description" label="">
@@ -120,6 +140,7 @@ const ExecuteModal = ({
               type="primary"
               style={{ marginRight: "20px" }}
               htmlType="submit"
+              disabled={!addExecutionPermission}
             >
               Submit
             </Button>

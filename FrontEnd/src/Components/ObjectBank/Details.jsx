@@ -9,6 +9,8 @@ import AddLocatorsModal from "./AddLocatorsModal";
 import UserAvatar from "../Common/Avatar";
 import moment from "moment";
 import AddEditObjectModal from "./AddEditObjectModal";
+import { usePermission } from "../../Utils/permission";
+import Loading from "../Common/Loading";
 const { Meta } = Card;
 const { Title } = Typography;
 const ObjectDetails = ({
@@ -18,6 +20,7 @@ const ObjectDetails = ({
   history = false,
   loading,
 }) => {
+  const editObjectPermission = usePermission("Object Bank", "edit");
   const { objectId } = useParams();
   const [currentObject, setCurrentObject] = useState({});
   const [addLocatorModal, setAddLocatorModal] = useState(false);
@@ -32,7 +35,7 @@ const ObjectDetails = ({
       newObject?.id && getObjectDetailsById(newObject?.id);
       setCurrentObject(object);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [objectId, newObject?.id, object?.id, history]);
 
   useEffect(() => {
@@ -43,7 +46,7 @@ const ObjectDetails = ({
   return (
     <div style={{ paddingTop: 20 }}>
       {currentObject && (
-        <>
+        <Loading loading={loading}>
           <Card>
             <div
               style={{
@@ -62,21 +65,13 @@ const ObjectDetails = ({
                       Created On &nbsp;
                       {moment(currentObject.createdAt).format("DD/MM/YY")} By
                       &nbsp;
-                      {currentObject.createdBy && (
-                        <UserAvatar user={currentObject.createdBy.id} />
-                      )}
+                      <UserAvatar user={currentObject.createdByUser} />
                     </div>
                   </div>
                 }
                 description={<></>}
               />
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 25,
-                }}
-              >
+              {!history && (
                 <Button
                   type="primary"
                   ghost
@@ -88,7 +83,7 @@ const ObjectDetails = ({
                   <EditOutlined />
                   Edit Object Details
                 </Button>
-              </div>
+              )}
             </div>
             {currentObject.description && (
               <Meta
@@ -128,13 +123,14 @@ const ObjectDetails = ({
                 onClick={() => {
                   setAddLocatorModal(true);
                 }}
+                disabled={!editObjectPermission}
               >
                 <PlusOutlined /> Add Locator
               </Button>
             )}
             <Locators locators={currentObject.locators} history={history} />
           </div>
-        </>
+        </Loading>
       )}
       {addLocatorModal && (
         <AddLocatorsModal

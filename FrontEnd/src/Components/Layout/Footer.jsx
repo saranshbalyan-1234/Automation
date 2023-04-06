@@ -55,7 +55,9 @@ export default function Footer() {
           <InstagramOutlined />
           <FacebookOutlined />
         </div>
-        <div style={{ marginTop: "10px" }}>Made with Love By SaranCe</div>
+        <div style={{ marginTop: "10px" }}>
+          © {new Date().getFullYear()} Made with Love By SaranCe
+        </div>
       </div>
     </Content>
   );

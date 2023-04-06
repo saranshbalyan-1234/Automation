@@ -43,7 +43,7 @@ export const ExecutedByReport = ({ user, team }) => {
               justifyContent: "space-between",
             }}
           >
-            <div className="row">
+            <div className="row" style={{ flexWrap: "nowrap" }}>
               <ClockCircleOutlined style={{ marginTop: "4px" }} />
               Executed By
               <div>

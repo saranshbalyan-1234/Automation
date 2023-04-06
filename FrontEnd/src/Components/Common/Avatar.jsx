@@ -2,14 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Avatar, Popover, Card, Badge } from "antd";
 import { connect } from "react-redux";
 
-const UserAvatar = ({ userList, user, size = "small", self, log }) => {
+const UserAvatar = ({
+  userList,
+  user,
+  size = "small",
+  self,
+  showName = false,
+}) => {
   const [userData, setUserData] = useState({});
-
   useEffect(() => {
-    const temp = [...userList, self]?.find((el) => {
+    const temp = [...userList, { ...self, active: true }]?.find((el) => {
       return el.id === user;
     });
-    temp.id && setUserData(temp);
+    temp?.id && setUserData(temp);
     // eslint-disable-next-line
   }, [userList, user]);
 
@@ -17,7 +22,9 @@ const UserAvatar = ({ userList, user, size = "small", self, log }) => {
     return (
       <Badge.Ribbon
         text={
-          userData.verifiedAt
+          userData.deletedAt
+            ? "Deleted"
+            : userData.verifiedAt
             ? userData.active
               ? "Active"
               : "Inactive"
@@ -26,6 +33,7 @@ const UserAvatar = ({ userList, user, size = "small", self, log }) => {
         style={{ marginTop: "-10px" }}
       >
         <Card.Meta
+          style={{ minWidth: 250 }}
           title={
             <div
               style={{
@@ -48,34 +56,37 @@ const UserAvatar = ({ userList, user, size = "small", self, log }) => {
   if (!userData.id || !user) return;
 
   return (
-    <Popover content={getUserData}>
-      {userData.profileImage ? (
-        <Avatar
-          src={"data:image/jpeg;base64," + userData.profileImage}
-          size={size}
-          style={{
-            backgroundColor: "#f56a00",
-            cursor: "pointer",
-          }}
-        >
-          <div style={{ marginTop: "-1px", textTransform: "uppercase" }}>
-            {handleAvatarInitials(user)}
-          </div>
-        </Avatar>
-      ) : (
-        <Avatar
-          size={size}
-          style={{
-            backgroundColor: "#f56a00",
-            cursor: "pointer",
-          }}
-        >
-          <div style={{ marginTop: "-1px", textTransform: "uppercase" }}>
-            {userData.id && handleAvatarInitials(userData)}
-          </div>
-        </Avatar>
-      )}
-    </Popover>
+    <>
+      <Popover content={getUserData}>
+        {userData.profileImage ? (
+          <Avatar
+            src={"data:image/jpeg;base64," + userData.profileImage}
+            size={size}
+            style={{
+              backgroundColor: "#f56a00",
+              cursor: "pointer",
+            }}
+          >
+            <div style={{ marginTop: "-1px", textTransform: "uppercase" }}>
+              {handleAvatarInitials(user)}
+            </div>
+          </Avatar>
+        ) : (
+          <Avatar
+            size={size}
+            style={{
+              backgroundColor: "#f56a00",
+              cursor: "pointer",
+            }}
+          >
+            <div style={{ marginTop: "-1px", textTransform: "uppercase" }}>
+              {userData.id && handleAvatarInitials(userData)}
+            </div>
+          </Avatar>
+        )}
+      </Popover>
+      {showName && " " + userData.name}
+    </>
   );
 };
 export const handleAvatarInitials = (user) => {
