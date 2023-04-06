@@ -20,6 +20,7 @@ const Process = ({
   process,
   deleteProcess,
   deleteStep,
+  loading,
 }) => {
   const editTestCasePermission = usePermission("Test Case", "edit");
   const [addEditProcessModal, setAddEditProcessModal] = useState(false);
@@ -36,7 +37,7 @@ const Process = ({
 
   return (
     <>
-      <Loading loading={false}>
+      <Loading loading={loading}>
         {process.map((item, index) => {
           return (
             <Collapse style={{ marginTop: "10px" }} key={index}>
@@ -196,6 +197,7 @@ const Process = ({
 
 const mapStateToProps = (state) => ({
   process: state.testCase.currentTestCase.process,
+  loading: state.testCase.loading,
 });
 
 const mapDispatchToProps = { getTestCaseStepsById, deleteProcess, deleteStep };
