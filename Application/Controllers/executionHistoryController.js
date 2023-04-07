@@ -59,7 +59,8 @@ const createStepHistory = async (
   });
   return await TestStepHistory.schema(req.database).create(payload);
 };
-const updateStepResult = async (req, id, result, failedLog = null) => {
+const updateStepResult = async (req, id, result, failedLog = null, step) => {
+  if (step?.actionEvent == "End For Loop" && !id) return;
   if (!id) return console.log("Unable to update step result");
   try {
     return await TestStepHistory.schema(req.database).update(

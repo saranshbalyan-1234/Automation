@@ -71,13 +71,27 @@ const startExecution = async (req, res, temp) => {
       });
 
       let tempStep = { ...step.dataValues, testParameters: tempParameter };
+      let stepHistory = { dataValues: {} };
+      if (tempStep.actionEvent !== "End For Loop") {
+        stepHistory = await createStepHistory(
+          req,
+          tempStep,
+          data.executionHistory,
+          processHistory
+        );
+      } else if (
+        stepExtra.final === stepExtra.current &&
+        tempStep.actionEvent == "End For Loop"
+      ) {
+        console.log("For Loop Finished");
+        stepHistory = await createStepHistory(
+          req,
+          tempStep,
+          data.executionHistory,
+          processHistory
+        );
+      }
 
-      const stepHistory = await createStepHistory(
-        req,
-        tempStep,
-        data.executionHistory,
-        processHistory
-      );
       let ifElseConditionCheck =
         stepExtra.conditional == false ||
         tempStep.actionEvent == "End Condition" ||
@@ -92,12 +106,19 @@ const startExecution = async (req, res, temp) => {
           stepExtra.conditionalResult == false);
 
       if (tempStep.actionEvent == "For Loop") {
+        console.log("For Loop Started");
         stepExtra.initial = Number(tempStep.testParameters.Initial);
         stepExtra.current = Number(tempStep.testParameters.Initial);
         stepExtra.final = Number(tempStep.testParameters.Final);
         stepExtra.counter = Number(tempStep.testParameters.Counter);
         stepExtra.forLoopInitialValue = j;
-        await updateStepResult(req, stepHistory.dataValues.id, true);
+        await updateStepResult(
+          req,
+          stepHistory.dataValues.id,
+          true,
+          null,
+          tempStep
+        );
       }
       if (tempStep.actionEvent == "End For Loop") {
         stepExtra.current = stepExtra.current + stepExtra.counter;
@@ -111,15 +132,35 @@ const startExecution = async (req, res, temp) => {
         } else {
           stepExtra.break = false;
         }
-        await updateStepResult(req, stepHistory.dataValues.id, true);
+        await updateStepResult(
+          req,
+          stepHistory.dataValues.id,
+          true,
+          null,
+          tempStep
+        );
       }
       if (tempStep.actionEvent == "Break For Loop") {
+        console.log("For Loop Break");
         stepExtra.break = true;
-        await updateStepResult(req, stepHistory.dataValues.id, true);
+        await updateStepResult(
+          req,
+          stepHistory.dataValues.id,
+          true,
+          null,
+          tempStep
+        );
       }
       if (tempStep.actionEvent == "Skip For Loop Iteration") {
+        console.log("Skipped For Loop Iteration");
         stepExtra.skip = true;
-        await updateStepResult(req, stepHistory.dataValues.id, true);
+        await updateStepResult(
+          req,
+          stepHistory.dataValues.id,
+          true,
+          null,
+          tempStep
+        );
       }
       if (
         ifElseConditionCheck &&
