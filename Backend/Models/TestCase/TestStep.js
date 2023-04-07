@@ -20,6 +20,7 @@ export default (sequelize, DataTypes) => {
     },
     objectId: {
       type: DataTypes.INTEGER,
+      allowNull: true,
       references: {
         model: "objects",
         key: "id",

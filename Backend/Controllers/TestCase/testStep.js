@@ -98,7 +98,7 @@ const updateTestStep = async (req, res) => {
     if (error) throw new Error(error.details[0].message);
 
     const updatedTestStep = await TestStep.schema(req.database).update(
-      req.body,
+      { ...req.body, objectId: req.body.objectId || null },
       {
         where: {
           id: testStepId,

@@ -569,6 +569,16 @@ const handleStep = async (
         executionHistory
       );
       break;
+    case "Generate Random String":
+      return await generateRandomString(
+        step,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
     case "Get Page Title":
       return await getPageTitle(
         step,
@@ -1223,12 +1233,50 @@ const generateRandomNumber = async (
 ) => {
   console.log("generating random number");
   try {
-    let randomNumber = Math.floor(
-      Math.random() * Math.pow(10, step.testParameters.Length)
+    const length = step.testParameters.Length;
+    let randomNumber = null;
+
+    const generateNumber = async () => {
+      randomNumber = Math.floor(Math.random() * Math.pow(10, length));
+      if (String(randomNumber).length != length) return generateNumber();
+    };
+
+    generateNumber();
+    output[step.testParameters.Output] = randomNumber;
+
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
     );
-    if (String(randomNumber).length == step.testParameters.Length) {
-      output[step.testParameters.Output] = randomNumber;
+  }
+};
+const generateRandomString = async (
+  step,
+  output,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("generating random string");
+  try {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const length = step.testParameters.Length;
+    let randomString = "";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      randomString += characters.charAt(
+        Math.floor(Math.random() * charactersLength)
+      );
     }
+
+    output[step.testParameters.Output] = randomString;
 
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
