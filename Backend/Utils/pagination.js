@@ -1,30 +1,34 @@
-const paginate = (conditions, query, searchable = []) => {
+import { Op } from "sequelize";
+export const paginate = async (Model, req, conditions, searchable = []) => {
   let data = { ...conditions };
+  let query = req.query;
 
-  const page = query.page;
-  const size = query.size;
+  const page = parseInt(query.page) - 1;
+  const size = parseInt(query.size);
   const sort = query.sort;
   const search = query.search;
-
-  if (size && page) {
+  if (!(isNaN(page) || isNaN(size))) {
     data.offset = parseInt(page * size);
     data.limit = parseInt(size);
   }
 
   if (sort) {
-    const sortData = sort.split(",");
-    data.order = [sortData];
+    if (sort.split(",").length == 2) {
+      const sortData = sort.split(",");
+      data.order = [sortData];
+    }
   }
   if (searchable.length && search) {
-    searchable.forEach((el) => {
-      data.where[el] = {
-        [Op.like]: `%${search}%`,
-      };
-    });
+    data.where = {
+      [Op.or]: searchable.map((el) => {
+        return { [el]: { [Op.like]: `%${search}%` } };
+      }),
+    };
   }
-  return data;
+  const temp = await Model.schema(req.database).findAndCountAll({ ...data });
+  return pageInfo(temp, query, searchable);
 };
-const pageInfo = (info, query, searched = false) => {
+export const pageInfo = (info, query = {}, searchable = []) => {
   const data = info.rows;
   const currentPage = parseInt(query.page);
   const size = parseInt(query.size);
@@ -44,21 +48,21 @@ const pageInfo = (info, query, searched = false) => {
     search: { searched: false, searchedBy: null },
   };
 
-  if (currentPage && size) {
+  if (typeof currentPage == "number" && size) {
     pageDetails.page.currentPage = currentPage;
     pageDetails.page.totalPages = Math.ceil(info.count / size);
     pageDetails.page.size = size;
     pageDetails.page.pagination = true;
   }
-  if (sort) {
+  if (sort && sort.split(",").length == 2) {
     pageDetails.sort.sorted = true;
     pageDetails.sort.sortedBy = sort.split(",")[0];
     pageDetails.sort.sortBy = sort.split(",")[1];
   }
-  if (searched && search) {
+  if (search) {
     pageDetails.search.searched = true;
     pageDetails.search.searchedBy = search;
+    pageDetails.search.searchedIn = searchable.join(",");
   }
   return pageDetails;
 };
-export { paginate, pageInfo };
