@@ -1,4 +1,5 @@
 const locatorTypes = [
+  "XPATH",
   "ClassName",
   "CSS",
   "Id",
@@ -7,6 +8,5 @@ const locatorTypes = [
   "Name",
   "PartialLinkText",
   "TagName",
-  "XPATH",
 ];
 export default locatorTypes;

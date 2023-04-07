@@ -5,6 +5,7 @@ const {
   updateStepResult,
 } = require("../Controllers/executionHistoryController");
 const findByLocator = async (locators) => {
+  // XPATH
   // ClassName
   // CSS
   // Id
@@ -13,7 +14,6 @@ const findByLocator = async (locators) => {
   // Name
   // PartialLinkText
   // TagName
-  // XPATH
 
   for (const el of locators) {
     try {

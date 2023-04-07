@@ -82,6 +82,15 @@ const {
   ifObjectEnabled,
   ifObjectSelected,
 } = require("./ifElse");
+const {
+  click,
+  clickByJs,
+  clickLinkByPartialText,
+  clickLinkByText,
+  rightClick,
+  doubleClick,
+  clickElementByProperty,
+} = require("./click");
 
 const {
   updateStepResult,
@@ -111,6 +120,16 @@ const handleStep = async (
       break;
     case "Click":
       return await click(
+        step,
+        driver,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
+    case "Click Element By Property":
+      return await clickElementByProperty(
         step,
         driver,
         processResult,
@@ -1076,59 +1095,6 @@ const launchWebsite = async (
   }
 };
 
-const click = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Clicking");
-  try {
-    await driver
-      .findElement(await findByLocator(step.object.dataValues.locators))
-      .click();
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
-  }
-};
-const doubleClick = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Double Clicking");
-  try {
-    await driver
-      .actions()
-      .doubleClick(
-        await driver.findElement(
-          await findByLocator(step.object.dataValues.locators)
-        )
-      )
-      .perform();
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
-  }
-};
 const hoverMouse = async (
   step,
   driver,
@@ -1143,35 +1109,6 @@ const hoverMouse = async (
       await findByLocator(step.object.dataValues.locators)
     );
     await driver.actions().move({ origin: el, x: 0, y: 0 }).perform();
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
-  }
-};
-const rightClick = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Right Clicking");
-  try {
-    await driver
-      .actions()
-      .contextClick(
-        await driver.findElement(
-          await findByLocator(step.object.dataValues.locators)
-        )
-      )
-      .perform();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -1286,10 +1223,13 @@ const generateRandomNumber = async (
 ) => {
   console.log("generating random number");
   try {
-    const randomNumber = Math.floor(
+    let randomNumber = Math.floor(
       Math.random() * Math.pow(10, step.testParameters.Length)
     );
-    output[step.testParameters.Output] = randomNumber;
+    if (String(randomNumber).length == step.testParameters.Length) {
+      output[step.testParameters.Output] = randomNumber;
+    }
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
@@ -1418,78 +1358,6 @@ const scrollToTop = async (
   }
 };
 
-const clickByJs = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Clicking By Javascript");
-  try {
-    const element = await driver.findElement(
-      await findByLocator(step.object.dataValues.locators)
-    );
-    await driver.executeScript("arguments[0].click();", element);
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
-  }
-};
-
-const clickLinkByText = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log(`Clicking Link By Text ${step.testParameters.Text}`);
-  try {
-    await driver.findElement(By.linkText(step.testParameters.Text)).click();
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
-  }
-};
-const clickLinkByPartialText = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Clicking Link By Partial Text");
-  try {
-    await driver
-      .findElement(By.partialLinkText(step.testParameters.Text))
-      .click();
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
-  }
-};
 const copyText = async (
   step,
   output,
@@ -1608,41 +1476,6 @@ const printLog = async (
   }
 };
 
-const selectOptionByValue = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Selecting Option By Value");
-  const value = step.testParameters.Value;
-  if (!value) {
-    console.log("No Value Found");
-    if (processResult.result) {
-      processResult.result = false;
-    }
-    return await updateStepResult(req, stepHistoryId, false);
-  }
-
-  try {
-    // other possible solution => #select > option[value=value]
-    await driver
-      .findElement(await findByLocator(step.object.dataValues.locators))
-      .sendKeys(value);
-    return await updateStepResult(req, stepHistoryId, true);
-  } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
-  }
-};
-
 const selectOptionByPosition = async (
   step,
   driver,
@@ -1673,6 +1506,41 @@ const selectOptionByPosition = async (
     );
     await options[position - 1].click();
 
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
+const selectOptionByValue = async (
+  step,
+  driver,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Selecting Option By Value");
+  const value = step.testParameters.Value;
+  if (!value) {
+    console.log("No Value Found");
+    if (processResult.result) {
+      processResult.result = false;
+    }
+    return await updateStepResult(req, stepHistoryId, false);
+  }
+
+  try {
+    // other possible solution => #select > option[value=value]
+    await driver
+      .findElement(await findByLocator(step.object.dataValues.locators))
+      .sendKeys(value);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
     return await handleActionEventError(
