@@ -1080,6 +1080,16 @@ const handleStep = async (
         stepExtra
       );
       break;
+    case "Change Dynamic Value":
+      return await changeDynamicValue(
+        step,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory
+      );
+      break;
     default:
       break;
   }
@@ -1825,4 +1835,30 @@ const storeForLoopVariable = async (
     );
   }
 };
+
+const changeDynamicValue = async (
+  step,
+  output,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory
+) => {
+  console.log("Changing Dynamic Value");
+  try {
+    const value = step.testParameters.NewValue;
+    output[step.testParameters.DynamicKey] = value;
+
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
+
 module.exports = { handleStep };
