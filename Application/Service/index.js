@@ -1069,7 +1069,17 @@ const handleStep = async (
         executionHistory
       );
       break;
-
+    case "Store For Loop Variable":
+      return await storeForLoopVariable(
+        step,
+        output,
+        processResult,
+        req,
+        stepHistoryId,
+        executionHistory,
+        stepExtra
+      );
+      break;
     default:
       break;
   }
@@ -1791,4 +1801,28 @@ const throwError = async (
   }
 };
 
+const storeForLoopVariable = async (
+  step,
+  output,
+  processResult,
+  req,
+  stepHistoryId,
+  executionHistory,
+  stepExtra
+) => {
+  console.log("Store For Loop Variable");
+  try {
+    output[step.testParameters.Output] = stepExtra.current;
+
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError(
+      err,
+      req,
+      stepHistoryId,
+      processResult,
+      executionHistory.continueOnError
+    );
+  }
+};
 module.exports = { handleStep };
