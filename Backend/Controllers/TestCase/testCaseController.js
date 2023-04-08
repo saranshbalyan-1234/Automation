@@ -11,6 +11,7 @@ import {
 } from "../../Utils/Validations/testCase.js";
 import { nameDesTagPrjValidation } from "../../Utils/Validations/index.js";
 import { Op } from "sequelize";
+import _ from "lodash";
 const TestCase = db.testCases;
 const User = db.users;
 const Process = db.process;
@@ -274,10 +275,32 @@ const saveProcess = async (req, res) => {
       include: [
         {
           model: ReusableProcess.schema(req.database),
+          include: [
+            {
+              model: TestStep.schema(req.database),
+              include: [
+                { model: Object.schema(req.database) },
+                { model: TestParameter.schema(req.database) },
+              ],
+            },
+          ],
         },
       ],
     });
-    return res.status(200).json(process);
+
+    const temp = _.cloneDeep(process);
+    // console.log("saransh", temp.reusableProcess.dataValues.testSteps);
+
+    if (temp.dataValues.reusableProcess) {
+      temp.dataValues.testSteps =
+        temp.dataValues.reusableProcess.dataValues.testSteps;
+      delete temp.reusableProcess.dataValues.testSteps;
+    } else {
+      temp.dataValues.testSteps = [];
+    }
+
+    console.log(temp);
+    return res.status(200).json(temp);
   } catch (err) {
     getError(err, res);
   }

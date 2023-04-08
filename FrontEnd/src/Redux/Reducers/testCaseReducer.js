@@ -99,7 +99,7 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         }
       );
       const orderedProcess = orderBy(
-        [...changedStepProcess, { ...payload, testSteps: [] }],
+        [...changedStepProcess, { ...payload }],
         ["step"],
         ["asc"]
       );
