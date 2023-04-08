@@ -289,7 +289,6 @@ const saveProcess = async (req, res) => {
     });
 
     const temp = _.cloneDeep(process);
-    // console.log("saransh", temp.reusableProcess.dataValues.testSteps);
 
     if (temp.dataValues.reusableProcess) {
       temp.dataValues.testSteps =
@@ -299,7 +298,6 @@ const saveProcess = async (req, res) => {
       temp.dataValues.testSteps = [];
     }
 
-    console.log(temp);
     return res.status(200).json(temp);
   } catch (err) {
     getError(err, res);
@@ -331,7 +329,6 @@ const updateProcess = async (req, res) => {
       return res.status(400).json({ error: "Record not found" });
     }
   } catch (err) {
-    console.log(err);
     getError(err, res);
   }
 };
