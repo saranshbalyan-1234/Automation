@@ -74,6 +74,7 @@ function ReusableProcessTabs({
                 reusableProcess={currentReusableProcess}
                 deleteStep={deleteStep}
                 testSteps={testSteps}
+                loading={loading}
               />
             )}
           </Tabs.TabPane>

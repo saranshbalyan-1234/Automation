@@ -12,7 +12,14 @@ import ViewObjectModal from "./ViewObjectModal";
 import ViewParameterModal from "./ViewParameterModal";
 import ViewCommentModal from "./ViewCommentModal";
 import { usePermission } from "../../../Utils/permission";
-const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
+import Loading from "../Loading";
+const TestStepTable = ({
+  process,
+  testSteps,
+  deleteStep,
+  reusableProcess,
+  loading = false,
+}) => {
   const editTestCasePermission = usePermission("Test Case", "edit");
   const editReusableProcessPermission = usePermission(
     "Reusable Process",
@@ -220,7 +227,7 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
   ];
 
   return (
-    <>
+    <Loading loading={loading}>
       <Table
         scroll={{ x: true }}
         locale={{
@@ -282,7 +289,7 @@ const TestStepTable = ({ process, testSteps, deleteStep, reusableProcess }) => {
           comment={comment}
         />
       )}
-    </>
+    </Loading>
   );
 };
 
