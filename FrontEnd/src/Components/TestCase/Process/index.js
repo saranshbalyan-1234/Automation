@@ -93,7 +93,10 @@ const Process = ({
                         </Tag>
                       )}
                       <Tag color="blue" style={{ cursor: "default" }}>
-                        Step Count : {item.testSteps.length}
+                        Step Count :&nbsp;
+                        {item.testSteps.length > 9
+                          ? item.testSteps.length
+                          : `0${item.testSteps.length}`}
                       </Tag>
                       <EditOutlined
                         style={{
