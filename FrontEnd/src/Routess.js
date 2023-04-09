@@ -6,7 +6,7 @@ import { logout } from "./Redux/Actions/auth";
 import ErrorPage from "./Views/ErrorPage";
 import Setting from "./Components/Settings";
 import Dashboard from "./Components/Dashboard";
-import Support from "./Views/Support";
+import Documentation from "./Views/Documentation";
 import Project from "./Components/Project";
 import TestCase from "./Components/TestCase";
 import ReusableProcess from "./Components/ReusableProcess";
@@ -30,7 +30,11 @@ function Routess({ user }) {
     >
       <Routes>
         <Route exact path="/" element={<Dashboard />}></Route>
-        <Route exact path="/support" element={<Support />}></Route>
+        <Route
+          exact
+          path="/documentation/*"
+          element={<Documentation />}
+        ></Route>
         <Route exact path="/settings/:tab" element={<Setting />}></Route>
         {viewProjectPermission && (
           <Route exact path="/project/*" element={<Project />}></Route>

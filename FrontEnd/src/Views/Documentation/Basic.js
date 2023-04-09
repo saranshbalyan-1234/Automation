@@ -2,7 +2,7 @@ import { Collapse, Space } from "antd";
 import React from "react";
 const { Panel } = Collapse;
 
-export default function Support() {
+export default function Documentation() {
   return (
     <Space direction="vertical" style={{ minWidth: "100%", marginTop: 10 }}>
       <Collapse collapsible="header">

@@ -39,8 +39,8 @@ const ProfileMenu = ({ logout, user }) => {
 
         {
           label: (
-            <Link to="/support">
-              <BiSupport style={{ marginRight: "5px" }} /> Support
+            <Link to="/documentation">
+              <BiSupport style={{ marginRight: "5px" }} /> Documentation
             </Link>
           ),
           key: "2",
