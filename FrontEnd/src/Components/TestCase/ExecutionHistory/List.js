@@ -32,7 +32,7 @@ export const List = ({
     {
       title: "Name",
       dataIndex: "name",
-      width: 600,
+      // width: 600,
     },
     {
       title: "Executed At",
@@ -43,7 +43,30 @@ export const List = ({
           <UserAvatar user={record.executedByUser} />
         </div>
       ),
-      width: 180,
+      width: 220,
+    },
+    {
+      title: "Status",
+      width: 120,
+      dataIndex: "status",
+      render: (text, record) => (
+        <div style={{ width: 100 }}>
+          {text === "COMPLETE" ? (
+            <div
+              style={{
+                color: "green",
+                fontWeight: 600,
+              }}
+            >
+              COMPLETE
+            </div>
+          ) : text === "EXECUTING" ? (
+            <div style={{ color: "#1677ff", fontWeight: 600 }}>FAIL</div>
+          ) : (
+            <div style={{ color: "grey", fontWeight: 600 }}>INCOMPLETE</div>
+          )}
+        </div>
+      ),
     },
     {
       title: "Result",
@@ -60,10 +83,11 @@ export const List = ({
             >
               PASS
             </div>
-          ) : text === false ? (
-            <div style={{ color: "red", fontWeight: 600 }}>FAIL</div>
           ) : (
-            <div style={{ color: "grey", fontWeight: 600 }}>INCOMPLETE</div>
+            text === false &&
+            record.status !== "EXECUTING" && (
+              <div style={{ color: "red", fontWeight: 600 }}>FAIL</div>
+            )
           )}
         </div>
       ),
