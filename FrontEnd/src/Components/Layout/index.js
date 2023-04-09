@@ -2,7 +2,6 @@ import { StyledLayout } from "./style";
 import { FloatButton } from "antd";
 import { Layout } from "antd";
 import React, { useState } from "react";
-
 import Header from "./Header";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";

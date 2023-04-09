@@ -1,12 +1,23 @@
 import { Card } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  AlertOutlined,
+  SettingOutlined,
+  AimOutlined,
+  FileSearchOutlined,
+} from "@ant-design/icons";
 export default function Documentation() {
   const navigate = useNavigate();
 
   const data = [
     {
-      title: "Basic Product",
+      title: (
+        <div>
+          <AlertOutlined style={{ marginRight: 10, fontSize: 25 }} />
+          Basic Product
+        </div>
+      ),
       link: "/documentation/basic",
       description: (
         <>
@@ -17,7 +28,12 @@ export default function Documentation() {
       ),
     },
     {
-      title: "Settings",
+      title: (
+        <div>
+          <SettingOutlined style={{ marginRight: 10, fontSize: 25 }} />
+          Setting
+        </div>
+      ),
       link: "/documentation/settings",
       description: (
         <>
@@ -28,7 +44,12 @@ export default function Documentation() {
       ),
     },
     {
-      title: "Execution",
+      title: (
+        <div>
+          <AimOutlined style={{ marginRight: 10, fontSize: 25 }} />
+          Execution
+        </div>
+      ),
       link: "/documentation/execution",
       description: (
         <>
@@ -39,7 +60,12 @@ export default function Documentation() {
       ),
     },
     {
-      title: "Action Keywords",
+      title: (
+        <div>
+          <FileSearchOutlined style={{ marginRight: 10, fontSize: 25 }} />
+          Action Keywords
+        </div>
+      ),
       link: "/documentation/actionKeywords",
       description: (
         <>
@@ -51,7 +77,7 @@ export default function Documentation() {
     },
   ];
   return (
-    <div style={{ display: "flex", gap: 20, paddingTop: 20, flexWrap: "wrap" }}>
+    <div style={{ display: "flex", gap: 30, paddingTop: 40, flexWrap: "wrap" }}>
       {data.map((el) => {
         return (
           <Card

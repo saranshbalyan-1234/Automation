@@ -81,7 +81,7 @@ export default function Container({ children }) {
       <div>
         <PageHeader
           style={{ padding: "5px 15px 5px 15px", background: "#fff" }}
-          // onBack={() => window.history.back()}
+          onBack={() => window.history.back()}
           title={
             <div
               style={{
