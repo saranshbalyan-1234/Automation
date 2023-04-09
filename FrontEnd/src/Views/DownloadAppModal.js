@@ -34,51 +34,51 @@ const DownloadAppModal = ({ visible, setVisible }) => {
         }}
       >
         {" "}
-        <Card>
+        <Card
+          bordered
+          hoverable
+          onClick={() => {
+            downloadApp("application-win.exe.zip");
+          }}
+        >
           <Meta
             title="Windows"
             description={
-              <Tag
-                className="pointer"
-                color="#108ee9"
-                onClick={() => {
-                  downloadApp("application-win.exe.zip");
-                }}
-              >
+              <Tag className="pointer" color="#108ee9">
                 Download Windows App
               </Tag>
             }
           />
         </Card>
-        <Card>
+        <Card
+          bordered
+          hoverable
+          onClick={() => {
+            downloadApp("application-macos.zip");
+          }}
+        >
           <Meta
             title="MacOs"
             description={
               <div>
-                <Tag
-                  className="pointer"
-                  color="#108ee9"
-                  onClick={() => {
-                    downloadApp("application-macos.zip");
-                  }}
-                >
+                <Tag className="pointer" color="#108ee9">
                   Download MacOs App
                 </Tag>
               </div>
             }
           />
         </Card>
-        <Card>
+        <Card
+          bordered
+          hoverable
+          onClick={() => {
+            downloadApp("application-linux.zip");
+          }}
+        >
           <Meta
             title="Linux"
             description={
-              <Tag
-                className="pointer"
-                color="#108ee9"
-                onClick={() => {
-                  downloadApp("application-linux.zip");
-                }}
-              >
+              <Tag className="pointer" color="#108ee9">
                 Download Linux App
               </Tag>
             }
