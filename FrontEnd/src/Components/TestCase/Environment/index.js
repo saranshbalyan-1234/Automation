@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
-import { Table, Button, Popconfirm, Spin } from "antd";
+import { Table, Button, Popconfirm } from "antd";
 import CustomSearch from "../../Common/Search";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import AddModal from "./AddModal";
@@ -12,6 +12,7 @@ import {
   deleteEnvironment,
 } from "../../../Redux/Actions/environment";
 import { usePermission } from "../../../Utils/permission";
+import Loading from "../../Common/Loading";
 const Environment = ({
   visible,
   setVisible,
@@ -173,7 +174,7 @@ const Environment = ({
           setVisible(false);
         }}
       >
-        <Spin spinning={loading}>
+        <Loading spinning={loading}>
           <div
             style={{ maxHeight: "70vh", overflow: "auto", minHeight: "70vh" }}
           >
@@ -228,7 +229,7 @@ const Environment = ({
               sticky
             />
           </div>
-        </Spin>
+        </Loading>
       </Modal>
       {addModal.active && (
         <AddModal

@@ -86,15 +86,9 @@ const updateProcessResult = async (req, id, result) => {
   );
 };
 
-const updateExecutionResult = async (
-  req,
-  id,
-  time,
-  result,
-  complete = false
-) => {
+const updateExecutionResult = async (req, id, time, result, status) => {
   await ExecutionHistory.schema(req.database).update(
-    { finishedAt: time, result: result, complete },
+    { finishedAt: time, result: result, status },
     {
       where: {
         id,

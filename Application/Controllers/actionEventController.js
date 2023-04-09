@@ -192,7 +192,7 @@ const startExecution = async (req, res, temp) => {
             data.executionHistory.id,
             moment(),
             false,
-            false
+            "INCOMPLETE"
           );
           return;
         }
@@ -215,7 +215,7 @@ const startExecution = async (req, res, temp) => {
     data.executionHistory.id,
     moment(),
     executionResult.result,
-    true
+    "COMPLETE"
   );
 };
 module.exports = { execute };

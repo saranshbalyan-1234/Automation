@@ -6,16 +6,19 @@ import {
   PlayCircleFilled,
   CloseCircleFilled,
 } from "@ant-design/icons";
+import moment from "moment";
+import styled from "styled-components";
 export default function Test() {
   const data = {
-    createdAt: "2023-04-08T10:47:21.000Z",
-    finishedAt: "2023-04-08T10:47:30.000Z",
+    createdAt: moment("2023-04-08T10:47:21.000Z").format("DD/MM/YY hh:mm A"),
+    finishedAt: moment("2023-04-08T10:47:21.000Z").format("DD/MM/YY hh:mm A"),
     executionTime: "00:00:09",
+    result: false,
+    status: "INCOMPLETE",
   };
-  //finish,process,wait
   return (
-    <div style={{ padding: 100 }}>
-      <Card bordered hoverable>
+    <StyledStep>
+      <Card bordered>
         <Steps
           items={[
             {
@@ -30,11 +33,11 @@ export default function Test() {
                       fontSize: 13,
                     }}
                   >
-                    08/04/23 04:17 PM
+                    {data.createdAt}
                   </div>
                 </div>
               ),
-              status: "finish",
+              status: data.status === "COMPLETE" ? "finish" : "process",
               icon: (
                 <div>
                   <div
@@ -50,12 +53,18 @@ export default function Test() {
                         marginLeft: 11,
                         height: 50,
                         width: 1,
-                        backgroundColor: "rgba(0, 0, 0, 0.25)",
+                        backgroundColor:
+                          data.status === "INCOMPLETE" ? "#5496e8" : "#f3f3f3",
                       }}
                     />
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <ClockCircleFilled
-                        style={{ color: "rgba(0, 0, 0, 0.25)" }}
+                        style={{
+                          color:
+                            data.status === "INCOMPLETE"
+                              ? "#1677ff"
+                              : "rgba(0, 0, 0, 0.25)",
+                        }}
                       />
                       <div
                         style={{
@@ -70,11 +79,31 @@ export default function Test() {
                         Incomplete
                       </div>
 
+                      {data.status === "INCOMPLETE" && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            left: 10,
+                            marginLeft: 10,
+                            color: "rgba(0, 0, 0, 0.25)",
+                            fontSize: 13,
+                            lineHeight: 32,
+                            marginTop: 60,
+                          }}
+                        >
+                          {data.finishedAt}
+                        </div>
+                      )}
+
                       <div
                         style={{
                           minHeight: 1,
                           minWidth: 1000,
-                          backgroundColor: "rgba(0, 0, 0, 0.25)",
+                          backgroundColor:
+                            data.status === "INCOMPLETE" &&
+                            data.result === false
+                              ? "red"
+                              : "#f3f3f3",
                           position: "absolute",
                           left: 10,
                           marginLeft: 100,
@@ -85,23 +114,31 @@ export default function Test() {
                 </div>
               ),
             },
+
             {
               title: (
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <div>Finished</div>
-                  <div
-                    style={{
-                      color: "rgba(0, 0, 0, 0.25)",
-                      fontSize: 13,
-                      position: "absolute",
-                      top: 30,
-                    }}
-                  >
-                    08/04/23 04:17 PM
-                  </div>
+                  {data.status === "COMPLETE" && (
+                    <div
+                      style={{
+                        color: "rgba(0, 0, 0, 0.25)",
+                        fontSize: 13,
+                        position: "absolute",
+                        top: 30,
+                      }}
+                    >
+                      {data.finishedAt}
+                    </div>
+                  )}
                 </div>
               ),
-              status: "wait",
+              status:
+                data.status === "INCOMPLETE"
+                  ? "wait"
+                  : data.status === "COMPLETE" && data.result
+                  ? "finish"
+                  : "process",
               icon: (
                 <div
                   style={{ display: "flex", flexDirection: "column", gap: 10 }}
@@ -112,11 +149,24 @@ export default function Test() {
                       marginLeft: 11,
                       height: 50,
                       width: 1,
-                      backgroundColor: "red",
+                      backgroundColor:
+                        data.status === "COMPLETE" && data.result === false
+                          ? "red"
+                          : "#f3f3f3",
                     }}
                   />
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <CloseCircleFilled style={{ color: "red" }} />
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CloseCircleFilled
+                      style={{
+                        color:
+                          data.result === false ? "red" : "rgba(0, 0, 0, 0.25)",
+                      }}
+                    />
                     <div
                       style={{
                         position: "absolute",
@@ -127,27 +177,46 @@ export default function Test() {
                         lineHeight: 32,
                       }}
                     >
-                      Incomplete
+                      Failed
                     </div>
+
+                    {data.result === false && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          left: 10,
+                          marginLeft: 10,
+                          color: "rgba(0, 0, 0, 0.25)",
+                          fontSize: 13,
+                          lineHeight: 32,
+                          marginTop: 60,
+                        }}
+                      >
+                        {data.executionTime}
+                      </div>
+                    )}
                   </div>
                 </div>
               ),
             },
+
             {
               title: (
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <div>Passed</div>
-                  <div
-                    style={{
-                      color: "rgba(0, 0, 0, 0.25)",
-                      fontSize: 13,
-                    }}
-                  >
-                    08/04/23 04:17 PM
-                  </div>
+                  {data.result && (
+                    <div
+                      style={{
+                        color: "rgba(0, 0, 0, 0.25)",
+                        fontSize: 13,
+                      }}
+                    >
+                      {data.executionTime}
+                    </div>
+                  )}
                 </div>
               ),
-              status: "process",
+              status: data.result ? "process" : "wait",
               icon: (
                 <div>
                   <CheckCircleFilled />
@@ -157,6 +226,12 @@ export default function Test() {
           ]}
         />
       </Card>
-    </div>
+    </StyledStep>
   );
 }
+const StyledStep = styled.div`
+  padding: 100px;
+  .ant-steps {
+    height: 150px;
+  }
+`;

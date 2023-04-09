@@ -38,10 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       values: [0, 1],
     },
-    complete: {
-      type: DataTypes.BOOLEAN,
-      values: [0, 1],
-      defaultValue: 0,
+    status: {
+      type: DataTypes.STRING,
+      values: ["EXECUTING", "COMPLETE", "INCOMPLETE"],
+      defaultValue: "EXECUTING",
     },
     continueOnError: {
       type: DataTypes.BOOLEAN,

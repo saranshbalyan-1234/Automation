@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Card, Typography, Tag } from "antd";
-import { getExecutionHistoryById } from "../../../Redux/Actions/executionHistory";
+import { getExecutionHistoryById } from "../../../../Redux/Actions/executionHistory";
 import { connect } from "react-redux";
-import moment from "moment";
-import UserAvatar from "../../Common/Avatar";
-import Process from "./Process";
-import Loading from "../../Common/Loading";
+import UserAvatar from "../../../Common/Avatar";
+import Process from "../../Process";
+import Loading from "../../../Common/Loading";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import ViewExecutionVideoModal from "./ViewExecutionVideoModal";
+import ViewExecutionVideoModal from "../ViewExecutionVideoModal";
+import ExecutionTimeStepper from "./ExecutionTimeStepper";
 const { Meta } = Card;
 const { Title } = Typography;
 const ViewExecutionHistoryModal = ({
@@ -55,50 +55,10 @@ const ViewExecutionHistoryModal = ({
                   </div>
                 </div>
               }
-              description={
-                <>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: 25,
-                      marginBottom: 10,
-                    }}
-                  >
-                    <Card>
-                      <Meta
-                        title="Starting Time"
-                        description={moment(
-                          currentExecutionHistory.createdAt
-                        ).format("DD/MM/YY hh:mm A")}
-                      />
-                    </Card>
-                    <Card>
-                      <Meta
-                        title="Finishing Time"
-                        description={
-                          currentExecutionHistory.finishedAt
-                            ? moment(currentExecutionHistory.finishedAt).format(
-                                "DD/MM/YY hh:mm A"
-                              )
-                            : "Execution Incomplete"
-                        }
-                      />
-                    </Card>
-                    <Card>
-                      <Meta
-                        title="Execution Time"
-                        description={
-                          currentExecutionHistory.executionTime ||
-                          "Execution Incomplete"
-                        }
-                      />
-                    </Card>
-                  </div>
-                </>
-              }
+              description={<></>}
             />
           </div>
+
           {currentExecutionHistory.description && (
             <div
               style={{
@@ -176,6 +136,7 @@ const ViewExecutionHistoryModal = ({
               </div>
             </Tag>
           </div>
+          <ExecutionTimeStepper />
           <div style={{ marginTop: 20 }}>
             <Process />
           </div>
