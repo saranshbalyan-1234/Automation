@@ -96,11 +96,11 @@ function Sidebar({
         {collapsed ? (
           <img
             alt="logo"
-            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDIconWhite.svg"
+            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/iconlogo.svg"
             className="logo"
             style={{
-              height: "38px",
-              width: "50px",
+              height: "32px",
+              width: "60px",
               cursor: "pointer",
             }}
             onClick={() => {
@@ -110,10 +110,10 @@ function Sidebar({
         ) : (
           <img
             alt="logo"
-            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDFullWhite.svg"
+            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/logo.svg"
             className="logo"
             style={{
-              height: "38px",
+              height: "32px",
               width: "150px",
               cursor: "pointer",
             }}

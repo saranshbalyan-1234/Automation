@@ -30,8 +30,8 @@ const SendResetMail = ({ sendResetPasswordMail }) => {
             <center>
               <img
                 alt="logo"
-                src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/QDFullColoredTagline.svg"
-                style={{ height: 100, marginBottom: 30 }}
+                src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/logo2.svg"
+                style={{ height: 100, marginBottom: 30, width: 300 }}
               />
 
               <Form

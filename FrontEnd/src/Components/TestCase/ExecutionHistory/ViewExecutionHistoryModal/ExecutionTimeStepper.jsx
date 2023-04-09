@@ -132,7 +132,7 @@ function ExecutionTimeStepper({ loading, currentExecutionHistory }) {
                 title: (
                   <div style={{ display: "flex", flexDirection: "column" }}>
                     <div>
-                      {data.status === "EXECUTING" ? "Executing" : "Finished"}
+                      {data.status === "EXECUTING" ? "Executing" : "Complete"}
                     </div>
                     {data.status === "COMPLETE" && (
                       <div
@@ -269,5 +269,8 @@ const StyledStep = styled.div`
   margin-top: 10px;
   .ant-steps {
     height: 150px;
+  }
+  .ant-card-body {
+    padding-bottom: 0px;
   }
 `;
