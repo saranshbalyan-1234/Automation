@@ -191,6 +191,7 @@ const startExecution = async (req, res, temp) => {
             req,
             data.executionHistory.id,
             moment(),
+            false,
             false
           );
           return;
@@ -213,8 +214,8 @@ const startExecution = async (req, res, temp) => {
     req,
     data.executionHistory.id,
     moment(),
-    executionResult.result
+    executionResult.result,
+    true
   );
-  console.log("Execution Finished");
 };
 module.exports = { execute };
