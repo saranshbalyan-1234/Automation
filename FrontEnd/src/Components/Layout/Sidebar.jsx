@@ -93,35 +93,23 @@ function Sidebar({
       }}
     >
       <div>
-        {collapsed ? (
-          <img
-            alt="logo"
-            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/iconlogo.svg"
-            className="logo"
-            style={{
-              height: "32px",
-              width: "60px",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              navigate("/");
-            }}
-          />
-        ) : (
-          <img
-            alt="logo"
-            src="https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/logo.svg"
-            className="logo"
-            style={{
-              height: "32px",
-              width: "150px",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              navigate("/");
-            }}
-          />
-        )}
+        <img
+          alt="logo"
+          src={`https://qualitycuredmain.s3.ap-south-1.amazonaws.com/Public/Logo/${
+            collapsed ? "iconlogo" : "logo"
+          }.svg`}
+          className="logo"
+          style={{
+            height: "32px",
+            width: collapsed ? "60px" : "151px",
+            cursor: "pointer",
+            backgroundColor: "white",
+            // transition: "width 0.2s",
+          }}
+          onClick={() => {
+            navigate("/");
+          }}
+        />
       </div>
       <Menu
         theme="dark"
