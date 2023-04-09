@@ -1,19 +1,15 @@
-import { Collapse, Space } from "antd";
 import React from "react";
-const { Panel } = Collapse;
+import { Link } from "react-router-dom";
+import QuestionAns from "./QuestionAns";
 
-export default function Documentation() {
-  return (
-    <Space direction="vertical" style={{ minWidth: "100%", marginTop: 10 }}>
-      <Collapse collapsible="header">
-        <Panel header="What is Test Case?" key="1">
+export default function Basic() {
+  const data = [
+    {
+      header: "What is Test Case?",
+      data: (
+        <div>
           <p>Test Case is where your actual script will be executed.</p>
-
-          <p>
-            <br />
-            You have multiple sections in a TestCase.
-          </p>
-
+          <p>You have multiple sections in a TestCase.</p>
           <ul>
             <li>Process: A process it a collection of steps.</li>
             <li>
@@ -21,9 +17,10 @@ export default function Documentation() {
               actual part where the selenium steps are defined.
             </li>
             <li>
-              Environment: You can also have your multiple environments so that
-              you dont have to edit values again and again if you want to
-              execute same script with different values.
+              Environment: The env values can be accessed anywhere in the
+              script. You can also have your multiple environments so that you
+              dont have to edit values again and again if you want to execute
+              same script with different values.
             </li>
             <li>
               Object: A object is the part where you define the HTML element. A
@@ -41,20 +38,34 @@ export default function Documentation() {
               </ul>
             </li>
           </ul>
-        </Panel>
-      </Collapse>
-      <Collapse collapsible="header">
-        <Panel header="What is Reusable Process?" key="2">
+          <Link to="/TestCase">Go To Test Case</Link>
+        </div>
+      ),
+    },
+    {
+      header: "What is Reusable Process?",
+      data: (
+        <div>
           <p>
             Reusable Process is similar to a process in Test Case, but it can be
             reused in any of the Test Case.
+            <br />
+            <br /> Note* Reusable Process cannot be executed directly and it
+            does support environments when used inside the Test Case only.
           </p>
-        </Panel>
-      </Collapse>
-      <Collapse collapsible="header">
-        <Panel header="What is Object Bank?" key="3">
-          A object is the part where you define the HTML element. A element is
-          located with the help of locators which can be of type
+          <Link to="/ReusableProcess">Go To Reusable Process</Link>
+        </div>
+      ),
+    },
+    {
+      header: "What is Object Bank?",
+      data: (
+        <div>
+          It basically consist a lot of objects.
+          <br />
+          <br /> For context, An object is the part where you define the HTML
+          element. A element is located with the help of locators which can be
+          of type
           <ul>
             <li>ClassName</li>
             <li>CSS</li>
@@ -66,8 +77,10 @@ export default function Documentation() {
             <li>TagName</li>
             <li>XPATH</li>
           </ul>
-        </Panel>
-      </Collapse>
-    </Space>
-  );
+          <Link to="/ObjectBank">Go To Object Bank</Link>
+        </div>
+      ),
+    },
+  ];
+  return <QuestionAns data={data} />;
 }

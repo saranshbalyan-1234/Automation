@@ -40,10 +40,10 @@ export default function Documentation() {
     },
     {
       title: "Action Keywords",
-      link: "/documentation/action-keywords",
+      link: "/documentation/actionKeywords",
       description: (
         <>
-          <div>We support over 100 Action-Keywords.</div>
+          <div>We support over 100 Action Keywords.</div>
           <br />
           <div>Know each one of them in detail!</div>
         </>

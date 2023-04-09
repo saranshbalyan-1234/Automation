@@ -60,7 +60,7 @@ const CustomTree = () => {
   };
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-      <Search onChange={searchTree} placeholder="Seach by Name" />
+      <Search onSearch={searchTree} placeholder="Seach by Name" />
       <DirectoryTree
         multiple
         // defaultExpandAll
