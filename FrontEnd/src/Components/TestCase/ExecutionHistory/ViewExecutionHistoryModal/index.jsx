@@ -3,7 +3,7 @@ import { Modal, Card, Typography, Tag } from "antd";
 import { getExecutionHistoryById } from "../../../../Redux/Actions/executionHistory";
 import { connect } from "react-redux";
 import UserAvatar from "../../../Common/Avatar";
-import Process from "../../Process";
+import Process from "../Process";
 import Loading from "../../../Common/Loading";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import ViewExecutionVideoModal from "../ViewExecutionVideoModal";
