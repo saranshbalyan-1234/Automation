@@ -18,7 +18,7 @@ import reusableProcessRoutes from "./Routes/TestCase/reusableProcess.js";
 import executionHistoryRoutes from "./Routes/TestCase/executionHistory.js";
 import awsRoutes from "./Routes/awsRoutes.js";
 import environmentRoutes from "./Routes/TestCase/environment.js";
-
+import machineRoutes from "./Routes/machineRoutes.js";
 import dashboardRoutes from "./Routes/dashboardRoutes.js";
 
 import { createRequire } from "module";
@@ -62,6 +62,7 @@ app.use("/executionHistory", executionHistoryRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/aws", awsRoutes);
 app.use("/environment", environmentRoutes);
+app.use("/machines", machineRoutes);
 
 app.use((req, res) => {
   return res.status(404).json({ error: "Endpoint Not Found" });

@@ -265,11 +265,11 @@ export const deleteStep = (testStepId, step, process, reusableProcess) => {
     }
   };
 };
-export const executeTestCase = (testCaseId, payload) => {
+export const executeTestCase = (testCaseId, url, payload) => {
   return async (dispatch) => {
     try {
       // dispatch({ type: TEST_CASE_REQUEST });
-      await axios.post(`http://localhost:3002/execute/${testCaseId}`, payload);
+      await axios.post(`${url}/execute/${testCaseId}`, payload);
       return true;
     } catch (err) {
       // message.error("Please Start Cloud Application");

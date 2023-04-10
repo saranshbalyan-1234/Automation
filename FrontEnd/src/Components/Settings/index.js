@@ -12,7 +12,9 @@ import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import MemberBadge from "../Common/MemberBadge";
 import { usePermission } from "../../Utils/permission";
-function Setting({ roles, team }) {
+import Machine from "./Machine";
+import AddMachineModal from "./Machine/AddMachineModal";
+function Setting({ roles, team, customerAdmin }) {
   const viewTeamPermission = usePermission("Team", "view");
   const addTeamPermission = usePermission("Team", "add");
   const viewRolePermission = usePermission("Role", "view");
@@ -24,6 +26,7 @@ function Setting({ roles, team }) {
   const [activeTab, setActiveTab] = useState("profile");
   const [addUserModal, setAddUserModal] = useState(false);
   const [addRoleModal, setAddRoleModal] = useState(false);
+  const [addMachineModal, setAddMachineModal] = useState(false);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
   const [addPermissionModal, setAddPermissionModal] = useState(false);
   const [singleRoleData, setSingleRoleData] = useState({ id: null, name: "" });
@@ -107,6 +110,20 @@ function Setting({ roles, team }) {
           </Button>
         </div>
       );
+    else if (activeTab === "machines")
+      return (
+        <Button
+          type="primary"
+          ghost
+          onClick={() => {
+            setAddMachineModal(true);
+          }}
+          style={{ position: "absolute", right: 0, top: 10 }}
+          disabled={!customerAdmin}
+        >
+          <PlusOutlined /> Add Machine
+        </Button>
+      );
   };
   return (
     <>
@@ -144,6 +161,10 @@ function Setting({ roles, team }) {
               )}
             </Tabs.TabPane>
           )}
+
+          <Tabs.TabPane tab="Machines" key="machines">
+            <Machine />
+          </Tabs.TabPane>
 
           {/* <Tabs.TabPane tab="Notification" key="notification">
             <ComingSoon />
@@ -183,11 +204,18 @@ function Setting({ roles, team }) {
           setSingleRoleData={setSingleRoleData}
         />
       )}
+      {addMachineModal && (
+        <AddMachineModal
+          visible={addMachineModal}
+          setVisible={setAddMachineModal}
+        />
+      )}
     </>
   );
 }
 const mapStateToProps = (state) => ({
   team: state.team.data,
+  customerAdmin: state.auth.user.customerAdmin,
 });
 
 const mapDispatchToProps = {};

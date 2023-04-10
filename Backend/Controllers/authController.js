@@ -25,6 +25,7 @@ const Permission = db.permissions;
 const UserRole = db.userRoles;
 const Project = db.projects;
 const UserProject = db.userProjects;
+const Machine = db.machines;
 
 //TestCase
 const TestCase = db.testCases;
@@ -205,6 +206,7 @@ const verifyCustomer = async (req, res) => {
 
         createBucket(database);
         await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
+        Machine.schema(database).sync({ force: true, alter: true });
         await UserRole.schema(database).sync({ force: true, alter: true });
         await Permission.schema(database).sync({ force: true, alter: true });
         await Role.schema(database).sync({ force: true, alter: true });

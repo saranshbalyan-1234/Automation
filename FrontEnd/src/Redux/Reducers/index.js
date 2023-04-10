@@ -9,6 +9,7 @@ import objectBankReducer from "./objectBankReducer";
 import executionHistoryReducer from "./executionHistoryReducer";
 import environmentReducer from "./environmentReducer";
 import defectReducer from "./defectReducer";
+import machinesReducer from "./machinesReducer";
 export default combineReducers({
   auth: authReducer,
   team: teamReducer,
@@ -20,4 +21,5 @@ export default combineReducers({
   executionHistory: executionHistoryReducer,
   environment: environmentReducer,
   defect: defectReducer,
+  machines: machinesReducer,
 });

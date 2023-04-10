@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { executeTestCase } from "../../Redux/Actions/testCase";
 import ReactQuill from "react-quill";
 import Loading from "../Common/Loading";
+import { getAllMachines } from "../../Redux/Actions/machines";
 import axios from "axios";
 const ExecuteModal = ({
   visible,
@@ -12,12 +13,16 @@ const ExecuteModal = ({
   executeTestCase,
   currentTestCaseId,
   addExecutionPermission,
+  machines,
+  getAllMachines,
+  machinesLoading,
 }) => {
   const [form] = Form.useForm();
   const [allEnvironments, setAllEnvironments] = useState([]);
   const [envLoading, setEnvLoading] = useState(false);
   useEffect(() => {
     getEnvironment();
+    machines.length == 0 && getAllMachines();
     // eslint-disable-next-line
   }, []);
 
@@ -34,7 +39,9 @@ const ExecuteModal = ({
     setAllEnvironments(data);
   };
   const handleExecute = async (data) => {
-    await executeTestCase(currentTestCaseId, data);
+    let payload = { ...data };
+    delete payload.machine;
+    await executeTestCase(currentTestCaseId, data.machine, payload);
     setVisible(false);
   };
   return (
@@ -47,7 +54,7 @@ const ExecuteModal = ({
         setVisible(false);
       }}
     >
-      <Loading loading={loading || envLoading}>
+      <Loading loading={loading || envLoading || machinesLoading}>
         <Form
           form={form}
           name="execute"
@@ -98,6 +105,31 @@ const ExecuteModal = ({
               </Select>
             </Form.Item>
           )}
+          <Form.Item
+            name="machine"
+            label="Machine"
+            rules={[
+              {
+                required: true,
+                message: "Please Select Machine!",
+              },
+            ]}
+          >
+            <Select
+              showSearch
+              style={{ minWidth: "160px" }}
+              optionFilterProp="children"
+            >
+              {machines.map((el, i) => {
+                return (
+                  <Select.Option value={el.url} key={i}>
+                    {el.name}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
+
           <Form.Item
             name="bots"
             label="Bots"
@@ -162,7 +194,9 @@ const mapStateToProps = (state) => ({
   currentProjectId: state.projects.currentProject.id,
   loading: state.testCase.loading,
   currentTestCaseId: state.testCase.currentTestCase?.id,
+  machines: state.machines.data,
+  machinesLoading: state.machines.loading,
 });
-const mapDispatchToProps = { executeTestCase };
+const mapDispatchToProps = { executeTestCase, getAllMachines };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExecuteModal);

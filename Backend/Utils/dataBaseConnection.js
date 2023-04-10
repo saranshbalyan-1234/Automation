@@ -2,9 +2,9 @@ import { Sequelize, DataTypes } from "sequelize";
 import dotenv from "dotenv";
 
 //Main
-import Tenant from "../Models/CustomerAdmin/Tenant.js";
-import Customer from "../Models/CustomerAdmin/Customer.js";
-import Unverified from "../Models/CustomerAdmin/Unverified.js";
+import Tenant from "../Models/Global/CustomerAdmin/Tenant.js";
+import Customer from "../Models/Global/CustomerAdmin/Customer.js";
+import Unverified from "../Models/Global/CustomerAdmin/Unverified.js";
 import PermissionList from "../Models/Global/PermissionList.js";
 import ActionEvent from "../Models/Global/ActionEvent.js";
 
@@ -15,6 +15,7 @@ import User from "../Models/User.js";
 import UserRole from "../Models/RolePermission/UserRole.js";
 import Project from "../Models/Project/Project.js";
 import UserProject from "../Models/Project/UserProject.js";
+import Machine from "../Models/Machine.js";
 
 //TestCase
 import TestCase from "../Models/TestCase/TestCase.js";
@@ -80,6 +81,7 @@ db.userRoles = UserRole(sequelize, DataTypes);
 db.userProjects = UserProject(sequelize, DataTypes);
 db.projects = Project(sequelize, DataTypes);
 db.roles = Role(sequelize, DataTypes);
+db.machines = Machine(sequelize, DataTypes);
 
 //TestCase
 db.testParameters = TestParameter(sequelize, DataTypes);
@@ -112,6 +114,6 @@ db.unverifieds.schema("Main").sync({ force: false, alter: true });
 db.permissionList.schema("Main").sync({ force: false, alter: true });
 db.actionEvent.schema("Main").sync({ force: false, alter: true });
 
-// await db.defects.schema("saranshbalyan123gmailcom").sync({ force: true });
+// await db.machines.schema("saranshbalyan123gmailcom").sync({ force: true });
 
 export default db;

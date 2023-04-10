@@ -17,6 +17,9 @@ app.use(
 app.use(validateToken());
 
 app.post("/execute/:testCaseId", async (req, res) => {
+  const testCaseId = req.params.testCaseId;
+  if (isNaN(parseInt(testCaseId)))
+    return res.status(401).json({ error: "TestCase Id must be Integer" });
   await execute(req, res);
 });
 
