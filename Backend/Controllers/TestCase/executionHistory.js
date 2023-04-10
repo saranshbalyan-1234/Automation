@@ -51,7 +51,7 @@ const deleteExecutionHistoryById = async (req, res) => {
       deleteS3Folder(req.database, req.params.executionHistoryId);
       return res
         .status(200)
-        .json({ message: "ExecutionHistory deleted successfully" });
+        .json({ message: "Execution History deleted successfully" });
     } else {
       return res.status(400).json({ error: "Record not found" });
     }
@@ -83,7 +83,7 @@ const deleteExecutionHistoryByTestCase = async (req, res) => {
 
       return res
         .status(200)
-        .json({ message: "ExecutionHistory deleted successfully" });
+        .json({ message: "All Execution History deleted successfully" });
     } else {
       return res.status(400).json({ error: "Record not found" });
     }

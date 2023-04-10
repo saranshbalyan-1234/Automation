@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Table, Tag } from "antd";
+import { Table, Tag, Tooltip } from "antd";
 import { CameraFilled, EyeOutlined } from "@ant-design/icons";
 import ViewObjectModal from "../../Common/TestStep/ViewObjectModal";
 import ViewParameterModal from "../../Common/TestStep/ViewParameterModal";
@@ -124,19 +124,21 @@ const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
             PASS
           </div>
         ) : text === false ? (
-          <div
-            style={{
-              color: "red",
-              fontWeight: 600,
-              width: 40,
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              setViewFailedLogModal(record.failedLog);
-            }}
-          >
-            FAIL
-          </div>
+          <Tooltip title="View Log">
+            <div
+              style={{
+                color: "red",
+                fontWeight: 600,
+                width: 40,
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setViewFailedLogModal(record.failedLog);
+              }}
+            >
+              FAIL
+            </div>
+          </Tooltip>
         ) : (
           <div style={{ color: "grey", fontWeight: 600, width: 40 }}>N/A</div>
         ),
