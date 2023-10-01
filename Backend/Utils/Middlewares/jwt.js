@@ -5,6 +5,7 @@ import pkg from "jsonwebtoken";
 const { verify } = pkg;
 export const validateToken = () => {
   return async (req, res, next) => {
+    console.log(req)
     try {
       const token = extractToken(req);
       if (token) {
