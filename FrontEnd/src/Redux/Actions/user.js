@@ -34,7 +34,7 @@ export const uploadProfilePic = (formData) => {
       dispatch({ type: UPDATE_USER_DETAIL_REQUEST });
       await axios.put(`/user/uploadProfileImage`, formData);
 
-      let fileName = getState().auth.user.email.replace(/[^a-zA-Z0-9 ]/g, "");
+      let fileName = getState().auth.user.email.replace(/[^a-zA-Z0-9 ]/g, "").toLowerCase();
       const { data } = await axios.post("/aws/object", {
         fileName,
       });

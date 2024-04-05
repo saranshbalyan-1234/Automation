@@ -5,13 +5,14 @@ import { EditOutlined } from "@ant-design/icons";
 import UserAvatar from "../Common/Avatar";
 import AddEditModal from "../Common/AddEditModal";
 import Loading from "../Common/Loading";
+import DOMPurify from 'dompurify'
 const { Title } = Typography;
 const { Meta } = Card;
 const ReusableProcessDetails = ({
   loading,
   details,
   name,
-  onEdit = () => {},
+  onEdit = () => { },
 }) => {
   const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
@@ -36,7 +37,7 @@ const ReusableProcessDetails = ({
                   </Title>
                   <div style={{ color: "black" }}>
                     Created On &nbsp;
-                    {moment(details.createdAt).format("DD/MM/YY")} By &nbsp;
+                    {moment(details.createdAt).format("YYYY-MM-DD")} By &nbsp;
                     <UserAvatar user={details.createdByUser} />
                   </div>
                 </div>
@@ -68,17 +69,14 @@ const ReusableProcessDetails = ({
                 gap: 25,
               }}
             >
-              <Button
-                type="primary"
-                ghost
+      
+              <EditOutlined
                 onClick={() => {
                   setEditData(details);
                   setAddEditModal(true);
                 }}
-              >
-                <EditOutlined />
-                Edit {name} Details
-              </Button>
+                style={{fontSize:20, paddingLeft: 10 }} />
+
             </div>
           </div>
           {details.description && (
@@ -95,7 +93,7 @@ const ReusableProcessDetails = ({
                   <div
                     style={{ marginTop: "5px" }}
                     dangerouslySetInnerHTML={{
-                      __html: details.description,
+                      __html: DOMPurify.sanitize(details.description),
                     }}
                   ></div>
                 }
@@ -106,9 +104,9 @@ const ReusableProcessDetails = ({
             <div>Tags:</div>
             <div>
               {details.tags?.length > 0
-                ? details.tags.map((el) => {
-                    return <Tag>{el}</Tag>;
-                  })
+                ? details.tags.map((el, i) => {
+                  return <Tag key={"tag_" + i}>{el}</Tag>;
+                })
                 : "N/A"}
             </div>
           </div>

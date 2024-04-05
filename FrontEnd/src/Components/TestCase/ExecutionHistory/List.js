@@ -20,7 +20,7 @@ export const List = ({
   loading,
   data,
 }) => {
-  const deleteExecutionPermission = usePermission("Execution", "delete");
+  const deleteExecutionPermission = usePermission("Execute", "delete");
   const { testCaseId } = useParams();
   const [executionHistoryId, setExecutionHistoryId] = useState(0);
   useEffect(() => {
@@ -28,6 +28,18 @@ export const List = ({
     // eslint-disable-next-line
   }, [testCaseId]);
 
+
+
+  const deleteAllPermission = () => {
+    const check = data.some(el => { return (el.status == "EXECUTING" && moment().diff(moment(el.createdAt), 'hours') < 24) })
+    return !check && deleteExecutionPermission
+  }
+
+  const deletePermission = (record) => {
+    const check = !deleteExecutionPermission ||
+      (record.status == "EXECUTING" && moment().diff(moment(record.createdAt), 'hours') < 24)
+    return !check
+  }
   const columns = [
     {
       title: "Name",
@@ -39,15 +51,15 @@ export const List = ({
       dataIndex: "executedByUser",
       render: (_, record) => (
         <div>
-          {moment(record.createdAt).format("DD/MM/YY hh:mm a")} By &nbsp;
+          {moment(record.createdAt).format("YYYY-MM-DD hh:mm a")} By &nbsp;
           <UserAvatar user={record.executedByUser} />
         </div>
       ),
-      width: 220,
+      width: 240,
     },
     {
       title: "Status",
-      width: 120,
+      width: 130,
       dataIndex: "status",
       render: (text, record) => (
         <div style={{ width: 100 }}>
@@ -60,11 +72,12 @@ export const List = ({
             >
               COMPLETE
             </div>
-          ) : text === "EXECUTING" ? (
-            <div style={{ color: "#1677ff", fontWeight: 600 }}>FAIL</div>
-          ) : (
-            <div style={{ color: "grey", fontWeight: 600 }}>INCOMPLETE</div>
-          )}
+          ) : text === "EXECUTING" ?
+            moment().diff(moment(record.createdAt), 'hours') < 24 ? (
+              <div style={{ color: "#1677ff", fontWeight: 600 }}>EXECUTING</div>
+            ) : (<div style={{ color: "grey", fontWeight: 600 }}>INTERRUPTED</div>) : (
+              <div style={{ color: "grey", fontWeight: 600 }}>INCOMPLETE</div>
+            )}
         </div>
       ),
     },
@@ -99,18 +112,22 @@ export const List = ({
           <Popconfirm
             placement="left"
             title={`Are you sure to delete all Execution History?`}
-            onConfirm={async () => {
+            onConfirm={async (e) => {
+              e.stopPropagation();
               await deleteAllExecutionHistory();
             }}
             okText="Yes, Delete"
             cancelText="No"
-            disabled={!deleteExecutionPermission}
+            disabled={!deleteAllPermission()}
+            onCancel={(e) => {
+              e.stopPropagation()
+            }}
           >
             <DeleteOutlined
               style={{
                 fontSize: 17,
-                color: deleteExecutionPermission ? "black" : "grey",
-                cursor: deleteExecutionPermission ? "pointer" : "not-allowed",
+                color: deleteAllPermission() ? "black" : "grey",
+                cursor: deleteAllPermission() ? "pointer" : "not-allowed",
               }}
             />
           </Popconfirm>
@@ -129,14 +146,17 @@ export const List = ({
             }}
             okText="Yes, Delete"
             cancelText="No"
-            disabled={!deleteExecutionPermission}
+            disabled={!deletePermission(record)}
+            onCancel={(e) => {
+              e.stopPropagation()
+            }}
           >
             <DeleteOutlined
               onClick={(e) => e.stopPropagation()}
               style={{
                 fontSize: 17,
-                color: deleteExecutionPermission ? "black" : "grey",
-                cursor: deleteExecutionPermission ? "pointer" : "not-allowed",
+                color: deletePermission(record) ? "black" : "grey",
+                cursor: deletePermission(record) ? "pointer" : "not-allowed",
               }}
             />
           </Popconfirm>
@@ -160,6 +180,7 @@ export const List = ({
               },
             };
           }}
+          rowKey="id"
         />
       </Loading>
       {executionHistoryId > 0 && (
@@ -173,7 +194,7 @@ export const List = ({
 };
 
 const mapStateToProps = (state) => ({
-  data: state.executionHistory.data,
+  data: state.executionHistory.data || [],
   loading: state.executionHistory.loading,
 });
 

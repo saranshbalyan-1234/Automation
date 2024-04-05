@@ -23,7 +23,7 @@ const EditDetailsModal = ({
       open={editDetailsModal}
       onCancel={() => setEditDetailsModal(false)}
       footer={false}
-      // closable={false}
+    // closable={false}
     >
       <Loading loading={loading}>
         <Form
@@ -38,7 +38,7 @@ const EditDetailsModal = ({
             name="name"
             rules={[{ required: true, message: "Please input your name!" }]}
           >
-            <Input showCount maxlength={50} />
+            <Input showCount maxLength={50} />
           </Form.Item>
 
           <Form.Item

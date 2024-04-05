@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { Popconfirm, Collapse, Button, Empty } from "antd";
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import { Popconfirm, Collapse, Button, Empty } from 'antd'
 import {
   DeleteOutlined,
   EditOutlined,
   SettingOutlined,
   EyeOutlined,
-} from "@ant-design/icons";
-import { deleteRole, getAllRole } from "../../../Redux/Actions/role";
-import AddEditRoleModal from "./AddEditRoleModal";
-import ManagePermissionModal from "./ManagePermissionModal";
-import Loading from "../../Common/Loading";
-import { usePermission } from "../../../Utils/permission";
+} from '@ant-design/icons'
+import { deleteRole, getAllRole } from '../../../Redux/Actions/role'
+import AddEditRoleModal from './AddEditRoleModal'
+import ManagePermissionModal from './ManagePermissionModal'
+import Loading from '../../Common/Loading'
+import { usePermission } from '../../../Utils/permission'
 // import Permission from "./Permission";
-const { Panel } = Collapse;
+const { Panel } = Collapse
 export const Role = ({
   roles,
   loading,
@@ -25,64 +25,64 @@ export const Role = ({
   singleRoleData,
   setSingleRoleData,
 }) => {
-  const deleteRolePermission = usePermission("Role", "delete");
-  const editRolePermission = usePermission("Role", "edit");
-  const [addEditRoleModal, setAddEditRoleModal] = useState(false);
+  const deleteRolePermission = usePermission('Role', 'delete')
+  const editRolePermission = usePermission('Role', 'edit')
+  const [addEditRoleModal, setAddEditRoleModal] = useState(false)
 
   useEffect(() => {
-    getAllRole();
+    getAllRole()
     // eslint-disable-next-line
-  }, []);
+  }, [])
 
   const handleRoleEdit = (item) => {
-    setAddEditRoleModal(true);
-    setSingleRoleData(item);
-  };
+    setAddEditRoleModal(true)
+    setSingleRoleData(item)
+  }
   const handleAddPermission = (item) => {
-    setAddPermissionModal(true);
-    setSingleRoleData(item);
-  };
+    setAddPermissionModal(true)
+    setSingleRoleData(item)
+  }
 
   return (
     <>
       <Loading loading={loading}>
         {roles.map((item, index) => {
           return (
-            <Collapse style={{ marginTop: "10px" }} key={index} activeKey={[]}>
+            <Collapse style={{ marginTop: '10px' }} key={index} activeKey={[]}>
               <Panel
                 showArrow={false}
                 header={
                   <div
                     style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: "10px",
-                      justifyContent: "space-between",
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: '10px',
+                      justifyContent: 'space-between',
                     }}
                   >
                     <div
                       style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        gap: "10px",
-                        alignItems: "center",
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: '10px',
+                        alignItems: 'center',
                       }}
                     >
                       Role: {item.name}
                       <div
                         style={{
-                          display: "flex",
-                          flexWrap: "wrap",
-                          gap: "5px",
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          gap: '5px',
                         }}
                       ></div>
                     </div>
                     {profile === false && (
                       <div
                         style={{
-                          display: "flex",
-                          flexWrap: "wrap",
-                          gap: "10px",
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          gap: '10px',
                         }}
                       >
                         <Button
@@ -90,12 +90,12 @@ export const Role = ({
                           ghost
                           size="small"
                           onClick={(e) => {
-                            e.stopPropagation();
-                            handleRoleEdit(item);
+                            e.stopPropagation()
+                            handleRoleEdit(item)
                           }}
                           disabled={!editRolePermission}
                         >
-                          <EditOutlined style={{ cursor: "pointer" }} /> Edit
+                          <EditOutlined style={{ cursor: 'pointer' }} /> Edit
                           Role
                         </Button>
                         <Button
@@ -103,8 +103,8 @@ export const Role = ({
                           ghost
                           size="small"
                           onClick={(e) => {
-                            e.stopPropagation();
-                            handleAddPermission(item);
+                            e.stopPropagation()
+                            handleAddPermission(item)
                           }}
                         >
                           {editRolePermission ? (
@@ -123,15 +123,18 @@ export const Role = ({
                           placement="left"
                           title="Are you sure to delete this Role?"
                           onConfirm={(e) => {
-                            e.stopPropagation();
-                            deleteRole(item.id);
+                            e.stopPropagation()
+                            deleteRole(item.id)
                           }}
                           okText="Yes, Delete"
                           cancelText="No"
                           onClick={(e) => {
-                            e.stopPropagation();
+                            e.stopPropagation()
                           }}
                           disabled={!deleteRolePermission}
+                          onCancel={(e) => {
+                            e.stopPropagation()
+                          }}
                         >
                           <Button
                             danger
@@ -154,7 +157,7 @@ export const Role = ({
                 /> */}
               </Panel>
             </Collapse>
-          );
+          )
         })}
         {roles.length === 0 && <Empty description="No Data Found." />}
       </Loading>
@@ -175,14 +178,14 @@ export const Role = ({
         />
       )}
     </>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state) => ({
   roles: state.roles.data,
   loading: state.roles.loading,
-});
+})
 
-const mapDispatchToProps = { deleteRole, getAllRole };
+const mapDispatchToProps = { deleteRole, getAllRole }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Role);
+export default connect(mapStateToProps, mapDispatchToProps)(Role)

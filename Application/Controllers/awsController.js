@@ -1,8 +1,12 @@
-const AWS = require("aws-sdk");
-const s3 = new AWS.S3({
-  accessKeyId: "AKIAWO24CNWAYGVPM2FU",
-  secretAccessKey: "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",
+const { Upload } = require("@aws-sdk/lib-storage")
+const { S3 } = require("@aws-sdk/client-s3");
+
+const s3 = new S3({
   region: "ap-south-1",
+  credentials: {
+    accessKeyId: "",
+    secretAccessKey: "",
+  }
 });
 
 const uploadFile = async (file, bucketName, keyName) => {
@@ -12,14 +16,18 @@ const uploadFile = async (file, bucketName, keyName) => {
     Key: keyName, // Name by which you want to save it
     Body: file,
   };
-  return s3.upload(uploadParams, function (err, data) {
-    if (err) {
-      console.log(err);
-      return false;
-    } else {
-      return true;
-    }
-  });
+  try {
+
+    // S3 ManagedUpload with callbacks are not supported in AWS SDK for JavaScript (v3).
+    // Please convert to `await client.upload(params, options).promise()`, and re-run aws-sdk-js-codemod.
+    return await new Upload({
+      client: s3,
+      params: uploadParams
+    }).done();
+
+  } catch (error) {
+    console.log(error);
+  }
 };
 const createFolder = async (bucketName, folderName) => {
   // Setting up S3 upload parameters
@@ -27,7 +35,13 @@ const createFolder = async (bucketName, folderName) => {
     Bucket: bucketName, // Bucket into which you want to upload file
     Key: folderName + "/", // Name by which you want to save it
   };
-  return s3.putObject(uploadParams).promise();
+  try {
+    s3.putObject(uploadParams);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 };
 
 module.exports = { uploadFile, createFolder };

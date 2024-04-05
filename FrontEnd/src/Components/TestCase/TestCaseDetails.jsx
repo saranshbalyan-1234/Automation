@@ -1,67 +1,76 @@
-import React, { useState, useEffect } from "react";
-import { Typography, Card, Button, Tag } from "antd";
-import moment from "moment";
-import { EditOutlined } from "@ant-design/icons";
-import UserAvatar from "../Common/Avatar";
-import AddEditModal from "../Common/AddEditModal";
-import ColumnGraph from "../Common/Graph/ColumnGraph";
-import Loading from "../Common/Loading";
-import axios from "axios";
-import { useParams } from "react-router-dom";
-import DetailedExecutionReportModal from "../Dashboard/ExecutedByReport/DetailedExecutionReportModal";
-const { Title } = Typography;
-const { Meta } = Card;
-const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
-  const { testCaseId } = useParams();
-  const [addEditModal, setAddEditModal] = useState(false);
-  const [graphLoading, setGraphLoading] = useState(true);
-  const [graphData, setGraphData] = useState([]);
-  const [editData, setEditData] = useState({});
+import React, { useState, useEffect } from 'react'
+import { Typography, Card, Button, Tag } from 'antd'
+import moment from 'moment'
+import { EditOutlined } from '@ant-design/icons'
+import UserAvatar from '../Common/Avatar'
+import AddEditModal from '../Common/AddEditModal'
+import ColumnGraph from '../Common/Graph/ColumnGraph'
+import Loading from '../Common/Loading'
+import axios from 'axios'
+import { useParams } from 'react-router-dom'
+import DetailedExecutionReportModal from '../Dashboard/ExecutedByReport/DetailedExecutionReportModal'
+import DOMPurify from 'dompurify'
+const { Title } = Typography
+const { Meta } = Card
+const TestCaseDetails = ({ loading, details, onEdit = () => {} }) => {
+  const { testCaseId } = useParams()
+  const [addEditModal, setAddEditModal] = useState(false)
+  const [graphLoading, setGraphLoading] = useState(true)
+  const [graphData, setGraphData] = useState([])
+  const [editData, setEditData] = useState({})
   const [detailedExecutionReportModal, setDetailedExecutionReportModal] =
-    useState(false);
+    useState(false)
 
   useEffect(() => {
-    axios.post("/dashboard/execution-report", { testCaseId }).then((res) => {
-      setGraphLoading(false);
-      let tempExecutedData = { ...res.data };
-      delete tempExecutedData.Total;
+    axios.post('/dashboard/execution-report', { testCaseId }).then((res) => {
+      setGraphLoading(false)
+      let tempExecutedData = { ...res.data }
+      delete tempExecutedData.Total
       let executedData = Object.entries(tempExecutedData)
         .filter((el) => {
-          return el !== "Total";
+          return el !== 'Total'
         })
         .map((el) => {
-          return { name: el[0], Total: el[1] };
-        });
-      setGraphData(executedData);
-    });
-  }, [testCaseId]);
+          return { name: el[0], Total: el[1] }
+        })
+      setGraphData(executedData)
+    })
+  }, [testCaseId])
 
-  if (loading) return <Loading />;
+  if (loading) return <Loading />
   return (
     <div style={{ paddingTop: 20 }}>
       <Loading loading={loading}>
-        <div className="row" style={{ justifyContent: "space-between" }}>
+        <div className="row" style={{ justifyContent: 'space-between' }}>
           <Card
             style={{
-              minWidth: "calc(100% - 410px)",
+              maxWidth: 'calc(100% - 410px)',
+              width: 'calc(100% - 410px)',
+              minWidth: '400px',
             }}
           >
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
+                display: 'flex',
+                justifyContent: 'space-between',
+                // flexWrap: "wrap",
               }}
             >
               <Meta
                 title={
-                  <div style={{ display: "flex", gap: 20 }}>
-                    <Title style={{ textTransform: "capitalize" }} level={3}>
-                      {`${name}: ${details.name}`}
+                  <div
+                    style={{
+                      whiteSpace: 'normal',
+                      wordWrap: 'break-word',
+                    }}
+                    className="row"
+                  >
+                    <Title style={{ textTransform: 'capitalize' }} level={3}>
+                      {details.name}
                     </Title>
-                    <div style={{ color: "black" }}>
+                    <div style={{ color: 'black' }}>
                       Created On &nbsp;
-                      {moment(details.createdAt).format("DD/MM/YY")} By &nbsp;
+                      {moment(details.createdAt).format('YYYY-MM-DD')} By &nbsp;
                       <UserAvatar user={details.createdByUser} />
                     </div>
                   </div>
@@ -70,8 +79,8 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
                   <>
                     <div
                       style={{
-                        display: "flex",
-                        flexWrap: "wrap",
+                        display: 'flex',
+                        flexWrap: 'wrap',
                         gap: 25,
                         marginBottom: 10,
                       }}
@@ -79,61 +88,50 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
                       <Card>
                         <Meta
                           title="Total Process"
-                          description={details.totalProcess || "N/A"}
+                          description={details.totalProcess || 'N/A'}
                         />
                       </Card>
                       <Card>
                         <Meta
                           title="Reusable Process"
-                          description={details.reusableProcessCount || "N/A"}
+                          description={details.reusableProcessCount || 'N/A'}
                         />
                       </Card>
                       <Card>
                         <Meta
                           title="Total Steps"
-                          description={details.stepCount || "N/A"}
+                          description={details.stepCount || 'N/A'}
                         />
                       </Card>
                     </div>
 
-                    <div style={{ display: "flex", gap: 10, maxWidth: 500 }}>
+                    <div style={{ display: 'flex', gap: 10, maxWidth: 500 }}>
                       <div>Tags:</div>
                       <div>
                         {details.tags?.length > 0
-                          ? details.tags.map((el) => {
-                              return <Tag>{el}</Tag>;
+                          ? details.tags.map((el, i) => {
+                              return <Tag key={'tag_' + i}>{el}</Tag>
                             })
-                          : "N/A"}
+                          : 'N/A'}
                       </div>
                     </div>
                   </>
                 }
               />
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 25,
+
+              <EditOutlined
+                style={{ fontSize: 20, paddingLeft: 10 }}
+                onClick={() => {
+                  setEditData(details)
+                  setAddEditModal(true)
                 }}
-              >
-                <Button
-                  type="primary"
-                  ghost
-                  onClick={() => {
-                    setEditData(details);
-                    setAddEditModal(true);
-                  }}
-                >
-                  <EditOutlined />
-                  Edit {name} Details
-                </Button>
-              </div>
+              />
             </div>
             {details.description && (
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
+                  display: 'flex',
+                  justifyContent: 'space-between',
                   marginTop: 30,
                 }}
               >
@@ -141,9 +139,9 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
                   title="Description"
                   description={
                     <div
-                      style={{ marginTop: "5px" }}
+                      style={{ marginTop: '5px' }}
                       dangerouslySetInnerHTML={{
-                        __html: details.description,
+                        __html: DOMPurify.sanitize(details.description),
                       }}
                     ></div>
                   }
@@ -151,16 +149,16 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
               </div>
             )}
           </Card>
-          <Card style={{ boxShadow: "5px 10px #f6f6f6" }}>
+          <Card style={{ boxShadow: '5px 10px #f6f6f6' }}>
             <Tag
               style={{
-                position: "absolute",
+                position: 'absolute',
                 top: 0,
                 right: 0,
-                cursor: "pointer",
+                cursor: 'pointer',
               }}
               onClick={() => {
-                setDetailedExecutionReportModal(true);
+                setDetailedExecutionReportModal(true)
               }}
             >
               More Details
@@ -178,7 +176,7 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
           editData={editData}
           setEditData={setEditData}
           edit={true}
-          name={name}
+          name={'Test Case'}
           onEdit={onEdit}
           loading={loading}
         />
@@ -191,7 +189,7 @@ const TestCasetails = ({ loading, details, name, onEdit = () => {} }) => {
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default TestCasetails;
+export default TestCaseDetails

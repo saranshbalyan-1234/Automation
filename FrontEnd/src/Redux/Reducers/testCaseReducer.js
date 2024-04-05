@@ -16,12 +16,14 @@ import {
   EMPTY_TEST_CASE,
   GET_TEST_CASE_LOGS,
   GET_ACTION_EVENTS,
+  COPY_TEST_CASE_PROCESS
 } from "../Actions/action-types";
 import { orderBy } from "lodash";
 const initState = {
   loading: false,
   data: [],
   currentTestCase: { process: [] },
+  copyProcess: {},
   actionEvents: [],
 };
 
@@ -36,6 +38,12 @@ const testCaseReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         data: payload,
+        loading: false,
+      };
+    case COPY_TEST_CASE_PROCESS:
+      return {
+        ...state,
+        copyProcess: payload,
         loading: false,
       };
     case GET_ACTION_EVENTS:
@@ -110,12 +118,12 @@ const testCaseReducer = (state = initState, { type, payload }) => {
           ...state.currentTestCase,
           process: orderedProcess,
         },
+        copyProcess: {},
         loading: false,
       };
     case EDIT_PROCESS:
       const editedProcess = [...state.currentTestCase.process].map((el) => {
-        const newData = payload.data;
-        return el.id === payload.processId ? { ...el, ...newData } : el;
+        return el.id === payload.id ? { ...el, ...payload } : el;
       });
       return {
         ...state,
@@ -146,20 +154,20 @@ const testCaseReducer = (state = initState, { type, payload }) => {
       const editedStep = [...state.currentTestCase.process].map((el) => {
         return el.id === payload.processId
           ? {
-              ...el,
-              testSteps: orderBy(
-                [
-                  ...[...el.testSteps].map((step) => {
-                    return step.step >= payload.step
-                      ? { ...step, step: step.step + 1 }
-                      : step;
-                  }),
-                  payload,
-                ],
-                ["step"],
-                ["asc"]
-              ),
-            }
+            ...el,
+            testSteps: orderBy(
+              [
+                ...[...el.testSteps].map((step) => {
+                  return step.step >= payload.step
+                    ? { ...step, step: step.step + 1 }
+                    : step;
+                }),
+                payload,
+              ],
+              ["step"],
+              ["asc"]
+            ),
+          }
           : el;
       });
       const orderedStepProcess = orderBy([...editedStep], ["step"], ["asc"]);
@@ -177,17 +185,17 @@ const testCaseReducer = (state = initState, { type, payload }) => {
       const deletedStep = [...state.currentTestCase.process].map((el) => {
         return el.id === payload.processId
           ? {
-              ...el,
-              testSteps: [...el.testSteps]
-                .filter((step) => {
-                  return step.id !== payload.testStepId;
-                })
-                .map((el1) => {
-                  return el1.step > payload.step
-                    ? { ...el1, step: el1.step - 1 }
-                    : el1;
-                }),
-            }
+            ...el,
+            testSteps: [...el.testSteps]
+              .filter((step) => {
+                return step.id !== payload.testStepId;
+              })
+              .map((el1) => {
+                return el1.step > payload.step
+                  ? { ...el1, step: el1.step - 1 }
+                  : el1;
+              }),
+          }
           : el;
       });
 
@@ -204,11 +212,11 @@ const testCaseReducer = (state = initState, { type, payload }) => {
       const editStep = [...state.currentTestCase.process].map((el) => {
         return el.id === payload.processId
           ? {
-              ...el,
-              testSteps: [...el.testSteps].map((step) => {
-                return step.id === payload.id ? payload : step;
-              }),
-            }
+            ...el,
+            testSteps: [...el.testSteps].map((step) => {
+              return step.id === payload.id ? payload : step;
+            }),
+          }
           : el;
       });
 
@@ -225,6 +233,8 @@ const testCaseReducer = (state = initState, { type, payload }) => {
         loading: false,
         data: [],
         currentTestCase: { process: [] },
+        copyProcess: {},
+        actionEvents: [],
       };
     default:
       return state;

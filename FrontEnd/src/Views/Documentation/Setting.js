@@ -1,12 +1,11 @@
 import React from "react";
-// import { Link } from "react-router-dom";
 import QuestionAns from "./QuestionAns";
 
 export default function Setting() {
   const data = [
     {
       header: "How to Add or Remove Users?",
-      data: <div>saransh</div>,
+      data: <div></div>,
     },
     {
       header: "How to Resend User's Verification Email?",
@@ -42,6 +41,14 @@ export default function Setting() {
     },
     {
       header: "How to Delete Customer Account?",
+      data: <div></div>,
+    },
+    {
+      header: "How to Add or Remove Machine?",
+      data: <div></div>,
+    },
+    {
+      header: "How to Check Current Chrome and Chromedriver Version.",
       data: <div></div>,
     },
   ];

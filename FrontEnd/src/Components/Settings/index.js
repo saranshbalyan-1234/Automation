@@ -3,7 +3,7 @@ import { Tabs, Button } from "antd";
 import Profile from "./Profile";
 import Team from "./Team";
 import Role from "./Role";
-import { PlusOutlined, EditOutlined, SettingOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, SettingOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import AddUserModal from "./Team/AddUserModal";
 import EditDetailsModal from "./Profile/EditDetailsModal";
 import ChangePasswordModal from "./Profile/ChangePasswordModal";
@@ -14,7 +14,8 @@ import MemberBadge from "../Common/MemberBadge";
 import { usePermission } from "../../Utils/permission";
 import Machine from "./Machine";
 import AddMachineModal from "./Machine/AddMachineModal";
-function Setting({ roles, team, customerAdmin }) {
+import ChromedriverCompatibilityModal from "./Machine/ChromedriverCompatibilityModal";
+function Setting({ team, customerAdmin }) {
   const viewTeamPermission = usePermission("Team", "view");
   const addTeamPermission = usePermission("Team", "add");
   const viewRolePermission = usePermission("Role", "view");
@@ -32,6 +33,7 @@ function Setting({ roles, team, customerAdmin }) {
   const [singleRoleData, setSingleRoleData] = useState({ id: null, name: "" });
   const [editDetailsModal, setEditDetailsModal] = useState(false);
   const [manageUserModal, setManageUserModal] = useState(false);
+  const [chromedriverCompatibilityModal, setChromedriverCompatibilityModal] = useState(false)
 
   const handleActiveTab = (value) => {
     navigate(`/settings/${value}`);
@@ -112,19 +114,74 @@ function Setting({ roles, team, customerAdmin }) {
       );
     else if (activeTab === "machines")
       return (
-        <Button
-          type="primary"
-          ghost
-          onClick={() => {
-            setAddMachineModal(true);
+        <div
+          style={{
+            display: "flex",
           }}
-          style={{ position: "absolute", right: 0, top: 10 }}
-          disabled={!customerAdmin}
         >
-          <PlusOutlined /> Add Machine
-        </Button>
+          <Button
+            type="primary"
+            ghost
+            style={{ position: "absolute", right: 150, top: 10 }}
+            onClick={() => {
+              setChromedriverCompatibilityModal(true);
+            }}
+
+          >
+            <InfoCircleOutlined /> Check Chromedriver Compatibility
+          </Button>
+          <Button
+            type="primary"
+            ghost
+            onClick={() => {
+              setAddMachineModal(true);
+            }}
+            style={{ position: "absolute", right: 0, top: 10 }}
+            disabled={!customerAdmin}
+          >
+            <PlusOutlined /> Add Machine
+          </Button>
+
+        </div>
       );
   };
+
+  const items = [{
+    key: 'profile',
+    label: `Profile`,
+    children: <Profile />
+  },
+  {
+    key: 'roles',
+    label: `Roles`,
+    children: activeTab === "roles" &&
+      <Role
+        setAddPermissionModal={setAddPermissionModal}
+        addPermissionModal={addPermissionModal}
+        singleRoleData={singleRoleData}
+        setSingleRoleData={setSingleRoleData}
+      />,
+    disabled: !viewRolePermission
+  },
+  {
+    key: 'team',
+    label: `Team`,
+    children: activeTab === "team" &&
+      <Team
+        manageUserModal={manageUserModal}
+        setManageUserModal={setManageUserModal}
+        setEditUserId={setEditUserId}
+        editUserId={editUserId}
+      />,
+    disabled: !viewTeamPermission
+  },
+  {
+    key: 'machines',
+    label: `Machines`,
+    children: activeTab === "machines" &&
+      <Machine />,
+  }]
+
   return (
     <>
       <div style={{ display: "flex", position: "relative" }}>
@@ -132,47 +189,8 @@ function Setting({ roles, team, customerAdmin }) {
           activeKey={activeTab}
           style={{ minWidth: "100%" }}
           onChange={handleActiveTab}
-        >
-          <Tabs.TabPane tab="Profile" key="profile">
-            <Profile />
-          </Tabs.TabPane>
-
-          {viewRolePermission && (
-            <Tabs.TabPane tab="Roles" key="roles">
-              {activeTab === "roles" && (
-                <Role
-                  setAddPermissionModal={setAddPermissionModal}
-                  addPermissionModal={addPermissionModal}
-                  singleRoleData={singleRoleData}
-                  setSingleRoleData={setSingleRoleData}
-                />
-              )}
-            </Tabs.TabPane>
-          )}
-          {viewTeamPermission && (
-            <Tabs.TabPane tab="Team" key="team">
-              {activeTab === "team" && (
-                <Team
-                  manageUserModal={manageUserModal}
-                  setManageUserModal={setManageUserModal}
-                  setEditUserId={setEditUserId}
-                  editUserId={editUserId}
-                />
-              )}
-            </Tabs.TabPane>
-          )}
-
-          <Tabs.TabPane tab="Machines" key="machines">
-            <Machine />
-          </Tabs.TabPane>
-
-          {/* <Tabs.TabPane tab="Notification" key="notification">
-            <ComingSoon />
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Billing" key="billing">
-            <ComingSoon />
-          </Tabs.TabPane> */}
-        </Tabs>
+          items={items}
+        />
         {renderButton()}
       </div>
       {addUserModal && (
@@ -208,6 +226,12 @@ function Setting({ roles, team, customerAdmin }) {
         <AddMachineModal
           visible={addMachineModal}
           setVisible={setAddMachineModal}
+        />
+      )}
+      {chromedriverCompatibilityModal && (
+        <ChromedriverCompatibilityModal
+          visible={chromedriverCompatibilityModal}
+          setVisible={setChromedriverCompatibilityModal}
         />
       )}
     </>

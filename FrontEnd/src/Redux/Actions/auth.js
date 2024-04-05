@@ -12,6 +12,7 @@ import {
   EMPTY_TEAM,
   EMPTY_ROLE,
   EMPTY_TEST_CASE,
+  EMPTY_EXECUTION_SUITE,
 } from "./action-types";
 
 import { message } from "antd";
@@ -76,5 +77,6 @@ export const logout = () => {
     dispatch({ type: EMPTY_TEAM });
     dispatch({ type: EMPTY_ROLE });
     dispatch({ type: EMPTY_TEST_CASE });
+    dispatch({ type: EMPTY_EXECUTION_SUITE });
   };
 };

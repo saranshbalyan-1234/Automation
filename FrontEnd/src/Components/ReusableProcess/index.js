@@ -1,6 +1,6 @@
 import React from "react";
 import List from "../Common/List";
-import ReusableProcessTabs from "./Tabs";
+import ReusableProcessTabs from "./ReusableProcessTabs";
 import { Routes, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import {
@@ -17,10 +17,7 @@ const ReusableProcess = ({
   saveReusableProcess,
 }) => {
   const addReusableProcessPermission = usePermission("Reusable Process", "add");
-  const deleteReusableProcessPermission = usePermission(
-    "Reusable Process",
-    "delete"
-  );
+  const deleteReusableProcessPermission = usePermission("Reusable Process", "delete");
   return (
     <>
       <Routes>
@@ -32,7 +29,7 @@ const ReusableProcess = ({
               loading={loading}
               onDelete={deleteReusableProcess}
               name="Reusable Process"
-              link="ReusableProcess"
+              link="reusable-process"
               onSave={saveReusableProcess}
               getList={getReusableProcessByProject}
               addPermission={addReusableProcessPermission}

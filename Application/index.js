@@ -4,6 +4,8 @@ const helmet = require("helmet");
 const cors = require("cors");
 const parser = require("body-parser");
 const { execute } = require("./Controllers/actionEventController");
+const { checkVersion } = require("./Utils/chromeDriverCheck");
+const chalk = require("chalk");
 const app = express();
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
@@ -13,20 +15,22 @@ app.use(
     origin: "*",
   })
 );
+console.log(chalk.blueBright("\n" + `SYSTEM INFO: PLATFORM ${process.platform}`))
 
 app.use(validateToken());
 
-app.post("/execute/:testCaseId", async (req, res) => {
-  const testCaseId = req.params.testCaseId;
-  if (isNaN(parseInt(testCaseId)))
-    return res.status(401).json({ error: "TestCase Id must be Integer" });
+app.post("/execute", async (req, res) => {
   await execute(req, res);
+});
+
+app.get("/check-compatibility", async (req, res) => {
+  await checkVersion(req, res);
 });
 
 app.use((req, res) => {
   return res.status(404).json({ error: "Endpoint Not Found" });
 });
 
-app.listen(3002, () => {
-  console.log("You can execute now!");
+app.listen(process.env.PORT, () => {
+  console.log(chalk.blueBright("\n" + `SYSTEM INFO: Sever Started on ${process.env.PORT}`))
 });

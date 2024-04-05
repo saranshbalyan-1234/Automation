@@ -10,10 +10,10 @@ const { Content } = Layout;
 export default function LayOut({
   children,
   viewTestCasePermission,
+  viewExecutionSuitePermission,
   viewReusableProcessPermission,
   viewObjectBankPermission,
   viewProjectPermission,
-  viewDefectPermission,
 }) {
   const [collapsed, setCollapsed] = useState(true);
 
@@ -28,9 +28,10 @@ export default function LayOut({
             viewReusableProcessPermission={viewReusableProcessPermission}
             viewObjectBankPermission={viewObjectBankPermission}
             viewProjectPermission={viewProjectPermission}
-            viewDefectPermission={viewDefectPermission}
+            viewExecutionSuitePermission={viewExecutionSuitePermission}
           />
           <div
+            id="right_container"
             style={{
               width: "100%",
               minHeight: "100vh",

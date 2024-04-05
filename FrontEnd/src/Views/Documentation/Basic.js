@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import QuestionAns from "./QuestionAns";
 
 export default function Basic() {
@@ -38,9 +37,10 @@ export default function Basic() {
               </ul>
             </li>
           </ul>
-          <Link to="/TestCase">Go To Test Case</Link>
         </div>
       ),
+      linkName: "Test Case",
+      linkPath: "/TestCase",
     },
     {
       header: "What is Reusable Process?",
@@ -53,9 +53,10 @@ export default function Basic() {
             <br /> Note* Reusable Process cannot be executed directly and it
             does support environments when used inside the Test Case only.
           </p>
-          <Link to="/ReusableProcess">Go To Reusable Process</Link>
         </div>
       ),
+      linkName: "Reusable Process",
+      linkPath: "/ReusableProcess",
     },
     {
       header: "What is Object Bank?",
@@ -77,9 +78,10 @@ export default function Basic() {
             <li>TagName</li>
             <li>XPATH</li>
           </ul>
-          <Link to="/ObjectBank">Go To Object Bank</Link>
         </div>
       ),
+      linkName: "Object Bank",
+      linkPath: "/ObjectBank",
     },
   ];
   return <QuestionAns data={data} />;

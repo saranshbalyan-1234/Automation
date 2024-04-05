@@ -11,7 +11,7 @@ function ObjectBankTabs({ logs, getObjectLogsById, loading }) {
   const [activeTab, setActiveTab] = useState("details");
 
   const handleActiveTab = (value) => {
-    navigate(`/ObjectBank/${objectId}/${value}`);
+    navigate(`/object-bank/${objectId}/${value}`);
   };
 
   useEffect(() => {
@@ -23,32 +23,32 @@ function ObjectBankTabs({ logs, getObjectLogsById, loading }) {
     // eslint-disable-next-line
   }, [tab]);
 
+  const items = [{
+    key: 'details',
+    label: `Details`,
+    children: activeTab === "details" && <Details />
+  },
+
+  {
+    key: 'logs',
+    label: `Logs`,
+    children: activeTab === "logs" && <ActivityLog logs={logs} loading={loading} />
+  }]
+
+
   return (
-    <>
-      <div style={{ display: "flex", position: "relative" }}>
-        <Tabs
-          activeKey={activeTab}
-          style={{ minWidth: "100%" }}
-          onChange={handleActiveTab}
-        >
-          <Tabs.TabPane tab="Details" key="details">
-            {activeTab === "details" && <Details />}
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Logs" key="logs">
-            {activeTab === "logs" && (
-              <ActivityLog logs={logs} loading={loading} />
-            )}
-          </Tabs.TabPane>
-        </Tabs>
-      </div>
-    </>
+    <Tabs
+      activeKey={activeTab}
+      style={{ minWidth: "100%" }}
+      onChange={handleActiveTab}
+      items={items}
+    />
   );
 }
 const mapStateToProps = (state) => ({
   logs: state.objectBank.currentObject.logs,
   loading: state.objectBank.loading,
 });
-
 const mapDispatchToProps = { getObjectLogsById };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ObjectBankTabs);

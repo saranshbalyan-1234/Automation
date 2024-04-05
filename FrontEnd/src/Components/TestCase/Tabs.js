@@ -10,7 +10,7 @@ import {
 } from "../../Redux/Actions/testCase";
 import Environment from "./Environment";
 import Process from "./Process";
-import Details from "./TestCaseDetails";
+import TestCaseDetails from "./TestCaseDetails";
 import ActivityLog from "../Common/ActivityLog";
 import ExecuteModal from "./ExecuteModal";
 import ExecutionHistory from "./ExecutionHistory/List";
@@ -23,8 +23,8 @@ function TestCaseTabs({
   logs,
   getTestCaseLogsById,
 }) {
-  const viewExecutionPermission = usePermission("Execution", "view");
-  const addExecutionPermission = usePermission("Execution", "add");
+  const viewExecutionPermission = usePermission("Execute", "view");
+  const addExecutionPermission = usePermission("Execute", "add");
   const { tab, testCaseId } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("details");
@@ -32,7 +32,7 @@ function TestCaseTabs({
   const [envModal, setEnvModal] = useState(false);
 
   const handleActiveTab = (value) => {
-    navigate(`/TestCase/${testCaseId}/${value}`);
+    navigate(`/test-case/${testCaseId}/${value}`);
   };
 
   useEffect(() => {
@@ -50,7 +50,7 @@ function TestCaseTabs({
   }, [testCaseId]);
 
   const renderButton = () => {
-    if (activeTab === "teststeps")
+    if (activeTab === "test-steps")
       return (
         <div
           style={{
@@ -78,7 +78,12 @@ function TestCaseTabs({
             onClick={() => {
               setExecuteModal(true);
             }}
-            disabled={!addExecutionPermission}
+            disabled={
+              !addExecutionPermission ||
+              !currentTestCase.process?.some((el) => {
+                return el.testSteps?.length > 0;
+              })
+            }
           >
             <PlayCircleFilled />
             Execute
@@ -86,6 +91,34 @@ function TestCaseTabs({
         </div>
       );
   };
+  let items = [{
+    key: 'details',
+    label: `Details`,
+    children: activeTab === "details" &&
+      <TestCaseDetails
+        loading={loading}
+        details={currentTestCase}
+        onEdit={editTestCase}
+      />
+  },
+  {
+    key: 'test-steps',
+    label: `Test Steps`,
+    children: activeTab === "test-steps" && <Process />
+  },
+
+  {
+    key: 'logs',
+    label: `Logs`,
+    children: activeTab === "logs" && <ActivityLog logs={logs} loading={loading} />
+  }]
+
+  if (viewExecutionPermission) items.push({
+    key: 'execution-history',
+    label: `Execution History`,
+    children: activeTab === "execution-history" && <ExecutionHistory viewExecutionPermission={viewExecutionPermission} />
+  })
+
   return (
     <>
       <div style={{ display: "flex", position: "relative" }}>
@@ -93,35 +126,10 @@ function TestCaseTabs({
           activeKey={activeTab}
           style={{ minWidth: "100%" }}
           onChange={handleActiveTab}
-        >
-          <Tabs.TabPane tab="Details" key="details">
-            {activeTab === "details" && (
-              <Details
-                loading={loading}
-                details={currentTestCase}
-                name="Test Case"
-                onEdit={editTestCase}
-              />
-            )}
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Test Steps" key="teststeps">
-            {activeTab === "teststeps" && <Process />}
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            tab="Execution History"
-            key="executionhistory"
-            disabled={!viewExecutionPermission}
-          >
-            {activeTab === "executionhistory" && <ExecutionHistory />}
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Logs" key="logs">
-            {activeTab === "logs" && (
-              <ActivityLog logs={logs} loading={loading} />
-            )}
-          </Tabs.TabPane>
-        </Tabs>
+          items={items}
+        />
         {renderButton()}
-      </div>
+      </div >
       {executeModal && (
         <ExecuteModal
           setVisible={setExecuteModal}

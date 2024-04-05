@@ -49,7 +49,7 @@ const AddModal = ({
               },
             ]}
           >
-            <Input name="name" showCount maxlength={50} />
+            <Input name="name" showCount maxLength={50} />
           </Form.Item>
 
           <div style={{ display: "flex", justifyContent: "center" }}>

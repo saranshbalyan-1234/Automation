@@ -4,15 +4,13 @@ import {
   LogoutOutlined,
   EditOutlined,
   DownloadOutlined,
-  // BellOutlined,
-  CaretDownOutlined,
+  CaretDownOutlined,InfoCircleOutlined 
 } from "@ant-design/icons";
 import { BiSupport } from "react-icons/bi";
 import {
   Avatar,
   Dropdown,
-  Menu,
-  //  Badge
+
 } from "antd";
 import { logout } from "../../../Redux/Actions/auth";
 import { Link } from "react-router-dom";
@@ -21,52 +19,57 @@ import DownloadAppModal from "../../../Views/DownloadAppModal";
 const ProfileMenu = ({ logout, user }) => {
   const [downloadAppModal, setDownloadAppModal] = useState(false);
 
-  const profileMenu = (
-    <Menu
-      items={[
+  const items = [
         {
-          label: (
-            <div
-              onClick={() => {
-                setDownloadAppModal(true);
-              }}
-            >
-              <DownloadOutlined style={{ marginRight: "5px" }} /> Download App
-            </div>
-          ),
-          key: "1",
-        },
+      label: (
+        <Link to="/about">
+          <InfoCircleOutlined  style={{ marginRight: "5px" }} /> About
+        </Link>
+      ),
+      key: "about",
+    },
+    { 
+      label: (
+        <div
+          onClick={() => {
+            setDownloadAppModal(true);
+          }}
+        >
+          <DownloadOutlined style={{ marginRight: "5px" }} /> Download App
+        </div>
+      ),
+      key: "download",
+    },
 
-        {
-          label: (
-            <Link to="/documentation">
-              <BiSupport style={{ marginRight: "5px" }} /> Documentation
-            </Link>
-          ),
-          key: "2",
-        },
-        {
-          label: (
-            <Link to="/settings/profile">
-              <EditOutlined style={{ marginRight: "5px" }} />
-              Settings
-            </Link>
-          ),
-          key: "3",
-        },
+    {
+      label: (
+        <Link to="/documentation">
+          <BiSupport style={{ marginRight: "5px" }} /> Documentation
+        </Link>
+      ),
+      key: "documentation",
+    },
+ 
+    {
+      label: (
+        <Link to="/settings/profile">
+          <EditOutlined style={{ marginRight: "5px" }} />
+          Settings
+        </Link>
+      ),
+      key: "settings",
+    },
 
-        {
-          label: (
-            <>
-              <LogoutOutlined style={{ marginRight: "5px" }} /> Logout
-            </>
-          ),
-          key: "4",
-          onClick: logout,
-        },
-      ]}
-    />
-  );
+    {
+      label: (
+        <>
+          <LogoutOutlined style={{ marginRight: "5px" }} /> Logout
+        </>
+      ),
+      key: "logout",
+      onClick: logout,
+    },
+  ];
 
   // const notificationMenu = (
   //   <Menu
@@ -116,7 +119,7 @@ const ProfileMenu = ({ logout, user }) => {
           </Badge>
         </Dropdown> */}
       </div>
-      <Dropdown overlay={profileMenu} trigger={["hover"]}>
+      <Dropdown menu={{ items }} trigger={["hover"]}>
         <div
           className="row profileMenu"
           style={{ alignItems: "center", cursor: "pointer", color: "white" }}

@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal } from "antd";
+import DOMPurify from 'dompurify'
 export default function ViewCommentModal({ comment, visible, setVisible }) {
   return (
     <Modal
@@ -13,7 +14,7 @@ export default function ViewCommentModal({ comment, visible, setVisible }) {
     >
       <div
         dangerouslySetInnerHTML={{
-          __html: comment,
+          __html: DOMPurify.sanitize(comment),
         }}
       ></div>
     </Modal>

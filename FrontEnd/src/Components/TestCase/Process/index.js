@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Popconfirm, Collapse, Tag } from "antd";
+import { Popconfirm, Collapse, Tag, Tooltip, FloatButton } from "antd";
 import {
   getTestCaseStepsById,
   deleteProcess,
   deleteStep,
 } from "../../../Redux/Actions/testCase";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import ProcessMenu from "./ProcessMenu";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import TestStepTable from "../../Common/TestStep";
 import AddEditProcessModal from "./AddEditProcessModal";
 import ViewCommentModal from "../../Common/TestStep/ViewCommentModal";
 import Loading from "../../Common/Loading";
 import { usePermission } from "../../../Utils/permission";
+import { VscDebugRestart } from "react-icons/vsc";
+import { EMPTY_TEST_CASE } from '../../../Redux/Actions/action-types'
 const { Panel } = Collapse;
 const Process = ({
   getTestCaseStepsById,
@@ -22,6 +24,8 @@ const Process = ({
   deleteStep,
   loading,
 }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
   const editTestCasePermission = usePermission("Test Case", "edit");
   const [addEditProcessModal, setAddEditProcessModal] = useState(false);
   const [addReusable, setAddReusable] = useState(false);
@@ -31,6 +35,7 @@ const Process = ({
   const { testCaseId } = useParams();
 
   useEffect(() => {
+    // dispatch({ type: EMPTY_TEST_CASE })
     testCaseId && getTestCaseStepsById(testCaseId);
     // eslint-disable-next-line
   }, [testCaseId]);
@@ -40,7 +45,7 @@ const Process = ({
       <Loading loading={loading}>
         {process.map((item, index) => {
           return (
-            <Collapse style={{ marginTop: "10px" }} key={index}>
+            <Collapse style={{ marginTop: "10px" }} key={"process_" + index} className={item.enable ? "dark" : "light"}>
               <Panel
                 header={
                   <div
@@ -68,13 +73,31 @@ const Process = ({
                           gap: "5px",
                         }}
                       >
-                        Process {index + 1} : {item.name}
+                        {`Process ${index + 1} : `}
+
+                        {item.reusableProcess && (
+                          <Tooltip
+                            title="Reusable Process"
+                            color="blue">
+                            <div
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(
+                                  `/reusable-process/${item.reusableProcess.id}/details`
+                                );
+                              }}
+                              style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+
+                            >
+                              <VscDebugRestart style={{ fontSize: 16 }} />
+                            </div>
+                          </Tooltip>
+                        )}
+
+                        {item.reusableProcess?.name || item.name}
+
                       </div>
-                      {item.reusableProcess && (
-                        <Tag color="blue">
-                          Reusable Process : {item.reusableProcess.name}
-                        </Tag>
-                      )}
+
                     </div>
                     <div
                       style={{ display: "flex", gap: 10, alignItems: "center" }}
@@ -114,7 +137,8 @@ const Process = ({
                       <Popconfirm
                         placement="left"
                         title="Are you sure to remove this process?"
-                        onConfirm={async () => {
+                        onConfirm={async (e) => {
+                          e.stopPropagation();
                           await deleteProcess(
                             item.id,
                             item.step,
@@ -126,6 +150,9 @@ const Process = ({
                         okText="Yes, Remove"
                         cancelText="No"
                         disabled={!editTestCasePermission}
+                        onCancel={(e) => {
+                          e.stopPropagation()
+                        }}
                       >
                         <DeleteOutlined
                           style={{
@@ -194,6 +221,7 @@ const Process = ({
           setVisible={setComment}
         />
       )}
+      <FloatButton.BackTop target={() => document.getElementById("right_container")} />
     </>
   );
 };

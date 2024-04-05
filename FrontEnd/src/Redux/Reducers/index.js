@@ -8,8 +8,8 @@ import reusableProcessReducer from "./reusableProcessReducer";
 import objectBankReducer from "./objectBankReducer";
 import executionHistoryReducer from "./executionHistoryReducer";
 import environmentReducer from "./environmentReducer";
-import defectReducer from "./defectReducer";
 import machinesReducer from "./machinesReducer";
+import executionSuiteReducer from "./executionSuiteReducer";
 export default combineReducers({
   auth: authReducer,
   team: teamReducer,
@@ -19,7 +19,7 @@ export default combineReducers({
   reusableProcess: reusableProcessReducer,
   objectBank: objectBankReducer,
   executionHistory: executionHistoryReducer,
+  executionSuite:executionSuiteReducer,
   environment: environmentReducer,
-  defect: defectReducer,
   machines: machinesReducer,
 });

@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Card, Tag, Badge, Empty, Button, Popconfirm } from "antd";
-import { deleteCustomer } from "../../../Redux/Actions/team";
-import Role from "../Role";
-import { UploadOutlined } from "@ant-design/icons";
-import UploadProfileImage from "./UploadProfileImage";
-import UserAvatar from "../../Common/Avatar";
-import styled from "styled-components";
-const { Meta } = Card;
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { Card, Tag, Badge, Empty, Button, Popconfirm } from 'antd'
+import { deleteCustomer } from '../../../Redux/Actions/team'
+import Role from '../Role'
+import { UploadOutlined } from '@ant-design/icons'
+import UploadProfileImage from './UploadProfileImage'
+import UserAvatar from '../../Common/Avatar'
+import styled from 'styled-components'
+const { Meta } = Card
 function Profile({ user, deleteCustomer }) {
-  const [editProfileImage, setEditProfileImage] = useState(false);
-  const handleDeleteCustomer = async () => {
-    await deleteCustomer();
-  };
+  const [editProfileImage, setEditProfileImage] = useState(false)
+  const handleDeleteCustomer = async (e) => {
+    e.stopPropagation()
+    await deleteCustomer()
+  }
   return (
     <>
       <Badge.Ribbon text="Personal Details">
@@ -21,7 +22,7 @@ function Profile({ user, deleteCustomer }) {
             avatar={
               <StyledUploadImage
                 onClick={() => {
-                  setEditProfileImage(true);
+                  setEditProfileImage(true)
                 }}
               >
                 <div className="profileImage">
@@ -33,10 +34,10 @@ function Profile({ user, deleteCustomer }) {
               </StyledUploadImage>
             }
             title={
-              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                 {user.name}
                 <Tag color="blue">
-                  {user.customerAdmin ? "Customer Admin" : "User"}
+                  {user.customerAdmin ? 'Customer Admin' : 'User'}
                 </Tag>
               </div>
             }
@@ -48,12 +49,14 @@ function Profile({ user, deleteCustomer }) {
               onConfirm={handleDeleteCustomer}
               okText="Yes, Delete"
               cancelText="No"
+              onCancel={(e) => {
+                e.stopPropagation()
+              }}
             >
-              {" "}
               <Button
                 danger
                 ghost
-                style={{ marginTop: "20px", marginLeft: "45px" }}
+                style={{ marginTop: '20px', marginLeft: '45px' }}
               >
                 Delete Customer
               </Button>
@@ -62,8 +65,8 @@ function Profile({ user, deleteCustomer }) {
         </Card>
       </Badge.Ribbon>
       {!user.customerAdmin && (
-        <Badge.Ribbon text={"My Roles"}>
-          <div style={{ paddingTop: "10px" }}>
+        <Badge.Ribbon text={'My Roles'}>
+          <div style={{ paddingTop: '10px' }}>
             {user.roles.length > 0 ? (
               <Role loading={false} data={user.roles} profile={true} />
             ) : (
@@ -79,13 +82,13 @@ function Profile({ user, deleteCustomer }) {
         />
       )}
     </>
-  );
+  )
 }
-const mapStateToProps = (state) => ({ user: state.auth?.user });
+const mapStateToProps = (state) => ({ user: state.auth?.user })
 
-const mapDispatchToProps = { deleteCustomer };
+const mapDispatchToProps = { deleteCustomer }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)
 
 const StyledUploadImage = styled.div`
   cursor: pointer;
@@ -105,4 +108,4 @@ const StyledUploadImage = styled.div`
     position: absolute;
     margin-left: 5px;
   }
-`;
+`

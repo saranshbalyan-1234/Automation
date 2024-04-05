@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: true,
       },
+      defaultValue: "Static",
     },
     method: {
       type: DataTypes.STRING,

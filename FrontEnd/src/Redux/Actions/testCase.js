@@ -19,8 +19,12 @@ import {
 } from "../Actions/action-types";
 import { getDetailsEditedLogs } from "../../Utils/logs";
 import { createReusableProcessLogs } from "./reusableProcess";
-export const getTestCaseByProject = (payload) => {
-  return async (dispatch, getState) => {
+import { message } from "antd";
+
+const uninterceptedAxiosInstance = axios.create()
+
+export const getTestCaseByProject = () => {
+  return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
 
@@ -143,10 +147,10 @@ export const editProcess = (payload) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
 
-      await axios.put(`/testCase/process/${payload.processId}`, payload.data);
+      const { data } = await axios.put(`/testCase/process/${payload.processId}`, payload.data);
       dispatch({
         type: EDIT_PROCESS,
-        payload,
+        payload: data,
       });
 
       return true;
@@ -259,19 +263,25 @@ export const deleteStep = (testStepId, step, process, reusableProcess) => {
         ]);
       return true;
     } catch (err) {
-      console.log(err);
       dispatch({ type: TEST_CASE_FAILURE });
       return false;
     }
   };
 };
-export const executeTestCase = (testCaseId, url, payload) => {
-  return async (dispatch) => {
+export const executeTestCase = (url, payload) => {
+  return async (dispatch, getState) => {
     try {
       // dispatch({ type: TEST_CASE_REQUEST });
-      await axios.post(`${url}/execute/${testCaseId}`, payload);
+      await uninterceptedAxiosInstance.post(`${url}/execute`, payload, {
+        headers: {
+          Authorization: "Bearer " + getState().auth.user?.accessToken,
+        }
+      });
+      message.info("Starting Execution")
       return true;
     } catch (err) {
+      console.error(err)
+      message.error("Failed To Execute")
       // message.error("Please Start Cloud Application");
       // dispatch({ type: TEST_CASE_FAILURE });
       return false;
@@ -293,8 +303,8 @@ export const getTestCaseLogsById = (id) => {
   };
 };
 
-export const getActionEvents = (payload) => {
-  return async (dispatch, getState) => {
+export const getActionEvents = () => {
+  return async (dispatch) => {
     try {
       dispatch({ type: TEST_CASE_REQUEST });
 
@@ -302,6 +312,27 @@ export const getActionEvents = (payload) => {
       dispatch({ type: GET_ACTION_EVENTS, payload: data });
       return true;
     } catch (err) {
+      dispatch({ type: TEST_CASE_FAILURE });
+      return false;
+    }
+  };
+};
+
+
+export const convertProcessToReusable = (processId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: TEST_CASE_REQUEST });
+
+      const { data } = await axios.put(`/reusableProcess/convert/process/${processId}`);
+      dispatch({
+        type: EDIT_PROCESS,
+        payload: data,
+      });
+
+      return true;
+    } catch (err) {
+      console.log(err);
       dispatch({ type: TEST_CASE_FAILURE });
       return false;
     }

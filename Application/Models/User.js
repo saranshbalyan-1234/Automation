@@ -95,5 +95,21 @@ module.exports = (sequelize, DataTypes) => {
     foreignKey: "envId",
     constraints: false,
   });
+  sequelize.models.projects.hasMany(sequelize.models.userProjects, {
+    foreignKey: "projectId",
+    as: "members",
+    constraints: false,
+  });
+  sequelize.models.userProjects.hasOne(sequelize.models.projects, {
+    foreignKey: "id",
+    sourceKey: "projectId",
+    constraints: false,
+  });
+  sequelize.models.userProjects.hasOne(sequelize.models.users, {
+    foreignKey: "id",
+    sourceKey: "userId",
+    constraints: false,
+  });
+
   return User;
 };

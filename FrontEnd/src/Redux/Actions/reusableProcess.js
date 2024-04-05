@@ -15,7 +15,7 @@ import {
 } from "./action-types";
 
 export const getReusableProcessByProject = (payload) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
       dispatch({ type: REUSABLE_PROCESS_REQUEST });
       const { data } = await axios.get(`/reusableProcess`);

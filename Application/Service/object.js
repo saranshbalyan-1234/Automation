@@ -2,16 +2,8 @@ const { findByLocator, handleActionEventError } = require("./utils");
 const {
   updateStepResult,
 } = require("../Controllers/executionHistoryController");
-const collectObjectText = async (
-  step,
-  driver,
-  output,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Collecting Object Text");
+const collectObjectText = async (args) => {
+  const { step, driver, output, req, stepHistoryId } = args;
   try {
     const text = await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
@@ -20,80 +12,37 @@ const collectObjectText = async (
 
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
-const collectObjectCSSProperty = async (
-  step,
-  driver,
-  output,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Collecting Object CSS Property");
+const collectObjectCSSProperty = async (args) => {
+  const { step, driver, output, req, stepHistoryId } = args;
   try {
     const attribute = await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .getCssValue(step.testParameters.Attribute);
     output[step.testParameters.Output] = attribute;
-    console.log(attribute);
 
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
-const collectObjectProperty = async (
-  step,
-  driver,
-  output,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Collecting Object Property");
+const collectObjectProperty = async (args) => {
+  const { step, driver, output, req, stepHistoryId }=args
   try {
     const attribute = await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .getAttribute(step.testParameters.Attribute);
     output[step.testParameters.Output] = attribute;
-    console.log(attribute);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 
-const scrollToObject = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Scrolling To Object");
+const scrollToObject = async (args) => {
+  const { step, driver, req, stepHistoryId } = args;
   try {
     const element = await driver.findElement(
       await findByLocator(step.object.dataValues.locators)
@@ -101,13 +50,7 @@ const scrollToObject = async (
     await driver.executeScript("arguments[0].scrollIntoView()", element);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 

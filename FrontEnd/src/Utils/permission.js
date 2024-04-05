@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 export const usePermission = (permissionName, method) => {
   const customerAdmin = useSelector((state) => state.auth.user?.customerAdmin);
-  const roles = useSelector((state) => state.auth.user?.roles);
+  const roles = useSelector((state) => state.auth.user?.roles) || [];
   try {
     if (customerAdmin) {
       return true;

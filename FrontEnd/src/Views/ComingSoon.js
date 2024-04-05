@@ -21,7 +21,7 @@ export default function ComingSoon() {
       />
       <Button
         onClick={() => {
-          navigate("/");
+          navigate("/dashboard");
         }}
         type="primary"
       >

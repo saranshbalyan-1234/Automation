@@ -1,22 +1,20 @@
+FROM registry.access.redhat.com/ubi8-minimal
+RUN microdnf update && microdnf module enable nodejs:18/common && microdnf install npm -y && microdnf clean all
 
+ENV REACT_APP_BASE_URL 
+ENV REACT_APP_BASE_PATH /
 
-FROM node:14-alpine3.14 as builder
-WORKDIR /FrontEnd/app
+WORKDIR "/app"
+RUN npm cache clean --force
+COPY ./package.json .
 
-# ENV
-ENV PATH /FrontEnd/app/node_modules/.bin:$PATH
-ENV REACT_APP_BASE_URL https://automationbackend.onrender.com
+RUN npm i --legacy-peer-deps
 
-# Install app dependencies
-COPY /FrontEnd/package*.json ./
-RUN npm install --silent
-COPY /FrontEnd ./
-RUN npm run build
-
-# production environment
-FROM --platform=linux/amd64 nginx:stable-alpine
-COPY --from=builder /FrontEnd/app/build /usr/share/nginx/html
-COPY /FrontEnd/nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+COPY . .
+ENV REACT_MODE="production"
+EXPOSE $PORT
+RUN mkdir /.npm
+RUN chown -R nobody:nobody /.npm
+RUN chown -R nobody:nobody /app
+USER nobody
+CMD ["npm", "run", "prod"]

@@ -2,128 +2,48 @@ const { handleActionEventError } = require("./utils");
 const {
   updateStepResult,
 } = require("../Controllers/executionHistoryController");
-const waitUntilAlertPresent = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  const temp = Number(step.testParameters.Timeout);
-  const timeout = temp > 1000 ? temp : 1000;
-  console.log("Waiting for " + timeout + " ms");
-  for (var i = 0; i < timeout; i = i + 1000) {
-    try {
-      await driver.wait(async () => {
-        return await driver.switchTo().alert();
-      });
-      return await updateStepResult(req, stepHistoryId, true);
-    } catch (err) {
-      return await handleActionEventError(
-        err,
-        req,
-        stepHistoryId,
-        processResult,
-        executionHistory.continueOnError
-      );
-    }
-  }
-  console.log("Alter Not Found");
-};
 
-const acceptAlert = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
+const acceptAlert = async (args) => {
+  const { driver, req, stepHistoryId } = args;
   try {
     await driver.switchTo().alert().accept();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-const dismissAlert = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
+const dismissAlert = async (args) => {
+  const { driver, req, stepHistoryId } = args;
   try {
     await driver.switchTo().alert().dismiss();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-const getAlertMessage = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory,
-  output
-) => {
+const getAlertMessage = async (args) => {
+  const { step, driver, req, stepHistoryId, output } = args;
   try {
     const text = await driver.switchTo().alert().getText();
     output[step.testParameters.Output] = text;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-const enterTextInAlert = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory,
-  output
-) => {
+const enterTextInAlert = async (args) => {
+  const { step, driver, req, stepHistoryId, output } = args;
   try {
     const text = output[step.testParameters.Text];
     await driver.switchTo().alert().sendKeys(text);
 
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-
+//5 Action Keywords
 module.exports = {
-  waitUntilAlertPresent,
   acceptAlert,
   dismissAlert,
   enterTextInAlert,

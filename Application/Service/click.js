@@ -4,40 +4,36 @@ const { By } = chromeDriver;
 const {
   updateStepResult,
 } = require("../Controllers/executionHistoryController");
-const click = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Clicking");
+const { waitUntilObjectClickable } = require("./wait");
+const _ = require("lodash");
+
+const click = async (args) => {
+  const { step, driver, req, stepHistoryId, executionHistory } = args;
   try {
+    const canExecute = await waitUntilObjectClickable(args);
+    if (!canExecute) {
+      if (executionHistory.continueOnError) return "CONTINUE";
+      else return "STOP";
+    }
+
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .click();
+
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-const doubleClick = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Double Clicking");
+const doubleClick = async (args) => {
+  const { step, driver, req, stepHistoryId, executionHistory } = args;
   try {
+    const canExecute = await waitUntilObjectClickable(args);
+    if (!canExecute) {
+      if (executionHistory.continueOnError) return "CONTINUE";
+      else return "STOP";
+    }
+
     await driver
       .actions()
       .doubleClick(
@@ -48,26 +44,17 @@ const doubleClick = async (
       .perform();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-
-const rightClick = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Right Clicking");
+const rightClick = async (args) => {
+  const { step, driver, req, stepHistoryId, executionHistory } = args;
   try {
+    const canExecute = await waitUntilObjectClickable(args);
+    if (!canExecute) {
+      if (executionHistory.continueOnError) return "CONTINUE";
+      else return "STOP";
+    }
     await driver
       .actions()
       .contextClick(
@@ -78,126 +65,91 @@ const rightClick = async (
       .perform();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-
-const clickByJs = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Clicking By Javascript");
+const clickByJs = async (args) => {
+  const { step, driver, req, stepHistoryId, executionHistory } = args;
   try {
+
+    const canExecute = await waitUntilObjectClickable(args);
+    if (!canExecute) {
+      if (executionHistory.continueOnError) return "CONTINUE";
+      else return "STOP";
+    }
+
     const element = await driver.findElement(
       await findByLocator(step.object.dataValues.locators)
     );
+
     await driver.executeScript("arguments[0].click();", element);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-
-const clickLinkByText = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log(`Clicking Link By Text ${step.testParameters.Text}`);
+const clickLinkByText = async (args) => {
+  const { step, driver, req, stepHistoryId, executionHistory } = args;
   try {
+    const canExecute = await waitUntilObjectClickable(args);
+    if (!canExecute) {
+      if (executionHistory.continueOnError) return "CONTINUE";
+      else return "STOP";
+    }
+
     await driver.findElement(By.linkText(step.testParameters.Text)).click();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-const clickLinkByPartialText = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Clicking Link By Partial Text");
+const clickLinkByPartialText = async (args) => {
+  const { step, driver, req, stepHistoryId, executionHistory } = args;
   try {
+    const canExecute = await waitUntilObjectClickable(args);
+    if (!canExecute) {
+      if (executionHistory.continueOnError) return "CONTINUE";
+      else return "STOP";
+    }
+
     await driver
       .findElement(By.partialLinkText(step.testParameters.Text))
       .click();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-
-const clickElementByProperty = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Clicking Element By Property & Text");
+const clickElementByXpath = async (args) => {
+  const { step, driver, req, stepHistoryId, executionHistory } = args;
   try {
-    const element = step.testParameters.Element;
-    const text = step.testParameters.Text;
-    const property =
-      step.testParameters.Property != "."
-        ? `@${step.testParameters.Property}`
-        : ".";
-    await driver
-      .findElement(
-        await findByLocator([
-          {
-            dataValues: {
-              type: "XPATH",
-              locator: `//${element}[contains(${property},'${text}')]`,
-            },
-          },
-        ])
-      )
-      .click();
+    const xpath = step.testParameters.XPATH;
+    const locator = [
+      {
+        dataValues: {
+          type: "XPATH",
+          locator: xpath,
+        },
+      },
+    ];
+    const tempStep = _.cloneDeep(step);
+
+    tempStep.object = {
+      dataValues: {
+        locators: locator,
+      },
+    };
+
+    const canExecute = await waitUntilObjectClickable({ ...args, step: tempStep });
+    if (!canExecute) {
+      if (executionHistory.continueOnError) return "CONTINUE";
+      else return "STOP";
+    }
+
+    await driver.findElement(await findByLocator(locator)).click();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
 
@@ -208,5 +160,5 @@ module.exports = {
   clickByJs,
   clickLinkByText,
   clickLinkByPartialText,
-  clickElementByProperty,
+  clickElementByXpath,
 };

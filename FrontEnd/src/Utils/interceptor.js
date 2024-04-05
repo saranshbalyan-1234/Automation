@@ -2,12 +2,11 @@ import axios from "axios";
 import { store } from "../Redux/store";
 import { message } from "antd";
 import { logout } from "../Redux/Actions/auth";
-import { api_base_url } from "./constants";
 
 // eslint-disable-next-line
 export default {
   setup: () => {
-    axios.defaults.baseURL = api_base_url;
+    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
     function getJWT() {
       let token = store.getState().auth.user?.accessToken;
       return token;
@@ -36,27 +35,9 @@ export default {
         if (status === 403) {
           store.dispatch(logout());
         }
-        let errorObj = err.response;
-        if (errorObj.data) {
-          let errorFormat = {
-            url: errorObj.config.url,
-            method: errorObj.config.method,
-            status: errorObj.status,
-            message: errorObj.data.error,
-          };
-
-          console.error("errorResponse", errorFormat);
-          message.error(errorObj.data.error);
-        } else {
-          let errorFormat = {
-            url: err.config.url,
-            method: err.config.method,
-            status: err.status,
-            message: "Internal Server Error!",
-          };
-          console.error("errorResponse", errorFormat);
-          message.error("Internal Server Error!");
-        }
+        const errorObj =  err.response?.data;
+          console.error("errorResponse", errorObj);
+          message.error(errorObj?.error || "Internal Server Error!");
 
         return Promise.reject(err.response.data);
       }

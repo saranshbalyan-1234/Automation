@@ -1,25 +1,25 @@
-import React from "react";
-import { Table } from "antd";
-import moment from "moment";
-import UserAvatar from "./Avatar";
-import Loading from "./Loading";
+import React from 'react'
+import { Table } from 'antd'
+import moment from 'moment'
+import UserAvatar from './Avatar'
+import Loading from './Loading'
 export default function ActivityLog({ logs = [], loading }) {
   const columns = [
     {
-      title: "",
+      title: '',
       width: 40,
-      dataIndex: "",
+      dataIndex: '',
       render: (text, record, index) => <div>{index + 1}</div>,
     },
     {
-      title: "Message",
-      dataIndex: "log",
+      title: 'Message',
+      dataIndex: 'log',
       render: (text, record) => (
         <div
           style={{
-            overflow: "auto",
-            display: "flex",
-            alignItems: "center",
+            overflow: 'auto',
+            display: 'flex',
+            alignItems: 'center',
             gap: 7,
           }}
         >
@@ -29,37 +29,37 @@ export default function ActivityLog({ logs = [], loading }) {
               minWidth: 10,
               maxHeight: 10,
               maxWidth: 10,
-              borderRadius: "100%",
+              borderRadius: '100%',
               background: getColor(text),
             }}
           ></div>
           <div>
-            <UserAvatar user={record.createdByUser} showName={true} />{" "}
-            {" " + text}
+            <UserAvatar user={record.createdByUser} showName={true} />{' '}
+            {' ' + text}
           </div>
         </div>
       ),
     },
     {
-      title: "Date & Time",
-      dataIndex: "executedBy",
+      title: 'Date & Time',
+      dataIndex: 'executedBy',
       render: (_, record) => (
-        <div>{moment(record.createdAt).format("DD/MM/YY hh:mm:ss a")}</div>
+        <div>{moment(record.createdAt).format('YYYY-MM-DD hh:mm:ss a')}</div>
       ),
-      width: 180,
+      width: 240,
     },
-  ];
+  ]
 
   const getColor = (log) => {
-    const text = log.toLowerCase();
-    return text.includes("added") || text.includes("created")
-      ? "#87bc45"
-      : text.includes("deleted") || text.includes("removed")
-      ? "#ea5545"
-      : text.includes("updated") || text.includes("edited")
-      ? "#ef9b20"
-      : "";
-  };
+    const text = log.toLowerCase()
+    return text.includes('added') || text.includes('created')
+      ? '#87bc45'
+      : text.includes('deleted') || text.includes('removed')
+      ? '#ea5545'
+      : text.includes('updated') || text.includes('edited')
+      ? '#ef9b20'
+      : ''
+  }
   return (
     <Loading loading={loading}>
       <Table
@@ -68,7 +68,8 @@ export default function ActivityLog({ logs = [], loading }) {
         dataSource={logs}
         sticky
         size="small"
+        rowKey="id"
       />
     </Loading>
-  );
+  )
 }

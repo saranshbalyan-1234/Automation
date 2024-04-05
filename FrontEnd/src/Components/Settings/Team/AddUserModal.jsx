@@ -44,7 +44,7 @@ const AddUserModal = ({
       onCancel={() => {
         setAddUserModal(false);
       }}
-      // closable={false}
+    // closable={false}
     >
       <Loading loading={loading}>
         <Form
@@ -69,7 +69,7 @@ const AddUserModal = ({
                 handleDetails(e);
               }}
               showCount
-              maxlength={50}
+              maxLength={50}
             />
           </Form.Item>
           <Form.Item

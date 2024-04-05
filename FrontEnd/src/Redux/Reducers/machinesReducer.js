@@ -4,6 +4,7 @@ import {
   GET_ALL_MACHINES,
   ADD_MACHINE,
   REMOVE_MACHINE,
+  MACHINES_VERSION_CHECK
 } from "../Actions/action-types";
 
 const initState = {
@@ -22,6 +23,11 @@ const machinesReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         data: payload,
+        loading: false,
+      };
+    case MACHINES_VERSION_CHECK:
+      return {
+        ...state,
         loading: false,
       };
     case MACHINES_FAILURE:

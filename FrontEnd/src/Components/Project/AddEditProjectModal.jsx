@@ -1,12 +1,11 @@
-import React from "react";
-import { Form, Input, Modal, Button, DatePicker } from "antd";
-import { addProject, editProject } from "../../Redux/Actions/project";
-import { connect } from "react-redux";
-import ReactQuill from "react-quill";
-import moment from "moment";
-import Loading from "../Common/Loading";
-import dayjs from "dayjs";
-const { RangePicker } = DatePicker;
+import React, { useEffect } from 'react'
+import { Form, Input, Modal, Button, DatePicker } from 'antd'
+import { addProject, editProject } from '../../Redux/Actions/project'
+import { connect } from 'react-redux'
+import ReactQuill from 'react-quill'
+import Loading from '../Common/Loading'
+import dayjs from 'dayjs'
+const { RangePicker } = DatePicker
 const AddEditProjectModal = ({
   visible,
   setVisible,
@@ -15,47 +14,70 @@ const AddEditProjectModal = ({
   edit = false,
   projects,
 }) => {
-  const format = "YYYY/MM/DD";
-  const onSubmit = async (data) => {
-    const { name, description } = data;
-    let startDate = moment(data.date[0]).format(format);
-    let endDate = moment(data.date[1]).format(format);
-    const payload = { name, description, startDate, endDate };
+  const [form] = Form.useForm()
+
+  const format = 'YYYY-MM-DD'
+
+  useEffect(() => {
+    // return
     if (edit) {
-      let result = await editProject(payload);
-      result && setVisible(false);
-    } else {
-      let result = await addProject(payload);
-      result && setVisible(false);
+      form.setFieldsValue({
+        date:
+          [
+            dayjs(projects.currentProject.startDate, format),
+            dayjs(projects.currentProject.endDate, format),
+          ] || [],
+      })
     }
-  };
+    // eslint-disable-next-line
+  }, [edit])
+
+  const onSubmit = async (data) => {
+    const { name, description } = data
+
+    let startDate = ''
+    let endDate = ''
+
+    startDate = data.date[0].format(format)
+    endDate = data.date[1].format(format)
+
+    const payload = { name, description, startDate, endDate }
+    if (edit) {
+      let result = await editProject(payload)
+      result && setVisible(false)
+    } else {
+      let result = await addProject(payload)
+      result && setVisible(false)
+    }
+  }
 
   return (
     <Modal
-      title={edit ? "Edit Project" : "Add New Project"}
+      title={edit ? 'Edit Project' : 'Add New Project'}
       open={visible}
       footer={false}
       onCancel={() => {
-        setVisible(false);
+        setVisible(false)
       }}
       // closable={false}
       width={500}
     >
       <Loading loading={projects.loading}>
         <Form
+          form={form}
           name="project"
           onFinish={onSubmit}
           labelCol={{ span: 7 }}
           wrapperCol={{ span: 16 }}
           initialValues={{
-            name: edit ? projects.currentProject.name : "",
-            description: edit ? projects.currentProject.description : "",
-            date: edit
-              ? [
-                  dayjs(projects.currentProject.startDate, format),
-                  dayjs(projects.currentProject.endDate, format),
-                ]
-              : [],
+            name: edit ? projects.currentProject.name : '',
+            description: edit ? projects.currentProject.description : '',
+            // date: edit
+            //   ? [
+            //       dayjs(projects.currentProject.startDate, format),
+            //       dayjs(projects.currentProject.endDate, format),
+            //     ]
+            //   : [],
           }}
         >
           <Form.Item
@@ -64,11 +86,11 @@ const AddEditProjectModal = ({
             rules={[
               {
                 required: true,
-                message: "Please input project name!",
+                message: 'Please input project name!',
               },
             ]}
           >
-            <Input name="name" showCount maxlength={50} />
+            <Input name="name" showCount maxLength={50} />
           </Form.Item>
 
           <Form.Item
@@ -77,33 +99,31 @@ const AddEditProjectModal = ({
             rules={[
               {
                 required: true,
-                message: "Please select project date range!",
+                message: 'Please select project date range!',
               },
             ]}
           >
-            <RangePicker style={{ width: "100%" }} format={format} />
+            <RangePicker style={{ width: '100%' }} format={format} />
           </Form.Item>
           <Form.Item name="description" label="">
-            {/* <TextArea name="description" showCount maxLength={100} /> */}
-
             <ReactQuill
               style={{ width: 450 }}
               placeholder="Enter Description"
               name="description"
             />
           </Form.Item>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Button
               type="primary"
-              style={{ marginRight: "20px" }}
+              style={{ marginRight: '20px' }}
               htmlType="submit"
             >
               Submit
             </Button>
             <Button
-              style={{ marginRight: "20px" }}
+              style={{ marginRight: '20px' }}
               onClick={() => {
-                setVisible(false);
+                setVisible(false)
               }}
             >
               Cancel
@@ -112,12 +132,9 @@ const AddEditProjectModal = ({
         </Form>
       </Loading>
     </Modal>
-  );
-};
-const mapStateToProps = (state) => ({ projects: state.projects });
-const mapDispatchToProps = { addProject, editProject };
+  )
+}
+const mapStateToProps = (state) => ({ projects: state.projects })
+const mapDispatchToProps = { addProject, editProject }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddEditProjectModal);
+export default connect(mapStateToProps, mapDispatchToProps)(AddEditProjectModal)

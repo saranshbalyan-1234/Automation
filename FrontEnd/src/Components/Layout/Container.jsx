@@ -12,39 +12,38 @@ export default function Container({ children }) {
     "/setting": "Settings",
   };
   const renderTitle = () => {
-    if (pathSnippets.length > 0) {
-      if (pathSnippets.includes("project")) {
-        if (pathSnippets.includes("details")) {
-          return "Project Details";
-        } else return pathSnippets[pathSnippets.length - 1];
-      } else return pathSnippets[pathSnippets.length - 1];
-    } else return "Dashboard";
-  };
+    if (pathSnippets[0]) return pathSnippets[0].split("-").join(" ")
+    else return "Nothing Here"
+  }; 
 
   const pathSnippets = location.pathname.split("/").filter((i) => i);
 
   const extraBreadcrumbItems = pathSnippets.map((value, index) => {
     const url = `/${pathSnippets.slice(0, index + 1).join("/")}`;
     return (
-      <Breadcrumb.Item key={url}>
-        <a
-          style={{ textTransform: "capitalize" }}
-          href={() => {
-            return void 0;
-          }}
-        >
-          {breadcrumbNameMap[url] || value}
-        </a>
-      </Breadcrumb.Item>
+      {
+        title: (
+          <div
+            style={{ textTransform: "capitalize" }}
+          >
+            {breadcrumbNameMap[url]?.split("-").join(" ") ||
+              value?.split("-").join(" ")}
+          </div>
+        ),
+        key: url,
+      }
     );
   });
 
-  const breadcrumbItems = [
-    <Breadcrumb.Item key="home">
-      <Link to="/">
-        <HomeOutlined /> Home
-      </Link>
-    </Breadcrumb.Item>,
+  const items = [
+    {
+      title: (
+        <Link to="/dashboard">
+          <HomeOutlined /> Home
+        </Link>
+      ),
+      key: "home",
+    },
   ].concat(extraBreadcrumbItems);
 
   const renderBack = () => {
@@ -52,13 +51,11 @@ export default function Container({ children }) {
 
     if (locArray.length > 2 && locArray[2] !== "") {
       let name = "";
-      if (locArray[1] === "ReusableProcess") {
+      if (locArray[1] === "reusable-process") {
         name = "Reusable Process";
-      } else if (locArray[1] === "ObjectBank") {
+      } else if (locArray[1] === "object-bank") {
         name = "Objects";
-      } else if (locArray[1] === "Defect") {
-        name = "Defects";
-      } else if (locArray[1] === "TestCase") {
+      } else if (locArray[1] === "test-case") {
         name = "Test Case";
       } else if (locArray[1] === "project") {
         name = "project";
@@ -96,19 +93,19 @@ export default function Container({ children }) {
             </div>
           }
           subTitle={
-            <Breadcrumb>
-              {extraBreadcrumbItems.length && breadcrumbItems}
-            </Breadcrumb>
+            <Breadcrumb items={items} />
+
+
           }
-          // tags={<Tag color="blue">Sarance</Tag>}
-          // extra={
-          //   <div
-          //     style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
-          //   ></div>
-          // }
-          // avatar={{
-          //   icon: <></>,
-          // }}
+        // tags={<Tag color="blue">Sarance</Tag>}
+        // extra={
+        //   <div
+        //     style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+        //   ></div>
+        // }
+        // avatar={{
+        //   icon: <></>,
+        // }}
         ></PageHeader>
       </div>
 

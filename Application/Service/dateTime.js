@@ -1,75 +1,46 @@
 const { findByLocator, handleActionEventError } = require("./utils");
-const {
-  updateStepResult,
-} = require("../Controllers/executionHistoryController");
+const { updateStepResult } = require("../Controllers/executionHistoryController");
+const { waitUntilObjectClickable } = require("./wait");
 const moment = require("moment");
-const enterDateTime = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Entering Date Time ");
 
+const enterDateTime = async (args) => {
+  const { step, driver, req, stepHistoryId, executionHistory } = args;
   try {
+    const canExecute = await waitUntilObjectClickable(args)
+    if (!canExecute) {
+      if (executionHistory.continueOnError) return "CONTINUE";
+      else return "STOP";
+    }
+
     const format = step.testParameters.Format;
     const tempDateTime = step.testParameters.DateTime;
     const momentDateTime =
       typeof tempDateTime == "string" ? moment(tempDateTime) : tempDateTime;
     const dateTime = momentDateTime.format(format);
-
     await driver
       .findElement(await findByLocator(step.object.dataValues.locators))
       .sendKeys(dateTime);
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 
-const getCurrentDateTime = async (
-  step,
-  output,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Getting Current Time");
+const getCurrentDateTime = async (args) => {
+  const { step, output, req, stepHistoryId } = args;
   try {
     const dateTime = moment(new Date());
     output[step.testParameters.Output] = dateTime;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 
-const getDateTime = async (
-  step,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory,
-  output
-) => {
+const getDateTime = async (args) => {
+  const { step, req, stepHistoryId, output } = args;
   try {
     const dateTime = step.testParameters.DateTime;
-    console.log("Getting Date Time " + dateTime + " as " + format);
 
     const finalDateTime = moment(dateTime);
     output[step.testParameters.Output] = finalDateTime;
@@ -77,24 +48,12 @@ const getDateTime = async (
 
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 
-const addDateTime = async (
-  step,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory,
-  output
-) => {
+const addDateTime = async (args) => {
+  const { step, req, stepHistoryId, output } = args;
   try {
     const dateTime = step.testParameters.DateTime;
     const dayMonthYear = step.testParameters["Day Month Year"].split(" ");
@@ -119,30 +78,16 @@ const addDateTime = async (
     if (min) finalDateTime = finalDateTime.add(min, "minutes");
     if (sec) finalDateTime = finalDateTime.add(sec, "seconds");
 
-    console.log("Adding Date Time " + dayMonthYear + " " + hourMinSec);
-
     output[step.testParameters.Output] = finalDateTime;
     if (finalDateTime == "Invalid date") throw new Error("Invalid Date");
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 
-const subtractDateTime = async (
-  step,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory,
-  output
-) => {
+const subtractDateTime = async (args) => {
+  const { step, req, stepHistoryId, output}=args
   try {
     const dateTime = step.testParameters.DateTime;
     const dayMonthYear = step.testParameters["Day Month Year"].split(" ");
@@ -167,19 +112,12 @@ const subtractDateTime = async (
     if (min) finalDateTime = finalDateTime.subtract(min, "minutes");
     if (sec) finalDateTime = finalDateTime.subtract(sec, "seconds");
 
-    console.log("Subtracting Date Time " + dayMonthYear + " " + hourMinSec);
 
     output[step.testParameters.Output] = finalDateTime;
     if (finalDateTime == "Invalid date") throw new Error("Invalid Date");
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 

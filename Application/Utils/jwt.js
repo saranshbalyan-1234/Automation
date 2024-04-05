@@ -1,5 +1,5 @@
 const pkg = require("jsonwebtoken");
-const { sign, verify } = pkg;
+const { sign } = pkg;
 
 const createToken = async (data, secret, expiration) => {
   let options = {};

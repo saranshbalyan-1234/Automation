@@ -1,5 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const dotenv = require("dotenv");
+const path = require('path');
+const chalk = require("chalk");
 const User = require("../Models/User");
 const TestCase = require("../Models/TestCase/TestCase");
 const Object = require("../Models/TestCase/Object/Object");
@@ -9,6 +11,10 @@ const TestStep = require("../Models/TestCase/TestStep");
 const Process = require("../Models/TestCase/Process");
 const ReusableProcess = require("../Models/TestCase/ReusableProcess");
 
+//Project
+const UserProject = require("../Models/Project/UserProject.js")
+const Project = require("../Models/Project/Project.js")
+
 //Execution History
 const ExecutionHistory = require("../Models/TestCase/ExecutionHistory/ExecutionHistory");
 const ProcessHistory = require("../Models/TestCase/ExecutionHistory/ProcessHistory");
@@ -17,18 +23,26 @@ const TestStepHistory = require("../Models/TestCase/ExecutionHistory/TestStepHis
 //Environment
 const Environment = require("../Models/TestCase/Environment/Environment");
 const Column = require("../Models/TestCase/Environment/Column");
-dotenv.config();
 
-const sequelize = new Sequelize("Main", "root", "ysoserious", {
-  host: "localhost",
-  dialect: "mysql",
-  logging: false,
-});
+const dotenvAbsolutePath = path.join(__dirname, '../.env');
+dotenv.config({ path: dotenvAbsolutePath });
+
+const sequelize = new Sequelize(
+  process.env.DATABASE_NAME,
+  process.env.DATABASE_USER,
+  process.env.DATABASE_PASS,
+
+  {
+    host: process.env.DATABASE_HOST,
+    dialect: "mysql",
+    logging: false,
+  }
+);
 
 sequelize
   .authenticate()
   .then(() => {
-    console.log("sequalize connected");
+    console.log(chalk.blueBright("SYSTEM INFO: You can execute now!" + "\n"))
   })
   .catch((err) => {
     console.log("Sequalize Error", err);
@@ -46,6 +60,10 @@ db.testSteps = TestStep(sequelize, DataTypes);
 db.testCases = TestCase(sequelize, DataTypes);
 db.process = Process(sequelize, DataTypes);
 db.reusableProcess = ReusableProcess(sequelize, DataTypes);
+
+//Project
+db.userProjects = UserProject(sequelize, DataTypes)
+db.projects = Project(sequelize, DataTypes);
 
 //executionHistory
 db.executionHistory = ExecutionHistory(sequelize, DataTypes);

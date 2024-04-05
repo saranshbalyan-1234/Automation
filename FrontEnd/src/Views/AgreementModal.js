@@ -1,13 +1,12 @@
 import React from "react";
 import { Avatar, List, Modal } from "antd";
-
+import { FileDoneOutlined } from "@ant-design/icons"
 import { StyledWrapper } from "../Auth/style";
 
 const data = [
   {
-    href: "https://ant.design",
     title: `User Agreement`,
-    avatar: "https://joeschmoe.io/api/v1/random",
+    avatar: <FileDoneOutlined style={{ fontSize: 20 }} />,
     description: "This user agreement is last updated on 5 August 2021",
     content: (
       <div style={{ lineHeight: "30px", fontSize: "16px" }}>
@@ -46,8 +45,8 @@ const AgreementModal = ({ visible, setVisible }) => {
           renderItem={(item) => (
             <List.Item key={item.title}>
               <List.Item.Meta
-                avatar={<Avatar src={item.avatar} />}
-                title={<a href={item.href}>{item.title}</a>}
+                avatar={<FileDoneOutlined style={{ fontSize: 40 }} />}
+                title={item.title}
                 description={item.description}
               />
               {item.content}

@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         notNull: true,
       },
     },
+    enable: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 1,
+      values: [0, 1],
+    },
     testCaseId: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -17,7 +17,7 @@
   font-size: 14px;
   font-family: SimSun, sans-serif;
   line-height: 1;
-  content: "*";
+  content: '*';
 }
 
 body {
@@ -57,4 +57,11 @@ h5 {
 
 .ant-form-item {
   margin-bottom: 15px !important;
+}
+
+.dark {
+  opacity: 1;
+}
+.light {
+  opacity: 0.4;
 }

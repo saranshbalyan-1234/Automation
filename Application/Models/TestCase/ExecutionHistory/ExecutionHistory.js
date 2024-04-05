@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "CASCADE",
     },
+      totalSteps: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     executedByUser: {
       type: DataTypes.INTEGER,
       allowNull: false,

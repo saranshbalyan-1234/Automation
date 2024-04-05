@@ -3,146 +3,125 @@ const {
 } = require("../Controllers/executionHistoryController");
 const { handleActionEventError } = require("./utils");
 
-const ConvertToString = async (
-  step,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory,
-  output
-) => {
-  console.log("Converting To String");
+const masterConvert = async (args) => {
+  const { step } = args;
+  try {
+    const type = String(step.testParameters.ConvertType)
+
+    switch (type) {
+
+      case "String":
+        return await convertToString(args);
+
+      case "Date Time":
+        return await convertToDateTime(args);
+
+      case "HEX":
+        return await convertToHex(args);
+
+      case "JSON":
+        return await convertToJSON(args);
+
+      case "Boolean":
+        return await convertToBoolean(args)
+
+      case "Number":
+        return await convertToNumber(args);
+      case "Integer":
+        return await convertToInteger(args);
+      case "Float":
+        return await convertToFloat(args);
+      default:
+        return;
+    }
+  }
+  catch (err) {
+    return await handleActionEventError({ ...args, err });
+  }
+}
+
+const convertToString = async (args) => {
+  const { step, req, stepHistoryId, output } = args;
   try {
     const value = String(step.testParameters.Value);
     output[step.testParameters.Output] = value;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-const ConvertToNumber = async (
-  step,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Converting To Number");
+const convertToNumber = async (args) => {
+  const { step, req, stepHistoryId, output } = args;
   try {
     const value = Number(step.testParameters.Value);
     output[step.testParameters.Output] = value;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-const ConvertToDateTime = async (
-  step,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Converting To Date Time");
+const convertToDateTime = async (args) => {
+  const { step, req, stepHistoryId, output } = args
   try {
     const value = new Date(step.testParameters.Value);
     output[step.testParameters.Output] = value;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-const ConvertToInteger = async (
-  step,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Converting To Integer");
+const convertToInteger = async (args) => {
+  const { step, req, stepHistoryId, output } = args;
   try {
     const value = parseInt(step.testParameters.Value);
     output[step.testParameters.Output] = value;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-const ConvertToFloat = async (
-  step,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Converting To Float");
+const convertToFloat = async (args) => {
+  const { step, req, stepHistoryId, output } = args;
   try {
     const value = parseFloat(step.testParameters.Value);
     output[step.testParameters.Output] = value;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
-
-const ConvertToHex = async (
-  step,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Converting To Hex");
+const convertToHex = async (args) => {
+  const { step, req, stepHistoryId, output } = args;
   try {
     const value = step.testParameters.Value.toString(16);
     output[step.testParameters.Output] = value;
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+    return await handleActionEventError({ ...args, err });
   }
 };
+const convertToJSON = async (args) => {
+  const { step, req, stepHistoryId, output } = args;
+  try {
+    const value = step.testParameters.Value
+    const json = typeof value == "object" ? value : JSON.parse(value)
+    output[step.testParameters.Output] = json
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError({ ...args, err });
+  }
+};
+const convertToBoolean = async (args) => {
+  const { step, req, stepHistoryId, output } = args;
+  try {
+    const value = Boolean(step.testParameters.Value);
+    output[step.testParameters.Output] = value;
+    return await updateStepResult(req, stepHistoryId, true);
+  } catch (err) {
+    return await handleActionEventError({ ...args, err });
+  }
+}
 
 module.exports = {
-  ConvertToString,
-  ConvertToNumber,
-  ConvertToDateTime,
-  ConvertToInteger,
-  ConvertToFloat,
-  ConvertToHex,
+  masterConvert
 };

@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         notNull: true,
       },
     },
+    enable: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 1,
+      values: [0, 1],
+    },
     objectId: {
       type: DataTypes.INTEGER,
       references: {
@@ -26,6 +31,11 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     screenshot: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
+      values: [0, 1],
+    },
+    xpath: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0,
       values: [0, 1],

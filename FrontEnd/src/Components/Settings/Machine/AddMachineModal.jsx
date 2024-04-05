@@ -19,7 +19,7 @@ const AddEditModal = ({ visible, setVisible, loading, addMachine }) => {
       onCancel={() => {
         setVisible(false);
       }}
-      // closable={false}
+    // closable={false}
     >
       <Loading loading={loading}>
         <Form
@@ -38,7 +38,7 @@ const AddEditModal = ({ visible, setVisible, loading, addMachine }) => {
               },
             ]}
           >
-            <Input name="name" showCount maxlength={50} />
+            <Input name="name" showCount maxLength={50} />
           </Form.Item>
           <Form.Item
             name="url"
@@ -50,7 +50,7 @@ const AddEditModal = ({ visible, setVisible, loading, addMachine }) => {
               },
             ]}
           >
-            <Input name="url" showCount maxlength={100} />
+            <Input name="url" showCount maxLength={100} />
           </Form.Item>
 
           <div style={{ display: "flex", justifyContent: "center" }}>

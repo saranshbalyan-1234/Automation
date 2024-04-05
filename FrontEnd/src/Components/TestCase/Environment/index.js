@@ -13,6 +13,7 @@ import {
 } from "../../../Redux/Actions/environment";
 import { usePermission } from "../../../Utils/permission";
 import Loading from "../../Common/Loading";
+import styled from "styled-components";
 const Environment = ({
   visible,
   setVisible,
@@ -69,6 +70,9 @@ const Environment = ({
               okText="Yes, Delete"
               cancelText="No"
               disabled={!editTestCasePermission}
+              onCancel={(e) => {
+                e.stopPropagation()
+              }}
             >
               <DeleteOutlined
                 onClick={(e) => e.stopPropagation()}
@@ -88,6 +92,7 @@ const Environment = ({
         temp.title = el;
         temp.width = 120;
         temp.dataIndex = el;
+        temp.fixed = "left"
       }
       //   title:
 
@@ -132,6 +137,9 @@ const Environment = ({
             okText="Yes, Delete"
             cancelText="No"
             disabled={!editTestCasePermission}
+            onCancel={(e) => {
+              e.stopPropagation()
+            }}
           >
             <DeleteOutlined
               onClick={(e) => e.stopPropagation()}
@@ -174,62 +182,65 @@ const Environment = ({
           setVisible(false);
         }}
       >
-        <Loading spinning={loading}>
-          <div
-            style={{ maxHeight: "70vh", overflow: "auto", minHeight: "70vh" }}
-          >
+        <StyledEnvContainer>
+          <Loading loading={loading}>
             <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-between",
-                marginRight: 20,
-              }}
+              style={{ maxHeight: "70vh", overflow: "auto", minHeight: "70vh" }}
             >
-              <CustomSearch
-                width="310px"
-                placeholder={`Search By Env Name or Column Value`}
-                onSearch={handleSearch}
-              />
-              <div className="row">
-                <Button
-                  type="primary"
-                  ghost
-                  style={{ marginBottom: 5 }}
-                  onClick={() => {
-                    // setRows([...rows, { env: "Enter Name", editing: true }]);
-                    setAddModal({ active: true, type: "Column" });
-                  }}
-                  disabled={
-                    searchedData.length === 0 || !editTestCasePermission
-                  }
-                >
-                  <PlusOutlined /> Column
-                </Button>
-                <Button
-                  type="primary"
-                  style={{ marginBottom: 5 }}
-                  onClick={() => {
-                    // setRows([...rows, { env: "Enter Name", editing: true }]);
-                    setAddModal({ active: true, type: "Environment" });
-                  }}
-                  disabled={!editTestCasePermission}
-                >
-                  <PlusOutlined />
-                  Environment
-                </Button>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "space-between",
+                  marginRight: 20,
+                }}
+              >
+                <CustomSearch
+                  width="310px"
+                  placeholder={`Search By Env Name or Column Value`}
+                  onSearch={handleSearch}
+                />
+                <div className="row">
+                  <Button
+                    type="primary"
+                    ghost
+                    style={{ marginBottom: 5 }}
+                    onClick={() => {
+                      // setRows([...rows, { env: "Enter Name", editing: true }]);
+                      setAddModal({ active: true, type: "Column" });
+                    }}
+                    disabled={
+                      searchedData.length === 0 || !editTestCasePermission
+                    }
+                  >
+                    <PlusOutlined /> Column
+                  </Button>
+                  <Button
+                    type="primary"
+                    style={{ marginBottom: 5 }}
+                    onClick={() => {
+                      // setRows([...rows, { env: "Enter Name", editing: true }]);
+                      setAddModal({ active: true, type: "Environment" });
+                    }}
+                    disabled={!editTestCasePermission}
+                  >
+                    <PlusOutlined />
+                    Environment
+                  </Button>
+                </div>
               </div>
+              <Table
+                scroll={{ x: columns.length * 250 - 330 }}
+                size="small"
+                columns={columns}
+                dataSource={searchedData}
+                pagination={false}
+                sticky
+                rowKey="id"
+              />
             </div>
-            <Table
-              scroll={{ x: columns.length * 250 - 330 }}
-              size="small"
-              columns={columns}
-              dataSource={searchedData}
-              pagination={false}
-              sticky
-            />
-          </div>
-        </Loading>
+          </Loading>
+        </StyledEnvContainer >
       </Modal>
       {addModal.active && (
         <AddModal
@@ -255,3 +266,10 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Environment);
+
+
+const StyledEnvContainer = styled.div`
+.ant-table-body{
+ height: calc(70vh - 80px)
+}
+`

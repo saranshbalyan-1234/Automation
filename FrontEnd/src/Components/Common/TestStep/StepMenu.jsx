@@ -11,49 +11,44 @@ export default function StepMenu({
 }) {
   const [addEditStepModal, setAddEditStepModal] = useState(false);
   const [step, setStep] = useState(0);
-  const menu = (
-    <Menu
-      dark
-      items={[
-        {
-          label: (
-            <>
-              <PlusOutlined style={{ marginRight: "5px" }} /> Add Step Before
-            </>
-          ),
-          key: "1",
-          onClick: (e) => {
-            e.domEvent.stopPropagation();
-            setStep(testStep.step);
-            setAddEditStepModal(true);
-          },
-          disabled: reusableProcess
-            ? !editReusableProcessPermission
-            : !editTestCasePermission,
-        },
-        {
-          label: (
-            <>
-              <PlusOutlined style={{ marginRight: "5px" }} /> Add Step After
-            </>
-          ),
-          key: "2",
-          onClick: (e) => {
-            e.domEvent.stopPropagation();
-            setStep(testStep.step + 1);
-            setAddEditStepModal(true);
-          },
-          disabled: reusableProcess
-            ? !editReusableProcessPermission
-            : !editTestCasePermission,
-        },
-      ]}
-    />
-  );
+  const items = [
+    {
+      label: (
+        <>
+          <PlusOutlined style={{ marginRight: "5px" }} /> Add Step Before
+        </>
+      ),
+      key: "1",
+      onClick: (e) => {
+        e.domEvent.stopPropagation();
+        setStep(testStep.step);
+        setAddEditStepModal(true);
+      },
+      disabled: reusableProcess
+        ? !editReusableProcessPermission
+        : !editTestCasePermission,
+    },
+    {
+      label: (
+        <>
+          <PlusOutlined style={{ marginRight: "5px" }} /> Add Step After
+        </>
+      ),
+      key: "2",
+      onClick: (e) => {
+        e.domEvent.stopPropagation();
+        setStep(testStep.step + 1);
+        setAddEditStepModal(true);
+      },
+      disabled: reusableProcess
+        ? !editReusableProcessPermission
+        : !editTestCasePermission,
+    },
+  ]
 
   return (
     <>
-      <Dropdown overlay={menu} trigger={["hover"]}>
+      <Dropdown menu={{ items }} trigger={["hover"]}>
         <div
           onClick={(e) => {
             e.stopPropagation();

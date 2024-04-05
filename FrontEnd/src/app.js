@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
 import "./global.css";
 import Register from "./Auth/Register";
 import Routess from "./Routess";
@@ -11,15 +11,19 @@ import SendResetMail from "./Auth/PasswordReset/SendResetMail";
 import Test from "./Test";
 import VerifyEmail from "./Auth/VerifyEmail";
 import PasswordReset from "./Auth/PasswordReset/PasswordReset";
+import AboutUs from "./Views/About";
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.REACT_APP_BASE_PATH}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persister}>
           <Routes>
-            <Route exact path="signin" element={<SignIn />} />
             <Route exact path="test" element={<Test />} />
+            <Route path="/about" element={<AboutUs />} />
+            
+            <Route exact path="/" element={<Navigate to={`/dashboard`} />}></Route>
+            <Route exact path="signin" element={<SignIn />} />
             <Route exact path="register" element={<Register />} />
             <Route
               exact
@@ -41,7 +45,8 @@ export default function App() {
               path="reset-password/:token"
               element={<PasswordReset />}
             />
-            {/* <Route exact path="user-agreement" element={<Agreement />} /> */}
+
+
             <Route path="/*" element={<Routess />} />
           </Routes>
         </PersistGate>

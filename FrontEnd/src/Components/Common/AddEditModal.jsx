@@ -39,7 +39,7 @@ const AddEditModal = ({
       onCancel={() => {
         setVisible(false);
       }}
-      // closable={false}
+    // closable={false}
     >
       <Loading loading={loading}>
         <Form
@@ -67,7 +67,7 @@ const AddEditModal = ({
               },
             ]}
           >
-            <Input name="name" showCount maxlength={50} />
+            <Input name="name" showCount maxLength={50} />
           </Form.Item>
           <Form.Item name="tags" label="Tags">
             <Select mode="tags" placeholder="Tags" />

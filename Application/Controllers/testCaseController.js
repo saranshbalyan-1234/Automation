@@ -1,17 +1,15 @@
 const db = require("../Utils/dataBaseConnection");
 const getError = require("../Utils/sequelizeError");
-// const { createExecutionHistory } = require("./executionHistoryController");
 const Process = db.process;
 const Object = db.objects;
 const TestParameter = db.testParameters;
 const TestStep = db.testSteps;
 const ReusableProcess = db.reusableProcess;
 const ObjectLocator = db.ObjectLocators;
-const User = db.users;
+const TestCase = db.testCases
 
 const getTestStepByTestCase = async (req, res) => {
   try {
-    // const executionHistory = await createExecutionHistory(req, res);
 
     const testCaseId = req.params.testCaseId;
     const testCaseData = await Process.schema(req.database).findAll({
@@ -70,11 +68,28 @@ const getTestStepByTestCase = async (req, res) => {
       }
       return tempTestCaseData;
     });
-    console.log("Execution Started");
     return updatedTestCase;
   } catch (err) {
     getError(err, res);
   }
 };
 
-module.exports = { getTestStepByTestCase };
+const getTestCaseDetailsById = async (req, testCaseId) => {
+
+  try {
+
+    const testCase = await TestCase.schema(req.database).findByPk(testCaseId, {
+      attributes: [
+        "name",
+      ],
+    });
+
+    let temp = { ...testCase.dataValues };
+
+    return temp
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+module.exports = { getTestStepByTestCase, getTestCaseDetailsById };

@@ -1,105 +1,105 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Table, Tag, Tooltip } from "antd";
-import { CameraFilled, EyeOutlined } from "@ant-design/icons";
-import ViewObjectModal from "../../Common/TestStep/ViewObjectModal";
-import ViewParameterModal from "../../Common/TestStep/ViewParameterModal";
-import ViewCommentModal from "../../Common/TestStep/ViewCommentModal";
-import ViewScreenShotModal from "./ViewScreenShotModal";
-import ViewFailedLogModal from "./ViewFailedLogModal";
-const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
-  const [viewParameterModal, setViewParameterModal] = useState(false);
-  const [parameters, setParameters] = useState([]);
-  const [viewObjectModal, setViewObjectModal] = useState(false);
-  const [object, setObject] = useState({});
-  const [viewCommentModal, setViewCommentModal] = useState(false);
-  const [viewFailedLogModal, setViewFailedLogModal] = useState("");
-  const [comment, setComment] = useState("");
-  const [screenShotKey, setScreenshotKey] = useState("");
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { Table, Tag, Tooltip } from 'antd'
+import { CameraFilled, EyeOutlined } from '@ant-design/icons'
+import ViewObjectModal from '../../Common/TestStep/ViewObjectModal'
+import ViewParameterModal from '../../Common/TestStep/ViewParameterModal'
+import ViewCommentModal from '../../Common/TestStep/ViewCommentModal'
+import ViewScreenShotModal from './ViewScreenShotModal'
+import ViewFailedLogModal from './ViewFailedLogModal'
+const TestStepTable = ({ testSteps, currentExecutionHistory, process }) => {
+  const [viewParameterModal, setViewParameterModal] = useState(false)
+  const [parameters, setParameters] = useState([])
+  const [viewObjectModal, setViewObjectModal] = useState(false)
+  const [object, setObject] = useState({})
+  const [viewCommentModal, setViewCommentModal] = useState(false)
+  const [viewFailedLogModal, setViewFailedLogModal] = useState('')
+  const [comment, setComment] = useState('')
+  const [screenShotKey, setScreenshotKey] = useState('')
   const columns = [
     {
-      title: "Action Event",
-      dataIndex: "actionEvent",
+      title: <div style={{ whiteSpace: 'nowrap' }}>Action Event</div>,
+      dataIndex: 'actionEvent',
     },
     {
-      title: "Test Object",
-      dataIndex: "object",
+      title: <div style={{ whiteSpace: 'nowrap' }}>Test Object</div>,
+      dataIndex: 'object',
       render: (text, record) =>
         text?.name ? (
           <div>
             <Tag
               style={{
-                cursor: "pointer",
+                cursor: 'pointer',
               }}
               color="#108ee9"
               onClick={() => {
-                setObject(text);
-                setViewObjectModal(true);
+                setObject(text)
+                setViewObjectModal(true)
               }}
             >
               {text.name}
             </Tag>
           </div>
         ) : (
-          "N/A"
+          'N/A'
         ),
     },
     {
-      title: "Test Parameters",
-      dataIndex: "testParameters",
+      title: <div style={{ whiteSpace: 'nowrap' }}>Test Parameters</div>,
+      dataIndex: 'testParameters',
       render: (text, record) =>
         text?.length ? (
           <div>
             <Tag
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
               color="#108ee9"
               onClick={() => {
-                setParameters(text);
-                setViewParameterModal(true);
+                setParameters(text)
+                setViewParameterModal(true)
               }}
             >
               <EyeOutlined /> View
             </Tag>
           </div>
         ) : (
-          "N/A"
+          'N/A'
         ),
     },
 
     {
-      title: "Comment",
-      dataIndex: "comment",
+      title: <div style={{ whiteSpace: 'nowrap' }}>Comment</div>,
+      dataIndex: 'comment',
       render: (text, record) =>
         text.length ? (
           <div>
             <Tag
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
               color="#108ee9"
               onClick={() => {
-                setComment(text);
-                setViewCommentModal(true);
+                setComment(text)
+                setViewCommentModal(true)
               }}
             >
               <EyeOutlined /> View
             </Tag>
           </div>
         ) : (
-          "N/A"
+          'N/A'
         ),
     },
     {
       title: <CameraFilled style={{ fontSize: 15 }} />,
       width: 50,
-      dataIndex: "options",
+      dataIndex: 'options',
       render: (text, record) => (
         <>
           {record.screenshot && (
             <div
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
               onClick={() => {
                 setScreenshotKey(
-                  `${currentExecutionHistory.id}/${record.testStepId}`
-                );
+                  `${currentExecutionHistory.id}/${process.processId}_${record.testStepId}`
+                )
               }}
             >
               <CameraFilled style={{ fontSize: 15 }} />
@@ -109,14 +109,14 @@ const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
       ),
     },
     {
-      title: "Result",
+      title: <div style={{ whiteSpace: 'nowrap' }}>Result</div>,
       width: 100,
-      dataIndex: "result",
+      dataIndex: 'result',
       render: (text, record) =>
         text === true ? (
           <div
             style={{
-              color: "green",
+              color: 'green',
               fontWeight: 600,
               width: 40,
             }}
@@ -127,23 +127,23 @@ const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
           <Tooltip title="View Log">
             <div
               style={{
-                color: "red",
+                color: 'red',
                 fontWeight: 600,
                 width: 40,
-                cursor: "pointer",
+                cursor: 'pointer',
               }}
               onClick={() => {
-                setViewFailedLogModal(record.failedLog);
+                setViewFailedLogModal(record.failedLog)
               }}
             >
               FAIL
             </div>
           </Tooltip>
         ) : (
-          <div style={{ color: "grey", fontWeight: 600, width: 40 }}>N/A</div>
+          <div style={{ color: 'grey', fontWeight: 600, width: 40 }}>N/A</div>
         ),
     },
-  ];
+  ]
 
   return (
     <>
@@ -154,6 +154,7 @@ const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
         dataSource={testSteps}
         pagination={false}
         sticky
+        rowKey="id"
       />
       {viewObjectModal && (
         <ViewObjectModal
@@ -193,13 +194,13 @@ const TestStepTable = ({ testSteps, currentExecutionHistory }) => {
         />
       )}
     </>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state) => ({
   currentExecutionHistory: state.executionHistory.currentExecutionHistory,
-});
+})
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {}
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestStepTable);
+export default connect(mapStateToProps, mapDispatchToProps)(TestStepTable)

@@ -63,12 +63,12 @@ const TestStepTable = ({
       ),
     },
     {
-      title: "Action Event",
+      title: <div style={{ whiteSpace: "nowrap" }}>Action Event</div>,
       // width: 100,
       dataIndex: "actionEvent",
     },
     {
-      title: "Test Object",
+      title: <div style={{ whiteSpace: "nowrap" }}> Test Object</div>,
       // width: 100,
       dataIndex: "object",
       render: (text, record) =>
@@ -92,7 +92,7 @@ const TestStepTable = ({
         ),
     },
     {
-      title: "Test Parameters",
+      title: <div style={{ whiteSpace: "nowrap" }}> Test Parameters</div>,
       // width: 100,
       dataIndex: "testParameters",
       render: (text, record) =>
@@ -115,7 +115,7 @@ const TestStepTable = ({
     },
 
     {
-      title: "Comment",
+      title: <div style={{ whiteSpace: "nowrap" }}>Comment</div>,
       dataIndex: "comment",
       render: (text, record) =>
         text.length ? (
@@ -162,17 +162,18 @@ const TestStepTable = ({
                   ? "pointer"
                   : "not-allowed"
                 : editTestCasePermission
-                ? "pointer"
-                : "not-allowed",
+                  ? "pointer"
+                  : "not-allowed",
               color: reusableProcess
                 ? editReusableProcessPermission
                   ? "black"
                   : "grey"
                 : editTestCasePermission
-                ? "black"
-                : "grey",
+                  ? "black"
+                  : "grey",
             }}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               if (
                 reusableProcess
                   ? !editReusableProcessPermission
@@ -186,7 +187,8 @@ const TestStepTable = ({
           <Popconfirm
             placement="left"
             title="Are you sure to remove this step?"
-            onConfirm={async () => {
+            onConfirm={async (e) => {
+              e.stopPropagation();
               await deleteStep(
                 record.id,
                 record.step,
@@ -201,6 +203,9 @@ const TestStepTable = ({
                 ? !editReusableProcessPermission
                 : !editTestCasePermission
             }
+            onCancel={(e) => {
+              e.stopPropagation()
+            }}
           >
             <DeleteOutlined
               style={{
@@ -209,15 +214,15 @@ const TestStepTable = ({
                     ? "pointer"
                     : "not-allowed"
                   : editTestCasePermission
-                  ? "pointer"
-                  : "not-allowed",
+                    ? "pointer"
+                    : "not-allowed",
                 color: reusableProcess
                   ? editReusableProcessPermission
                     ? "black"
                     : "grey"
                   : editTestCasePermission
-                  ? "black"
-                  : "grey",
+                    ? "black"
+                    : "grey",
               }}
             />
           </Popconfirm>
@@ -252,6 +257,8 @@ const TestStepTable = ({
         pagination={false}
         sticky
         size="small"
+        rowKey="id"
+        rowClassName={(record, index) => (record.enable ? "dark" : "light")}
       />
       {addEditStepModal && (
         <AddEditStepModal

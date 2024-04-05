@@ -14,15 +14,15 @@ import Loading from "../../../Common/Loading";
 function ExecutionTimeStepper({ loading, currentExecutionHistory }) {
   const data = {
     createdAt: moment(currentExecutionHistory.createdAt).format(
-      "DD/MM/YY hh:mm A"
+      'YYYY-MM-DD hh:mm A'
     ),
     finishedAt: moment(currentExecutionHistory.finishedAt).format(
-      "DD/MM/YY hh:mm A"
+      'YYYY-MM-DD hh:mm A'
     ),
     executionTime: currentExecutionHistory.executionTime,
     result: currentExecutionHistory.result,
     status: currentExecutionHistory.status,
-  };
+  }
   return (
     <Loading loading={loading}>
       <StyledStep>

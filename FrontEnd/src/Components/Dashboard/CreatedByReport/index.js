@@ -37,9 +37,9 @@ const CreatedByReport = ({ user, team }) => {
                   setUserId(e);
                 }}
               >
-                <Select.Option value={user?.id}>Me</Select.Option>
+                <Select.Option key={user?.id} value={user?.id}>Me</Select.Option>
                 {team.map((el) => {
-                  return <Select.Option value={el.id}>{el.name}</Select.Option>;
+                  return <Select.Option key={el.id} value={el.id}>{el.name}</Select.Option>;
                 })}
               </Select>
             </div>

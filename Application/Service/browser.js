@@ -1,195 +1,91 @@
-const { findByLocator, handleActionEventError } = require("./utils");
+const { handleActionEventError } = require("./utils");
 const {
   updateStepResult,
 } = require("../Controllers/executionHistoryController");
 
-const refreshPage = async (
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
+const refreshPage = async (args) => {
+  const { driver, req, stepHistoryId } = args;
   try {
-    console.log("Refreshing Page");
     await driver.navigate().refresh();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
-const backPage = async (
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
+const backPage = async (args) => {
+  const { driver, req, stepHistoryId } = args;
   try {
-    console.log("Back Page");
     await driver.navigate().back();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 
-const forwardPage = async (
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
+const forwardPage = async (args) => {
+  const { driver, req, stepHistoryId } = args;
   try {
-    console.log("Forward Page");
     await driver.navigate().forward();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 
-const newTab = async (
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
+const newTab = async (args) => {
+  const { driver, req, stepHistoryId }=args
   try {
-    console.log("New Tab");
     await driver.switchTo().newWindow("tab");
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
-const newWindow = async (
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
+const newWindow = async (args) => {
+  const { driver, req, stepHistoryId } = args;
   try {
-    console.log("New Window");
     await driver.switchTo().newWindow("window");
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 
-const closeBrowser = async (
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Browser Closed");
+const closeBrowser = async (args) => {
+  const { driver, req, stepHistoryId } = args;
   try {
     await driver.quit();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 
-const maximizeBrowser = async (
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
-  console.log("Maximize Browser");
+const maximizeBrowser = async (args) => {
+  const { driver, req, stepHistoryId } = args;
   try {
     await driver.manage().window().maximize();
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 
-const switchToDefaultTab = async (
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
+const switchToDefaultTab = async (args) => {
+  const { driver, req, stepHistoryId } = args;
   try {
-    console.log("Switching To Default Tab");
-
     const tabs = await driver.getAllWindowHandles();
     await driver.switchTo().window(tabs[0]);
 
     return await updateStepResult(req, stepHistoryId, true);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 
-const switchToTab = async (
-  step,
-  driver,
-  processResult,
-  req,
-  stepHistoryId,
-  executionHistory
-) => {
+const switchToTab = async (args) => {
+  const { step, driver } = args;
   try {
-    console.log("Switching To Tab");
     const number = parseInt(step.testParameters.TabNumber) - 1;
     const tabs = await driver.getAllWindowHandles();
 
@@ -197,13 +93,7 @@ const switchToTab = async (
       throw new Error("Invalid TabNumber");
     } else await driver.switchTo().window(tabs[number]);
   } catch (err) {
-    return await handleActionEventError(
-      err,
-      req,
-      stepHistoryId,
-      processResult,
-      executionHistory.continueOnError
-    );
+   return await handleActionEventError({...args,err});
   }
 };
 

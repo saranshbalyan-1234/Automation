@@ -5,9 +5,10 @@ import { EditOutlined } from "@ant-design/icons";
 import UserAvatar from "./Avatar";
 import AddEditModal from "./AddEditModal";
 import Loading from "./Loading";
+import DOMPurify from 'dompurify'
 const { Title } = Typography;
 const { Meta } = Card;
-const Details = ({ loading, details, name, onEdit = () => {} }) => {
+const Details = ({ loading, details, name, onEdit = () => { } }) => {
   const [addEditModal, setAddEditModal] = useState(false);
   const [editData, setEditData] = useState({});
 
@@ -18,20 +19,20 @@ const Details = ({ loading, details, name, onEdit = () => {} }) => {
         <Card>
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
+              display: 'flex',
+              justifyContent: 'space-between',
+              // flexWrap: 'wrap',
             }}
           >
             <Meta
               title={
-                <div style={{ display: "flex", gap: 20 }}>
-                  <Title style={{ textTransform: "capitalize" }} level={3}>
-                    {`${name}: ${details.name}`}
+                <div style={{ display: 'flex', gap: 20 }}>
+                  <Title style={{ textTransform: 'capitalize' }} level={3}>
+                  {details.name}
                   </Title>
-                  <div style={{ color: "black" }}>
+                  <div style={{ color: 'black' }}>
                     Created On &nbsp;
-                    {moment(details.createdAt).format("DD/MM/YY")} By &nbsp;
+                    {moment(details.createdAt).format('YYYY-MM-DD')} By &nbsp;
                     <UserAvatar user={details.createdByUser} />
                   </div>
                 </div>
@@ -39,47 +40,35 @@ const Details = ({ loading, details, name, onEdit = () => {} }) => {
               description={<></>}
             />
 
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 25,
+            <EditOutlined
+              style={{ fontSize: 20, paddingLeft: 10 }}
+              onClick={() => {
+                setEditData(details)
+                setAddEditModal(true)
               }}
-            >
-              <Button
-                type="primary"
-                ghost
-                onClick={() => {
-                  setEditData(details);
-                  setAddEditModal(true);
-                }}
-              >
-                <EditOutlined />
-                Edit {name} Details
-              </Button>
-            </div>
+            />
           </div>
           {details.description && (
             <Meta
               title="Description"
               description={
                 <div
-                  style={{ marginTop: "5px" }}
+                  style={{ marginTop: '5px' }}
                   dangerouslySetInnerHTML={{
-                    __html: details.description,
+                    __html: DOMPurify.sanitize(details.description),
                   }}
                 ></div>
               }
             />
           )}
-          <div style={{ display: "flex", gap: 10, maxWidth: 500 }}>
+          <div style={{ display: 'flex', gap: 10, maxWidth: 500 }}>
             <div>Tags:</div>
             <div>
               {details.tags?.length > 0
-                ? details.tags.map((el) => {
-                    return <Tag>{el}</Tag>;
+                ? details.tags.map((el, i) => {
+                    return <Tag key={'tag_' + i}>{el}</Tag>
                   })
-                : "N/A"}
+                : 'N/A'}
             </div>
           </div>
         </Card>
@@ -97,7 +86,7 @@ const Details = ({ loading, details, name, onEdit = () => {} }) => {
         />
       )}
     </div>
-  );
+  )
 };
 
 export default Details;

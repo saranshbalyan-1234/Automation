@@ -4,6 +4,7 @@ const { uploadFile } = require("../Controllers/awsController");
 const {
   updateStepResult,
 } = require("../Controllers/executionHistoryController");
+const chalk = require("chalk");
 const findByLocator = async (locators) => {
   // XPATH
   // ClassName
@@ -19,7 +20,6 @@ const findByLocator = async (locators) => {
     try {
       const type = el.dataValues.type;
       const locator = el.dataValues.locator;
-      console.log(`Locating by ${type}: ${locator}`);
       if (type == "XPATH") {
         return By.xpath(locator);
       } else if (type == "ClassName") {
@@ -44,35 +44,85 @@ const findByLocator = async (locators) => {
     }
   }
 };
-const takeScreenshot = async (driver, req, step, executionHistoryId) => {
-  console.log("Taking screenshot");
-  await driver.takeScreenshot().then(async (data, err) => {
-    if (err) return console.log("error in taking screenshot", err);
+const takeScreenshot = async (driver, req, step, executionHistoryId, process) => {
+  try {
+    console.log("Taking screenshot");
+    if (!req.body.history) return;
+    await driver.takeScreenshot().then(async (data, err) => {
+      if (err) {
+        console.log(chalk.redBright("SYSTEM ERROR: Screenshot"))
+        return console.log(err);
+      }
 
-    var buf = Buffer.from(
-      data.replace(/^data:image\/\w+;base64,/, ""),
-      "base64"
-    );
+      var buf = Buffer.from(
+        data.replace(/^data:image\/\w+;base64,/, ""),
+        "base64"
+      );
 
-    // console.log(data);
-    const fileName = `${executionHistoryId}/${step.id}`;
-    uploadFile(buf, req.database, fileName);
-  });
+      const fileName = `${executionHistoryId}/${process.id}_${step.id}`;
+      uploadFile(buf, req.database.split("_")[1].toLowerCase(), fileName);
+    });
+  } catch (error) {
+    console.log(chalk.redBright("SYSTEM ERROR: Screenshot"))
+    console.log(error);
+  }
 };
 
-const handleActionEventError = async (
-  err,
-  req,
-  stepHistoryId,
-  processResult,
-  continueOnError
-) => {
+const handleActionEventError = async (args) => {
+  const { err, req, stepHistoryId, processResult, continueOnError } = args;
+
+  console.log(chalk.redBright("SYSTEM ERROR: Action Event"))
   console.log(err);
-  if (processResult.result) processResult.result = false;
-  await updateStepResult(req, stepHistoryId, false, String(err));
+  try {
+    if (req.body.history) {
+      if (processResult.result) {
+        processResult.result = false;
+        await updateStepResult(req, stepHistoryId, false, String(err));
+      }
+    }
 
-  if (continueOnError) return "CONTINUE";
-  else return "STOP";
+    if (continueOnError) return "CONTINUE";
+    else return "STOP";
+  } catch (error) {
+    console.log(chalk.redBright("SYSTEM ERROR: Action Event"))
+    console.log(error)
+  }
 };
 
-module.exports = { findByLocator, takeScreenshot, handleActionEventError };
+const handleLog = async (args) => {
+  const { step, driver, req } = args;
+  const wait = req.body.wait
+
+  if (wait > 0) {
+    await driver.sleep(wait);
+  }
+  try {
+    let log = {
+      step: step.step,
+      process: { step: step.process.step, name: step.process.name },
+      actionEvent: step.actionEvent,
+      screenshot: step.screenshot,
+    }
+    if (Object.keys(step.testParameters).length > 0) log.testParameters = step.testParameters
+    if (step.object) {
+      let temp = { ...step.object.dataValues }
+      log.object = {
+        name: temp.name, locators: JSON.stringify(temp.locators.map(el => {
+          return {
+            type: el.dataValues.type,
+            locator: el.dataValues.locator,
+          }
+        }))
+      }
+    }
+    if (step.process.reusableProcess) {
+      log.process.reusableProcess = step.process.reusableProcess.dataValues.name
+    }
+    return console.log(log, "\n")
+  } catch (error) {
+    console.log(chalk.redBright("SYSTEM ERROR: Logger"))
+    return console.log(error)
+  }
+}
+
+module.exports = { findByLocator, takeScreenshot, handleActionEventError, handleLog };
