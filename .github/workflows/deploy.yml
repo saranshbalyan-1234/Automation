@@ -36,4 +36,4 @@ jobs:
         with:
           context: Backend
           push: true
-          tags: backend:latest
+          tags: saranshbalyan-1234/automation:latest
