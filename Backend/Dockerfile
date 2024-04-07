@@ -4,11 +4,11 @@ FROM node:20
 WORKDIR /usr/src/app
 
 
-# ENV DATABASE_USER m2pappdb2
-# ENV DATABASE_PASS T@d@Sa4izbDp
-# ENV DATABASE_HOST m2p-aws-preprod01.cpufrcioovvo.ap-south-1.rds.amazonaws.com
+# ENV DATABASE_USER 
+# ENV DATABASE_PASS 
+# ENV DATABASE_HOST
 # ENV DATABASE_NAME automation_master
-ENV WEBSITE_HOME https://uat-prepaid.m2pfintech.com/pp-automation-app
+ENV WEBSITE_HOME 
 
 ENV SAVE_LOGS false
 
@@ -16,7 +16,6 @@ ENV PORT 8080
 
 # Install app dependencies
 COPY /package*.json ./
-RUN npm config set registry https://repo.m2pfintech.com/repository/npm-group/
 RUN npm install
 # RUN npm install pm2 -g
 
