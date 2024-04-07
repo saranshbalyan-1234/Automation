@@ -9,6 +9,10 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    # defaults:
+    #   run:
+    #     working-directory: ./Backend/
+
     steps:
       -
         name: Checkout
@@ -30,6 +34,6 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: Backend
           push: true
           tags: user/app:latest
