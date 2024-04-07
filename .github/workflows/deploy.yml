@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./Backend
+        working-directory: ./Backend/
 
     steps:
       -
@@ -34,6 +34,6 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: Backend
           push: true
           tags: user/app:latest
